@@ -383,21 +383,21 @@ public class SociosABM extends JPanel {
     }//GEN-LAST:event_jButton1ActionPerformed
 
     //OBJETO PARA PODER ENLAZAR LA FECHA DESDE LA BD EN EL TEXTFIELD fechaNacimiento
-     Converter dateConverter = new Converter<java.util.Date, String>() {
-    @Override
-    public String convertForward(java.util.Date value) {
-     DateFormat df = DateFormat.getDateInstance();
-        return df.format(value);
-    }
-    @Override
-    public java.util.Date convertReverse(String value) {
-        try {
-            DateFormat df = DateFormat.getDateInstance();
-            return df.parse(value);
-        } catch (ParseException e) {
-            return Calendar.getInstance().getTime();
+    Converter dateConverter = new Converter<java.util.Date, String>() {
+        @Override
+        public String convertForward(java.util.Date value) {
+         DateFormat df = DateFormat.getDateInstance();
+            return df.format(value);
         }
-    }
+        @Override
+        public java.util.Date convertReverse(String value) {
+            try {
+                DateFormat df = DateFormat.getDateInstance();
+                return df.parse(value);
+            } catch (ParseException e) {
+                return Calendar.getInstance().getTime();
+            }
+        }
     };
      
      public java.util.Collection getListaSocios(){

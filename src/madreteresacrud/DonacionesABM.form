@@ -220,7 +220,11 @@
     <Component class="javax.swing.JTextField" name="fechaDonacionField">
       <BindingProperties>
         <BindingProperty name="text" source="masterTable" sourcePath="${selectedElement.fechaDonacion}" target="fechaDonacionField" targetPath="text" updateStrategy="0" immediately="false">
+          <BindingParameter name="javax.swing.binding.ParameterKeys.TEXT_CHANGE_STRATEGY" value="javax.swing.binding.TextChangeStrategy.ON_TYPE"/>
           <Property name="incompletePathValue" type="java.lang.String" value="null"/>
+          <Property name="converter" type="org.jdesktop.beansbinding.Converter" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+            <Connection code="dateConverter" type="code"/>
+          </Property>
         </BindingProperty>
         <BindingProperty name="enabled" source="masterTable" sourcePath="${selectedElement != null}" target="fechaDonacionField" targetPath="enabled" updateStrategy="1" immediately="false"/>
       </BindingProperties>
@@ -285,11 +289,7 @@
           <Image iconType="3" name="/imagenes/calendario.GIF"/>
         </Property>
         <Property name="contentAreaFilled" type="boolean" value="false"/>
-        <Property name="enabled" type="boolean" value="false"/>
       </Properties>
-      <BindingProperties>
-        <BindingProperty name="selected" source="fechaDonacionLabel" sourcePath="${text}" target="jButtonCalendar" targetPath="selected" updateStrategy="0" immediately="false"/>
-      </BindingProperties>
       <Events>
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jButtonCalendarActionPerformed"/>
       </Events>

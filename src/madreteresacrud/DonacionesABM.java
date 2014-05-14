@@ -8,11 +8,15 @@ package madreteresacrud;
 
 import java.awt.EventQueue;
 import java.beans.Beans;
+import java.text.DateFormat;
+import java.text.ParseException;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 import javax.persistence.RollbackException;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
+import org.jdesktop.beansbinding.Converter;
 import utilidades.Calendario;
 
 /**
@@ -104,6 +108,7 @@ public class DonacionesABM extends JPanel {
 
         binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, masterTable, org.jdesktop.beansbinding.ELProperty.create("${selectedElement.fechaDonacion}"), fechaDonacionField, org.jdesktop.beansbinding.BeanProperty.create("text"));
         binding.setSourceUnreadableValue("null");
+        binding.setConverter(dateConverter);
         bindingGroup.addBinding(binding);
         binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ, masterTable, org.jdesktop.beansbinding.ELProperty.create("${selectedElement != null}"), fechaDonacionField, org.jdesktop.beansbinding.BeanProperty.create("enabled"));
         bindingGroup.addBinding(binding);
@@ -126,11 +131,6 @@ public class DonacionesABM extends JPanel {
 
         jButtonCalendar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/calendario.GIF"))); // NOI18N
         jButtonCalendar.setContentAreaFilled(false);
-        jButtonCalendar.setEnabled(false);
-
-        binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, fechaDonacionLabel, org.jdesktop.beansbinding.ELProperty.create("${text}"), jButtonCalendar, org.jdesktop.beansbinding.BeanProperty.create("selected"));
-        bindingGroup.addBinding(binding);
-
         jButtonCalendar.addActionListener(formListener);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
@@ -285,7 +285,28 @@ public class DonacionesABM extends JPanel {
     private void jButtonCalendarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonCalendarActionPerformed
         new Calendario(fechaDonacionField).setVisible(true);
     }//GEN-LAST:event_jButtonCalendarActionPerformed
-
+    
+    //OBJETO PARA PODER ENLAZAR LA FECHA DESDE LA BD EN EL TEXTFIELD fechaNacimiento
+    Converter dateConverter = new Converter<java.util.Date, String>() {
+        @Override
+        public String convertForward(java.util.Date value) {
+         DateFormat df = DateFormat.getDateInstance();
+            return df.format(value);
+        }
+        @Override
+        public java.util.Date convertReverse(String value) {
+            try {
+                DateFormat df = DateFormat.getDateInstance();
+                return df.parse(value);
+            } catch (ParseException e) {
+                return Calendar.getInstance().getTime();
+            }
+        }
+    };
+    
+    
+    
+    
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTextField apellidoField;
