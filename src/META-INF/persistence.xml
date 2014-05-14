@@ -3,7 +3,10 @@
   <persistence-unit name="madreTeresaCRUDPU" transaction-type="RESOURCE_LOCAL">
     <provider>org.eclipse.persistence.jpa.PersistenceProvider</provider>
     <class>madreteresacrud.CuotaSocial</class>
+    <class>madreteresacrud.Donaciones</class>
+    <class>madreteresacrud.Gastos</class>
     <class>madreteresacrud.Socios</class>
+    <class>madreteresacrud.TipoGasto</class>
     <properties>
       <property name="javax.persistence.jdbc.url" value="jdbc:mysql://www.db4free.net:3306/sistcalcuta?zeroDateTimeBehavior=convertToNull"/>
       <property name="javax.persistence.jdbc.password" value="sistCalcuta"/>

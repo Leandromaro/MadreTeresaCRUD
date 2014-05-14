@@ -33,7 +33,10 @@ public class MadreTeresaMain extends javax.swing.JFrame {
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
         jMenuSocios = new javax.swing.JMenuItem();
+        jMenuDonaciones = new javax.swing.JMenuItem();
+        jMenu3 = new javax.swing.JMenu();
         jMenuGastos = new javax.swing.JMenuItem();
+        jMenuItem1 = new javax.swing.JMenuItem();
         jMenu2 = new javax.swing.JMenu();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -48,13 +51,33 @@ public class MadreTeresaMain extends javax.swing.JFrame {
         });
         jMenu1.add(jMenuSocios);
 
+        jMenuDonaciones.setText("Donaciones");
+        jMenuDonaciones.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuDonacionesActionPerformed(evt);
+            }
+        });
+        jMenu1.add(jMenuDonaciones);
+
+        jMenu3.setText("Gastos");
+
         jMenuGastos.setText("Gastos");
         jMenuGastos.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jMenuGastosActionPerformed(evt);
             }
         });
-        jMenu1.add(jMenuGastos);
+        jMenu3.add(jMenuGastos);
+
+        jMenuItem1.setText("Tipo Gasto");
+        jMenuItem1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem1ActionPerformed(evt);
+            }
+        });
+        jMenu3.add(jMenuItem1);
+
+        jMenu1.add(jMenu3);
 
         jMenuBar1.add(jMenu1);
 
@@ -86,13 +109,29 @@ public class MadreTeresaMain extends javax.swing.JFrame {
             
     }//GEN-LAST:event_jMenuSociosActionPerformed
 
+    private void jMenuDonacionesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuDonacionesActionPerformed
+        JFrame frame = new JFrame();
+        frame.setContentPane(new DonacionesABM());
+        frame.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
+        frame.pack();
+        frame.setVisible(true);
+    }//GEN-LAST:event_jMenuDonacionesActionPerformed
+
     private void jMenuGastosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuGastosActionPerformed
-//        JFrame frame = new JFrame();
-//        frame.setContentPane(new GastosABM());
-//        frame.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
-//        frame.pack();
-//        frame.setVisible(true);
+        JFrame frame = new JFrame();
+        frame.setContentPane(new GastosABM());
+        frame.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
+        frame.pack();
+        frame.setVisible(true);
     }//GEN-LAST:event_jMenuGastosActionPerformed
+
+    private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
+        JFrame frame = new JFrame();
+        frame.setContentPane(new TipoGastoABM());
+        frame.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
+        frame.pack();
+        frame.setVisible(true);
+    }//GEN-LAST:event_jMenuItem1ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -132,8 +171,11 @@ public class MadreTeresaMain extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JMenu jMenu1;
     private javax.swing.JMenu jMenu2;
+    private javax.swing.JMenu jMenu3;
     private javax.swing.JMenuBar jMenuBar1;
+    private javax.swing.JMenuItem jMenuDonaciones;
     private javax.swing.JMenuItem jMenuGastos;
+    private javax.swing.JMenuItem jMenuItem1;
     private javax.swing.JMenuItem jMenuSocios;
     // End of variables declaration//GEN-END:variables
 }
