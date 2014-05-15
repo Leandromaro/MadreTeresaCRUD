@@ -4,8 +4,6 @@
  */
 package madreteresacrud;
 
-import java.beans.PropertyChangeListener;
-import java.beans.PropertyChangeSupport;
 import java.io.Serializable;
 import java.util.Date;
 import javax.persistence.Basic;
@@ -19,17 +17,19 @@ import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
-import javax.persistence.Transient;
+import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  *
  * @author francis
  */
 @Entity
-@Table(name = "socios", catalog = "sistcalcuta", schema = "")
+@Table(name = "socios")
+@XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "Socios.findAll", query = "SELECT s FROM Socios s"),
     @NamedQuery(name = "Socios.findByIdSocio", query = "SELECT s FROM Socios s WHERE s.idSocio = :idSocio"),
+    @NamedQuery(name = "Socios.findByIdTipoSocio", query = "SELECT s FROM Socios s WHERE s.idTipoSocio = :idTipoSocio"),
     @NamedQuery(name = "Socios.findByDocumento", query = "SELECT s FROM Socios s WHERE s.documento = :documento"),
     @NamedQuery(name = "Socios.findByTipoDocumento", query = "SELECT s FROM Socios s WHERE s.tipoDocumento = :tipoDocumento"),
     @NamedQuery(name = "Socios.findByNombre", query = "SELECT s FROM Socios s WHERE s.nombre = :nombre"),
@@ -40,14 +40,15 @@ import javax.persistence.Transient;
     @NamedQuery(name = "Socios.findByLocalidad", query = "SELECT s FROM Socios s WHERE s.localidad = :localidad"),
     @NamedQuery(name = "Socios.findByDireccion", query = "SELECT s FROM Socios s WHERE s.direccion = :direccion")})
 public class Socios implements Serializable {
-    @Transient
-    private PropertyChangeSupport changeSupport = new PropertyChangeSupport(this);
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
     @Column(name = "idSocio")
     private Integer idSocio;
+    @Basic(optional = false)
+    @Column(name = "idTipoSocio")
+    private int idTipoSocio;
     @Basic(optional = false)
     @Column(name = "documento")
     private int documento;
@@ -84,8 +85,9 @@ public class Socios implements Serializable {
         this.idSocio = idSocio;
     }
 
-    public Socios(Integer idSocio, int documento, String tipoDocumento, String nombre, String apellido, String email, String telefono, Date fechaNacimiento, String localidad, String direccion) {
+    public Socios(Integer idSocio, int idTipoSocio, int documento, String tipoDocumento, String nombre, String apellido, String email, String telefono, Date fechaNacimiento, String localidad, String direccion) {
         this.idSocio = idSocio;
+        this.idTipoSocio = idTipoSocio;
         this.documento = documento;
         this.tipoDocumento = tipoDocumento;
         this.nombre = nombre;
@@ -102,9 +104,15 @@ public class Socios implements Serializable {
     }
 
     public void setIdSocio(Integer idSocio) {
-        Integer oldIdSocio = this.idSocio;
         this.idSocio = idSocio;
-        changeSupport.firePropertyChange("idSocio", oldIdSocio, idSocio);
+    }
+
+    public int getIdTipoSocio() {
+        return idTipoSocio;
+    }
+
+    public void setIdTipoSocio(int idTipoSocio) {
+        this.idTipoSocio = idTipoSocio;
     }
 
     public int getDocumento() {
@@ -112,9 +120,7 @@ public class Socios implements Serializable {
     }
 
     public void setDocumento(int documento) {
-        int oldDocumento = this.documento;
         this.documento = documento;
-        changeSupport.firePropertyChange("documento", oldDocumento, documento);
     }
 
     public String getTipoDocumento() {
@@ -122,9 +128,7 @@ public class Socios implements Serializable {
     }
 
     public void setTipoDocumento(String tipoDocumento) {
-        String oldTipoDocumento = this.tipoDocumento;
         this.tipoDocumento = tipoDocumento;
-        changeSupport.firePropertyChange("tipoDocumento", oldTipoDocumento, tipoDocumento);
     }
 
     public String getNombre() {
@@ -132,9 +136,7 @@ public class Socios implements Serializable {
     }
 
     public void setNombre(String nombre) {
-        String oldNombre = this.nombre;
         this.nombre = nombre;
-        changeSupport.firePropertyChange("nombre", oldNombre, nombre);
     }
 
     public String getApellido() {
@@ -142,9 +144,7 @@ public class Socios implements Serializable {
     }
 
     public void setApellido(String apellido) {
-        String oldApellido = this.apellido;
         this.apellido = apellido;
-        changeSupport.firePropertyChange("apellido", oldApellido, apellido);
     }
 
     public String getEmail() {
@@ -152,9 +152,7 @@ public class Socios implements Serializable {
     }
 
     public void setEmail(String email) {
-        String oldEmail = this.email;
         this.email = email;
-        changeSupport.firePropertyChange("email", oldEmail, email);
     }
 
     public String getTelefono() {
@@ -162,9 +160,7 @@ public class Socios implements Serializable {
     }
 
     public void setTelefono(String telefono) {
-        String oldTelefono = this.telefono;
         this.telefono = telefono;
-        changeSupport.firePropertyChange("telefono", oldTelefono, telefono);
     }
 
     public Date getFechaNacimiento() {
@@ -172,9 +168,7 @@ public class Socios implements Serializable {
     }
 
     public void setFechaNacimiento(Date fechaNacimiento) {
-        Date oldFechaNacimiento = this.fechaNacimiento;
         this.fechaNacimiento = fechaNacimiento;
-        changeSupport.firePropertyChange("fechaNacimiento", oldFechaNacimiento, fechaNacimiento);
     }
 
     public String getLocalidad() {
@@ -182,9 +176,7 @@ public class Socios implements Serializable {
     }
 
     public void setLocalidad(String localidad) {
-        String oldLocalidad = this.localidad;
         this.localidad = localidad;
-        changeSupport.firePropertyChange("localidad", oldLocalidad, localidad);
     }
 
     public String getDireccion() {
@@ -192,9 +184,7 @@ public class Socios implements Serializable {
     }
 
     public void setDireccion(String direccion) {
-        String oldDireccion = this.direccion;
         this.direccion = direccion;
-        changeSupport.firePropertyChange("direccion", oldDireccion, direccion);
     }
 
     @Override
@@ -220,14 +210,6 @@ public class Socios implements Serializable {
     @Override
     public String toString() {
         return "madreteresacrud.Socios[ idSocio=" + idSocio + " ]";
-    }
-
-    public void addPropertyChangeListener(PropertyChangeListener listener) {
-        changeSupport.addPropertyChangeListener(listener);
-    }
-
-    public void removePropertyChangeListener(PropertyChangeListener listener) {
-        changeSupport.removePropertyChangeListener(listener);
     }
     
 }

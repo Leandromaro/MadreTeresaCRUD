@@ -43,6 +43,13 @@ public class SociosABM extends JPanel {
         entityManager = java.beans.Beans.isDesignTime() ? null : javax.persistence.Persistence.createEntityManagerFactory("madreTeresaCRUDPU").createEntityManager();
         query = java.beans.Beans.isDesignTime() ? null : entityManager.createQuery("SELECT s FROM Socios s");
         list = java.beans.Beans.isDesignTime() ? java.util.Collections.emptyList() : org.jdesktop.observablecollections.ObservableCollections.observableList(query.getResultList());
+        madreTeresaCRUDPUEntityManager = java.beans.Beans.isDesignTime() ? null : javax.persistence.Persistence.createEntityManagerFactory("madreTeresaCRUDPU").createEntityManager();
+        tipoSocioQuery = java.beans.Beans.isDesignTime() ? null : madreTeresaCRUDPUEntityManager.createQuery("SELECT t FROM TipoSocio t");
+        tipoSocioList = java.beans.Beans.isDesignTime() ? java.util.Collections.emptyList() : tipoSocioQuery.getResultList();
+        tipoSocioQuery1 = java.beans.Beans.isDesignTime() ? null : madreTeresaCRUDPUEntityManager.createQuery("SELECT t FROM TipoSocio t");
+        tipoSocioList1 = java.beans.Beans.isDesignTime() ? java.util.Collections.emptyList() : tipoSocioQuery1.getResultList();
+        tipoSocioQuery2 = java.beans.Beans.isDesignTime() ? null : madreTeresaCRUDPUEntityManager.createQuery("SELECT t FROM TipoSocio t");
+        tipoSocioList2 = java.beans.Beans.isDesignTime() ? java.util.Collections.emptyList() : tipoSocioQuery2.getResultList();
         masterScrollPane = new javax.swing.JScrollPane();
         masterTable = new javax.swing.JTable();
         documentoLabel = new javax.swing.JLabel();
@@ -383,21 +390,21 @@ public class SociosABM extends JPanel {
     }//GEN-LAST:event_jButton1ActionPerformed
 
     //OBJETO PARA PODER ENLAZAR LA FECHA DESDE LA BD EN EL TEXTFIELD fechaNacimiento
-    Converter dateConverter = new Converter<java.util.Date, String>() {
-        @Override
-        public String convertForward(java.util.Date value) {
-         DateFormat df = DateFormat.getDateInstance();
-            return df.format(value);
+     Converter dateConverter = new Converter<java.util.Date, String>() {
+    @Override
+    public String convertForward(java.util.Date value) {
+     DateFormat df = DateFormat.getDateInstance();
+        return df.format(value);
+    }
+    @Override
+    public java.util.Date convertReverse(String value) {
+        try {
+            DateFormat df = DateFormat.getDateInstance();
+            return df.parse(value);
+        } catch (ParseException e) {
+            return Calendar.getInstance().getTime();
         }
-        @Override
-        public java.util.Date convertReverse(String value) {
-            try {
-                DateFormat df = DateFormat.getDateInstance();
-                return df.parse(value);
-            } catch (ParseException e) {
-                return Calendar.getInstance().getTime();
-            }
-        }
+    }
     };
      
      public java.util.Collection getListaSocios(){
@@ -423,6 +430,7 @@ public class SociosABM extends JPanel {
     private java.util.List<madreteresacrud.Socios> list;
     private javax.swing.JTextField localidadField;
     private javax.swing.JLabel localidadLabel;
+    private javax.persistence.EntityManager madreTeresaCRUDPUEntityManager;
     private javax.swing.JScrollPane masterScrollPane;
     private javax.swing.JTable masterTable;
     private javax.swing.JButton newButton;
@@ -435,6 +443,12 @@ public class SociosABM extends JPanel {
     private javax.swing.JLabel telefonoLabel;
     private javax.swing.JComboBox tipoDocumentoCB;
     private javax.swing.JLabel tipoDocumentoLabel;
+    private java.util.List<madreteresacrud.TipoSocio> tipoSocioList;
+    private java.util.List<madreteresacrud.TipoSocio> tipoSocioList1;
+    private java.util.List<madreteresacrud.TipoSocio> tipoSocioList2;
+    private javax.persistence.Query tipoSocioQuery;
+    private javax.persistence.Query tipoSocioQuery1;
+    private javax.persistence.Query tipoSocioQuery2;
     private org.jdesktop.beansbinding.BindingGroup bindingGroup;
     // End of variables declaration//GEN-END:variables
 //    public static void main(String[] args) {

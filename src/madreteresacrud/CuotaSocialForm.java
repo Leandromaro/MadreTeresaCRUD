@@ -14,6 +14,7 @@ public class CuotaSocialForm extends javax.swing.JFrame {
      * Creates new form CuotaSocialForm
      */
     public CuotaSocialForm() {
+        super("Cuotas Sociales");        
         initComponents();
         TextAutoCompleter textAutoCompleter = new TextAutoCompleter(jTFBusqueda);
         textAutoCompleter.setMode(0);
@@ -23,7 +24,7 @@ public class CuotaSocialForm extends javax.swing.JFrame {
         for (Object socio : listaSocios) {
             Socios soc = new Socios();
             soc = (Socios) socio;
-            textAutoCompleter.addItem(soc.getIdSocio()+"-"+soc.getApellido()+" "+soc.getNombre());
+            textAutoCompleter.addItem(soc.getIdSocio()+" - "+soc.getApellido()+" "+soc.getNombre());
             
         }
 
@@ -45,6 +46,7 @@ public class CuotaSocialForm extends javax.swing.JFrame {
         jInternalFrame1 = new javax.swing.JInternalFrame();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
 
         jLabel1.setText("Buscar Socio:");
 
@@ -115,7 +117,7 @@ public class CuotaSocialForm extends javax.swing.JFrame {
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         
         String [] id = jTFBusqueda.getText().split("-");  
-        int idSocio = Integer.parseInt(id[0]);
+        int idSocio = Integer.parseInt(id[0].trim());
         //System.out.println();
         jInternalFrame1.setContentPane(new CuotaSocialABM(idSocio ));
         jInternalFrame1.pack();
