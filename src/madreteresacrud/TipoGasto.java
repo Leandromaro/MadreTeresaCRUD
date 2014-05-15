@@ -55,6 +55,8 @@ public class TipoGasto implements Serializable {
         return idtipoGasto;
     }
 
+  
+    
     public void setIdtipoGasto(Integer idtipoGasto) {
         Integer oldIdtipoGasto = this.idtipoGasto;
         this.idtipoGasto = idtipoGasto;

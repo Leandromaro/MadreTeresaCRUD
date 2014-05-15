@@ -9,20 +9,28 @@ package madreteresacrud;
 import java.awt.EventQueue;
 import java.beans.Beans;
 import java.util.ArrayList;
-
+import java.util.Collection;
 import java.util.List;
 import javax.persistence.RollbackException;
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
 /**
  *
  * @author leandro
  */
-public class TipoGastoABM extends JPanel {
-    
-    public TipoGastoABM() {
+public class GastosABM extends JPanel {
+    private static int id_selected;
+    public GastosABM() {
         initComponents();
+        Collection listGasto = new TipoGastoABM().getListGasto();
+        TipoGasto tipoG = new TipoGasto();
+        for (Object tipo: listGasto){
+            tipoG = (TipoGasto) tipo; 
+            jComboTipoGasto.addItem(tipoG.getDescripcion());
+        }  
+        
         if (!Beans.isDesignTime()) {
             entityManager.getTransaction().begin();
         }
@@ -39,50 +47,82 @@ public class TipoGastoABM extends JPanel {
         bindingGroup = new org.jdesktop.beansbinding.BindingGroup();
 
         entityManager = java.beans.Beans.isDesignTime() ? null : javax.persistence.Persistence.createEntityManagerFactory("madreTeresaCRUDPU").createEntityManager();
-        query = java.beans.Beans.isDesignTime() ? null : entityManager.createQuery("SELECT t FROM TipoGasto t");
+        query = java.beans.Beans.isDesignTime() ? null : entityManager.createQuery("SELECT g FROM Gastos g");
         list = java.beans.Beans.isDesignTime() ? java.util.Collections.emptyList() : org.jdesktop.observablecollections.ObservableCollections.observableList(query.getResultList());
         masterScrollPane = new javax.swing.JScrollPane();
         masterTable = new javax.swing.JTable();
+        montoLabel = new javax.swing.JLabel();
+        fechaGastoLabel = new javax.swing.JLabel();
         descripcionLabel = new javax.swing.JLabel();
+        montoField = new javax.swing.JTextField();
+        fechaGastoField = new javax.swing.JTextField();
         descripcionField = new javax.swing.JTextField();
         saveButton = new javax.swing.JButton();
         refreshButton = new javax.swing.JButton();
         newButton = new javax.swing.JButton();
         deleteButton = new javax.swing.JButton();
+        jLabelTipoGasto = new javax.swing.JLabel();
+        jComboTipoGasto = new javax.swing.JComboBox();
 
         FormListener formListener = new FormListener();
 
         org.jdesktop.swingbinding.JTableBinding jTableBinding = org.jdesktop.swingbinding.SwingBindings.createJTableBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, list, masterTable);
-        org.jdesktop.swingbinding.JTableBinding.ColumnBinding columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${descripcion}"));
+        org.jdesktop.swingbinding.JTableBinding.ColumnBinding columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${monto}"));
+        columnBinding.setColumnName("Monto");
+        columnBinding.setColumnClass(java.math.BigDecimal.class);
+        columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${fechaGasto}"));
+        columnBinding.setColumnName("Fecha Gasto");
+        columnBinding.setColumnClass(java.util.Date.class);
+        columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${descripcion}"));
         columnBinding.setColumnName("Descripcion");
         columnBinding.setColumnClass(String.class);
         bindingGroup.addBinding(jTableBinding);
 
         masterScrollPane.setViewportView(masterTable);
 
+        montoLabel.setText("Monto:");
+
+        fechaGastoLabel.setText("Fecha Gasto:");
+
         descripcionLabel.setText("Descripcion:");
 
-        org.jdesktop.beansbinding.Binding binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, masterTable, org.jdesktop.beansbinding.ELProperty.create("${selectedElement.descripcion}"), descripcionField, org.jdesktop.beansbinding.BeanProperty.create("text"));
+        org.jdesktop.beansbinding.Binding binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, masterTable, org.jdesktop.beansbinding.ELProperty.create("${selectedElement.monto}"), montoField, org.jdesktop.beansbinding.BeanProperty.create("text"));
+        binding.setSourceUnreadableValue("null");
+        bindingGroup.addBinding(binding);
+        binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ, masterTable, org.jdesktop.beansbinding.ELProperty.create("${selectedElement != null}"), montoField, org.jdesktop.beansbinding.BeanProperty.create("enabled"));
+        bindingGroup.addBinding(binding);
+
+        binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, masterTable, org.jdesktop.beansbinding.ELProperty.create("${selectedElement.fechaGasto}"), fechaGastoField, org.jdesktop.beansbinding.BeanProperty.create("text"));
+        binding.setSourceUnreadableValue("null");
+        bindingGroup.addBinding(binding);
+        binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ, masterTable, org.jdesktop.beansbinding.ELProperty.create("${selectedElement != null}"), fechaGastoField, org.jdesktop.beansbinding.BeanProperty.create("enabled"));
+        bindingGroup.addBinding(binding);
+
+        binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, masterTable, org.jdesktop.beansbinding.ELProperty.create("${selectedElement.descripcion}"), descripcionField, org.jdesktop.beansbinding.BeanProperty.create("text"));
         binding.setSourceUnreadableValue("null");
         bindingGroup.addBinding(binding);
         binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ, masterTable, org.jdesktop.beansbinding.ELProperty.create("${selectedElement != null}"), descripcionField, org.jdesktop.beansbinding.BeanProperty.create("enabled"));
         bindingGroup.addBinding(binding);
 
-        saveButton.setText("Guardar");
+        saveButton.setText("Save");
         saveButton.addActionListener(formListener);
 
-        refreshButton.setText("Recargar");
+        refreshButton.setText("Refresh");
         refreshButton.addActionListener(formListener);
 
-        newButton.setText("Nuevo Tipo");
+        newButton.setText("New");
         newButton.addActionListener(formListener);
 
-        deleteButton.setText("Eliminar");
+        deleteButton.setText("Delete");
 
         binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ, masterTable, org.jdesktop.beansbinding.ELProperty.create("${selectedElement != null}"), deleteButton, org.jdesktop.beansbinding.BeanProperty.create("enabled"));
         bindingGroup.addBinding(binding);
 
         deleteButton.addActionListener(formListener);
+
+        jLabelTipoGasto.setText("Tipo de Gasto");
+
+        jComboTipoGasto.addActionListener(formListener);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
@@ -91,6 +131,7 @@ public class TipoGastoABM extends JPanel {
             .addGroup(layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
                         .addComponent(newButton)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(deleteButton)
@@ -101,11 +142,21 @@ public class TipoGastoABM extends JPanel {
                     .addGroup(layout.createSequentialGroup()
                         .addContainerGap()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(masterScrollPane, javax.swing.GroupLayout.DEFAULT_SIZE, 416, Short.MAX_VALUE)
                             .addGroup(layout.createSequentialGroup()
-                                .addComponent(descripcionLabel)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(montoLabel)
+                                    .addComponent(fechaGastoLabel)
+                                    .addComponent(descripcionLabel)
+                                    .addComponent(jLabelTipoGasto))
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(descripcionField, javax.swing.GroupLayout.DEFAULT_SIZE, 315, Short.MAX_VALUE))
-                            .addComponent(masterScrollPane, javax.swing.GroupLayout.DEFAULT_SIZE, 380, Short.MAX_VALUE))))
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(montoField, javax.swing.GroupLayout.DEFAULT_SIZE, 310, Short.MAX_VALUE)
+                                    .addComponent(fechaGastoField, javax.swing.GroupLayout.DEFAULT_SIZE, 310, Short.MAX_VALUE)
+                                    .addComponent(descripcionField)
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addComponent(jComboTipoGasto, javax.swing.GroupLayout.PREFERRED_SIZE, 126, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addGap(0, 0, Short.MAX_VALUE)))))))
                 .addContainerGap())
         );
 
@@ -115,18 +166,29 @@ public class TipoGastoABM extends JPanel {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(masterScrollPane, javax.swing.GroupLayout.DEFAULT_SIZE, 130, Short.MAX_VALUE)
+                .addComponent(masterScrollPane, javax.swing.GroupLayout.PREFERRED_SIZE, 132, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(montoLabel)
+                    .addComponent(montoField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(fechaGastoLabel)
+                    .addComponent(fechaGastoField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(descripcionLabel)
                     .addComponent(descripcionField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabelTipoGasto, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jComboTipoGasto, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 18, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(saveButton)
                     .addComponent(refreshButton)
                     .addComponent(deleteButton)
-                    .addComponent(newButton))
-                .addContainerGap())
+                    .addComponent(newButton)))
         );
 
         bindingGroup.bind();
@@ -138,16 +200,19 @@ public class TipoGastoABM extends JPanel {
         FormListener() {}
         public void actionPerformed(java.awt.event.ActionEvent evt) {
             if (evt.getSource() == saveButton) {
-                TipoGastoABM.this.saveButtonActionPerformed(evt);
+                GastosABM.this.saveButtonActionPerformed(evt);
             }
             else if (evt.getSource() == refreshButton) {
-                TipoGastoABM.this.refreshButtonActionPerformed(evt);
+                GastosABM.this.refreshButtonActionPerformed(evt);
             }
             else if (evt.getSource() == newButton) {
-                TipoGastoABM.this.newButtonActionPerformed(evt);
+                GastosABM.this.newButtonActionPerformed(evt);
             }
             else if (evt.getSource() == deleteButton) {
-                TipoGastoABM.this.deleteButtonActionPerformed(evt);
+                GastosABM.this.deleteButtonActionPerformed(evt);
+            }
+            else if (evt.getSource() == jComboTipoGasto) {
+                GastosABM.this.jComboTipoGastoActionPerformed(evt);
             }
         }
     }// </editor-fold>//GEN-END:initComponents
@@ -165,39 +230,22 @@ public class TipoGastoABM extends JPanel {
         list.clear();
         list.addAll(data);
     }//GEN-LAST:event_refreshButtonActionPerformed
-    
-    public java.util.Collection getListGasto (){
-        java.util.Collection data = query.getResultList();
-        return data;
-    }
-    
-    public Integer getId(String tipoGasto){
-        List<madreteresacrud.TipoGasto> toReturn = query.getResultList();
-        TipoGasto t = new TipoGasto();
-        for (Object entity : toReturn) {
-            t = (TipoGasto) entity;
-            if(t.getDescripcion().equals(tipoGasto.trim())){
-                return t.getIdtipoGasto();
-            } 
-        }
-        return null;            
-    }
-    
+
     private void deleteButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteButtonActionPerformed
         int[] selected = masterTable.getSelectedRows();
-        List<madreteresacrud.TipoGasto> toRemove = new ArrayList<madreteresacrud.TipoGasto>(selected.length);
+        List<madreteresacrud.Gastos> toRemove = new ArrayList<madreteresacrud.Gastos>(selected.length);
         for (int idx = 0; idx < selected.length; idx++) {
-            madreteresacrud.TipoGasto t = list.get(masterTable.convertRowIndexToModel(selected[idx]));
-            toRemove.add(t);
-            entityManager.remove(t);
+            madreteresacrud.Gastos g = list.get(masterTable.convertRowIndexToModel(selected[idx]));
+            toRemove.add(g);
+            entityManager.remove(g);
         }
         list.removeAll(toRemove);
     }//GEN-LAST:event_deleteButtonActionPerformed
 
     private void newButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_newButtonActionPerformed
-        madreteresacrud.TipoGasto t = new madreteresacrud.TipoGasto();
-        entityManager.persist(t);
-        list.add(t);
+        madreteresacrud.Gastos g = new madreteresacrud.Gastos();
+        entityManager.persist(g);
+        list.add(g);
         int row = list.size() - 1;
         masterTable.setRowSelectionInterval(row, row);
         masterTable.scrollRectToVisible(masterTable.getCellRect(row, 0, true));
@@ -210,14 +258,23 @@ public class TipoGastoABM extends JPanel {
         } catch (RollbackException rex) {
             rex.printStackTrace();
             entityManager.getTransaction().begin();
-            List<madreteresacrud.TipoGasto> merged = new ArrayList<madreteresacrud.TipoGasto>(list.size());
-            for (madreteresacrud.TipoGasto t : list) {
-                merged.add(entityManager.merge(t));
+            List<madreteresacrud.Gastos> merged = new ArrayList<madreteresacrud.Gastos>(list.size());
+            for (madreteresacrud.Gastos g : list) {
+                merged.add(entityManager.merge(g));
             }
             list.clear();
             list.addAll(merged);
         }
     }//GEN-LAST:event_saveButtonActionPerformed
+
+    private void jComboTipoGastoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboTipoGastoActionPerformed
+        TipoGastoABM tipoG = new TipoGastoABM();
+        if (tipoG.getId(jComboTipoGasto.getSelectedItem().toString().trim())!=null){
+            id_selected = tipoG.getId(jComboTipoGasto.getSelectedItem().toString().trim());
+            
+        }
+          
+    }//GEN-LAST:event_jComboTipoGastoActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -225,9 +282,15 @@ public class TipoGastoABM extends JPanel {
     private javax.swing.JTextField descripcionField;
     private javax.swing.JLabel descripcionLabel;
     private javax.persistence.EntityManager entityManager;
-    private java.util.List<madreteresacrud.TipoGasto> list;
+    private javax.swing.JTextField fechaGastoField;
+    private javax.swing.JLabel fechaGastoLabel;
+    private javax.swing.JComboBox jComboTipoGasto;
+    private javax.swing.JLabel jLabelTipoGasto;
+    private java.util.List<madreteresacrud.Gastos> list;
     private javax.swing.JScrollPane masterScrollPane;
     private javax.swing.JTable masterTable;
+    private javax.swing.JTextField montoField;
+    private javax.swing.JLabel montoLabel;
     private javax.swing.JButton newButton;
     private javax.persistence.Query query;
     private javax.swing.JButton refreshButton;
