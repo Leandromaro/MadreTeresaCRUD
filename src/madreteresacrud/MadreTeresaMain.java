@@ -16,9 +16,11 @@ public class MadreTeresaMain extends javax.swing.JFrame {
 
     /**
      * Creates new form MadreTeresaMain
-     */
+     */    
     public MadreTeresaMain() {
+        super("Sistema Maria Teresa");        
         initComponents();
+        this.setLocationRelativeTo(null);
     }
 
     /**
@@ -33,6 +35,8 @@ public class MadreTeresaMain extends javax.swing.JFrame {
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
         jMenuSocios = new javax.swing.JMenuItem();
+        jMenuItem2 = new javax.swing.JMenuItem();
+        jMenuItem3 = new javax.swing.JMenuItem();
         jMenuDonaciones = new javax.swing.JMenuItem();
         jMenu3 = new javax.swing.JMenu();
         jMenuGastos = new javax.swing.JMenuItem();
@@ -50,6 +54,22 @@ public class MadreTeresaMain extends javax.swing.JFrame {
             }
         });
         jMenu1.add(jMenuSocios);
+
+        jMenuItem2.setText("Pagar Cuota Social");
+        jMenuItem2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem2ActionPerformed(evt);
+            }
+        });
+        jMenu1.add(jMenuItem2);
+
+        jMenuItem3.setText("Tipo de Socio");
+        jMenuItem3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem3ActionPerformed(evt);
+            }
+        });
+        jMenu1.add(jMenuItem3);
 
         jMenuDonaciones.setText("Donaciones");
         jMenuDonaciones.addActionListener(new java.awt.event.ActionListener() {
@@ -101,11 +121,12 @@ public class MadreTeresaMain extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jMenuSociosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuSociosActionPerformed
-        JFrame frame = new JFrame();
+        JFrame frame = new JFrame("Socios");
         frame.setContentPane(new SociosABM());
         frame.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
         frame.pack();
         frame.setVisible(true);
+        frame.setLocationRelativeTo(null);
             
     }//GEN-LAST:event_jMenuSociosActionPerformed
 
@@ -131,7 +152,24 @@ public class MadreTeresaMain extends javax.swing.JFrame {
         frame.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
         frame.pack();
         frame.setVisible(true);
+        frame.setLocationRelativeTo(null);
     }//GEN-LAST:event_jMenuItem1ActionPerformed
+
+    private void jMenuItem2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem2ActionPerformed
+        CuotaSocialForm cuota = new CuotaSocialForm();
+        cuota.setVisible(true);
+        cuota.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
+        cuota.setLocationRelativeTo(null);
+    }//GEN-LAST:event_jMenuItem2ActionPerformed
+
+    private void jMenuItem3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem3ActionPerformed
+        JFrame frame = new JFrame("Tipos de Socios");
+        frame.setContentPane(new TipoSocioABM());
+        frame.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
+        frame.pack();
+        frame.setVisible(true);
+        frame.setLocationRelativeTo(null);
+    }//GEN-LAST:event_jMenuItem3ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -176,6 +214,8 @@ public class MadreTeresaMain extends javax.swing.JFrame {
     private javax.swing.JMenuItem jMenuDonaciones;
     private javax.swing.JMenuItem jMenuGastos;
     private javax.swing.JMenuItem jMenuItem1;
+    private javax.swing.JMenuItem jMenuItem2;
+    private javax.swing.JMenuItem jMenuItem3;
     private javax.swing.JMenuItem jMenuSocios;
     // End of variables declaration//GEN-END:variables
 }

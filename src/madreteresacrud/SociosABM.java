@@ -23,8 +23,15 @@ import utilidades.Calendario;
  */
 public class SociosABM extends JPanel {
     
-    public SociosABM() {
-        initComponents();
+    public SociosABM() {        
+        initComponents(); 
+        java.util.Collection lista = new TipoSocioABM().getTipoSoc();
+        String t ;
+        for (Object entity : lista) {
+            t = (String) entity;            
+            jComboTipSoc.addItem(t);
+        }
+        jLabelTipSoc.setVisible(false);
         if (!Beans.isDesignTime()) {
             entityManager.getTransaction().begin();
         }
@@ -75,6 +82,9 @@ public class SociosABM extends JPanel {
         deleteButton = new javax.swing.JButton();
         jButton1 = new javax.swing.JButton();
         tipoDocumentoCB = new javax.swing.JComboBox();
+        jLabel1 = new javax.swing.JLabel();
+        jComboTipSoc = new javax.swing.JComboBox();
+        jLabelTipSoc = new javax.swing.JLabel();
 
         FormListener formListener = new FormListener();
 
@@ -106,9 +116,15 @@ public class SociosABM extends JPanel {
         columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${direccion}"));
         columnBinding.setColumnName("Direccion");
         columnBinding.setColumnClass(String.class);
+        columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${idTipoSocio}"));
+        columnBinding.setColumnName("TipoSoc");
+        columnBinding.setColumnClass(Integer.class);
+        columnBinding.setEditable(false);
         bindingGroup.addBinding(jTableBinding);
         jTableBinding.bind();
+        masterTable.addMouseListener(formListener);
         masterScrollPane.setViewportView(masterTable);
+        masterTable.getColumnModel().getColumn(9).setResizable(false);
 
         documentoLabel.setText("Documento:");
 
@@ -203,6 +219,17 @@ public class SociosABM extends JPanel {
         tipoDocumentoCB.setEnabled(false);
 
         binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, masterTable, org.jdesktop.beansbinding.ELProperty.create("${selectedElement.tipoDocumento}"), tipoDocumentoCB, org.jdesktop.beansbinding.BeanProperty.create("selectedItem"));
+        binding.setSourceUnreadableValue(null);
+        bindingGroup.addBinding(binding);
+        binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ, masterTable, org.jdesktop.beansbinding.ELProperty.create("${selectedElement != null}"), tipoDocumentoCB, org.jdesktop.beansbinding.BeanProperty.create("enabled"));
+        bindingGroup.addBinding(binding);
+
+        jLabel1.setText("Tipo de Socio:");
+
+        jComboTipSoc.setSelectedItem("Activo");
+        jComboTipSoc.addActionListener(formListener);
+
+        binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, masterTable, org.jdesktop.beansbinding.ELProperty.create("${selectedElement.idTipoSocio}"), jLabelTipSoc, org.jdesktop.beansbinding.BeanProperty.create("text"));
         bindingGroup.addBinding(binding);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
@@ -241,15 +268,23 @@ public class SociosABM extends JPanel {
                                     .addComponent(direccionField)
                                     .addGroup(layout.createSequentialGroup()
                                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                                                .addComponent(telefonoField, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 329, Short.MAX_VALUE)
-                                                .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
-                                                    .addComponent(fechaNacimientoField, javax.swing.GroupLayout.PREFERRED_SIZE, 157, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                                    .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                                .addComponent(emailField, javax.swing.GroupLayout.Alignment.LEADING)
-                                                .addComponent(documentoField, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 153, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                            .addComponent(tipoDocumentoCB, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                            .addGroup(layout.createSequentialGroup()
+                                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                                    .addComponent(telefonoField, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 329, Short.MAX_VALUE)
+                                                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
+                                                        .addComponent(fechaNacimientoField, javax.swing.GroupLayout.PREFERRED_SIZE, 157, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                                        .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                                    .addComponent(emailField, javax.swing.GroupLayout.Alignment.LEADING)
+                                                    .addComponent(documentoField, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 153, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                                .addGap(70, 70, 70)
+                                                .addComponent(jLabelTipSoc))
+                                            .addGroup(layout.createSequentialGroup()
+                                                .addComponent(tipoDocumentoCB, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                .addGap(106, 106, 106)
+                                                .addComponent(jLabel1)
+                                                .addGap(3, 3, 3)
+                                                .addComponent(jComboTipSoc, javax.swing.GroupLayout.PREFERRED_SIZE, 145, javax.swing.GroupLayout.PREFERRED_SIZE)))
                                         .addGap(0, 0, Short.MAX_VALUE))))
                             .addComponent(masterScrollPane, javax.swing.GroupLayout.DEFAULT_SIZE, 865, Short.MAX_VALUE))))
                 .addContainerGap())
@@ -273,7 +308,9 @@ public class SociosABM extends JPanel {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(tipoDocumentoLabel)
-                    .addComponent(tipoDocumentoCB, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(tipoDocumentoCB, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel1)
+                    .addComponent(jComboTipSoc, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(documentoField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -285,7 +322,8 @@ public class SociosABM extends JPanel {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(telefonoLabel)
-                    .addComponent(telefonoField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(telefonoField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabelTipSoc))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -314,7 +352,7 @@ public class SociosABM extends JPanel {
 
     // Code for dispatching events from components to event handlers.
 
-    private class FormListener implements java.awt.event.ActionListener {
+    private class FormListener implements java.awt.event.ActionListener, java.awt.event.MouseListener {
         FormListener() {}
         public void actionPerformed(java.awt.event.ActionEvent evt) {
             if (evt.getSource() == saveButton) {
@@ -332,6 +370,27 @@ public class SociosABM extends JPanel {
             else if (evt.getSource() == jButton1) {
                 SociosABM.this.jButton1ActionPerformed(evt);
             }
+            else if (evt.getSource() == jComboTipSoc) {
+                SociosABM.this.jComboTipSocActionPerformed(evt);
+            }
+        }
+
+        public void mouseClicked(java.awt.event.MouseEvent evt) {
+            if (evt.getSource() == masterTable) {
+                SociosABM.this.masterTableMouseClicked(evt);
+            }
+        }
+
+        public void mouseEntered(java.awt.event.MouseEvent evt) {
+        }
+
+        public void mouseExited(java.awt.event.MouseEvent evt) {
+        }
+
+        public void mousePressed(java.awt.event.MouseEvent evt) {
+        }
+
+        public void mouseReleased(java.awt.event.MouseEvent evt) {
         }
     }// </editor-fold>//GEN-END:initComponents
 
@@ -361,9 +420,16 @@ public class SociosABM extends JPanel {
     }//GEN-LAST:event_deleteButtonActionPerformed
     
     private void newButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_newButtonActionPerformed
+        
+        TipoSocioABM tipoG = new TipoSocioABM();
+        if (tipoG.getId(jComboTipSoc.getSelectedItem().toString())!=null){
+            Integer var = tipoG.getId(jComboTipSoc.getSelectedItem().toString());
+            jLabelTipSoc.setText(Integer.toString(var));            
+        }
+        
         madreteresacrud.Socios s = new madreteresacrud.Socios();
         entityManager.persist(s);
-        list.add(s);
+        list.add(s);       
         int row = list.size() - 1;
         masterTable.setRowSelectionInterval(row, row);
         masterTable.scrollRectToVisible(masterTable.getCellRect(row, 0, true));
@@ -388,7 +454,23 @@ public class SociosABM extends JPanel {
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         new Calendario(fechaNacimientoField).setVisible(true);
     }//GEN-LAST:event_jButton1ActionPerformed
+    TipoSocioABM tipoS = new TipoSocioABM();
+    private void jComboTipSocActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboTipSocActionPerformed
+        
+        if (tipoS.getId(jComboTipSoc.getSelectedItem().toString())!=null){            
+            Integer var = tipoS.getId(jComboTipSoc.getSelectedItem().toString());
+            jLabelTipSoc.setText(Integer.toString(var));
+        }
+    }//GEN-LAST:event_jComboTipSocActionPerformed
 
+    private void masterTableMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_masterTableMouseClicked
+        String var = tipoS.getTipoSoc(Integer.parseInt(jLabelTipSoc.getText()));
+        if (var !=null){  
+             
+           jComboTipSoc.setSelectedItem(var);     
+        }               
+    }//GEN-LAST:event_masterTableMouseClicked
+      
     //OBJETO PARA PODER ENLAZAR LA FECHA DESDE LA BD EN EL TEXTFIELD fechaNacimiento
      Converter dateConverter = new Converter<java.util.Date, String>() {
     @Override
@@ -427,6 +509,9 @@ public class SociosABM extends JPanel {
     private javax.swing.JTextField fechaNacimientoField;
     private javax.swing.JLabel fechaNacimientoLabel;
     private javax.swing.JButton jButton1;
+    private javax.swing.JComboBox jComboTipSoc;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabelTipSoc;
     private java.util.List<madreteresacrud.Socios> list;
     private javax.swing.JTextField localidadField;
     private javax.swing.JLabel localidadLabel;

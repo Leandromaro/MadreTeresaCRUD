@@ -21,9 +21,9 @@ import utilidades.Calendario;
  *
  * @author francis
  */
-public class MontoCuotaABM extends JPanel {
+public class TipoSocioABM extends JPanel {
     
-    public MontoCuotaABM() {
+    public TipoSocioABM() {
         initComponents();
         if (!Beans.isDesignTime()) {
             entityManager.getTransaction().begin();
@@ -190,19 +190,19 @@ public class MontoCuotaABM extends JPanel {
         FormListener() {}
         public void actionPerformed(java.awt.event.ActionEvent evt) {
             if (evt.getSource() == saveButton) {
-                MontoCuotaABM.this.saveButtonActionPerformed(evt);
+                TipoSocioABM.this.saveButtonActionPerformed(evt);
             }
             else if (evt.getSource() == refreshButton) {
-                MontoCuotaABM.this.refreshButtonActionPerformed(evt);
+                TipoSocioABM.this.refreshButtonActionPerformed(evt);
             }
             else if (evt.getSource() == newButton) {
-                MontoCuotaABM.this.newButtonActionPerformed(evt);
+                TipoSocioABM.this.newButtonActionPerformed(evt);
             }
             else if (evt.getSource() == deleteButton) {
-                MontoCuotaABM.this.deleteButtonActionPerformed(evt);
+                TipoSocioABM.this.deleteButtonActionPerformed(evt);
             }
             else if (evt.getSource() == jButton1) {
-                MontoCuotaABM.this.jButton1ActionPerformed(evt);
+                TipoSocioABM.this.jButton1ActionPerformed(evt);
             }
         }
     }// </editor-fold>//GEN-END:initComponents
@@ -261,6 +261,34 @@ public class MontoCuotaABM extends JPanel {
         new Calendario(fechaModifField).setVisible(true);
     }//GEN-LAST:event_jButton1ActionPerformed
 
+    public Integer getId(String tipoSocio){
+        javax.persistence.Query query1 = java.beans.Beans.isDesignTime() ? null : entityManager.createQuery("SELECT t FROM TipoSocio t WHERE t.tipoSocio='"+tipoSocio+"' ORDER BY t.fechaModif DESC");
+        List<madreteresacrud.TipoGasto> toReturn = query1.getResultList();
+        TipoSocio t = new TipoSocio();
+        for (Object entity : toReturn) {
+            t = (TipoSocio) entity;
+            if(t.getTipoSocio().equals(tipoSocio.trim())){
+                return t.getIdTipoSocio();
+            } 
+        }
+        return null;            
+    }
+    
+    public String getTipoSoc(int idTipo){
+        javax.persistence.Query query1 = java.beans.Beans.isDesignTime() ? null : entityManager.createQuery("SELECT t FROM TipoSocio t WHERE t.idTipoSocio="+idTipo);
+        List<madreteresacrud.TipoGasto> toReturn = query1.getResultList();
+        TipoSocio t = new TipoSocio();
+        for (Object entity : toReturn) {
+            t = (TipoSocio) entity;            
+            return t.getTipoSocio();            
+        }
+        return null;            
+    }
+    public java.util.Collection getTipoSoc(){
+        javax.persistence.Query query1 = java.beans.Beans.isDesignTime() ? null : entityManager.createQuery("SELECT DISTINCT t.tipoSocio FROM TipoSocio t ORDER BY t.fechaModif DESC");
+        return query1.getResultList();
+                 
+    }
     Converter dateConverter = new Converter<java.util.Date, String>() {
     @Override
     public String convertForward(java.util.Date value) {
@@ -297,39 +325,39 @@ public class MontoCuotaABM extends JPanel {
     private javax.swing.JLabel tipoSocioLabel;
     private org.jdesktop.beansbinding.BindingGroup bindingGroup;
     // End of variables declaration//GEN-END:variables
-    public static void main(String[] args) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(MontoCuotaABM.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(MontoCuotaABM.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(MontoCuotaABM.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(MontoCuotaABM.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
-
-        /* Create and display the form */
-        EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                JFrame frame = new JFrame();
-                frame.setContentPane(new MontoCuotaABM());
-                frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-                frame.pack();
-                frame.setVisible(true);
-            }
-        });
-    }
+//    public static void main(String[] args) {
+//        /* Set the Nimbus look and feel */
+//        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
+//        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
+//         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
+//         */
+//        try {
+//            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
+//                if ("Nimbus".equals(info.getName())) {
+//                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
+//                    break;
+//                }
+//            }
+//        } catch (ClassNotFoundException ex) {
+//            java.util.logging.Logger.getLogger(TipoSocioABM.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+//        } catch (InstantiationException ex) {
+//            java.util.logging.Logger.getLogger(TipoSocioABM.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+//        } catch (IllegalAccessException ex) {
+//            java.util.logging.Logger.getLogger(TipoSocioABM.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+//        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
+//            java.util.logging.Logger.getLogger(TipoSocioABM.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+//        }
+//        //</editor-fold>
+//
+//        /* Create and display the form */
+//        EventQueue.invokeLater(new Runnable() {
+//            public void run() {
+//                JFrame frame = new JFrame();
+//                frame.setContentPane(new TipoSocioABM());
+//                frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+//                frame.pack();
+//                frame.setVisible(true);
+//            }
+//        });
+//    }
 }
