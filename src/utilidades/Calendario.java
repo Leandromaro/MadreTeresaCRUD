@@ -17,6 +17,7 @@ public class Calendario extends javax.swing.JFrame {
     public Calendario(javax.swing.JTextField fecha) {
         this.fecha=fecha;
         initComponents();
+        this.setLocationRelativeTo(null);
     }
 
     /**

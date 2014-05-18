@@ -4,6 +4,7 @@
  */
 package madreteresacrud;
 
+import com.mxrck.autocompleter.TextAutoCompleter;
 import java.awt.EventQueue;
 import java.beans.Beans;
 import java.text.DateFormat;
@@ -25,11 +26,30 @@ public class SociosABM extends JPanel {
     
     public SociosABM() {        
         initComponents(); 
+        //Ocultamos la columna correspondiente al idTipoSocio
+        masterTable.getColumnModel().getColumn(9).setMaxWidth(0);
+        masterTable.getColumnModel().getColumn(9).setMinWidth(0);
+        masterTable.getColumnModel().getColumn(9).setPreferredWidth(0);
+        //Deshabilitamos el combo tipo socio
+        jComboTipSoc.setEnabled(false);        
+        //Agregamos los tipos de socios al combo
         java.util.Collection lista = new TipoSocioABM().getTipoSoc();
         String t ;
         for (Object entity : lista) {
             t = (String) entity;            
             jComboTipSoc.addItem(t);
+        }
+        TextAutoCompleter textAutoCompleter = new TextAutoCompleter(jTFBusqueda);
+        textAutoCompleter.setMode(0);
+        //SociosABM socios = new SociosABM();
+        java.util.Collection listaSocios = this.getListaSocios();
+        //Leandro fijate esta parte del codigo        
+        for (Object socio : listaSocios) {
+            Socios soc = new Socios();
+            soc = (Socios) socio;
+            String [] tipDoc = soc.getTipoDocumento().toString().split("-");              
+            textAutoCompleter.addItem(tipDoc[0].trim()+": "+soc.getDocumento()+" - "+soc.getApellido()+" "+soc.getNombre());
+            
         }
         jLabelTipSoc.setVisible(false);
         if (!Beans.isDesignTime()) {
@@ -49,14 +69,7 @@ public class SociosABM extends JPanel {
 
         entityManager = java.beans.Beans.isDesignTime() ? null : javax.persistence.Persistence.createEntityManagerFactory("madreTeresaCRUDPU").createEntityManager();
         query = java.beans.Beans.isDesignTime() ? null : entityManager.createQuery("SELECT s FROM Socios s");
-        list = java.beans.Beans.isDesignTime() ? java.util.Collections.emptyList() : org.jdesktop.observablecollections.ObservableCollections.observableList(query.getResultList());
-        madreTeresaCRUDPUEntityManager = java.beans.Beans.isDesignTime() ? null : javax.persistence.Persistence.createEntityManagerFactory("madreTeresaCRUDPU").createEntityManager();
-        tipoSocioQuery = java.beans.Beans.isDesignTime() ? null : madreTeresaCRUDPUEntityManager.createQuery("SELECT t FROM TipoSocio t");
-        tipoSocioList = java.beans.Beans.isDesignTime() ? java.util.Collections.emptyList() : tipoSocioQuery.getResultList();
-        tipoSocioQuery1 = java.beans.Beans.isDesignTime() ? null : madreTeresaCRUDPUEntityManager.createQuery("SELECT t FROM TipoSocio t");
-        tipoSocioList1 = java.beans.Beans.isDesignTime() ? java.util.Collections.emptyList() : tipoSocioQuery1.getResultList();
-        tipoSocioQuery2 = java.beans.Beans.isDesignTime() ? null : madreTeresaCRUDPUEntityManager.createQuery("SELECT t FROM TipoSocio t");
-        tipoSocioList2 = java.beans.Beans.isDesignTime() ? java.util.Collections.emptyList() : tipoSocioQuery2.getResultList();
+        list = java.beans.Beans.isDesignTime() ? java.util.Collections.emptyList() : org.jdesktop.observablecollections.ObservableCollections.observableList(query.getResultList());        
         masterScrollPane = new javax.swing.JScrollPane();
         masterTable = new javax.swing.JTable();
         documentoLabel = new javax.swing.JLabel();
@@ -85,6 +98,9 @@ public class SociosABM extends JPanel {
         jLabel1 = new javax.swing.JLabel();
         jComboTipSoc = new javax.swing.JComboBox();
         jLabelTipSoc = new javax.swing.JLabel();
+        jLabel2 = new javax.swing.JLabel();
+        jTFBusqueda = new javax.swing.JTextField();
+        jButton2 = new javax.swing.JButton();
 
         FormListener formListener = new FormListener();
 
@@ -221,7 +237,7 @@ public class SociosABM extends JPanel {
         binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, masterTable, org.jdesktop.beansbinding.ELProperty.create("${selectedElement.tipoDocumento}"), tipoDocumentoCB, org.jdesktop.beansbinding.BeanProperty.create("selectedItem"));
         binding.setSourceUnreadableValue(null);
         bindingGroup.addBinding(binding);
-        binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ, masterTable, org.jdesktop.beansbinding.ELProperty.create("${selectedElement != null}"), tipoDocumentoCB, org.jdesktop.beansbinding.BeanProperty.create("enabled"));
+         binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ, masterTable, org.jdesktop.beansbinding.ELProperty.create("${selectedElement != null}"), tipoDocumentoCB, org.jdesktop.beansbinding.BeanProperty.create("enabled"));
         bindingGroup.addBinding(binding);
 
         jLabel1.setText("Tipo de Socio:");
@@ -231,6 +247,13 @@ public class SociosABM extends JPanel {
 
         binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, masterTable, org.jdesktop.beansbinding.ELProperty.create("${selectedElement.idTipoSocio}"), jLabelTipSoc, org.jdesktop.beansbinding.BeanProperty.create("text"));
         bindingGroup.addBinding(binding);
+
+        jLabel2.setText("Buscar Socio:");
+
+        jTFBusqueda.setToolTipText("Ingrese el N° de documento o apellido y nombre.");
+
+        jButton2.setText("Buscar");
+        jButton2.addActionListener(formListener);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
@@ -288,6 +311,14 @@ public class SociosABM extends JPanel {
                                         .addGap(0, 0, Short.MAX_VALUE))))
                             .addComponent(masterScrollPane, javax.swing.GroupLayout.DEFAULT_SIZE, 865, Short.MAX_VALUE))))
                 .addContainerGap())
+            .addGroup(layout.createSequentialGroup()
+                .addGap(47, 47, 47)
+                .addComponent(jLabel2)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jTFBusqueda, javax.swing.GroupLayout.PREFERRED_SIZE, 353, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(jButton2)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         layout.linkSize(javax.swing.SwingConstants.HORIZONTAL, new java.awt.Component[] {deleteButton, newButton, refreshButton, saveButton});
@@ -295,8 +326,13 @@ public class SociosABM extends JPanel {
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(masterScrollPane, javax.swing.GroupLayout.PREFERRED_SIZE, 204, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(5, 5, 5)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel2)
+                    .addComponent(jTFBusqueda, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jButton2))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(masterScrollPane, javax.swing.GroupLayout.PREFERRED_SIZE, 182, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(apellidoLabel)
@@ -373,6 +409,9 @@ public class SociosABM extends JPanel {
             else if (evt.getSource() == jComboTipSoc) {
                 SociosABM.this.jComboTipSocActionPerformed(evt);
             }
+            else if (evt.getSource() == jButton2) {
+                SociosABM.this.jButton2ActionPerformed(evt);
+            }
         }
 
         public void mouseClicked(java.awt.event.MouseEvent evt) {
@@ -406,6 +445,7 @@ public class SociosABM extends JPanel {
         }
         list.clear();
         list.addAll(data);
+        jComboTipSoc.setEnabled(false);  
     }//GEN-LAST:event_refreshButtonActionPerformed
     
     private void deleteButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteButtonActionPerformed
@@ -417,10 +457,11 @@ public class SociosABM extends JPanel {
             entityManager.remove(s);
         }
         list.removeAll(toRemove);
+        jComboTipSoc.setEnabled(false);  
     }//GEN-LAST:event_deleteButtonActionPerformed
     
     private void newButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_newButtonActionPerformed
-        
+         jComboTipSoc.setEnabled(true);  
         TipoSocioABM tipoG = new TipoSocioABM();
         if (tipoG.getId(jComboTipSoc.getSelectedItem().toString())!=null){
             Integer var = tipoG.getId(jComboTipSoc.getSelectedItem().toString());
@@ -448,7 +489,17 @@ public class SociosABM extends JPanel {
             }
             list.clear();
             list.addAll(merged);
+             jComboTipSoc.setEnabled(false);  
         }
+        //Vuelve a cargar los socios en la tabla
+        entityManager.getTransaction().rollback();
+        entityManager.getTransaction().begin();
+        java.util.Collection data = query.getResultList();
+        for (Object entity : data) {
+            entityManager.refresh(entity);            
+        }
+        list.clear();
+        list.addAll(data);
     }//GEN-LAST:event_saveButtonActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
@@ -464,12 +515,26 @@ public class SociosABM extends JPanel {
     }//GEN-LAST:event_jComboTipSocActionPerformed
 
     private void masterTableMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_masterTableMouseClicked
+        jComboTipSoc.setEnabled(true);  
         String var = tipoS.getTipoSoc(Integer.parseInt(jLabelTipSoc.getText()));
         if (var !=null){  
              
            jComboTipSoc.setSelectedItem(var);     
         }               
     }//GEN-LAST:event_masterTableMouseClicked
+    //Busca y selecciona una fila en la tabla
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        String ele = jTFBusqueda.getText();
+        String [] doc = ele.split("-");
+        String [] numDoc = doc[0].split(":");        
+        for (int i = 0; i < masterTable.getRowCount(); i++) {           
+                ele = masterTable.getValueAt(i, 3).toString().trim();
+               if (ele.equals(numDoc[1].trim())) {                                           
+                      masterTable.changeSelection(i, 3, false, false);                      
+                      break;
+               }
+        }
+    }//GEN-LAST:event_jButton2ActionPerformed
       
     //OBJETO PARA PODER ENLAZAR LA FECHA DESDE LA BD EN EL TEXTFIELD fechaNacimiento
      Converter dateConverter = new Converter<java.util.Date, String>() {
@@ -509,13 +574,15 @@ public class SociosABM extends JPanel {
     private javax.swing.JTextField fechaNacimientoField;
     private javax.swing.JLabel fechaNacimientoLabel;
     private javax.swing.JButton jButton1;
+    private javax.swing.JButton jButton2;
     private javax.swing.JComboBox jComboTipSoc;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabelTipSoc;
+    private javax.swing.JTextField jTFBusqueda;
     private java.util.List<madreteresacrud.Socios> list;
     private javax.swing.JTextField localidadField;
     private javax.swing.JLabel localidadLabel;
-    private javax.persistence.EntityManager madreTeresaCRUDPUEntityManager;
     private javax.swing.JScrollPane masterScrollPane;
     private javax.swing.JTable masterTable;
     private javax.swing.JButton newButton;
@@ -527,13 +594,7 @@ public class SociosABM extends JPanel {
     private javax.swing.JTextField telefonoField;
     private javax.swing.JLabel telefonoLabel;
     private javax.swing.JComboBox tipoDocumentoCB;
-    private javax.swing.JLabel tipoDocumentoLabel;
-    private java.util.List<madreteresacrud.TipoSocio> tipoSocioList;
-    private java.util.List<madreteresacrud.TipoSocio> tipoSocioList1;
-    private java.util.List<madreteresacrud.TipoSocio> tipoSocioList2;
-    private javax.persistence.Query tipoSocioQuery;
-    private javax.persistence.Query tipoSocioQuery1;
-    private javax.persistence.Query tipoSocioQuery2;
+    private javax.swing.JLabel tipoDocumentoLabel;  
     private org.jdesktop.beansbinding.BindingGroup bindingGroup;
     // End of variables declaration//GEN-END:variables
 //    public static void main(String[] args) {
