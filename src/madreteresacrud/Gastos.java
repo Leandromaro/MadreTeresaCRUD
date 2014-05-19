@@ -33,23 +33,20 @@ import javax.persistence.Transient;
 @Table(name = "gastos", catalog = "sistcalcuta", schema = "")
 @NamedQueries({
     @NamedQuery(name = "Gastos.findAll", query = "SELECT g FROM Gastos g"),
-    
     @NamedQuery(name = "Gastos.findByMonto", query = "SELECT g FROM Gastos g WHERE g.monto = :monto"),
     @NamedQuery(name = "Gastos.findByFechaGasto", query = "SELECT g FROM Gastos g WHERE g.fechaGasto = :fechaGasto"),
     @NamedQuery(name = "Gastos.findByDescripcion", query = "SELECT g FROM Gastos g WHERE g.descripcion = :descripcion"),
     })
 public class Gastos implements Serializable {
-    @Transient
-    private PropertyChangeSupport changeSupport = new PropertyChangeSupport(this);
     private static final long serialVersionUID = 1L;
+    @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
     @Column(name = "idgastos")
-    @Id
     private int idgastos;
     @Basic(optional = false)
     @Column(name = "tipo_gasto_idtipo_gasto")
-    private int tipoGastoIdtipoGasto;
+    private int IdtipoGasto;
     // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
     @Column(name = "monto")
     private BigDecimal monto;
@@ -68,14 +65,6 @@ public class Gastos implements Serializable {
 
     public void setIdgastos(int idgastos) {
         this.idgastos = idgastos;
-    }
-
-    public int getTipoGastoIdtipoGasto() {
-        return tipoGastoIdtipoGasto;
-    }
-
-    public void setTipoGastoIdtipoGasto(int tipoGastoIdtipoGasto) {
-        this.tipoGastoIdtipoGasto = tipoGastoIdtipoGasto;
     }
 
     public BigDecimal getMonto() {
@@ -102,6 +91,13 @@ public class Gastos implements Serializable {
         this.descripcion = descripcion;
     }
 
-    
-    
+    public int getIdtipoGasto() {
+        return IdtipoGasto;
+    }
+
+    public void setIdtipoGasto(int IdtipoGasto) {
+        this.IdtipoGasto = IdtipoGasto;
+    }
+
+   
 }

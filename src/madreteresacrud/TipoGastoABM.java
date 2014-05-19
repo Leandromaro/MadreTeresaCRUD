@@ -172,7 +172,8 @@ public class TipoGastoABM extends JPanel {
     }
     
     public Integer getId(String tipoGasto){
-        List<madreteresacrud.TipoGasto> toReturn = query.getResultList();
+        javax.persistence.Query queryDesc = java.beans.Beans.isDesignTime() ? null : entityManager.createQuery("SELECT t FROM TipoGasto t WHERE t.descripcion='"+tipoGasto+"'");
+        List<madreteresacrud.TipoGasto> toReturn = queryDesc.getResultList();
         TipoGasto t = new TipoGasto();
         for (Object entity : toReturn) {
             t = (TipoGasto) entity;
@@ -182,6 +183,24 @@ public class TipoGastoABM extends JPanel {
         }
         return null;            
     }
+    
+    public String getTipoGasto(int idTipo){
+        javax.persistence.Query queryIdGasto = java.beans.Beans.isDesignTime() ? null : entityManager.createQuery("SELECT t FROM TipoGasto t WHERE t.idtipoGasto="+idTipo);
+        List<madreteresacrud.TipoGasto> toReturn = queryIdGasto.getResultList();
+        TipoGasto t = new TipoGasto();
+        for (Object entity : toReturn) {
+            t = (TipoGasto) entity;            
+            return t.getDescripcion();
+           }
+        return null;            
+    }
+    public java.util.Collection getTipoGasto(){
+        javax.persistence.Query query1 = java.beans.Beans.isDesignTime() ? null : entityManager.createQuery("SELECT DISTINCT t.tipoSocio FROM TipoSocio t ORDER BY t.fechaModif DESC");
+        return query1.getResultList();
+                 
+    }
+    
+  
     
     private void deleteButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteButtonActionPerformed
         int[] selected = masterTable.getSelectedRows();
