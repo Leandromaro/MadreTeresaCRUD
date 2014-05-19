@@ -461,7 +461,7 @@ public class SociosABM extends JPanel {
     }//GEN-LAST:event_deleteButtonActionPerformed
     
     private void newButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_newButtonActionPerformed
-        jComboTipSoc.setEnabled(true);  
+         jComboTipSoc.setEnabled(true);  
         TipoSocioABM tipoG = new TipoSocioABM();
         if (tipoG.getId(jComboTipSoc.getSelectedItem().toString())!=null){
             Integer var = tipoG.getId(jComboTipSoc.getSelectedItem().toString());
@@ -491,15 +491,15 @@ public class SociosABM extends JPanel {
             list.addAll(merged);
              jComboTipSoc.setEnabled(false);  
         }
-//        //Vuelve a cargar los socios en la tabla
-//        entityManager.getTransaction().rollback();
-//        entityManager.getTransaction().begin();
-//        java.util.Collection data = query.getResultList();
-//        for (Object entity : data) {
-//            entityManager.refresh(entity);            
-//        }
-//        list.clear();
-//        list.addAll(data);
+        //Vuelve a cargar los socios en la tabla
+        entityManager.getTransaction().rollback();
+        entityManager.getTransaction().begin();
+        java.util.Collection data = query.getResultList();
+        for (Object entity : data) {
+            entityManager.refresh(entity);            
+        }
+        list.clear();
+        list.addAll(data);
     }//GEN-LAST:event_saveButtonActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
