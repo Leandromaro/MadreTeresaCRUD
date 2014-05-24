@@ -38,7 +38,8 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "Socios.findByTelefono", query = "SELECT s FROM Socios s WHERE s.telefono = :telefono"),
     @NamedQuery(name = "Socios.findByFechaNacimiento", query = "SELECT s FROM Socios s WHERE s.fechaNacimiento = :fechaNacimiento"),
     @NamedQuery(name = "Socios.findByLocalidad", query = "SELECT s FROM Socios s WHERE s.localidad = :localidad"),
-    @NamedQuery(name = "Socios.findByDireccion", query = "SELECT s FROM Socios s WHERE s.direccion = :direccion")})
+    @NamedQuery(name = "Socios.findByDireccion", query = "SELECT s FROM Socios s WHERE s.direccion = :direccion"),
+    @NamedQuery(name = "Socios.findByEliminado", query = "SELECT s FROM Socios s WHERE s.eliminado = :eliminado")})
 public class Socios implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
@@ -77,6 +78,9 @@ public class Socios implements Serializable {
     @Basic(optional = false)
     @Column(name = "direccion")
     private String direccion;
+    @Basic(optional = false)
+    @Column(name = "eliminado")
+    private boolean eliminado;
 
     public Socios() {
     }
@@ -85,7 +89,7 @@ public class Socios implements Serializable {
         this.idSocio = idSocio;
     }
 
-    public Socios(Integer idSocio, int idTipoSocio, int documento, String tipoDocumento, String nombre, String apellido, String email, String telefono, Date fechaNacimiento, String localidad, String direccion) {
+    public Socios(Integer idSocio, int idTipoSocio, int documento, String tipoDocumento, String nombre, String apellido, String email, String telefono, Date fechaNacimiento, String localidad, String direccion, boolean eliminado) {
         this.idSocio = idSocio;
         this.idTipoSocio = idTipoSocio;
         this.documento = documento;
@@ -97,6 +101,7 @@ public class Socios implements Serializable {
         this.fechaNacimiento = fechaNacimiento;
         this.localidad = localidad;
         this.direccion = direccion;
+        this.eliminado = eliminado;
     }
 
     public Integer getIdSocio() {
@@ -185,6 +190,14 @@ public class Socios implements Serializable {
 
     public void setDireccion(String direccion) {
         this.direccion = direccion;
+    }
+
+    public boolean getEliminado() {
+        return eliminado;
+    }
+
+    public void setEliminado(boolean eliminado) {
+        this.eliminado = eliminado;
     }
 
     @Override

@@ -4,6 +4,8 @@
  */
 package madreteresacrud;
 import com.mxrck.autocompleter.TextAutoCompleter;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
 /**
  *
  * @author francis
@@ -13,18 +15,21 @@ public class CuotaSocialForm extends javax.swing.JFrame {
     /**
      * Creates new form CuotaSocialForm
      */
+    
     public CuotaSocialForm() {
         super("Cuotas Sociales");        
         initComponents();
         TextAutoCompleter textAutoCompleter = new TextAutoCompleter(jTFBusqueda);
         textAutoCompleter.setMode(0);
         SociosABM socios = new SociosABM();
-        java.util.Collection listaSocios = socios.getListaSocios();
-        //Leandro fijate esta parte del codigo        
+        java.util.Collection  listaSocios = socios.getListaSocios();
+        String [] tipDoc;
+        Socios soc;
         for (Object socio : listaSocios) {
-            Socios soc = new Socios();
+            soc = new Socios();
             soc = (Socios) socio;
-            textAutoCompleter.addItem(soc.getIdSocio()+" - "+soc.getApellido()+" "+soc.getNombre());
+            tipDoc = soc.getTipoDocumento().toString().split("-");              
+            textAutoCompleter.addItem(tipDoc[0].trim()+": "+soc.getDocumento()+" - "+soc.getApellido()+" "+soc.getNombre());
             
         }
 
@@ -50,9 +55,9 @@ public class CuotaSocialForm extends javax.swing.JFrame {
 
         jLabel1.setText("Buscar Socio:");
 
-        jTFBusqueda.setToolTipText("Ingrese apellido y nombre..");
+        jTFBusqueda.setToolTipText("Ingrese el N° de documento o apellido y nombre.");
 
-        jButton1.setText("Aceptar");
+        jButton1.setText("Buscar");
         jButton1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton1ActionPerformed(evt);
@@ -70,7 +75,7 @@ public class CuotaSocialForm extends javax.swing.JFrame {
                 .addComponent(jTFBusqueda, javax.swing.GroupLayout.PREFERRED_SIZE, 378, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(jButton1)
-                .addContainerGap(112, Short.MAX_VALUE))
+                .addContainerGap(119, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -116,11 +121,37 @@ public class CuotaSocialForm extends javax.swing.JFrame {
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         
-        String [] id = jTFBusqueda.getText().split("-");  
-        int idSocio = Integer.parseInt(id[0].trim());
-        //System.out.println();
-        jInternalFrame1.setContentPane(new CuotaSocialABM(idSocio ));
-        jInternalFrame1.pack();
+        String ele = jTFBusqueda.getText();
+        String [] doc = ele.split("-");
+        String [] numDoc = doc[0].split(":");  
+        Socios soc = null;
+        SociosABM socios = new SociosABM(numDoc[1]);
+        java.util.Collection  listaSocios = socios.getListaSocios();
+        
+        for (Object socio : listaSocios) {
+            soc = new Socios();
+            soc = (Socios) socio;            
+            
+        }
+        
+        CuotaSocial cs = new CuotaSocial();
+        CuotaSocialABM csabm = new CuotaSocialABM(soc);
+        listaSocios=csabm.getListaCuotas();
+        int idCuota = 0;
+        for (Object cuota : listaSocios) {            
+            cs = (CuotaSocial) cuota;
+            idCuota = cs.getIdCuotaSocial();
+            
+        }
+        if( idCuota != 0 ){            
+            jInternalFrame1.setContentPane(csabm);
+            jInternalFrame1.pack();        
+        }else {            
+            jInternalFrame1.setContentPane(csabm);
+            jInternalFrame1.pack(); 
+            JOptionPane.showMessageDialog(null, soc.getApellido()+" "+soc.getNombre()+" no adeuda cuotas.");
+        }
+        
     }//GEN-LAST:event_jButton1ActionPerformed
 
     /**

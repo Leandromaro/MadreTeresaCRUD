@@ -6,6 +6,7 @@ package madreteresacrud;
 
 import java.awt.EventQueue;
 import java.beans.Beans;
+import java.math.BigDecimal;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.util.ArrayList;
@@ -25,11 +26,13 @@ public class TipoSocioABM extends JPanel {
     
     public TipoSocioABM() {
         initComponents();
+        refreshButton.setVisible(false);
+        deleteButton.setVisible(false);
         if (!Beans.isDesignTime()) {
             entityManager.getTransaction().begin();
         }
-    }
-
+    }    
+    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -255,6 +258,15 @@ public class TipoSocioABM extends JPanel {
             list.clear();
             list.addAll(merged);
         }
+        //Recargamos la tabla de nuevo
+        entityManager.getTransaction().rollback();
+        entityManager.getTransaction().begin();
+        java.util.Collection data = query.getResultList();
+        for (Object entity : data) {
+            entityManager.refresh(entity);
+        }
+        list.clear();
+        list.addAll(data);
     }//GEN-LAST:event_saveButtonActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
@@ -288,6 +300,16 @@ public class TipoSocioABM extends JPanel {
         javax.persistence.Query query1 = java.beans.Beans.isDesignTime() ? null : entityManager.createQuery("SELECT DISTINCT t.tipoSocio FROM TipoSocio t ORDER BY t.fechaModif DESC");
         return query1.getResultList();
                  
+    }
+    public BigDecimal getMonto(String tipSoc){
+        javax.persistence.Query query1 = java.beans.Beans.isDesignTime() ? null : entityManager.createQuery("SELECT t FROM TipoSocio t WHERE t.tipoSocio='"+tipSoc+"' ORDER BY t.fechaModif DESC");
+        List<madreteresacrud.TipoGasto> toReturn = query1.getResultList();
+        TipoSocio t = new TipoSocio();
+        for (Object entity : toReturn) {
+            t = (TipoSocio) entity;            
+            return t.getMonto();            
+        }
+        return null;      
     }
     Converter dateConverter = new Converter<java.util.Date, String>() {
     @Override

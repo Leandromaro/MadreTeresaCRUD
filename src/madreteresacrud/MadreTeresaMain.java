@@ -6,7 +6,14 @@
 
 package madreteresacrud;
 
+import java.beans.Beans;
+import java.math.BigDecimal;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.GregorianCalendar;
+import javax.persistence.RollbackException;
 import javax.swing.JFrame;
+import reportes.Ingresos;
 
 /**
  *
@@ -18,9 +25,9 @@ public class MadreTeresaMain extends javax.swing.JFrame {
      * Creates new form MadreTeresaMain
      */    
     public MadreTeresaMain() {
-        super("Sistema Maria Teresa");        
-        initComponents();
-        this.setLocationRelativeTo(null);
+        super("Sistema Madre Teresa");        
+        initComponents();   
+        this.setLocationRelativeTo(null);       
     }
 
     /**
@@ -32,77 +39,100 @@ public class MadreTeresaMain extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        jLabel1 = new javax.swing.JLabel();
         jMenuBar1 = new javax.swing.JMenuBar();
-        jMenu1 = new javax.swing.JMenu();
+        jMenu4 = new javax.swing.JMenu();
         jMenuSocios = new javax.swing.JMenuItem();
-        jMenuItem2 = new javax.swing.JMenuItem();
         jMenuItem3 = new javax.swing.JMenuItem();
+        jMenu5 = new javax.swing.JMenu();
+        jMenuItem2 = new javax.swing.JMenuItem();
+        jMenu6 = new javax.swing.JMenu();
         jMenuDonaciones = new javax.swing.JMenuItem();
-        jMenu3 = new javax.swing.JMenu();
+        jMenu7 = new javax.swing.JMenu();
         jMenuGastos = new javax.swing.JMenuItem();
         jMenuItem1 = new javax.swing.JMenuItem();
-        jMenu2 = new javax.swing.JMenu();
+        jMenu1 = new javax.swing.JMenu();
+        jMenuItem4 = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        jMenu1.setText("Funciones");
+        jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/images.jpg"))); // NOI18N
 
-        jMenuSocios.setText("Socios");
+        jMenu4.setText("Socios");
+
+        jMenuSocios.setText("Gestionar Socios");
         jMenuSocios.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jMenuSociosActionPerformed(evt);
             }
         });
-        jMenu1.add(jMenuSocios);
+        jMenu4.add(jMenuSocios);
 
-        jMenuItem2.setText("Pagar Cuota Social");
-        jMenuItem2.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMenuItem2ActionPerformed(evt);
-            }
-        });
-        jMenu1.add(jMenuItem2);
-
-        jMenuItem3.setText("Tipo de Socio");
+        jMenuItem3.setText("Tipos de Socios");
         jMenuItem3.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jMenuItem3ActionPerformed(evt);
             }
         });
-        jMenu1.add(jMenuItem3);
+        jMenu4.add(jMenuItem3);
 
-        jMenuDonaciones.setText("Donaciones");
+        jMenuBar1.add(jMenu4);
+
+        jMenu5.setText("Cuotas Sociales");
+
+        jMenuItem2.setText("Registrar Cuotas");
+        jMenuItem2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem2ActionPerformed(evt);
+            }
+        });
+        jMenu5.add(jMenuItem2);
+
+        jMenuBar1.add(jMenu5);
+
+        jMenu6.setText("Donaciones");
+
+        jMenuDonaciones.setText("Registrar Donaciones");
         jMenuDonaciones.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jMenuDonacionesActionPerformed(evt);
             }
         });
-        jMenu1.add(jMenuDonaciones);
+        jMenu6.add(jMenuDonaciones);
 
-        jMenu3.setText("Gastos");
+        jMenuBar1.add(jMenu6);
 
-        jMenuGastos.setText("Gastos");
+        jMenu7.setText("Gastos");
+
+        jMenuGastos.setText("Registrar Gastos");
         jMenuGastos.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jMenuGastosActionPerformed(evt);
             }
         });
-        jMenu3.add(jMenuGastos);
+        jMenu7.add(jMenuGastos);
 
-        jMenuItem1.setText("Tipo Gasto");
+        jMenuItem1.setText("Tipos de Gastos");
         jMenuItem1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jMenuItem1ActionPerformed(evt);
             }
         });
-        jMenu3.add(jMenuItem1);
+        jMenu7.add(jMenuItem1);
 
-        jMenu1.add(jMenu3);
+        jMenuBar1.add(jMenu7);
+
+        jMenu1.setText("Informes");
+
+        jMenuItem4.setText("Emitir Informe");
+        jMenuItem4.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem4ActionPerformed(evt);
+            }
+        });
+        jMenu1.add(jMenuItem4);
 
         jMenuBar1.add(jMenu1);
-
-        jMenu2.setText("Edit");
-        jMenuBar1.add(jMenu2);
 
         setJMenuBar(jMenuBar1);
 
@@ -110,11 +140,15 @@ public class MadreTeresaMain extends javax.swing.JFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 400, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addGap(2, 2, 2)
+                .addComponent(jLabel1))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 277, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 392, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, Short.MAX_VALUE))
         );
 
         pack();
@@ -131,23 +165,25 @@ public class MadreTeresaMain extends javax.swing.JFrame {
     }//GEN-LAST:event_jMenuSociosActionPerformed
 
     private void jMenuDonacionesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuDonacionesActionPerformed
-        JFrame frame = new JFrame();
+        JFrame frame = new JFrame("Donaciones");
         frame.setContentPane(new DonacionesABM());
         frame.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
         frame.pack();
         frame.setVisible(true);
+        frame.setLocationRelativeTo(null);
     }//GEN-LAST:event_jMenuDonacionesActionPerformed
 
     private void jMenuGastosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuGastosActionPerformed
-        JFrame frame = new JFrame();
+        JFrame frame = new JFrame("Gastos");
         frame.setContentPane(new GastosABM());
         frame.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
         frame.pack();
         frame.setVisible(true);
+        frame.setLocationRelativeTo(null);
     }//GEN-LAST:event_jMenuGastosActionPerformed
 
     private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
-        JFrame frame = new JFrame();
+        JFrame frame = new JFrame("Tipos de Gastos");
         frame.setContentPane(new TipoGastoABM());
         frame.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
         frame.pack();
@@ -171,6 +207,83 @@ public class MadreTeresaMain extends javax.swing.JFrame {
         frame.setLocationRelativeTo(null);
     }//GEN-LAST:event_jMenuItem3ActionPerformed
 
+    private void jMenuItem4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem4ActionPerformed
+         Ingresos ing = new Ingresos();
+         ing.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
+         ing.setVisible(true);
+         ing.setLocationRelativeTo(null);
+    }//GEN-LAST:event_jMenuItem4ActionPerformed
+    public void generarCuotas(){
+        SociosABM socios = new SociosABM();
+        Socios s = new Socios();
+        CuotaSocialABM cs;
+        Date f = new Date();
+        Date f2 = new Date();
+        Calendar f1 = GregorianCalendar.getInstance(); 
+        BigDecimal monto;
+        TipoSocioABM ts = new TipoSocioABM();
+        CuotaSocial c1 = new CuotaSocial();       
+        
+        java.util.Collection listaSocios = socios.getListaSocios();
+        java.util.Collection listaCuotas;
+        for(Object socio:listaSocios){
+            s = (Socios)socio;
+            CuotaSocial c = new CuotaSocial();
+            monto = ts.getMonto(ts.getTipoSoc(s.getIdTipoSocio()));                   
+            c.setMonto(monto);
+            c.setIdSocio(s.getIdSocio());
+            cs = new CuotaSocialABM(s.getIdSocio());
+            cs.setQuery();
+            listaCuotas = cs.getListaCuotas();
+            if(listaCuotas.isEmpty()){
+                f1.setTime(f);
+                f1.set(Calendar.DAY_OF_MONTH,1);
+                c.setFechaActivacion(f1.getTime());                 
+                entityManager.persist(c);               
+                //Guardamos la cuota
+                try {
+                    entityManager.getTransaction().commit();
+                    entityManager.getTransaction().begin();
+                } catch (RollbackException rex) {
+                    rex.printStackTrace();
+                    entityManager.getTransaction().begin();            
+                }
+                
+            }else{
+                for(Object cuota:listaCuotas){
+                    c1 =(CuotaSocial)cuota;
+                    f = c1.getFechaActivacion();  
+                    if(f2.getMonth()>f.getMonth()){
+                        f1.setTime(f);        
+                        f1.add(Calendar.MONTH, 1); 
+                        f1.set(Calendar.DAY_OF_MONTH,1);
+                        c.setFechaActivacion(f1.getTime());                         
+                        entityManager.persist(c);
+                
+                        //Guardamos la cuota
+                        try {
+                            entityManager.getTransaction().commit();
+                            entityManager.getTransaction().begin();
+                        } catch (RollbackException rex) {
+                            rex.printStackTrace();
+                            entityManager.getTransaction().begin();            
+                        }
+                    }
+                    break;
+                }
+                              
+                
+            }
+            
+        }
+        
+    }
+    public void setEntity(){
+        entityManager = java.beans.Beans.isDesignTime() ? null : javax.persistence.Persistence.createEntityManagerFactory("madreTeresaCRUDPU").createEntityManager();                 
+        if (!Beans.isDesignTime()) {
+            entityManager.getTransaction().begin();
+        }
+    }
     /**
      * @param args the command line arguments
      */
@@ -201,21 +314,35 @@ public class MadreTeresaMain extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new MadreTeresaMain().setVisible(true);
+                
+                MadreTeresaMain m  = new MadreTeresaMain();                 
+                m.setEntity();
+                m.generarCuotas();
+                m.setVisible(true);
+                
+                        
+               
+                
+                 
             }
         });
     }
-
+    private javax.persistence.EntityManager entityManager;
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JLabel jLabel1;
     private javax.swing.JMenu jMenu1;
-    private javax.swing.JMenu jMenu2;
-    private javax.swing.JMenu jMenu3;
+    private javax.swing.JMenu jMenu4;
+    private javax.swing.JMenu jMenu5;
+    private javax.swing.JMenu jMenu6;
+    private javax.swing.JMenu jMenu7;
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JMenuItem jMenuDonaciones;
     private javax.swing.JMenuItem jMenuGastos;
     private javax.swing.JMenuItem jMenuItem1;
     private javax.swing.JMenuItem jMenuItem2;
     private javax.swing.JMenuItem jMenuItem3;
+    private javax.swing.JMenuItem jMenuItem4;
     private javax.swing.JMenuItem jMenuSocios;
     // End of variables declaration//GEN-END:variables
+
 }

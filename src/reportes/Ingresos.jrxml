@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="report name" pageWidth="595" pageHeight="842" columnWidth="535" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="7b06cc82-af1f-4827-89fd-de80d24b7576">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="anio" class="java.lang.String"/>
+	<parameter name="totCuota" class="java.lang.String"/>
+	<parameter name="totDonac" class="java.lang.String"/>
+	<parameter name="total" class="java.lang.String"/>
+	<field name="mes" class="java.lang.String"/>
+	<field name="cuotaSoc" class="java.lang.String"/>
+	<field name="donacion" class="java.lang.String"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="53" splitType="Stretch">
+			<staticText>
+				<reportElement x="132" y="17" width="141" height="20" uuid="209a2f9a-f3f7-4f23-a9d1-e35516bd1eb1"/>
+				<textElement>
+					<font size="14" isBold="true" isItalic="false"/>
+				</textElement>
+				<text><![CDATA[Ingresos del Año]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="273" y="17" width="100" height="20" uuid="19b6390e-370c-43f7-8662-1f1bcfd7c165"/>
+				<textElement>
+					<font size="14" isBold="true" isItalic="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{anio}]]></textFieldExpression>
+			</textField>
+		</band>
+	</title>
+	<pageHeader>
+		<band splitType="Stretch"/>
+	</pageHeader>
+	<columnHeader>
+		<band height="43" splitType="Stretch">
+			<staticText>
+				<reportElement x="17" y="2" width="100" height="20" uuid="4386374b-460d-4347-bc00-7a53cf545750"/>
+				<textElement>
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Mes]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="132" y="0" width="119" height="20" uuid="03975599-105a-4578-ad51-c568b89fe0dd"/>
+				<textElement>
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Cuotas Sociales]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="286" y="2" width="100" height="20" uuid="32ea69b8-eb56-4318-921c-371d6e0e7982"/>
+				<textElement>
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Donaciones]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="26" splitType="Stretch">
+			<textField>
+				<reportElement x="17" y="6" width="100" height="20" uuid="12e4c3a8-cfa2-4ff8-b723-a615059f5b33"/>
+				<textFieldExpression><![CDATA[$F{mes}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="151" y="6" width="100" height="20" uuid="c73ca242-760f-4782-b0e6-0090dd5b5dce"/>
+				<textFieldExpression><![CDATA[$F{cuotaSoc}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="286" y="6" width="100" height="20" uuid="10ea19f7-25f2-42e9-a3da-4209f6de0d85"/>
+				<textFieldExpression><![CDATA[$F{donacion}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<columnFooter>
+		<band height="20" splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band height="54" splitType="Stretch">
+			<staticText>
+				<reportElement x="0" y="17" width="106" height="20" uuid="eb751d07-efb1-4f68-bb5f-323d34320017"/>
+				<text><![CDATA[Fecha de Impresión:]]></text>
+			</staticText>
+			<textField pattern="dd/MM/yyyy">
+				<reportElement x="117" y="17" width="100" height="20" uuid="2431cf9c-52c8-404e-9194-0cbe2a8afadc"/>
+				<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageFooter>
+	<summary>
+		<band height="84" splitType="Stretch">
+			<staticText>
+				<reportElement x="171" y="58" width="46" height="20" uuid="b094ed8f-aa27-4759-b436-8944d021ce27"/>
+				<textElement>
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Total]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="286" y="58" width="100" height="20" uuid="a0766c6b-306d-4550-ab9a-97778f6bf873"/>
+				<textFieldExpression><![CDATA[$P{total}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="17" y="18" width="100" height="20" uuid="d21e148a-7421-484b-9422-4ab8c452cd44"/>
+				<textElement>
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Subtotal]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="151" y="18" width="100" height="20" uuid="89f09238-6baf-4c5d-91b4-f294ae71bb80"/>
+				<textFieldExpression><![CDATA[$P{totCuota}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="286" y="18" width="100" height="20" uuid="a82ac094-32fe-4349-a14e-3970cb97faca"/>
+				<textFieldExpression><![CDATA[$P{totDonac}]]></textFieldExpression>
+			</textField>
+		</band>
+	</summary>
+</jasperReport>
