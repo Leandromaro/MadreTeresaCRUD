@@ -13,6 +13,8 @@ import java.util.Date;
 import java.util.GregorianCalendar;
 import javax.persistence.RollbackException;
 import javax.swing.JFrame;
+import madreteresacrud.floresVida.FlorVidaABM;
+import madreteresacrud.floresVida.SociosFVABM;
 import reportes.Ingresos;
 
 /**
@@ -46,6 +48,9 @@ public class MadreTeresaMain extends javax.swing.JFrame {
         jMenuItem3 = new javax.swing.JMenuItem();
         jMenu5 = new javax.swing.JMenu();
         jMenuItem2 = new javax.swing.JMenuItem();
+        jMenu2 = new javax.swing.JMenu();
+        jMenuItem5 = new javax.swing.JMenuItem();
+        jMenuItem6 = new javax.swing.JMenuItem();
         jMenu6 = new javax.swing.JMenu();
         jMenuDonaciones = new javax.swing.JMenuItem();
         jMenu7 = new javax.swing.JMenu();
@@ -89,6 +94,26 @@ public class MadreTeresaMain extends javax.swing.JFrame {
         jMenu5.add(jMenuItem2);
 
         jMenuBar1.add(jMenu5);
+
+        jMenu2.setText("Flores de vida");
+
+        jMenuItem5.setText("Registrar flores de vida");
+        jMenuItem5.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem5ActionPerformed(evt);
+            }
+        });
+        jMenu2.add(jMenuItem5);
+
+        jMenuItem6.setText("Registrar Cuotas");
+        jMenuItem6.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem6ActionPerformed(evt);
+            }
+        });
+        jMenu2.add(jMenuItem6);
+
+        jMenuBar1.add(jMenu2);
 
         jMenu6.setText("Donaciones");
 
@@ -148,7 +173,7 @@ public class MadreTeresaMain extends javax.swing.JFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 392, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, Short.MAX_VALUE))
+                .addGap(0, 2, Short.MAX_VALUE))
         );
 
         pack();
@@ -213,6 +238,24 @@ public class MadreTeresaMain extends javax.swing.JFrame {
          ing.setVisible(true);
          ing.setLocationRelativeTo(null);
     }//GEN-LAST:event_jMenuItem4ActionPerformed
+
+    private void jMenuItem5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem5ActionPerformed
+        JFrame frame = new JFrame("Flores de vida");
+        frame.setContentPane(new FlorVidaABM());
+        frame.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
+        frame.pack();
+        frame.setVisible(true);
+        frame.setLocationRelativeTo(null);
+    }//GEN-LAST:event_jMenuItem5ActionPerformed
+
+    private void jMenuItem6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem6ActionPerformed
+         JFrame frame = new JFrame("Socios de flores de vida");
+         frame.setContentPane(new SociosFVABM());
+         frame.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
+         frame.pack();
+         frame.setVisible(true);
+         frame.setLocationRelativeTo(null);
+    }//GEN-LAST:event_jMenuItem6ActionPerformed
     public void generarCuotas(){
         SociosABM socios = new SociosABM();
         Socios s = new Socios();
@@ -331,6 +374,7 @@ public class MadreTeresaMain extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel jLabel1;
     private javax.swing.JMenu jMenu1;
+    private javax.swing.JMenu jMenu2;
     private javax.swing.JMenu jMenu4;
     private javax.swing.JMenu jMenu5;
     private javax.swing.JMenu jMenu6;
@@ -342,6 +386,8 @@ public class MadreTeresaMain extends javax.swing.JFrame {
     private javax.swing.JMenuItem jMenuItem2;
     private javax.swing.JMenuItem jMenuItem3;
     private javax.swing.JMenuItem jMenuItem4;
+    private javax.swing.JMenuItem jMenuItem5;
+    private javax.swing.JMenuItem jMenuItem6;
     private javax.swing.JMenuItem jMenuSocios;
     // End of variables declaration//GEN-END:variables
 
