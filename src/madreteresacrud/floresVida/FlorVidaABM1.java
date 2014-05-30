@@ -25,6 +25,9 @@ public class FlorVidaABM1 extends JPanel {
         initComponents();
         this.idSoc=idSoc;
         this.fv=fv;
+        masterTable.getColumnModel().getColumn(5).setMaxWidth(0);
+        masterTable.getColumnModel().getColumn(5).setMinWidth(0);
+        masterTable.getColumnModel().getColumn(5).setPreferredWidth(0);
         if (!Beans.isDesignTime()) {
             entityManager.getTransaction().begin();
         }
@@ -64,6 +67,8 @@ public class FlorVidaABM1 extends JPanel {
         crearFV = new javax.swing.JButton();
 
         FormListener formListener = new FormListener();
+
+        setBorder(javax.swing.BorderFactory.createEtchedBorder());
 
         org.jdesktop.swingbinding.JTableBinding jTableBinding = org.jdesktop.swingbinding.SwingBindings.createJTableBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, list, masterTable);
         org.jdesktop.swingbinding.JTableBinding.ColumnBinding columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${apellido}"));
@@ -142,7 +147,7 @@ public class FlorVidaABM1 extends JPanel {
                     .addComponent(jTFBusqueda, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jButton3))
                 .addGap(12, 12, 12)
-                .addComponent(masterScrollPane, javax.swing.GroupLayout.DEFAULT_SIZE, 303, Short.MAX_VALUE)
+                .addComponent(masterScrollPane, javax.swing.GroupLayout.DEFAULT_SIZE, 330, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(crearFV, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)

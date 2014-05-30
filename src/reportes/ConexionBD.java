@@ -19,7 +19,7 @@ public class ConexionBD {
       try {             
            //Cargamos el Driver MySQL
            Class.forName("com.mysql.jdbc.Driver");
-           conect = DriverManager.getConnection("jdbc:mysql://localhost/sistcalcuta","root","root");           
+           conect = DriverManager.getConnection("jdbc:mysql://www.db4free.net:3306/sistcalcuta","admincalcuta","sistCalcuta");  //"jdbc:mysql://localhost/sistcalcuta","root","root"         
         } catch (Exception e) {
             JOptionPane.showMessageDialog(null,"Error "+e);
         }

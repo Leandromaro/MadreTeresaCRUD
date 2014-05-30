@@ -34,6 +34,8 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "Socios.findByTipoDocumento", query = "SELECT s FROM Socios s WHERE s.tipoDocumento = :tipoDocumento"),
     @NamedQuery(name = "Socios.findByNombre", query = "SELECT s FROM Socios s WHERE s.nombre = :nombre"),
     @NamedQuery(name = "Socios.findByApellido", query = "SELECT s FROM Socios s WHERE s.apellido = :apellido"),
+    @NamedQuery(name = "Socios.findByCuil", query = "SELECT s FROM Socios s WHERE s.cuil = :cuil"),
+    @NamedQuery(name = "Socios.findByNumSoc", query = "SELECT s FROM Socios s WHERE s.numSoc = :numSoc"),
     @NamedQuery(name = "Socios.findByEmail", query = "SELECT s FROM Socios s WHERE s.email = :email"),
     @NamedQuery(name = "Socios.findByTelefono", query = "SELECT s FROM Socios s WHERE s.telefono = :telefono"),
     @NamedQuery(name = "Socios.findByFechaNacimiento", query = "SELECT s FROM Socios s WHERE s.fechaNacimiento = :fechaNacimiento"),
@@ -62,6 +64,10 @@ public class Socios implements Serializable {
     @Basic(optional = false)
     @Column(name = "apellido")
     private String apellido;
+    @Column(name = "cuil")
+    private String cuil;
+    @Column(name = "numSoc")
+    private Integer numSoc;
     @Basic(optional = false)
     @Column(name = "email")
     private String email;
@@ -150,6 +156,22 @@ public class Socios implements Serializable {
 
     public void setApellido(String apellido) {
         this.apellido = apellido;
+    }
+
+    public String getCuil() {
+        return cuil;
+    }
+
+    public void setCuil(String cuil) {
+        this.cuil = cuil;
+    }
+
+    public Integer getNumSoc() {
+        return numSoc;
+    }
+
+    public void setNumSoc(Integer numSoc) {
+        this.numSoc = numSoc;
     }
 
     public String getEmail() {

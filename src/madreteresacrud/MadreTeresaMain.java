@@ -6,16 +6,20 @@
 
 package madreteresacrud;
 
+import java.awt.Dimension;
 import java.beans.Beans;
 import java.math.BigDecimal;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import javax.persistence.RollbackException;
+import javax.swing.JDesktopPane;
 import javax.swing.JFrame;
+import javax.swing.JInternalFrame;
+import javax.swing.JPanel;
 import madreteresacrud.floresVida.FlorVidaABM;
 import madreteresacrud.floresVida.SociosFVABM;
-import reportes.Ingresos;
+import reportes.IngresosEgresos;
 
 /**
  *
@@ -25,11 +29,31 @@ public class MadreTeresaMain extends javax.swing.JFrame {
 
     /**
      * Creates new form MadreTeresaMain
-     */    
+     */  
+    
+    //static JDesktopPane dp = new JDesktopPane();
     public MadreTeresaMain() {
-        super("Sistema Madre Teresa");        
-        initComponents();   
-        this.setLocationRelativeTo(null);       
+        super("Sistema Madre Teresa de Calcuta");        
+        initComponents();    
+        
+        JInternalFrame internal =  new JInternalFrame("Socios");
+        JPanel p = new SociosABM();
+        internal.add(p);          
+        internal.pack();
+        internal.setResizable(true);        
+        internal.setClosable(true);    
+          
+        jDesktopPane.add(internal);         
+        this.setExtendedState(JFrame.MAXIMIZED_BOTH);
+        this.getContentPane().add(jDesktopPane);        
+          internal.setVisible(true); 
+        
+        this.setLocationRelativeTo(null); 
+        this.setVisible(true);  
+
+         jDesktopPane.setSize(this.getSize().width, this.getSize().height);
+         jDesktopPane.repaint();  
+       
     }
 
     /**
@@ -41,18 +65,16 @@ public class MadreTeresaMain extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jLabel1 = new javax.swing.JLabel();
+        jDesktopPane = new javax.swing.JDesktopPane();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu4 = new javax.swing.JMenu();
         jMenuSocios = new javax.swing.JMenuItem();
         jMenuItem3 = new javax.swing.JMenuItem();
-        jMenu5 = new javax.swing.JMenu();
-        jMenuItem2 = new javax.swing.JMenuItem();
-        jMenu2 = new javax.swing.JMenu();
-        jMenuItem5 = new javax.swing.JMenuItem();
-        jMenuItem6 = new javax.swing.JMenuItem();
         jMenu6 = new javax.swing.JMenu();
         jMenuDonaciones = new javax.swing.JMenuItem();
+        jMenuItem7 = new javax.swing.JMenuItem();
+        jMenuItem5 = new javax.swing.JMenuItem();
+        jMenuItem6 = new javax.swing.JMenuItem();
         jMenu7 = new javax.swing.JMenu();
         jMenuGastos = new javax.swing.JMenuItem();
         jMenuItem1 = new javax.swing.JMenuItem();
@@ -60,8 +82,6 @@ public class MadreTeresaMain extends javax.swing.JFrame {
         jMenuItem4 = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-
-        jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/images.jpg"))); // NOI18N
 
         jMenu4.setText("Socios");
 
@@ -73,7 +93,7 @@ public class MadreTeresaMain extends javax.swing.JFrame {
         });
         jMenu4.add(jMenuSocios);
 
-        jMenuItem3.setText("Tipos de Socios");
+        jMenuItem3.setText("Montos de Cuotas");
         jMenuItem3.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jMenuItem3ActionPerformed(evt);
@@ -83,39 +103,7 @@ public class MadreTeresaMain extends javax.swing.JFrame {
 
         jMenuBar1.add(jMenu4);
 
-        jMenu5.setText("Cuotas Sociales");
-
-        jMenuItem2.setText("Registrar Cuotas");
-        jMenuItem2.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMenuItem2ActionPerformed(evt);
-            }
-        });
-        jMenu5.add(jMenuItem2);
-
-        jMenuBar1.add(jMenu5);
-
-        jMenu2.setText("Flores de vida");
-
-        jMenuItem5.setText("Registrar flores de vida");
-        jMenuItem5.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMenuItem5ActionPerformed(evt);
-            }
-        });
-        jMenu2.add(jMenuItem5);
-
-        jMenuItem6.setText("Registrar Cuotas");
-        jMenuItem6.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMenuItem6ActionPerformed(evt);
-            }
-        });
-        jMenu2.add(jMenuItem6);
-
-        jMenuBar1.add(jMenu2);
-
-        jMenu6.setText("Donaciones");
+        jMenu6.setText("Ingresos");
 
         jMenuDonaciones.setText("Registrar Donaciones");
         jMenuDonaciones.addActionListener(new java.awt.event.ActionListener() {
@@ -124,6 +112,30 @@ public class MadreTeresaMain extends javax.swing.JFrame {
             }
         });
         jMenu6.add(jMenuDonaciones);
+
+        jMenuItem7.setText("Registrar Evento");
+        jMenuItem7.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem7ActionPerformed(evt);
+            }
+        });
+        jMenu6.add(jMenuItem7);
+
+        jMenuItem5.setText("Registrar Flores de Vida");
+        jMenuItem5.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem5ActionPerformed(evt);
+            }
+        });
+        jMenu6.add(jMenuItem5);
+
+        jMenuItem6.setText("Registrar Cuotas de Flores de Vida");
+        jMenuItem6.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem6ActionPerformed(evt);
+            }
+        });
+        jMenu6.add(jMenuItem6);
 
         jMenuBar1.add(jMenu6);
 
@@ -165,97 +177,191 @@ public class MadreTeresaMain extends javax.swing.JFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGap(2, 2, 2)
-                .addComponent(jLabel1))
+            .addComponent(jDesktopPane, javax.swing.GroupLayout.DEFAULT_SIZE, 891, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 392, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 2, Short.MAX_VALUE))
+            .addComponent(jDesktopPane, javax.swing.GroupLayout.DEFAULT_SIZE, 628, Short.MAX_VALUE)
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
     private void jMenuSociosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuSociosActionPerformed
-        JFrame frame = new JFrame("Socios");
-        frame.setContentPane(new SociosABM());
-        frame.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
-        frame.pack();
-        frame.setVisible(true);
-        frame.setLocationRelativeTo(null);
+        JInternalFrame internal =  new JInternalFrame("Socios");
+        JPanel p = new SociosABM();
+        internal.add(p);          
+        internal.pack();
+        internal.setResizable(true);        
+        internal.setClosable(true);    
+        jDesktopPane.removeAll();
+        jDesktopPane.add(internal);
+        jDesktopPane.repaint();
+        internal.setVisible(true); 
+        
+//        JFrame frame = new JFrame("Socios");
+//        frame.setContentPane(new SociosABM());
+//        frame.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
+//        frame.pack();
+//        frame.setVisible(true);
+//        frame.setLocationRelativeTo(null);
             
     }//GEN-LAST:event_jMenuSociosActionPerformed
 
     private void jMenuDonacionesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuDonacionesActionPerformed
-        JFrame frame = new JFrame("Donaciones");
-        frame.setContentPane(new DonacionesABM());
-        frame.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
-        frame.pack();
-        frame.setVisible(true);
-        frame.setLocationRelativeTo(null);
+        JInternalFrame internal =  new JInternalFrame("Donaciones");
+        JPanel p = new DonacionesABM();
+        internal.add(p);          
+        internal.pack();
+        internal.setResizable(true);        
+        internal.setClosable(true);    
+        jDesktopPane.removeAll();
+        jDesktopPane.add(internal);
+        jDesktopPane.repaint();
+        internal.setVisible(true); 
+        
+//        JFrame frame = new JFrame("Donaciones");
+//        frame.setContentPane(new DonacionesABM());
+//        frame.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
+//        frame.pack();
+//        frame.setVisible(true);
+//        frame.setLocationRelativeTo(null);
     }//GEN-LAST:event_jMenuDonacionesActionPerformed
 
     private void jMenuGastosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuGastosActionPerformed
-        JFrame frame = new JFrame("Gastos");
-        frame.setContentPane(new GastosABM());
-        frame.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
-        frame.pack();
-        frame.setVisible(true);
-        frame.setLocationRelativeTo(null);
+        JInternalFrame internal =  new JInternalFrame("Gastos");
+        JPanel p = new GastosABM();
+        internal.add(p);          
+        internal.pack();
+        internal.setResizable(true);        
+        internal.setClosable(true);    
+        jDesktopPane.removeAll();
+        jDesktopPane.add(internal);
+        jDesktopPane.repaint();
+        internal.setVisible(true); 
+        
+//        JFrame frame = new JFrame("Gastos");
+//        frame.setContentPane(new GastosABM());
+//        frame.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
+//        frame.pack();
+//        frame.setLocationRelativeTo(null);
+//        frame.setVisible(true);
+       
     }//GEN-LAST:event_jMenuGastosActionPerformed
 
     private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
-        JFrame frame = new JFrame("Tipos de Gastos");
-        frame.setContentPane(new TipoGastoABM());
-        frame.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
-        frame.pack();
-        frame.setVisible(true);
-        frame.setLocationRelativeTo(null);
+        JInternalFrame internal =  new JInternalFrame("Tipos de Gastos");
+        JPanel p = new TipoGastoABM();
+        internal.add(p);          
+        internal.pack();
+        internal.setResizable(true);        
+        internal.setClosable(true);    
+        jDesktopPane.removeAll();
+        jDesktopPane.add(internal);
+        jDesktopPane.repaint();
+        internal.setVisible(true); 
+        
+//        JFrame frame = new JFrame("Tipos de Gastos");
+//        frame.setContentPane(new TipoGastoABM());
+//        frame.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
+//        frame.pack();
+//        frame.setLocationRelativeTo(null);
+//        frame.setVisible(true);
+        
     }//GEN-LAST:event_jMenuItem1ActionPerformed
 
-    private void jMenuItem2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem2ActionPerformed
-        CuotaSocialForm cuota = new CuotaSocialForm();
-        cuota.setVisible(true);
-        cuota.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
-        cuota.setLocationRelativeTo(null);
-    }//GEN-LAST:event_jMenuItem2ActionPerformed
-
     private void jMenuItem3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem3ActionPerformed
-        JFrame frame = new JFrame("Tipos de Socios");
-        frame.setContentPane(new TipoSocioABM());
-        frame.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
-        frame.pack();
-        frame.setVisible(true);
-        frame.setLocationRelativeTo(null);
+
+        JInternalFrame internal =  new JInternalFrame("Montos de Cuotas");
+        JPanel p = new TipoSocioABM();
+        internal.add(p);          
+        internal.pack();
+        internal.setResizable(true);        
+        internal.setClosable(true);    
+        jDesktopPane.removeAll();
+        jDesktopPane.add(internal);
+        jDesktopPane.repaint();
+        internal.setVisible(true);
+        
+        //        JFrame frame = new JFrame("Tipos de Socios");
+//        frame.setContentPane(new TipoSocioABM());
+//        frame.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
+//        frame.pack();
+//        frame.setLocationRelativeTo(null);
+//        frame.setVisible(true);
+        
     }//GEN-LAST:event_jMenuItem3ActionPerformed
 
     private void jMenuItem4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem4ActionPerformed
-         Ingresos ing = new Ingresos();
+         IngresosEgresos ing = new IngresosEgresos();
          ing.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
-         ing.setVisible(true);
          ing.setLocationRelativeTo(null);
+         ing.setVisible(true);
+         
     }//GEN-LAST:event_jMenuItem4ActionPerformed
 
     private void jMenuItem5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem5ActionPerformed
-        JFrame frame = new JFrame("Flores de vida");
-        frame.setContentPane(new FlorVidaABM());
-        frame.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
-        frame.pack();
-        frame.setVisible(true);
-        frame.setLocationRelativeTo(null);
+        JInternalFrame internal =  new JInternalFrame("Flores de vida");
+        JPanel p = new FlorVidaABM();
+        internal.add(p);          
+        internal.pack();
+        internal.setResizable(true);        
+        internal.setClosable(true);    
+        jDesktopPane.removeAll();
+        jDesktopPane.add(internal);
+        jDesktopPane.repaint();
+        internal.setVisible(true);
+        
+//        JFrame frame = new JFrame("Flores de vida");
+//        frame.setContentPane(new FlorVidaABM());
+//        frame.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
+//        frame.pack();
+//        frame.setLocationRelativeTo(null);
+//        frame.setVisible(true);
+      
     }//GEN-LAST:event_jMenuItem5ActionPerformed
 
     private void jMenuItem6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem6ActionPerformed
-         JFrame frame = new JFrame("Socios de flores de vida");
-         frame.setContentPane(new SociosFVABM());
-         frame.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
-         frame.pack();
-         frame.setVisible(true);
-         frame.setLocationRelativeTo(null);
+        JInternalFrame internal =  new JInternalFrame("Aderentes de flores de vida");
+        JPanel p = new SociosFVABM();
+        internal.add(p);          
+        internal.pack();
+        internal.setResizable(true);        
+        internal.setClosable(true);    
+        jDesktopPane.removeAll();
+        jDesktopPane.add(internal);
+        jDesktopPane.repaint();
+        internal.setVisible(true);
+        
+//        JFrame frame = new JFrame("Socios de flores de vida");
+//         frame.setContentPane(new SociosFVABM());
+//         frame.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
+//         frame.pack();
+//         frame.setLocationRelativeTo(null);
+//         frame.setVisible(true);
+         
     }//GEN-LAST:event_jMenuItem6ActionPerformed
+
+    private void jMenuItem7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem7ActionPerformed
+        JInternalFrame internal =  new JInternalFrame("Eventos");
+        JPanel p = new EventosABM();
+        internal.add(p);          
+        internal.pack();
+        internal.setResizable(true);        
+        internal.setClosable(true);    
+        jDesktopPane.removeAll();
+        jDesktopPane.add(internal);
+        jDesktopPane.repaint();
+        internal.setVisible(true);
+        
+//        JFrame frame = new JFrame("Eventos");
+//        frame.setContentPane(new EventosABM());
+//        frame.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
+//        frame.pack();
+//        frame.setLocationRelativeTo(null);
+//        frame.setVisible(true);
+       
+    }//GEN-LAST:event_jMenuItem7ActionPerformed
     public void generarCuotas(){
         SociosABM socios = new SociosABM();
         Socios s = new Socios();
@@ -358,36 +464,29 @@ public class MadreTeresaMain extends javax.swing.JFrame {
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
                 
-                MadreTeresaMain m  = new MadreTeresaMain();                 
+                MadreTeresaMain m  = new MadreTeresaMain(); 
                 m.setEntity();
-                m.generarCuotas();
-                m.setVisible(true);
-                
-                        
-               
-                
+                m.generarCuotas();                                      
                  
             }
         });
     }
     private javax.persistence.EntityManager entityManager;
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JLabel jLabel1;
+    private javax.swing.JDesktopPane jDesktopPane;
     private javax.swing.JMenu jMenu1;
-    private javax.swing.JMenu jMenu2;
     private javax.swing.JMenu jMenu4;
-    private javax.swing.JMenu jMenu5;
     private javax.swing.JMenu jMenu6;
     private javax.swing.JMenu jMenu7;
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JMenuItem jMenuDonaciones;
     private javax.swing.JMenuItem jMenuGastos;
     private javax.swing.JMenuItem jMenuItem1;
-    private javax.swing.JMenuItem jMenuItem2;
     private javax.swing.JMenuItem jMenuItem3;
     private javax.swing.JMenuItem jMenuItem4;
     private javax.swing.JMenuItem jMenuItem5;
     private javax.swing.JMenuItem jMenuItem6;
+    private javax.swing.JMenuItem jMenuItem7;
     private javax.swing.JMenuItem jMenuSocios;
     // End of variables declaration//GEN-END:variables
 

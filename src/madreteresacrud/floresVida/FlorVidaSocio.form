@@ -37,6 +37,13 @@
       </AuxValues>
     </Component>
   </NonVisualComponents>
+  <Properties>
+    <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
+      <Border info="org.netbeans.modules.form.compat2.border.EtchedBorderInfo">
+        <EtchetBorder/>
+      </Border>
+    </Property>
+  </Properties>
   <AuxValues>
     <AuxValue name="FormSettings_autoResourcing" type="java.lang.Integer" value="0"/>
     <AuxValue name="FormSettings_autoSetComponentName" type="java.lang.Boolean" value="false"/>
@@ -59,11 +66,11 @@
           </Group>
           <Group type="102" alignment="1" attributes="0">
               <EmptySpace min="-2" pref="175" max="-2" attributes="0"/>
-              <Component id="agregarFV" pref="175" max="32767" attributes="0"/>
+              <Component id="agregarFV" pref="173" max="32767" attributes="0"/>
               <EmptySpace type="unrelated" min="-2" max="-2" attributes="0"/>
-              <Component id="deleteButton" pref="174" max="32767" attributes="0"/>
+              <Component id="deleteButton" pref="173" max="32767" attributes="0"/>
               <EmptySpace type="separate" min="-2" max="-2" attributes="0"/>
-              <Component id="jButton1" pref="69" max="32767" attributes="0"/>
+              <Component id="jButton1" pref="68" max="32767" attributes="0"/>
               <EmptySpace min="-2" pref="44" max="-2" attributes="0"/>
           </Group>
       </Group>
@@ -72,7 +79,7 @@
       <Group type="103" groupAlignment="0" attributes="0">
           <Group type="102" alignment="0" attributes="0">
               <EmptySpace min="-2" max="-2" attributes="0"/>
-              <Component id="masterScrollPane" pref="204" max="32767" attributes="0"/>
+              <Component id="masterScrollPane" pref="200" max="32767" attributes="0"/>
               <EmptySpace min="-2" pref="12" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="2" attributes="0">
                   <Group type="103" alignment="1" groupAlignment="3" attributes="0">
@@ -171,7 +178,7 @@
     </Container>
     <Component class="javax.swing.JButton" name="agregarFV">
       <Properties>
-        <Property name="text" type="java.lang.String" value="Agregar flor de vida"/>
+        <Property name="text" type="java.lang.String" value="Asignar flor de vida"/>
       </Properties>
       <Events>
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="agregarFVActionPerformed"/>

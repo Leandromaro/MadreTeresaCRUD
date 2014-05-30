@@ -9,16 +9,49 @@ package reportes;
  */
 public class ListaIngresos {
     private String mes;
-    private String cuotaSoc;
-    private String donacion;
+    private String cuotaSoc="";
+    private String donacion="";
+    private String floresVida="";
+    private String publicidad="";
+    private String rifas="";
+    private String tarjetas="";
 
-    public ListaIngresos(String mes, String cuotaSoc, String donacion) {
+//    public ListaIngresos(String mes, String cuotaSoc, String donacion) {
+//        this.mes = mes;
+//        this.cuotaSoc = cuotaSoc;
+//        this.donacion = donacion;
+//       
+//    }
+//
+//    public ListaIngresos(String mes, String floresVida, String publicidad, String rifas, String tarjetas) {
+//        this.mes = mes;
+//        this.floresVida = floresVida;
+//        this.publicidad = publicidad;
+//        this.rifas = rifas;
+//        this.tarjetas = tarjetas;
+//    } 
+        
+    public ListaIngresos(String mes, String cuotaSoc, String donacion, String floresVida, String publicidad, String rifas, String tarjetas) {
         this.mes = mes;
         this.cuotaSoc = cuotaSoc;
         this.donacion = donacion;
+        this.floresVida = floresVida;
+        this.publicidad = publicidad;
+        this.rifas = rifas;
+        this.tarjetas = tarjetas;
+        
     }
+        
     public ListaIngresos() {
         
+    }
+    
+    public String getFloresVida() {
+        return floresVida;
+    }
+
+    public void setFloresVida(String floresVida) {
+        this.floresVida = floresVida;
     }
     
     public String getCuotaSoc() {
@@ -35,9 +68,7 @@ public class ListaIngresos {
 
     public void setDonacion(String donacion) {
         this.donacion = donacion;
-    }
-
-   
+    }   
 
     public String getMes() {
         return mes;
@@ -47,6 +78,28 @@ public class ListaIngresos {
         this.mes = mes;
     }
 
+    public String getPublicidad() {
+        return publicidad;
+    }
 
+    public void setPublicidad(String publicidad) {
+        this.publicidad = publicidad;
+    }
+
+    public String getRifas() {
+        return rifas;
+    }
+
+    public void setRifas(String rifas) {
+        this.rifas = rifas;
+    }
+
+    public String getTarjetas() {
+        return tarjetas;
+    }
+
+    public void setTarjetas(String tarjetas) {
+        this.tarjetas = tarjetas;
+    }
     
 }

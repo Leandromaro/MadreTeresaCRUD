@@ -9,8 +9,6 @@ package madreteresacrud;
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 import java.io.Serializable;
-import static java.util.Collections.list;
-import java.util.List;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -31,7 +29,9 @@ import javax.persistence.Transient;
 @NamedQueries({
     @NamedQuery(name = "TipoGasto.findAll", query = "SELECT t FROM TipoGasto t"),
     @NamedQuery(name = "TipoGasto.findByIdtipoGasto", query = "SELECT t FROM TipoGasto t WHERE t.idtipoGasto = :idtipoGasto"),
-    @NamedQuery(name = "TipoGasto.findByDescripcion", query = "SELECT t FROM TipoGasto t WHERE t.descripcion = :descripcion")})
+    @NamedQuery(name = "TipoGasto.findByDescripcion", query = "SELECT t FROM TipoGasto t WHERE t.descripcion = :descripcion"),
+    @NamedQuery(name = "TipoGasto.findByTipoGasto", query = "SELECT t FROM TipoGasto t WHERE t.tipoGasto = :tipoGasto"),
+    @NamedQuery(name = "TipoGasto.findByElemento", query = "SELECT t FROM TipoGasto t WHERE t.elemento = :elemento")})
 public class TipoGasto implements Serializable {
     @Transient
     private PropertyChangeSupport changeSupport = new PropertyChangeSupport(this);
@@ -43,6 +43,12 @@ public class TipoGasto implements Serializable {
     private Integer idtipoGasto;
     @Column(name = "descripcion")
     private String descripcion;
+    @Basic(optional = false)
+    @Column(name = "TipoGasto")
+    private String tipoGasto;
+    @Basic(optional = false)
+    @Column(name = "Elemento")
+    private String elemento;
 
     public TipoGasto() {
     }
@@ -51,12 +57,16 @@ public class TipoGasto implements Serializable {
         this.idtipoGasto = idtipoGasto;
     }
 
+    public TipoGasto(Integer idtipoGasto, String tipoGasto, String elemento) {
+        this.idtipoGasto = idtipoGasto;
+        this.tipoGasto = tipoGasto;
+        this.elemento = elemento;
+    }
+
     public Integer getIdtipoGasto() {
         return idtipoGasto;
     }
 
-  
-    
     public void setIdtipoGasto(Integer idtipoGasto) {
         Integer oldIdtipoGasto = this.idtipoGasto;
         this.idtipoGasto = idtipoGasto;
@@ -72,8 +82,26 @@ public class TipoGasto implements Serializable {
         this.descripcion = descripcion;
         changeSupport.firePropertyChange("descripcion", oldDescripcion, descripcion);
     }
-    
-    
+
+    public String getTipoGasto() {
+        return tipoGasto;
+    }
+
+    public void setTipoGasto(String tipoGasto) {
+        String oldTipoGasto = this.tipoGasto;
+        this.tipoGasto = tipoGasto;
+        changeSupport.firePropertyChange("tipoGasto", oldTipoGasto, tipoGasto);
+    }
+
+    public String getElemento() {
+        return elemento;
+    }
+
+    public void setElemento(String elemento) {
+        String oldElemento = this.elemento;
+        this.elemento = elemento;
+        changeSupport.firePropertyChange("elemento", oldElemento, elemento);
+    }
 
     @Override
     public int hashCode() {
@@ -107,7 +135,5 @@ public class TipoGasto implements Serializable {
     public void removePropertyChangeListener(PropertyChangeListener listener) {
         changeSupport.removePropertyChangeListener(listener);
     }
-    
-    
     
 }
