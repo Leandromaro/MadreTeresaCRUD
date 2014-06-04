@@ -149,13 +149,16 @@ public class FlorVidaABM extends JPanel {
         jPanelFormLayout.setHorizontalGroup(
             jPanelFormLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanelFormLayout.createSequentialGroup()
-                .addGap(276, 276, 276)
-                .addGroup(jPanelFormLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(refreshButton))
-                .addGap(30, 30, 30)
-                .addComponent(saveButton)
-                .addContainerGap(351, Short.MAX_VALUE))
+                .addGroup(jPanelFormLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanelFormLayout.createSequentialGroup()
+                        .addGap(302, 302, 302)
+                        .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanelFormLayout.createSequentialGroup()
+                        .addGap(150, 150, 150)
+                        .addComponent(refreshButton)
+                        .addGap(18, 18, 18)
+                        .addComponent(saveButton)))
+                .addContainerGap(442, Short.MAX_VALUE))
             .addGroup(jPanelFormLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(jPanelFormLayout.createSequentialGroup()
                     .addContainerGap()
@@ -239,6 +242,7 @@ public class FlorVidaABM extends JPanel {
         columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${fechaDefuncion}"));
         columnBinding.setColumnName("Fecha de Defuncion");
         columnBinding.setColumnClass(java.util.Date.class);
+        columnBinding.setEditable(false);
         columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${telefono}"));
         columnBinding.setColumnName("Telefono");
         columnBinding.setColumnClass(String.class);
@@ -264,11 +268,11 @@ public class FlorVidaABM extends JPanel {
         jPanelTablaLayout.setHorizontalGroup(
             jPanelTablaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanelTablaLayout.createSequentialGroup()
-                .addGap(236, 236, 236)
+                .addGap(151, 151, 151)
                 .addComponent(newButton)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(deleteButton)
-                .addContainerGap(311, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
             .addGroup(jPanelTablaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(jPanelTablaLayout.createSequentialGroup()
                     .addContainerGap()
@@ -402,7 +406,7 @@ public class FlorVidaABM extends JPanel {
     }//GEN-LAST:event_saveButtonActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        new Calendario(fechaDefuncionField).setVisible(true);
+        new Calendario((JFrame) SwingUtilities.getWindowAncestor(this),true,fechaDefuncionField).setVisible(true);
     }//GEN-LAST:event_jButton1ActionPerformed
 
     

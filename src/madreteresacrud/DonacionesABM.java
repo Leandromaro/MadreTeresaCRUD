@@ -16,6 +16,7 @@ import java.util.List;
 import javax.persistence.RollbackException;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
+import javax.swing.SwingUtilities;
 import org.jdesktop.beansbinding.Converter;
 import utilidades.Calendario;
 
@@ -190,6 +191,7 @@ public class DonacionesABM extends JPanel {
         columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${fechaDonacion}"));
         columnBinding.setColumnName("Fecha Donacion");
         columnBinding.setColumnClass(java.util.Date.class);
+        columnBinding.setEditable(false);
         bindingGroup.addBinding(jTableBinding);
         jTableBinding.bind();
         masterScrollPane.setViewportView(masterTable);
@@ -340,7 +342,7 @@ public class DonacionesABM extends JPanel {
     }//GEN-LAST:event_saveButtonActionPerformed
 
     private void jButtonCalendarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonCalendarActionPerformed
-        new Calendario(fechaDonacionField).setVisible(true);
+        new Calendario((JFrame) SwingUtilities.getWindowAncestor(this),true,fechaDonacionField).setVisible(true);
     }//GEN-LAST:event_jButtonCalendarActionPerformed
     
     //OBJETO PARA PODER ENLAZAR LA FECHA DESDE LA BD EN EL TEXTFIELD fechaNacimiento

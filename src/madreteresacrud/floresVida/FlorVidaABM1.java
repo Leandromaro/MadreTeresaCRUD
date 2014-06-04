@@ -10,6 +10,7 @@ import java.beans.Beans;
 import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.RollbackException;
+import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
@@ -74,21 +75,27 @@ public class FlorVidaABM1 extends JPanel {
         org.jdesktop.swingbinding.JTableBinding.ColumnBinding columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${apellido}"));
         columnBinding.setColumnName("Apellido");
         columnBinding.setColumnClass(String.class);
+        columnBinding.setEditable(false);
         columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${nombre}"));
         columnBinding.setColumnName("Nombre");
         columnBinding.setColumnClass(String.class);
+        columnBinding.setEditable(false);
         columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${localidad}"));
         columnBinding.setColumnName("Localidad");
         columnBinding.setColumnClass(String.class);
+        columnBinding.setEditable(false);
         columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${direccion}"));
         columnBinding.setColumnName("Direccion");
         columnBinding.setColumnClass(String.class);
+        columnBinding.setEditable(false);
         columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${fechaDefuncion}"));
         columnBinding.setColumnName("Fecha de Defuncion");
         columnBinding.setColumnClass(java.util.Date.class);
+        columnBinding.setEditable(false);
         columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${idFV}"));
         columnBinding.setColumnName("Id FV");
         columnBinding.setColumnClass(Integer.class);
+        columnBinding.setEditable(false);
         bindingGroup.addBinding(jTableBinding);
         jTableBinding.bind();
         masterTable.addMouseListener(formListener);
@@ -224,13 +231,19 @@ public class FlorVidaABM1 extends JPanel {
         list.addAll(data);
     }
     private void crearFVActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_crearFVActionPerformed
+        JDialog fv = new JDialog((JDialog) SwingUtilities.getWindowAncestor(this),true);
+        fv.setTitle("Flores de Vida");
+        fv.setContentPane(new FlorVidaABM(this));
+        fv.pack();
+        fv.setLocationRelativeTo(null);
+        fv.setVisible(true);
         aceptar.setEnabled(false);
-        JFrame frame = new JFrame("Flores de Vida");
-        frame.setContentPane(new FlorVidaABM(this));
-        frame.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
-        frame.pack();
-        frame.setVisible(true);
-        frame.setLocationRelativeTo(null);
+//        JFrame frame = new JFrame("Flores de Vida");
+//        frame.setContentPane(new FlorVidaABM(this));
+//        frame.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
+//        frame.pack();
+//        frame.setVisible(true);
+//        frame.setLocationRelativeTo(null);
     }//GEN-LAST:event_crearFVActionPerformed
 
     private void aceptarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_aceptarActionPerformed
@@ -242,10 +255,7 @@ public class FlorVidaABM1 extends JPanel {
         int selected = masterTable.getSelectedRow();
         int idFV=Integer.parseInt(masterTable.getValueAt(selected, 5).toString());
         madreteresacrud.floresVida.RelacSocDifuntos f = new madreteresacrud.floresVida.RelacSocDifuntos(this.idSoc, idFV);
-        System.out.println(this.idSoc);
-       // f.relacSocDifuntosPK.setIdSocioFV(this.idSoc);
-         System.out.println(f.getIdFV()+"-"+f.getIdSocioFV());
-        
+             
         entityManager1.persist(f);
         try {
             entityManager1.getTransaction().commit();
@@ -261,12 +271,13 @@ public class FlorVidaABM1 extends JPanel {
             list1.addAll(merged);
         }
         this.fv.setTabla();
-        JFrame topFrame = (JFrame) SwingUtilities.getWindowAncestor(this);
+        JDialog topFrame = (JDialog) SwingUtilities.getWindowAncestor(this);
         topFrame.hide(); 
     }//GEN-LAST:event_aceptarActionPerformed
 
     private void cancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cancelarActionPerformed
-       this.hide();
+       JDialog topFrame = (JDialog) SwingUtilities.getWindowAncestor(this);
+       topFrame.hide(); 
     }//GEN-LAST:event_cancelarActionPerformed
 
     private void masterTableMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_masterTableMouseClicked

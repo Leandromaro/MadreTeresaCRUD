@@ -6,12 +6,23 @@ package madreteresacrud.floresVida;
 
 import java.awt.EventQueue;
 import java.beans.Beans;
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.persistence.RollbackException;
+import javax.swing.JDialog;
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
+import reportes.ConexionBD;
+import reportes.IngresosEgresos;
+import reportes.ListaIngresos;
 
 /**
  *
@@ -19,17 +30,17 @@ import javax.swing.SwingUtilities;
  */
 public class FlorVidaSocio extends JPanel {
     private int idSoc;
+    private  SocDif sd;
     public FlorVidaSocio(int idSoc) {
         this.idSoc=idSoc;
         initComponents();
-        deleteButton.setVisible(false);
+//        deleteButton.setVisible(false);
         masterTable.getColumnModel().getColumn(5).setMaxWidth(0);
         masterTable.getColumnModel().getColumn(5).setMinWidth(0);
         masterTable.getColumnModel().getColumn(5).setPreferredWidth(0);
         if (!Beans.isDesignTime()) {
             entityManager.getTransaction().begin();
-        }
-        System.out.println(this.idSoc);
+        }        
     }
 
     /**
@@ -44,7 +55,7 @@ public class FlorVidaSocio extends JPanel {
         bindingGroup = new org.jdesktop.beansbinding.BindingGroup();
 
         entityManager = java.beans.Beans.isDesignTime() ? null : javax.persistence.Persistence.createEntityManagerFactory("madreTeresaCRUDPU").createEntityManager();
-        query = java.beans.Beans.isDesignTime() ? null : entityManager.createQuery("SELECT f FROM FlorVida f");
+        query = java.beans.Beans.isDesignTime() ? null : entityManager.createQuery("SELECT f FROM FlorVida f,RelacSocDifuntos r WHERE f.idFV=r.idFV AND r.idSocioFV="+this.idSoc);
         list = java.beans.Beans.isDesignTime() ? java.util.Collections.emptyList() : org.jdesktop.observablecollections.ObservableCollections.observableList(query.getResultList());
         masterScrollPane = new javax.swing.JScrollPane();
         masterTable = new javax.swing.JTable();
@@ -60,21 +71,27 @@ public class FlorVidaSocio extends JPanel {
         org.jdesktop.swingbinding.JTableBinding.ColumnBinding columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${apellido}"));
         columnBinding.setColumnName("Apellido");
         columnBinding.setColumnClass(String.class);
+        columnBinding.setEditable(false);
         columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${nombre}"));
         columnBinding.setColumnName("Nombre");
         columnBinding.setColumnClass(String.class);
+        columnBinding.setEditable(false);
         columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${localidad}"));
         columnBinding.setColumnName("Localidad");
         columnBinding.setColumnClass(String.class);
+        columnBinding.setEditable(false);
         columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${direccion}"));
         columnBinding.setColumnName("Direccion");
         columnBinding.setColumnClass(String.class);
+        columnBinding.setEditable(false);
         columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${fechaDefuncion}"));
         columnBinding.setColumnName("Fecha de Defuncion");
         columnBinding.setColumnClass(java.util.Date.class);
+        columnBinding.setEditable(false);
         columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${idFV}"));
         columnBinding.setColumnName("Id FV");
         columnBinding.setColumnClass(Integer.class);
+        columnBinding.setEditable(false);
         bindingGroup.addBinding(jTableBinding);
         jTableBinding.bind();
         masterScrollPane.setViewportView(masterTable);
@@ -140,40 +157,43 @@ public class FlorVidaSocio extends JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void agregarFVActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_agregarFVActionPerformed
-        JFrame frame = new JFrame("Flores de vida");
-        frame.setContentPane(new FlorVidaABM1(this.idSoc,this));
-        frame.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
-        frame.pack();
-        frame.setVisible(true);
-        frame.setLocationRelativeTo(null);
+        JDialog florv = new JDialog((JDialog) SwingUtilities.getWindowAncestor(this),true);      
+        florv.setTitle("Flores de vida");
+        florv.setContentPane(new FlorVidaABM1(this.idSoc,this));
+        florv.pack();
+        florv.setLocationRelativeTo(null);
+        florv.setVisible(true);
+//        JFrame frame = new JFrame("Flores de vida");
+//        frame.setContentPane(new FlorVidaABM1(this.idSoc,this));
+//        frame.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
+//        frame.pack();
+//        frame.setVisible(true);
+//        frame.setLocationRelativeTo(null);
 
     }//GEN-LAST:event_agregarFVActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        JFrame topFrame = (JFrame) SwingUtilities.getWindowAncestor(this);
+        JDialog topFrame = (JDialog) SwingUtilities.getWindowAncestor(this);
         topFrame.hide();
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void deleteButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteButtonActionPerformed
-        int selected = masterTable.getSelectedRow();
-        query1 = java.beans.Beans.isDesignTime() ? null : entityManager.createQuery("SELECT r FROM RelacSocDifuntos r WHERE r.idSocioFV="+this.idSoc+" AND r.idFV="+Integer.parseInt(masterTable.getValueAt(selected, 5).toString()));
-        java.util.Collection data1 = query1.getResultList();
-        for (Object entity : data1) {
-            RelacSocDifuntos r = (RelacSocDifuntos) entity;
-            entityManager.remove(r);
-        }
         
+        int selected = masterTable.getSelectedRow();                
+        eliminarRelac(this.idSoc,Integer.parseInt(masterTable.getValueAt(selected, 5).toString()));
+
         //Recargamos la tabla
         entityManager.getTransaction().rollback();
         entityManager.getTransaction().begin();
         
-        java.util.Collection data = query.getResultList();
-        for (Object entity : data) {
+        java.util.Collection data1 = query.getResultList();
+        for (Object entity : data1) {
             entityManager.refresh(entity);
         }
         list.clear();
-        list.addAll(data);
+        list.addAll(data1);       
     }//GEN-LAST:event_deleteButtonActionPerformed
+   
     public void setTabla(){
         entityManager.getTransaction().rollback();
         entityManager.getTransaction().begin();
@@ -184,11 +204,23 @@ public class FlorVidaSocio extends JPanel {
         list.clear();
         list.addAll(data);
     }
-    
-
+    private void eliminarRelac(int idFVSoc, int idFV){
+        ConexionBD cc= new ConexionBD();
+       Connection cn = cc.conexion();
+       String sql = "DELETE  FROM relacSocDifuntos WHERE idSocioFV="+idFVSoc+" AND idFV="+idFV;
+       System.out.println(sql);
+        try {
+             Statement st = cn.createStatement();
+             st.executeUpdate(sql);
+              cn.close();
+             
+        } catch (SQLException ex) {
+          JOptionPane.showMessageDialog(null, "No se pudo eliminar el registro.");
+        }
+      
+    }
     private javax.persistence.EntityManager entityManager1;
-    private javax.persistence.Query query1;
-    private java.util.List<madreteresacrud.floresVida.RelacSocDifuntos> list1;            
+    private  javax.persistence.Query query1;
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton agregarFV;
     private javax.swing.JButton deleteButton;

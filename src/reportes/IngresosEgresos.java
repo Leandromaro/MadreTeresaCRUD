@@ -10,14 +10,20 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.text.DecimalFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JFrame;
+import javax.swing.JOptionPane;
+import javax.swing.SwingUtilities;
 import utilidades.Calendario;
 import net.sf.jasperreports.engine.JRException;
 import net.sf.jasperreports.engine.JasperFillManager;
@@ -294,15 +300,29 @@ public class IngresosEgresos extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jBHastaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBHastaActionPerformed
-        new Calendario(jTFHasta).setVisible(true);
+        new Calendario((JFrame) SwingUtilities.getWindowAncestor(this),true,jTFHasta).setVisible(true);
     }//GEN-LAST:event_jBHastaActionPerformed
 
     private void jBDesdeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBDesdeActionPerformed
-        new Calendario(jTFDesde).setVisible(true);
+        new Calendario((JFrame) SwingUtilities.getWindowAncestor(this),true,jTFDesde).setVisible(true);
     }//GEN-LAST:event_jBDesdeActionPerformed
 
     private void jBGenReportActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBGenReportActionPerformed
-          
+       
+        SimpleDateFormat formatoDelTexto = new SimpleDateFormat("dd/MM/yyyy");
+        Date fechaD = null;
+        Date fechaH=null;
+        try {
+            fechaD = formatoDelTexto.parse(jTFDesde.getText());
+            fechaH = formatoDelTexto.parse(jTFHasta.getText());
+
+        } catch (ParseException ex) {
+
+             ex.printStackTrace();
+
+        }
+        if(fechaD.getDate() <= fechaH.getDate()){
+        lista.removeAll(lista);
         String [] fd = jTFDesde.getText().split("/");
         String [] fh = jTFHasta.getText().split("/");
         Double totCuota =0.0;
@@ -374,7 +394,8 @@ public class IngresosEgresos extends javax.swing.JFrame {
             JasperReport reporte= (JasperReport) JRLoader.loadObject(fichero);//(JasperReport) JRLoader.loadObject("Ingresos.jasper");
            
             Map parametro = new HashMap();
-            parametro.put("anio", fd[2]);   
+            parametro.put("fechaDesde", jTFDesde.getText());
+            parametro.put("fechaHasta", jTFHasta.getText());
             parametro.put("totDonac", "$"+df.format(totDonac));
             parametro.put("totCuota", "$"+df.format(totCuota));
             parametro.put("totFV", "$"+df.format(totfv));
@@ -387,18 +408,33 @@ public class IngresosEgresos extends javax.swing.JFrame {
             JasperViewer.viewReport(jprint,false);
         } catch (JRException ex) {
             Logger.getLogger(IngresosEgresos.class.getName()).log(Level.SEVERE, null, ex);
-        }      
+        } 
+       } else
+            JOptionPane.showMessageDialog(null, "El periodo de fecha ingresado no es válido");
     }//GEN-LAST:event_jBGenReportActionPerformed
 
     private void jBDesde1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBDesde1ActionPerformed
-        new Calendario(jTFDesde1).setVisible(true);
+        new Calendario((JFrame) SwingUtilities.getWindowAncestor(this),true,jTFDesde1).setVisible(true);
     }//GEN-LAST:event_jBDesde1ActionPerformed
 
     private void jBHasta1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBHasta1ActionPerformed
-        new Calendario(jTFHasta1).setVisible(true);
+        new Calendario((JFrame) SwingUtilities.getWindowAncestor(this),true,jTFHasta1).setVisible(true);
     }//GEN-LAST:event_jBHasta1ActionPerformed
 
     private void jBGenReport1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBGenReport1ActionPerformed
+        SimpleDateFormat formatoDelTexto = new SimpleDateFormat("dd/MM/yyyy");
+        Date fechaD = null;
+        Date fechaH=null;
+        try {
+            fechaD = formatoDelTexto.parse(jTFDesde1.getText());
+            fechaH = formatoDelTexto.parse(jTFHasta1.getText());
+
+        } catch (ParseException ex) {
+
+             ex.printStackTrace();
+
+        }
+        if(fechaD.getDate() <= fechaH.getDate()){
         String [] fd = jTFDesde1.getText().split("/");
         String [] fh = jTFHasta1.getText().split("/");
         List listaE = new ArrayList();        
@@ -444,7 +480,8 @@ public class IngresosEgresos extends javax.swing.JFrame {
                 tipo="de la "+tipo;
             }
             Map parametro = new HashMap();
-            parametro.put("anio", fd[2]);   
+            parametro.put("fechaDesde", jTFDesde.getText());
+            parametro.put("fechaHasta", jTFHasta.getText());  
             parametro.put("leyenda", tipo);
             parametro.put("total", "$"+df.format(tot));
             JasperPrint jprint= JasperFillManager.fillReport(reporte, parametro,new JRBeanCollectionDataSource(listaE));
@@ -453,7 +490,8 @@ public class IngresosEgresos extends javax.swing.JFrame {
         } catch (JRException ex) {
             Logger.getLogger(IngresosEgresos.class.getName()).log(Level.SEVERE, null, ex);
         }      
-       
+       } else
+            JOptionPane.showMessageDialog(null, "El periodo de fecha ingresado no es válido");
     }//GEN-LAST:event_jBGenReport1ActionPerformed
     
     

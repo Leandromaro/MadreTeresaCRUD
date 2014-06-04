@@ -44,7 +44,7 @@ public class RelacSocDifuntos implements Serializable {
 
     public RelacSocDifuntos(Integer idSocioFV, int idFV) {
         this.idSocioFV = idSocioFV;
-        this.idFV = idFV;
+        this.idFV = idFV;       
     }
 
     public Integer getIdSocioFV() {
@@ -62,7 +62,7 @@ public class RelacSocDifuntos implements Serializable {
     public void setIdFV(int idFV) {
         this.idFV = idFV;
     }
-
+    
     @Override
     public int hashCode() {
         int hash = 0;

@@ -11,8 +11,10 @@ import java.beans.Beans;
 import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.RollbackException;
+import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
+import javax.swing.SwingUtilities;
 import madreteresacrud.Socios;
 
 /**
@@ -30,17 +32,7 @@ public class SociosFVABM extends JPanel {
             entityManager.getTransaction().begin();
         }
         
-        TextAutoCompleter textAutoCompleter = new TextAutoCompleter(jTFBusqueda);
-        textAutoCompleter.setMode(0);
-        SociosFlorVida soc = new SociosFlorVida();
-        java.util.Collection listaSocios = this.getListaSocios();
-        
-        for (Object socio : listaSocios) {
-            
-            soc = (SociosFlorVida) socio;            
-            textAutoCompleter.addItem( soc.getApellido()+" "+soc.getNombre());
-            
-        }
+        setBusqueda();
         deleteButton.setVisible(false);
 //        refreshButton.setVisible(false);
     }
@@ -163,14 +155,13 @@ public class SociosFVABM extends JPanel {
                     .addComponent(direccionField)
                     .addGroup(jPanelFormLayout.createSequentialGroup()
                         .addGroup(jPanelFormLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(jPanelFormLayout.createSequentialGroup()
+                                .addComponent(refreshButton)
+                                .addGap(18, 18, 18)
+                                .addComponent(saveButton))
                             .addGroup(jPanelFormLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                                 .addComponent(cuilField, javax.swing.GroupLayout.Alignment.LEADING)
-                                .addComponent(telefonoField, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 181, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(jPanelFormLayout.createSequentialGroup()
-                                .addGap(39, 39, 39)
-                                .addComponent(refreshButton)
-                                .addGap(41, 41, 41)
-                                .addComponent(saveButton)))
+                                .addComponent(telefonoField, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 181, javax.swing.GroupLayout.PREFERRED_SIZE)))
                         .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
         );
@@ -230,6 +221,7 @@ public class SociosFVABM extends JPanel {
         jLabel2.setText("Buscar Aderente:");
 
         jTFBusqueda.setToolTipText("Ingrese el N° de documento o apellido y nombre.");
+        jTFBusqueda.addKeyListener(formListener);
 
         jBbuscar.setText("Buscar");
         jBbuscar.addActionListener(formListener);
@@ -269,14 +261,6 @@ public class SociosFVABM extends JPanel {
         jPanelTabla.setLayout(jPanelTablaLayout);
         jPanelTablaLayout.setHorizontalGroup(
             jPanelTablaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanelTablaLayout.createSequentialGroup()
-                .addGap(71, 71, 71)
-                .addComponent(jBFV)
-                .addGap(18, 18, 18)
-                .addComponent(newButton)
-                .addGap(18, 18, 18)
-                .addComponent(deleteButton)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanelTablaLayout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jLabel2)
@@ -287,6 +271,14 @@ public class SociosFVABM extends JPanel {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jBVerCuotas)
                 .addContainerGap())
+            .addGroup(jPanelTablaLayout.createSequentialGroup()
+                .addGap(82, 82, 82)
+                .addComponent(jBFV)
+                .addGap(18, 18, 18)
+                .addComponent(newButton)
+                .addGap(18, 18, 18)
+                .addComponent(deleteButton)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
             .addGroup(jPanelTablaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(jPanelTablaLayout.createSequentialGroup()
                     .addGap(13, 13, 13)
@@ -342,7 +334,7 @@ public class SociosFVABM extends JPanel {
 
     // Code for dispatching events from components to event handlers.
 
-    private class FormListener implements java.awt.event.ActionListener, java.awt.event.MouseListener {
+    private class FormListener implements java.awt.event.ActionListener, java.awt.event.KeyListener, java.awt.event.MouseListener {
         FormListener() {}
         public void actionPerformed(java.awt.event.ActionEvent evt) {
             if (evt.getSource() == saveButton) {
@@ -366,6 +358,18 @@ public class SociosFVABM extends JPanel {
             else if (evt.getSource() == jBVerCuotas) {
                 SociosFVABM.this.jBVerCuotasActionPerformed(evt);
             }
+        }
+
+        public void keyPressed(java.awt.event.KeyEvent evt) {
+            if (evt.getSource() == jTFBusqueda) {
+                SociosFVABM.this.jTFBusquedaKeyPressed(evt);
+            }
+        }
+
+        public void keyReleased(java.awt.event.KeyEvent evt) {
+        }
+
+        public void keyTyped(java.awt.event.KeyEvent evt) {
         }
 
         public void mouseClicked(java.awt.event.MouseEvent evt) {
@@ -447,12 +451,72 @@ public class SociosFVABM extends JPanel {
         }
         list.clear();
         list.addAll(data);
+        setBusqueda();
         jBVerCuotas.setEnabled(false);
         jBFV.setEnabled(false);
     }//GEN-LAST:event_saveButtonActionPerformed
 
     private void jBbuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBbuscarActionPerformed
-                String ele = jTFBusqueda.getText();
+                buscarSocio();
+                
+    }//GEN-LAST:event_jBbuscarActionPerformed
+
+    private void jBFVActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBFVActionPerformed
+        int selected = masterTable.getSelectedRow();
+        int id=Integer.parseInt(masterTable.getValueAt(selected, 6).toString());
+        FlorVidaSocio fv = new FlorVidaSocio(id);
+        JDialog florv = new JDialog((JFrame) SwingUtilities.getWindowAncestor(this),true);      
+        florv.setTitle("Flores de vida del aderente "+masterTable.getValueAt(selected, 0).toString()+" "+masterTable.getValueAt(selected, 1).toString());
+        florv.setContentPane(fv);
+        florv.pack();
+        florv.setLocationRelativeTo(null);
+        florv.setVisible(true);
+//        JFrame frame = new JFrame("Flores de vida del socio "+masterTable.getValueAt(selected, 0).toString()+" "+masterTable.getValueAt(selected, 1).toString());
+//        frame.setContentPane(fv);
+//        frame.pack();
+//        frame.setVisible(true);
+//        frame.setLocationRelativeTo(null);
+        
+    }//GEN-LAST:event_jBFVActionPerformed
+
+    private void masterTableMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_masterTableMouseClicked
+        jBFV.setEnabled(true);
+        jBVerCuotas.setEnabled(true);
+    }//GEN-LAST:event_masterTableMouseClicked
+
+    private void jBVerCuotasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBVerCuotasActionPerformed
+        int selected = masterTable.getSelectedRow();
+        int id=Integer.parseInt(masterTable.getValueAt(selected, 6).toString());
+        CuotasFVABM csabm = new CuotasFVABM(id);       
+//        JFrame frame = new JFrame("Cuotas de "+masterTable.getValueAt(selected, 0).toString()+" "+masterTable.getValueAt(selected, 1).toString());
+        JDialog cuotas = new JDialog((JFrame) SwingUtilities.getWindowAncestor(this),true);
+        cuotas.setTitle("Cuotas de "+masterTable.getValueAt(selected, 0).toString()+" "+masterTable.getValueAt(selected, 1).toString());
+        cuotas.setContentPane(csabm);
+        cuotas.pack();
+        cuotas.setLocationRelativeTo(null);
+        cuotas.setVisible(true);
+        
+//        frame.setContentPane(csabm);
+//        frame.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
+//        frame.pack();
+//        frame.setVisible(true);
+//        frame.setLocationRelativeTo(null);
+        
+    }//GEN-LAST:event_jBVerCuotasActionPerformed
+
+    private void jTFBusquedaKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTFBusquedaKeyPressed
+         if(evt.getKeyCode()==java.awt.Event.ENTER){
+             buscarSocio();             
+        }
+    }//GEN-LAST:event_jTFBusquedaKeyPressed
+
+    public java.util.Collection getListaSocios(){
+         
+         return query.getResultList();
+     
+     }
+    private void buscarSocio(){
+        String ele = jTFBusqueda.getText();
                 String [] apeYnom = ele.split(" ");
                 String ele1;
                 for (int i = 0; i < masterTable.getRowCount(); i++) {
@@ -467,45 +531,19 @@ public class SociosFVABM extends JPanel {
                                 
                         }
                  }
-                
-    }//GEN-LAST:event_jBbuscarActionPerformed
-
-    private void jBFVActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBFVActionPerformed
-        int selected = masterTable.getSelectedRow();
-        int id=Integer.parseInt(masterTable.getValueAt(selected, 6).toString());
-        FlorVidaSocio fv = new FlorVidaSocio(id);
-        //fv.setConsuta();
-        JFrame frame = new JFrame("Flores de vida del socio "+masterTable.getValueAt(selected, 0).toString()+" "+masterTable.getValueAt(selected, 1).toString());
-        frame.setContentPane(fv);
-        frame.pack();
-        frame.setVisible(true);
-        frame.setLocationRelativeTo(null);
-        
-    }//GEN-LAST:event_jBFVActionPerformed
-
-    private void masterTableMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_masterTableMouseClicked
-        jBFV.setEnabled(true);
-        jBVerCuotas.setEnabled(true);
-    }//GEN-LAST:event_masterTableMouseClicked
-
-    private void jBVerCuotasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBVerCuotasActionPerformed
-        int selected = masterTable.getSelectedRow();
-        int id=Integer.parseInt(masterTable.getValueAt(selected, 6).toString());
-        CuotasFVABM csabm = new CuotasFVABM(id);       
-        JFrame frame = new JFrame("Cuotas de "+masterTable.getValueAt(selected, 0).toString()+" "+masterTable.getValueAt(selected, 1).toString());
-        frame.setContentPane(csabm);
-        frame.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
-        frame.pack();
-        frame.setVisible(true);
-        frame.setLocationRelativeTo(null);
-        
-    }//GEN-LAST:event_jBVerCuotasActionPerformed
-
-    public java.util.Collection getListaSocios(){
-         
-         return query.getResultList();
-     
-     }
+    }
+    private void setBusqueda(){
+        TextAutoCompleter textAutoCompleter = new TextAutoCompleter(jTFBusqueda);
+        textAutoCompleter.setMode(0);
+        SociosFlorVida soc = new SociosFlorVida();
+        java.util.Collection listaSocios = this.getListaSocios();        
+        for (Object socio : listaSocios) {
+            
+            soc = (SociosFlorVida) socio;            
+            textAutoCompleter.addItem( soc.getApellido()+" "+soc.getNombre());
+            
+        }
+    }
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTextField apellidoField;
     private javax.swing.JLabel apellidoLabel;

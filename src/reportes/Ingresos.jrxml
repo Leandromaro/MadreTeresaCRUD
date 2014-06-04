@@ -11,6 +11,8 @@
 	<parameter name="totPublic" class="java.lang.String"/>
 	<parameter name="totRifas" class="java.lang.String"/>
 	<parameter name="totTar" class="java.lang.String"/>
+	<parameter name="fechaDesde" class="java.lang.String"/>
+	<parameter name="fechaHasta" class="java.lang.String"/>
 	<field name="mes" class="java.lang.String"/>
 	<field name="cuotaSoc" class="java.lang.String"/>
 	<field name="donacion" class="java.lang.String"/>
@@ -24,18 +26,32 @@
 	<title>
 		<band height="53" splitType="Stretch">
 			<staticText>
-				<reportElement x="132" y="17" width="141" height="20" uuid="209a2f9a-f3f7-4f23-a9d1-e35516bd1eb1"/>
+				<reportElement x="132" y="17" width="127" height="20" uuid="209a2f9a-f3f7-4f23-a9d1-e35516bd1eb1"/>
 				<textElement>
-					<font size="14" isBold="true" isItalic="false"/>
+					<font fontName="Times New Roman" size="14" isBold="true" isItalic="false"/>
 				</textElement>
-				<text><![CDATA[Ingresos del Año]]></text>
+				<text><![CDATA[Ingresos del periodo]]></text>
 			</staticText>
 			<textField>
-				<reportElement x="273" y="17" width="100" height="20" uuid="19b6390e-370c-43f7-8662-1f1bcfd7c165"/>
+				<reportElement x="259" y="17" width="78" height="20" uuid="502b7a6e-a84c-4cbc-82ec-a23761cf878b"/>
 				<textElement>
-					<font size="14" isBold="true" isItalic="false"/>
+					<font fontName="Times New Roman" size="14" isBold="true"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$P{anio}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$P{fechaDesde}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="337" y="17" width="20" height="20" uuid="8c1a0a86-d378-490f-bf4a-5ecdb9fe9dd3"/>
+				<textElement>
+					<font fontName="Times New Roman" size="14" isBold="true"/>
+				</textElement>
+				<text><![CDATA[al]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="357" y="17" width="100" height="20" uuid="d2202948-178a-4695-8282-aa8bc1672705"/>
+				<textElement>
+					<font fontName="Times New Roman" size="14" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{fechaHasta}]]></textFieldExpression>
 			</textField>
 		</band>
 	</title>
@@ -47,49 +63,49 @@
 			<staticText>
 				<reportElement x="17" y="0" width="33" height="20" uuid="4386374b-460d-4347-bc00-7a53cf545750"/>
 				<textElement>
-					<font size="12" isBold="true"/>
+					<font fontName="Times New Roman" size="12" isBold="true"/>
 				</textElement>
 				<text><![CDATA[Mes]]></text>
 			</staticText>
 			<staticText>
 				<reportElement x="55" y="0" width="119" height="20" uuid="03975599-105a-4578-ad51-c568b89fe0dd"/>
 				<textElement>
-					<font size="12" isBold="true"/>
+					<font fontName="Times New Roman" size="12" isBold="true"/>
 				</textElement>
 				<text><![CDATA[Cuotas Sociales]]></text>
 			</staticText>
 			<staticText>
 				<reportElement x="174" y="2" width="85" height="20" uuid="32ea69b8-eb56-4318-921c-371d6e0e7982"/>
 				<textElement>
-					<font size="12" isBold="true"/>
+					<font fontName="Times New Roman" size="12" isBold="true"/>
 				</textElement>
 				<text><![CDATA[Donaciones]]></text>
 			</staticText>
 			<staticText>
 				<reportElement x="259" y="2" width="111" height="20" uuid="3d0c5f0c-4446-44aa-b683-1950ea6f5932"/>
 				<textElement>
-					<font size="12" isBold="true"/>
+					<font fontName="Times New Roman" size="12" isBold="true"/>
 				</textElement>
 				<text><![CDATA[Flores de Vida]]></text>
 			</staticText>
 			<staticText>
 				<reportElement x="370" y="2" width="75" height="20" uuid="f4c64fe5-e6f7-497b-8a62-0fdb0bf49c9d"/>
 				<textElement>
-					<font size="12" isBold="true"/>
+					<font fontName="Times New Roman" size="12" isBold="true"/>
 				</textElement>
 				<text><![CDATA[Publicidad]]></text>
 			</staticText>
 			<staticText>
 				<reportElement x="445" y="2" width="63" height="20" uuid="2e291c69-10a9-4463-b8d8-c4f33880fd91"/>
 				<textElement>
-					<font size="12" isBold="true"/>
+					<font fontName="Times New Roman" size="12" isBold="true"/>
 				</textElement>
 				<text><![CDATA[Tarjetas]]></text>
 			</staticText>
 			<staticText>
 				<reportElement x="508" y="2" width="47" height="20" uuid="09d84b56-95a0-4b53-a3c5-311733863180"/>
 				<textElement>
-					<font size="12" isBold="true"/>
+					<font fontName="Times New Roman" size="12" isBold="true"/>
 				</textElement>
 				<text><![CDATA[Rifas]]></text>
 			</staticText>
@@ -99,30 +115,51 @@
 		<band height="26" splitType="Stretch">
 			<textField>
 				<reportElement x="17" y="6" width="57" height="20" uuid="12e4c3a8-cfa2-4ff8-b723-a615059f5b33"/>
+				<textElement>
+					<font fontName="Times New Roman"/>
+				</textElement>
 				<textFieldExpression><![CDATA[$F{mes}]]></textFieldExpression>
 			</textField>
 			<textField>
 				<reportElement x="74" y="6" width="100" height="20" uuid="c73ca242-760f-4782-b0e6-0090dd5b5dce"/>
+				<textElement>
+					<font fontName="Times New Roman"/>
+				</textElement>
 				<textFieldExpression><![CDATA[$F{cuotaSoc}]]></textFieldExpression>
 			</textField>
 			<textField>
 				<reportElement x="185" y="6" width="74" height="20" uuid="10ea19f7-25f2-42e9-a3da-4209f6de0d85"/>
+				<textElement>
+					<font fontName="Times New Roman"/>
+				</textElement>
 				<textFieldExpression><![CDATA[$F{donacion}]]></textFieldExpression>
 			</textField>
 			<textField>
 				<reportElement x="273" y="6" width="68" height="20" uuid="48cd343f-8e87-4fc7-b729-0eb3bc0a812d"/>
+				<textElement>
+					<font fontName="Times New Roman"/>
+				</textElement>
 				<textFieldExpression><![CDATA[$F{floresVida}]]></textFieldExpression>
 			</textField>
 			<textField>
 				<reportElement x="373" y="6" width="69" height="20" uuid="9e6f85b7-07b1-4bd8-823f-caffed29a355"/>
+				<textElement>
+					<font fontName="Times New Roman"/>
+				</textElement>
 				<textFieldExpression><![CDATA[$F{publicidad}]]></textFieldExpression>
 			</textField>
 			<textField>
 				<reportElement x="457" y="6" width="51" height="20" uuid="c3d51e61-7f1d-4614-a7aa-5696f9d81752"/>
+				<textElement>
+					<font fontName="Times New Roman"/>
+				</textElement>
 				<textFieldExpression><![CDATA[$F{tarjetas}]]></textFieldExpression>
 			</textField>
 			<textField>
 				<reportElement x="508" y="6" width="47" height="20" uuid="ba28a1af-1d13-4d63-b941-52f6f207d5b6"/>
+				<textElement>
+					<font fontName="Times New Roman"/>
+				</textElement>
 				<textFieldExpression><![CDATA[$F{rifas}]]></textFieldExpression>
 			</textField>
 		</band>
@@ -138,6 +175,9 @@
 			</staticText>
 			<textField pattern="dd/MM/yyyy">
 				<reportElement x="117" y="17" width="100" height="20" uuid="2431cf9c-52c8-404e-9194-0cbe2a8afadc"/>
+				<textElement>
+					<font fontName="Times New Roman"/>
+				</textElement>
 				<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
 			</textField>
 		</band>
@@ -147,14 +187,14 @@
 			<staticText>
 				<reportElement x="396" y="64" width="46" height="20" uuid="b094ed8f-aa27-4759-b436-8944d021ce27"/>
 				<textElement>
-					<font size="13" isBold="true"/>
+					<font fontName="Times New Roman" size="13" isBold="true"/>
 				</textElement>
 				<text><![CDATA[Total]]></text>
 			</staticText>
 			<textField>
 				<reportElement x="442" y="64" width="100" height="20" uuid="a0766c6b-306d-4550-ab9a-97778f6bf873"/>
 				<textElement>
-					<font size="13" isBold="false"/>
+					<font fontName="Times New Roman" size="13" isBold="false"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{total}]]></textFieldExpression>
 			</textField>
@@ -167,26 +207,44 @@
 			</staticText>
 			<textField>
 				<reportElement x="71" y="17" width="100" height="20" uuid="89f09238-6baf-4c5d-91b4-f294ae71bb80"/>
+				<textElement>
+					<font fontName="Times New Roman"/>
+				</textElement>
 				<textFieldExpression><![CDATA[$P{totCuota}]]></textFieldExpression>
 			</textField>
 			<textField>
 				<reportElement x="183" y="17" width="88" height="20" uuid="a82ac094-32fe-4349-a14e-3970cb97faca"/>
+				<textElement>
+					<font fontName="Times New Roman"/>
+				</textElement>
 				<textFieldExpression><![CDATA[$P{totDonac}]]></textFieldExpression>
 			</textField>
 			<textField>
 				<reportElement x="271" y="17" width="100" height="20" uuid="bd7586eb-51ed-4f7a-99f7-6ed9e023cd34"/>
+				<textElement>
+					<font fontName="Times New Roman"/>
+				</textElement>
 				<textFieldExpression><![CDATA[$P{totFV}]]></textFieldExpression>
 			</textField>
 			<textField>
 				<reportElement x="374" y="17" width="71" height="20" uuid="2ccfd7af-912a-484d-aa58-f0416f7a35b0"/>
+				<textElement>
+					<font fontName="Times New Roman"/>
+				</textElement>
 				<textFieldExpression><![CDATA[$P{totPublic}]]></textFieldExpression>
 			</textField>
 			<textField>
 				<reportElement x="457" y="17" width="51" height="20" uuid="068e7963-f49f-4944-90ba-8fffcde20592"/>
+				<textElement>
+					<font fontName="Times New Roman"/>
+				</textElement>
 				<textFieldExpression><![CDATA[$P{totTar}]]></textFieldExpression>
 			</textField>
 			<textField>
 				<reportElement x="510" y="17" width="45" height="20" uuid="164abfd8-d80e-4e37-974a-02ad6a2e2f0f"/>
+				<textElement>
+					<font fontName="Times New Roman"/>
+				</textElement>
 				<textFieldExpression><![CDATA[$P{totRifas}]]></textFieldExpression>
 			</textField>
 		</band>

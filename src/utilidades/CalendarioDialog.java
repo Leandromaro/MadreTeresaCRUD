@@ -12,10 +12,10 @@ import java.util.Date;
  *
  * @author Francis
  */
-public class Calendario extends javax.swing.JDialog {
+public class CalendarioDialog extends javax.swing.JDialog {
 
     private javax.swing.JTextField fecha;
-    public Calendario(java.awt.Frame parent, boolean modal, javax.swing.JTextField fecha) {
+    public CalendarioDialog(javax.swing.JDialog parent, boolean modal, javax.swing.JTextField fecha) {
         super(parent,modal);
         this.fecha=fecha;
         initComponents();

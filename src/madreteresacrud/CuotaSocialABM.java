@@ -17,6 +17,7 @@ import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.List;
 import javax.persistence.RollbackException;
+import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
@@ -32,29 +33,34 @@ public class CuotaSocialABM extends JPanel {
     private int idSocio;
     public Socios s;
     
-    public CuotaSocialABM(int idSoc) {     
-        
+    public CuotaSocialABM(int idSoc) {    
         this.idSocio = idSoc;        
-        initComponents();
+        initComponents(); 
+        saveButton.setEnabled(false);
         if (!Beans.isDesignTime()) {
             entityManager.getTransaction().begin();
         }
         //Selecciona automaticamente la primer fila de la tabla si existen cuotas del socio..
-        if(masterTable.getRowCount() != 0){            
-            masterTable.changeSelection(0, 1, false, false);             
+        if(masterTable.getRowCount() != 0 && masterTable.getValueAt(0, 1) == null){            
+            masterTable.changeSelection(0, 1, false, false); 
+            saveButton.setEnabled(true);
+            //montoField.setEnabled(false);
         }
     }    
     
-    public CuotaSocialABM(Socios s) {
+    public CuotaSocialABM(Socios s) {        
         this.idSocio = s.getIdSocio();
         this.s=s;
-        initComponents();        
+        initComponents(); 
+        saveButton.setEnabled(false);
         if (!Beans.isDesignTime()) {
             entityManager.getTransaction().begin();
         }
         //Selecciona automaticamente la primer fila de la tabla si existen cuotas del socio..
-        if(masterTable.getRowCount() != 0){            
-            masterTable.changeSelection(0, 1, false, false);             
+        if(masterTable.getRowCount() != 0 && masterTable.getValueAt(0, 1) == null){            
+            masterTable.changeSelection(0, 1, false, false);   
+            saveButton.setEnabled(true);
+            //montoField.setEnabled(false);
         }
     }
 
@@ -71,7 +77,7 @@ public class CuotaSocialABM extends JPanel {
         bindingGroup = new org.jdesktop.beansbinding.BindingGroup();
 
         entityManager = java.beans.Beans.isDesignTime() ? null : javax.persistence.Persistence.createEntityManagerFactory("madreTeresaCRUDPU").createEntityManager();
-        query = java.beans.Beans.isDesignTime() ? null : entityManager.createQuery("SELECT c FROM CuotaSocial c  WHERE c.idSocio="+this.idSocio+" ORDER BY c.fechaActivacion DESC");
+        query = java.beans.Beans.isDesignTime() ? null : entityManager.createQuery("SELECT c FROM CuotaSocial c WHERE c.idSocio="+this.idSocio+" ORDER BY c.fechaActivacion DESC");
         list = java.beans.Beans.isDesignTime() ? java.util.Collections.emptyList() : org.jdesktop.observablecollections.ObservableCollections.observableList(query.getResultList());
         jPanelForm = new javax.swing.JPanel();
         saveButton = new javax.swing.JButton();
@@ -202,21 +208,25 @@ public class CuotaSocialABM extends JPanel {
 
         jPanelTabla.setBorder(javax.swing.BorderFactory.createEtchedBorder());
 
-        genCuota.setText("Generar Cuota");
+        genCuota.setText("Generar cuota adelantada");
         genCuota.addActionListener(formListener);
 
         org.jdesktop.swingbinding.JTableBinding jTableBinding = org.jdesktop.swingbinding.SwingBindings.createJTableBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, list, masterTable);
         org.jdesktop.swingbinding.JTableBinding.ColumnBinding columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${fechaActivacion}"));
         columnBinding.setColumnName("Cuota");
         columnBinding.setColumnClass(java.util.Date.class);
+        columnBinding.setEditable(false);
         columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${fechaPago}"));
         columnBinding.setColumnName("Fecha de Pago");
         columnBinding.setColumnClass(java.util.Date.class);
+        columnBinding.setEditable(false);
         columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${monto}"));
         columnBinding.setColumnName("Monto ($)");
         columnBinding.setColumnClass(java.math.BigDecimal.class);
+        columnBinding.setEditable(false);
         bindingGroup.addBinding(jTableBinding);
         jTableBinding.bind();
+        masterTable.addMouseListener(formListener);
         masterScrollPane.setViewportView(masterTable);
 
         javax.swing.GroupLayout jPanelTablaLayout = new javax.swing.GroupLayout(jPanelTabla);
@@ -225,8 +235,8 @@ public class CuotaSocialABM extends JPanel {
             jPanelTablaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanelTablaLayout.createSequentialGroup()
                 .addGap(133, 133, 133)
-                .addComponent(genCuota, javax.swing.GroupLayout.PREFERRED_SIZE, 144, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(285, Short.MAX_VALUE))
+                .addComponent(genCuota, javax.swing.GroupLayout.PREFERRED_SIZE, 220, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(209, Short.MAX_VALUE))
             .addGroup(jPanelTablaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(jPanelTablaLayout.createSequentialGroup()
                     .addContainerGap()
@@ -271,7 +281,7 @@ public class CuotaSocialABM extends JPanel {
 
     // Code for dispatching events from components to event handlers.
 
-    private class FormListener implements java.awt.event.ActionListener {
+    private class FormListener implements java.awt.event.ActionListener, java.awt.event.MouseListener {
         FormListener() {}
         public void actionPerformed(java.awt.event.ActionEvent evt) {
             if (evt.getSource() == saveButton) {
@@ -286,12 +296,30 @@ public class CuotaSocialABM extends JPanel {
             else if (evt.getSource() == jButton1) {
                 CuotaSocialABM.this.jButton1ActionPerformed(evt);
             }
-            else if (evt.getSource() == genCuota) {
-                CuotaSocialABM.this.genCuotaActionPerformed(evt);
-            }
             else if (evt.getSource() == jButtonSalir) {
                 CuotaSocialABM.this.jButtonSalirActionPerformed(evt);
             }
+            else if (evt.getSource() == genCuota) {
+                CuotaSocialABM.this.genCuotaActionPerformed(evt);
+            }
+        }
+
+        public void mouseClicked(java.awt.event.MouseEvent evt) {
+            if (evt.getSource() == masterTable) {
+                CuotaSocialABM.this.masterTableMouseClicked(evt);
+            }
+        }
+
+        public void mouseEntered(java.awt.event.MouseEvent evt) {
+        }
+
+        public void mouseExited(java.awt.event.MouseEvent evt) {
+        }
+
+        public void mousePressed(java.awt.event.MouseEvent evt) {
+        }
+
+        public void mouseReleased(java.awt.event.MouseEvent evt) {
         }
     }// </editor-fold>//GEN-END:initComponents
 
@@ -308,6 +336,7 @@ public class CuotaSocialABM extends JPanel {
         }
         list.clear();
         list.addAll(data);
+        saveButton.setEnabled(false);
     }//GEN-LAST:event_cancelarActionPerformed
             
     private void saveButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveButtonActionPerformed
@@ -334,14 +363,16 @@ public class CuotaSocialABM extends JPanel {
         }
         list.clear();
         list.addAll(data);
-        JOptionPane.showMessageDialog(null, "Cuota/s registrada/s exitosamente!");        
+        JOptionPane.showMessageDialog(null, "Cuota/s registrada/s exitosamente!");  
+        saveButton.setEnabled(false);
     }//GEN-LAST:event_saveButtonActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        new Calendario(fechaPagoField).setVisible(true);
+        new Calendario((JFrame) SwingUtilities.getWindowAncestor(this),true,fechaPagoField).setVisible(true);
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void genCuotaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_genCuotaActionPerformed
+        //montoField.setEnabled(false);
         madreteresacrud.CuotaSocial cs  = new madreteresacrud.CuotaSocial();
         madreteresacrud.CuotaSocial csaux = new madreteresacrud.CuotaSocial();        
         cs.setIdSocio(this.idSocio);
@@ -376,16 +407,45 @@ public class CuotaSocialABM extends JPanel {
         masterTable.setRowSelectionInterval(row, row);
         masterTable.scrollRectToVisible(masterTable.getCellRect(row, 0, true));
         
+        //Guardamos automaticamente la cuota
+        try {
+            entityManager.getTransaction().commit();
+            entityManager.getTransaction().begin();
+        } catch (RollbackException rex) {
+            rex.printStackTrace();
+            entityManager.getTransaction().begin();
+            List<madreteresacrud.CuotaSocial> merged = new ArrayList<madreteresacrud.CuotaSocial>(list.size());
+            for (madreteresacrud.CuotaSocial c : list) {
+                merged.add(entityManager.merge(c));
+            }
+            list.clear();
+            list.addAll(merged);
+        }
+        
+        //query = java.beans.Beans.isDesignTime() ? null : entityManager.createQuery("SELECT c FROM CuotaSocial c WHERE c.idSocio="+this.idSocio+" ORDER BY c.fechaActivacion DESC");
+        entityManager.getTransaction().rollback();
+        entityManager.getTransaction().begin();
+        data = query.getResultList();
+        for (Object entity : data) {
+            entityManager.refresh(entity);
+        }
+        list.clear();
+        list.addAll(data);
+        JOptionPane.showMessageDialog(null, "Cuota/s registrada/s exitosamente!");  
     }//GEN-LAST:event_genCuotaActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-        new Calendario(fechaActivacionField).setVisible(true);
+        new Calendario((JFrame) SwingUtilities.getWindowAncestor(this),true,fechaActivacionField).setVisible(true);
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void jButtonSalirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonSalirActionPerformed
-        JFrame topFrame = (JFrame) SwingUtilities.getWindowAncestor(this);
+        JDialog topFrame = (JDialog) SwingUtilities.getWindowAncestor(this);
         topFrame.hide();
     }//GEN-LAST:event_jButtonSalirActionPerformed
+
+    private void masterTableMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_masterTableMouseClicked
+        saveButton.setEnabled(true);
+    }//GEN-LAST:event_masterTableMouseClicked
 
     public java.util.Collection getListaCuotas(){
          

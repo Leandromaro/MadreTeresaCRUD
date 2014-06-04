@@ -150,7 +150,7 @@
       <Layout>
         <DimensionLayout dim="0">
           <Group type="103" groupAlignment="0" attributes="0">
-              <Group type="102" alignment="0" attributes="0">
+              <Group type="102" attributes="0">
                   <EmptySpace min="-2" pref="20" max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="0" attributes="0">
                       <Component id="apellidoLabel" alignment="0" min="-2" max="-2" attributes="0"/>
@@ -163,47 +163,48 @@
                       <Component id="localidadLabel" alignment="0" min="-2" max="-2" attributes="0"/>
                   </Group>
                   <EmptySpace max="32767" attributes="0"/>
-                  <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                      <Group type="102" alignment="0" attributes="0">
-                          <EmptySpace min="-2" pref="127" max="-2" attributes="0"/>
+                  <Group type="103" groupAlignment="0" attributes="0">
+                      <Group type="102" attributes="0">
                           <Component id="refreshButton" min="-2" pref="83" max="-2" attributes="0"/>
                           <EmptySpace type="separate" max="-2" attributes="0"/>
                           <Component id="saveButton" min="-2" pref="93" max="-2" attributes="0"/>
                       </Group>
-                      <Component id="apellidoField" alignment="0" max="32767" attributes="0"/>
-                      <Component id="nombreField" alignment="0" max="32767" attributes="0"/>
-                      <Component id="localidadField" alignment="0" max="32767" attributes="0"/>
-                      <Group type="102" alignment="0" attributes="0">
-                          <Group type="103" groupAlignment="0" attributes="0">
-                              <Group type="103" alignment="0" groupAlignment="1" attributes="0">
-                                  <Component id="jComboTipSoc" min="-2" pref="170" max="-2" attributes="0"/>
-                                  <Component id="tipoDocumentoCB" min="-2" pref="170" max="-2" attributes="0"/>
-                              </Group>
-                              <Component id="jTextFieldCuil" alignment="0" min="-2" pref="170" max="-2" attributes="0"/>
-                              <Component id="telefonoField" min="-2" pref="170" max="-2" attributes="0"/>
-                          </Group>
-                          <EmptySpace min="-2" pref="84" max="-2" attributes="0"/>
-                          <Group type="103" groupAlignment="0" attributes="0">
-                              <Component id="emailLabel" min="-2" pref="69" max="-2" attributes="0"/>
-                              <Component id="documentoLabel" min="-2" max="-2" attributes="0"/>
-                              <Component id="jLabelNumSoc" min="-2" max="-2" attributes="0"/>
-                              <Component id="fechaNacimientoLabel" min="-2" max="-2" attributes="0"/>
-                          </Group>
-                          <EmptySpace type="separate" max="-2" attributes="0"/>
-                          <Group type="103" groupAlignment="0" attributes="0">
-                              <Group type="102" attributes="0">
-                                  <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                                      <Component id="jTextFieldNumSoc" pref="164" max="32767" attributes="0"/>
-                                      <Component id="documentoField" max="32767" attributes="0"/>
-                                      <Component id="fechaNacimientoField" alignment="0" max="32767" attributes="0"/>
+                      <Group type="103" groupAlignment="0" max="-2" attributes="0">
+                          <Component id="apellidoField" alignment="0" max="32767" attributes="0"/>
+                          <Component id="nombreField" alignment="0" max="32767" attributes="0"/>
+                          <Component id="localidadField" alignment="0" max="32767" attributes="0"/>
+                          <Group type="102" alignment="0" attributes="0">
+                              <Group type="103" groupAlignment="0" attributes="0">
+                                  <Group type="103" alignment="0" groupAlignment="1" attributes="0">
+                                      <Component id="jComboTipSoc" min="-2" pref="170" max="-2" attributes="0"/>
+                                      <Component id="tipoDocumentoCB" min="-2" pref="170" max="-2" attributes="0"/>
                                   </Group>
-                                  <EmptySpace max="-2" attributes="0"/>
-                                  <Component id="jButtonFecha" min="-2" pref="35" max="-2" attributes="0"/>
+                                  <Component id="jTextFieldCuil" alignment="0" min="-2" pref="170" max="-2" attributes="0"/>
+                                  <Component id="telefonoField" min="-2" pref="170" max="-2" attributes="0"/>
                               </Group>
-                              <Component id="emailField" min="-2" pref="381" max="-2" attributes="0"/>
+                              <EmptySpace min="-2" pref="84" max="-2" attributes="0"/>
+                              <Group type="103" groupAlignment="0" attributes="0">
+                                  <Component id="emailLabel" min="-2" pref="69" max="-2" attributes="0"/>
+                                  <Component id="documentoLabel" min="-2" max="-2" attributes="0"/>
+                                  <Component id="jLabelNumSoc" min="-2" max="-2" attributes="0"/>
+                                  <Component id="fechaNacimientoLabel" min="-2" max="-2" attributes="0"/>
+                              </Group>
+                              <EmptySpace type="separate" max="-2" attributes="0"/>
+                              <Group type="103" groupAlignment="0" attributes="0">
+                                  <Group type="102" attributes="0">
+                                      <Group type="103" groupAlignment="0" max="-2" attributes="0">
+                                          <Component id="jTextFieldNumSoc" pref="164" max="32767" attributes="0"/>
+                                          <Component id="documentoField" max="32767" attributes="0"/>
+                                          <Component id="fechaNacimientoField" alignment="0" max="32767" attributes="0"/>
+                                      </Group>
+                                      <EmptySpace max="-2" attributes="0"/>
+                                      <Component id="jButtonFecha" min="-2" pref="35" max="-2" attributes="0"/>
+                                  </Group>
+                                  <Component id="emailField" min="-2" pref="381" max="-2" attributes="0"/>
+                              </Group>
                           </Group>
+                          <Component id="direccionField" alignment="0" max="32767" attributes="0"/>
                       </Group>
-                      <Component id="direccionField" alignment="0" max="32767" attributes="0"/>
                   </Group>
                   <EmptySpace pref="17" max="32767" attributes="0"/>
               </Group>
@@ -541,9 +542,9 @@
       <Layout>
         <DimensionLayout dim="0">
           <Group type="103" groupAlignment="0" attributes="0">
-              <Group type="102" alignment="0" attributes="0">
-                  <Group type="103" groupAlignment="1" attributes="0">
-                      <Group type="102" alignment="1" attributes="0">
+              <Group type="102" attributes="0">
+                  <Group type="103" groupAlignment="0" attributes="0">
+                      <Group type="102" alignment="0" attributes="0">
                           <EmptySpace max="-2" attributes="0"/>
                           <Component id="jLabelBuscar" min="-2" max="-2" attributes="0"/>
                           <EmptySpace max="-2" attributes="0"/>
@@ -554,7 +555,7 @@
                           <Component id="jBVerCuotas" min="-2" max="-2" attributes="0"/>
                       </Group>
                       <Group type="102" alignment="0" attributes="0">
-                          <EmptySpace min="-2" pref="247" max="-2" attributes="0"/>
+                          <EmptySpace min="-2" pref="132" max="-2" attributes="0"/>
                           <Component id="newButton" min="-2" max="-2" attributes="0"/>
                           <EmptySpace type="unrelated" max="-2" attributes="0"/>
                           <Component id="deleteButton" min="-2" pref="82" max="-2" attributes="0"/>
@@ -723,6 +724,7 @@
                   <Subbinding sourcePath="${fechaNacimiento}">
                     <BindingParameter name="NAME" value="Fecha Nacimiento"/>
                     <BindingParameter name="javax.swing.binding.ParameterKeys.COLUMN_CLASS" value="java.util.Date.class"/>
+                    <BindingParameter name="javax.swing.binding.ParameterKeys.EDITABLE" value="false"/>
                   </Subbinding>
                   <Subbinding sourcePath="${localidad}">
                     <BindingParameter name="NAME" value="Localidad"/>
@@ -786,8 +788,11 @@
         </Component>
         <Component class="javax.swing.JTextField" name="jTFBusqueda">
           <Properties>
-            <Property name="toolTipText" type="java.lang.String" value="Ingrese el N&#xb0; de documento o apellido y nombre."/>
+            <Property name="toolTipText" type="java.lang.String" value="Ingrese el apellido y nombre."/>
           </Properties>
+          <Events>
+            <EventHandler event="keyPressed" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="jTFBusquedaKeyPressed"/>
+          </Events>
         </Component>
         <Component class="javax.swing.JLabel" name="jLabelBuscar">
           <Properties>

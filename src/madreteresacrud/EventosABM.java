@@ -14,6 +14,7 @@ import java.util.List;
 import javax.persistence.RollbackException;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
+import javax.swing.SwingUtilities;
 import org.jdesktop.beansbinding.Converter;
 import utilidades.Calendario;
 
@@ -129,7 +130,7 @@ public class EventosABM extends JPanel {
                 .addComponent(refreshButton)
                 .addGap(43, 43, 43)
                 .addComponent(saveButton)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(295, Short.MAX_VALUE))
             .addGroup(jPanelFormLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(jPanelFormLayout.createSequentialGroup()
                     .addContainerGap()
@@ -197,6 +198,7 @@ public class EventosABM extends JPanel {
         org.jdesktop.swingbinding.JTableBinding.ColumnBinding columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${fecha}"));
         columnBinding.setColumnName("Fecha del Evento");
         columnBinding.setColumnClass(java.util.Date.class);
+        columnBinding.setEditable(false);
         columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${montoPublic}"));
         columnBinding.setColumnName("Monto de Publicidad ($)");
         columnBinding.setColumnClass(java.math.BigDecimal.class);
@@ -228,20 +230,17 @@ public class EventosABM extends JPanel {
         jPanelTablaLayout.setHorizontalGroup(
             jPanelTablaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanelTablaLayout.createSequentialGroup()
-                .addGap(157, 157, 157)
+                .addGap(160, 160, 160)
                 .addComponent(newButton)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(deleteButton)
-                .addContainerGap(280, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
             .addGroup(jPanelTablaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(jPanelTablaLayout.createSequentialGroup()
                     .addContainerGap()
                     .addComponent(masterScrollPane, javax.swing.GroupLayout.DEFAULT_SIZE, 597, Short.MAX_VALUE)
                     .addContainerGap()))
         );
-
-        jPanelTablaLayout.linkSize(javax.swing.SwingConstants.HORIZONTAL, new java.awt.Component[] {deleteButton, newButton});
-
         jPanelTablaLayout.setVerticalGroup(
             jPanelTablaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanelTablaLayout.createSequentialGroup()
@@ -292,14 +291,14 @@ public class EventosABM extends JPanel {
             else if (evt.getSource() == refreshButton) {
                 EventosABM.this.refreshButtonActionPerformed(evt);
             }
-            else if (evt.getSource() == newButton) {
-                EventosABM.this.newButtonActionPerformed(evt);
+            else if (evt.getSource() == jButton1) {
+                EventosABM.this.jButton1ActionPerformed(evt);
             }
             else if (evt.getSource() == deleteButton) {
                 EventosABM.this.deleteButtonActionPerformed(evt);
             }
-            else if (evt.getSource() == jButton1) {
-                EventosABM.this.jButton1ActionPerformed(evt);
+            else if (evt.getSource() == newButton) {
+                EventosABM.this.newButtonActionPerformed(evt);
             }
         }
     }// </editor-fold>//GEN-END:initComponents
@@ -364,7 +363,7 @@ public class EventosABM extends JPanel {
     }//GEN-LAST:event_saveButtonActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        new Calendario(fechaField).setVisible(true);
+        new Calendario((JFrame) SwingUtilities.getWindowAncestor(this),true,fechaField).setVisible(true);
     }//GEN-LAST:event_jButton1ActionPerformed
 
     Converter dateConverter = new Converter<java.util.Date, String>() {

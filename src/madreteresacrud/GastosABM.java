@@ -14,6 +14,7 @@ import java.util.List;
 import javax.persistence.RollbackException;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
+import javax.swing.SwingUtilities;
 import org.jdesktop.beansbinding.Converter;
 import utilidades.Calendario;
 
@@ -83,6 +84,7 @@ public class GastosABM extends JPanel {
         org.jdesktop.swingbinding.JTableBinding.ColumnBinding columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${fechaGasto}"));
         columnBinding.setColumnName("Fecha del Gasto");
         columnBinding.setColumnClass(java.util.Date.class);
+        columnBinding.setEditable(false);
         columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${monto}"));
         columnBinding.setColumnName("Monto");
         columnBinding.setColumnClass(java.math.BigDecimal.class);
@@ -99,7 +101,6 @@ public class GastosABM extends JPanel {
         jTableBinding.bind();
         masterTable.addMouseListener(formListener);
         masterScrollPane.setViewportView(masterTable);
-        masterTable.getColumnModel().getColumn(3).setHeaderValue("Idgastos");
 
         deleteButton.setText("Eliminar");
 
@@ -230,9 +231,6 @@ public class GastosABM extends JPanel {
                             .addGap(0, 0, Short.MAX_VALUE)))
                     .addContainerGap()))
         );
-
-        jPanelFormLayout.linkSize(javax.swing.SwingConstants.HORIZONTAL, new java.awt.Component[] {refreshButton, saveButton});
-
         jPanelFormLayout.setVerticalGroup(
             jPanelFormLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanelFormLayout.createSequentialGroup()
@@ -302,17 +300,17 @@ public class GastosABM extends JPanel {
     private class FormListener implements java.awt.event.ActionListener, java.awt.event.MouseListener {
         FormListener() {}
         public void actionPerformed(java.awt.event.ActionEvent evt) {
-            if (evt.getSource() == saveButton) {
-                GastosABM.this.saveButtonActionPerformed(evt);
-            }
-            else if (evt.getSource() == refreshButton) {
-                GastosABM.this.refreshButtonActionPerformed(evt);
+            if (evt.getSource() == deleteButton) {
+                GastosABM.this.deleteButtonActionPerformed(evt);
             }
             else if (evt.getSource() == newButton) {
                 GastosABM.this.newButtonActionPerformed(evt);
             }
-            else if (evt.getSource() == deleteButton) {
-                GastosABM.this.deleteButtonActionPerformed(evt);
+            else if (evt.getSource() == saveButton) {
+                GastosABM.this.saveButtonActionPerformed(evt);
+            }
+            else if (evt.getSource() == refreshButton) {
+                GastosABM.this.refreshButtonActionPerformed(evt);
             }
             else if (evt.getSource() == jComboBoxTipoGasto) {
                 GastosABM.this.jComboBoxTipoGastoActionPerformed(evt);
@@ -440,7 +438,7 @@ public class GastosABM extends JPanel {
     }//GEN-LAST:event_masterTableMouseClicked
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        new Calendario(fechaGastoField).setVisible(true);
+        new Calendario((JFrame) SwingUtilities.getWindowAncestor(this),true,fechaGastoField).setVisible(true);
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void setComboItem(String tipoGasto){

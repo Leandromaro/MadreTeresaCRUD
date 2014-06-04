@@ -6,6 +6,7 @@ package madreteresacrud;
 
 import com.mxrck.autocompleter.TextAutoCompleter;
 import java.awt.EventQueue;
+import java.awt.Frame;
 import java.beans.Beans;
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -52,16 +53,7 @@ public class SociosABM extends JPanel {
             t = (String) entity;            
             jComboTipSoc.addItem(t);
         }
-        TextAutoCompleter textAutoCompleter = new TextAutoCompleter(jTFBusqueda);
-        textAutoCompleter.setMode(0);
-        //SociosABM socios = new SociosABM();
-        java.util.Collection listaSocios = this.getListaSocios();        
-        for (Object socio : listaSocios) {
-            Socios soc = new Socios();
-            soc = (Socios) socio;                         
-            textAutoCompleter.addItem(soc.getApellido().trim()+" "+soc.getNombre().trim());
-            
-        }
+        setBusqueda();
         jLabelTipSoc.setVisible(false);
         jLEliminado.setVisible(false);
 //        refreshButton.setVisible(false);
@@ -86,7 +78,7 @@ public class SociosABM extends JPanel {
         bindingGroup = new org.jdesktop.beansbinding.BindingGroup();
 
         entityManager = java.beans.Beans.isDesignTime() ? null : javax.persistence.Persistence.createEntityManagerFactory("madreTeresaCRUDPU").createEntityManager();
-        query = java.beans.Beans.isDesignTime() ? null : entityManager.createQuery("SELECT s FROM Socios s ORDER BY s.apellido");
+        query = java.beans.Beans.isDesignTime() ? null : entityManager.createQuery("SELECT s FROM Socios s");
         list = java.beans.Beans.isDesignTime() ? java.util.Collections.emptyList() : org.jdesktop.observablecollections.ObservableCollections.observableList(query.getResultList());
         madreTeresaCRUDPUEntityManager = java.beans.Beans.isDesignTime() ? null : javax.persistence.Persistence.createEntityManagerFactory("madreTeresaCRUDPU").createEntityManager();
         tipoSocioQuery = java.beans.Beans.isDesignTime() ? null : madreTeresaCRUDPUEntityManager.createQuery("SELECT t FROM TipoSocio t");
@@ -267,39 +259,39 @@ public class SociosABM extends JPanel {
                     .addComponent(direccionLabel)
                     .addComponent(localidadLabel))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGroup(jPanelFormLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                .addGroup(jPanelFormLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanelFormLayout.createSequentialGroup()
-                        .addGap(127, 127, 127)
                         .addComponent(refreshButton, javax.swing.GroupLayout.PREFERRED_SIZE, 83, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
                         .addComponent(saveButton, javax.swing.GroupLayout.PREFERRED_SIZE, 93, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(apellidoField)
-                    .addComponent(nombreField)
-                    .addComponent(localidadField)
-                    .addGroup(jPanelFormLayout.createSequentialGroup()
-                        .addGroup(jPanelFormLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(jPanelFormLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                .addComponent(jComboTipSoc, javax.swing.GroupLayout.PREFERRED_SIZE, 170, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addComponent(tipoDocumentoCB, javax.swing.GroupLayout.PREFERRED_SIZE, 170, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addComponent(jTextFieldCuil, javax.swing.GroupLayout.PREFERRED_SIZE, 170, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(telefonoField, javax.swing.GroupLayout.PREFERRED_SIZE, 170, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(84, 84, 84)
-                        .addGroup(jPanelFormLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(emailLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 69, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(documentoLabel)
-                            .addComponent(jLabelNumSoc)
-                            .addComponent(fechaNacimientoLabel))
-                        .addGap(18, 18, 18)
-                        .addGroup(jPanelFormLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(jPanelFormLayout.createSequentialGroup()
-                                .addGroup(jPanelFormLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                    .addComponent(jTextFieldNumSoc, javax.swing.GroupLayout.DEFAULT_SIZE, 164, Short.MAX_VALUE)
-                                    .addComponent(documentoField)
-                                    .addComponent(fechaNacimientoField))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jButtonFecha, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addComponent(emailField, javax.swing.GroupLayout.PREFERRED_SIZE, 381, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                    .addComponent(direccionField))
+                    .addGroup(jPanelFormLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                        .addComponent(apellidoField)
+                        .addComponent(nombreField)
+                        .addComponent(localidadField)
+                        .addGroup(jPanelFormLayout.createSequentialGroup()
+                            .addGroup(jPanelFormLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addGroup(jPanelFormLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                    .addComponent(jComboTipSoc, javax.swing.GroupLayout.PREFERRED_SIZE, 170, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(tipoDocumentoCB, javax.swing.GroupLayout.PREFERRED_SIZE, 170, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addComponent(jTextFieldCuil, javax.swing.GroupLayout.PREFERRED_SIZE, 170, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(telefonoField, javax.swing.GroupLayout.PREFERRED_SIZE, 170, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGap(84, 84, 84)
+                            .addGroup(jPanelFormLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addComponent(emailLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 69, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(documentoLabel)
+                                .addComponent(jLabelNumSoc)
+                                .addComponent(fechaNacimientoLabel))
+                            .addGap(18, 18, 18)
+                            .addGroup(jPanelFormLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addGroup(jPanelFormLayout.createSequentialGroup()
+                                    .addGroup(jPanelFormLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                        .addComponent(jTextFieldNumSoc, javax.swing.GroupLayout.DEFAULT_SIZE, 164, Short.MAX_VALUE)
+                                        .addComponent(documentoField)
+                                        .addComponent(fechaNacimientoField))
+                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                    .addComponent(jButtonFecha, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addComponent(emailField, javax.swing.GroupLayout.PREFERRED_SIZE, 381, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(direccionField)))
                 .addContainerGap(17, Short.MAX_VALUE))
             .addGroup(jPanelFormLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(jPanelFormLayout.createSequentialGroup()
@@ -403,6 +395,7 @@ public class SociosABM extends JPanel {
         columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${fechaNacimiento}"));
         columnBinding.setColumnName("Fecha Nacimiento");
         columnBinding.setColumnClass(java.util.Date.class);
+        columnBinding.setEditable(false);
         columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${localidad}"));
         columnBinding.setColumnName("Localidad");
         columnBinding.setColumnClass(String.class);
@@ -435,7 +428,8 @@ public class SociosABM extends JPanel {
 
         deleteButton.addActionListener(formListener);
 
-        jTFBusqueda.setToolTipText("Ingrese el N° de documento o apellido y nombre.");
+        jTFBusqueda.setToolTipText("Ingrese el apellido y nombre.");
+        jTFBusqueda.addKeyListener(formListener);
 
         jLabelBuscar.setText("Buscar Socio:");
 
@@ -451,7 +445,7 @@ public class SociosABM extends JPanel {
         jPanelTablaLayout.setHorizontalGroup(
             jPanelTablaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanelTablaLayout.createSequentialGroup()
-                .addGroup(jPanelTablaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                .addGroup(jPanelTablaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanelTablaLayout.createSequentialGroup()
                         .addContainerGap()
                         .addComponent(jLabelBuscar)
@@ -461,8 +455,8 @@ public class SociosABM extends JPanel {
                         .addComponent(jButtonBuscar)
                         .addGap(18, 18, 18)
                         .addComponent(jBVerCuotas))
-                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanelTablaLayout.createSequentialGroup()
-                        .addGap(247, 247, 247)
+                    .addGroup(jPanelTablaLayout.createSequentialGroup()
+                        .addGap(132, 132, 132)
                         .addComponent(newButton)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(deleteButton, javax.swing.GroupLayout.PREFERRED_SIZE, 82, javax.swing.GroupLayout.PREFERRED_SIZE)))
@@ -519,7 +513,7 @@ public class SociosABM extends JPanel {
 
     // Code for dispatching events from components to event handlers.
 
-    private class FormListener implements java.awt.event.ActionListener, java.awt.event.MouseListener {
+    private class FormListener implements java.awt.event.ActionListener, java.awt.event.KeyListener, java.awt.event.MouseListener {
         FormListener() {}
         public void actionPerformed(java.awt.event.ActionEvent evt) {
             if (evt.getSource() == jComboTipSoc) {
@@ -546,6 +540,18 @@ public class SociosABM extends JPanel {
             else if (evt.getSource() == jBVerCuotas) {
                 SociosABM.this.jBVerCuotasActionPerformed(evt);
             }
+        }
+
+        public void keyPressed(java.awt.event.KeyEvent evt) {
+            if (evt.getSource() == jTFBusqueda) {
+                SociosABM.this.jTFBusquedaKeyPressed(evt);
+            }
+        }
+
+        public void keyReleased(java.awt.event.KeyEvent evt) {
+        }
+
+        public void keyTyped(java.awt.event.KeyEvent evt) {
         }
 
         public void mouseClicked(java.awt.event.MouseEvent evt) {
@@ -690,45 +696,31 @@ public class SociosABM extends JPanel {
     }//GEN-LAST:event_masterTableMouseClicked
     //Busca y selecciona una fila en la tabla
     private void jButtonBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonBuscarActionPerformed
-       String ele = jTFBusqueda.getText();
-        String [] apeYnom = ele.split(" ");
-        String ele1;
-        for (int i = 0; i < masterTable.getRowCount(); i++) {
-                ele = masterTable.getValueAt(i, 0).toString().trim();
-                ele1 = masterTable.getValueAt(i, 1).toString().trim();
-                if (ele.equals(apeYnom[0].trim()) && ele1.equals(apeYnom[1].trim())) {
-
-                        masterTable.changeSelection(i, 0, false, false);   
-                        jBVerCuotas.setEnabled(true);  
-                        jComboTipSoc.setEnabled(true);
-                        jComboTipSoc.setEnabled(true);  
-                        tipoDocumentoCB.setEnabled(true);
-                        jTextFieldCuil.setEnabled(true);
-                        jTextFieldNumSoc.setEnabled(true);
-                        break;
-
-                }
-         }
+        buscarSocio();
        
     }//GEN-LAST:event_jButtonBuscarActionPerformed
 
     private void jBVerCuotasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBVerCuotasActionPerformed
          int selected = masterTable.getSelectedRow();
-         int id=Integer.parseInt(masterTable.getValueAt(selected, 13).toString());
+         int id=Integer.parseInt(masterTable.getValueAt(selected, 13).toString());         
          CuotaSocialABM csabm = new CuotaSocialABM(id);
          csabm.s = new Socios();
          csabm.s.setIdTipoSocio(Integer.parseInt(masterTable.getValueAt(selected, 11).toString()));
-         JFrame frame = new JFrame("Cuotas de "+masterTable.getValueAt(selected, 0).toString()+" "+masterTable.getValueAt(selected, 1).toString());
-//            JDialog dia = new JDialog();
-//            dia.add(csabm);
-//            dia.setVisible(true);
-        frame.setContentPane(csabm);
-        frame.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
-        frame.pack();
-        frame.setVisible(true);
-        frame.setLocationRelativeTo(null);
-        if(csabm.getListaCuotasDeudas().isEmpty())
+         if(csabm.getListaCuotasDeudas().isEmpty())
             JOptionPane.showMessageDialog(null, masterTable.getValueAt(selected, 0).toString()+" "+masterTable.getValueAt(selected, 1).toString()+" no adeuda cuotas.");
+         JDialog c = new JDialog((Frame) SwingUtilities.getWindowAncestor(this),true);
+        c.setTitle("Cuotas de "+masterTable.getValueAt(selected, 0).toString()+" "+masterTable.getValueAt(selected, 1).toString());
+        c.setContentPane(csabm);
+        c.pack();
+        c.setLocationRelativeTo(null);
+        c.setVisible(true);
+//         JFrame frame = new JFrame("Cuotas de "+masterTable.getValueAt(selected, 0).toString()+" "+masterTable.getValueAt(selected, 1).toString());
+//
+//        frame.setContentPane(csabm);
+//        frame.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
+//        frame.pack();
+//        frame.setVisible(true);
+//        frame.setLocationRelativeTo(null);        
             
     }//GEN-LAST:event_jBVerCuotasActionPerformed
 
@@ -761,10 +753,11 @@ public class SociosABM extends JPanel {
         list.clear();
         list.addAll(data);
         jBVerCuotas.setEnabled(false);
+        setBusqueda();
     }//GEN-LAST:event_saveButtonActionPerformed
 
     private void jButtonFechaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonFechaActionPerformed
-        new Calendario(fechaNacimientoField).setVisible(true);
+        new Calendario((JFrame) SwingUtilities.getWindowAncestor(this),true,fechaNacimientoField).setVisible(true);
     }//GEN-LAST:event_jButtonFechaActionPerformed
 
     private void jComboTipSocActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboTipSocActionPerformed
@@ -790,6 +783,12 @@ public class SociosABM extends JPanel {
         jTextFieldNumSoc.setEnabled(false);
         jComboTipSoc.setEnabled(false);
     }//GEN-LAST:event_refreshButtonActionPerformed
+
+    private void jTFBusquedaKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTFBusquedaKeyPressed
+        if(evt.getKeyCode()==java.awt.Event.ENTER){
+             buscarSocio();             
+        }
+    }//GEN-LAST:event_jTFBusquedaKeyPressed
       
     //OBJETO PARA PODER ENLAZAR LA FECHA DESDE LA BD EN EL TEXTFIELD fechaNacimiento
      Converter dateConverter = new Converter<java.util.Date, String>() {
@@ -814,7 +813,39 @@ public class SociosABM extends JPanel {
          return query.getResultList();
      
      }
-     
+    private void buscarSocio(){
+        String ele = jTFBusqueda.getText();
+        String [] apeYnom = ele.split(" ");
+        String ele1;
+        for (int i = 0; i < masterTable.getRowCount(); i++) {
+                ele = masterTable.getValueAt(i, 0).toString().trim();
+                ele1 = masterTable.getValueAt(i, 1).toString().trim();
+                if (ele.equals(apeYnom[0].trim()) && ele1.equals(apeYnom[1].trim())) {
+
+                        masterTable.changeSelection(i, 0, false, false);   
+                        jBVerCuotas.setEnabled(true);  
+                        jComboTipSoc.setEnabled(true);
+                        jComboTipSoc.setEnabled(true);  
+                        tipoDocumentoCB.setEnabled(true);
+                        jTextFieldCuil.setEnabled(true);
+                        jTextFieldNumSoc.setEnabled(true);
+                        break;
+
+                }
+         }
+    }
+    private void setBusqueda(){
+        TextAutoCompleter textAutoCompleter = new TextAutoCompleter(jTFBusqueda);
+        textAutoCompleter.setMode(0);
+        //SociosABM socios = new SociosABM();
+        java.util.Collection listaSocios = this.getListaSocios();        
+        for (Object socio : listaSocios) {
+            Socios soc = new Socios();
+            soc = (Socios) socio;                         
+            textAutoCompleter.addItem(soc.getApellido().trim()+" "+soc.getNombre().trim());
+            
+        }
+    }
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTextField apellidoField;
     private javax.swing.JLabel apellidoLabel;

@@ -151,7 +151,7 @@
                       <Renderer/>
                     </Column>
                     <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="true">
-                      <Title value="Idgastos"/>
+                      <Title/>
                       <Editor/>
                       <Renderer/>
                     </Column>
@@ -171,6 +171,7 @@
                   <Subbinding sourcePath="${fechaGasto}">
                     <BindingParameter name="NAME" value="Fecha del Gasto"/>
                     <BindingParameter name="javax.swing.binding.ParameterKeys.COLUMN_CLASS" value="java.util.Date.class"/>
+                    <BindingParameter name="javax.swing.binding.ParameterKeys.EDITABLE" value="false"/>
                   </Subbinding>
                   <Subbinding sourcePath="${monto}">
                     <BindingParameter name="NAME" value="Monto"/>
@@ -243,9 +244,9 @@
           <Group type="103" groupAlignment="0" attributes="0">
               <Group type="102" alignment="0" attributes="0">
                   <EmptySpace min="-2" pref="176" max="-2" attributes="0"/>
-                  <Component id="refreshButton" linkSize="1" min="-2" max="-2" attributes="0"/>
+                  <Component id="refreshButton" min="-2" max="-2" attributes="0"/>
                   <EmptySpace min="-2" pref="31" max="-2" attributes="0"/>
-                  <Component id="saveButton" linkSize="1" min="-2" max="-2" attributes="0"/>
+                  <Component id="saveButton" min="-2" max="-2" attributes="0"/>
                   <EmptySpace max="32767" attributes="0"/>
               </Group>
               <Group type="103" rootIndex="1" groupAlignment="0" attributes="0">
