@@ -31,17 +31,21 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "Socios.findByIdSocio", query = "SELECT s FROM Socios s WHERE s.idSocio = :idSocio"),
     @NamedQuery(name = "Socios.findByIdTipoSocio", query = "SELECT s FROM Socios s WHERE s.idTipoSocio = :idTipoSocio"),
     @NamedQuery(name = "Socios.findByDocumento", query = "SELECT s FROM Socios s WHERE s.documento = :documento"),
-    @NamedQuery(name = "Socios.findByTipoDocumento", query = "SELECT s FROM Socios s WHERE s.tipoDocumento = :tipoDocumento"),
+    @NamedQuery(name = "Socios.findBySexo", query = "SELECT s FROM Socios s WHERE s.sexo = :sexo"),
     @NamedQuery(name = "Socios.findByNombre", query = "SELECT s FROM Socios s WHERE s.nombre = :nombre"),
     @NamedQuery(name = "Socios.findByApellido", query = "SELECT s FROM Socios s WHERE s.apellido = :apellido"),
     @NamedQuery(name = "Socios.findByCuil", query = "SELECT s FROM Socios s WHERE s.cuil = :cuil"),
     @NamedQuery(name = "Socios.findByNumSoc", query = "SELECT s FROM Socios s WHERE s.numSoc = :numSoc"),
     @NamedQuery(name = "Socios.findByEmail", query = "SELECT s FROM Socios s WHERE s.email = :email"),
     @NamedQuery(name = "Socios.findByTelefono", query = "SELECT s FROM Socios s WHERE s.telefono = :telefono"),
+    @NamedQuery(name = "Socios.findByCelular", query = "SELECT s FROM Socios s WHERE s.celular = :celular"),
     @NamedQuery(name = "Socios.findByFechaNacimiento", query = "SELECT s FROM Socios s WHERE s.fechaNacimiento = :fechaNacimiento"),
     @NamedQuery(name = "Socios.findByLocalidad", query = "SELECT s FROM Socios s WHERE s.localidad = :localidad"),
     @NamedQuery(name = "Socios.findByDireccion", query = "SELECT s FROM Socios s WHERE s.direccion = :direccion"),
-    @NamedQuery(name = "Socios.findByEliminado", query = "SELECT s FROM Socios s WHERE s.eliminado = :eliminado")})
+    @NamedQuery(name = "Socios.findByFechaBaja", query = "SELECT s FROM Socios s WHERE s.fechaBaja = :fechaBaja"),
+    @NamedQuery(name = "Socios.findBySocio", query = "SELECT s FROM Socios s WHERE s.socio = :socio"),
+    @NamedQuery(name = "Socios.findByAdherente", query = "SELECT s FROM Socios s WHERE s.adherente = :adherente"),
+    @NamedQuery(name = "Socios.findByDonante", query = "SELECT s FROM Socios s WHERE s.donante = :donante")})
 public class Socios implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
@@ -56,8 +60,8 @@ public class Socios implements Serializable {
     @Column(name = "documento")
     private int documento;
     @Basic(optional = false)
-    @Column(name = "tipoDocumento")
-    private String tipoDocumento;
+    @Column(name = "sexo")
+    private String sexo;
     @Basic(optional = false)
     @Column(name = "nombre")
     private String nombre;
@@ -75,6 +79,9 @@ public class Socios implements Serializable {
     @Column(name = "telefono")
     private String telefono;
     @Basic(optional = false)
+    @Column(name = "celular")
+    private String celular;
+    @Basic(optional = false)
     @Column(name = "fechaNacimiento")
     @Temporal(TemporalType.DATE)
     private Date fechaNacimiento;
@@ -84,9 +91,18 @@ public class Socios implements Serializable {
     @Basic(optional = false)
     @Column(name = "direccion")
     private String direccion;
+    @Column(name = "fechaBaja")
+    @Temporal(TemporalType.DATE)
+    private Date fechaBaja;
     @Basic(optional = false)
-    @Column(name = "eliminado")
-    private boolean eliminado;
+    @Column(name = "socio")
+    private boolean socio;
+    @Basic(optional = false)
+    @Column(name = "adherente")
+    private boolean adherente;
+    @Basic(optional = false)
+    @Column(name = "donante")
+    private boolean donante;
 
     public Socios() {
     }
@@ -95,19 +111,22 @@ public class Socios implements Serializable {
         this.idSocio = idSocio;
     }
 
-    public Socios(Integer idSocio, int idTipoSocio, int documento, String tipoDocumento, String nombre, String apellido, String email, String telefono, Date fechaNacimiento, String localidad, String direccion, boolean eliminado) {
+    public Socios(Integer idSocio, int idTipoSocio, int documento, String sexo, String nombre, String apellido, String email, String telefono, String celular, Date fechaNacimiento, String localidad, String direccion, boolean socio, boolean adherente, boolean donante) {
         this.idSocio = idSocio;
         this.idTipoSocio = idTipoSocio;
         this.documento = documento;
-        this.tipoDocumento = tipoDocumento;
+        this.sexo = sexo;
         this.nombre = nombre;
         this.apellido = apellido;
         this.email = email;
         this.telefono = telefono;
+        this.celular = celular;
         this.fechaNacimiento = fechaNacimiento;
         this.localidad = localidad;
         this.direccion = direccion;
-        this.eliminado = eliminado;
+        this.socio = socio;
+        this.adherente = adherente;
+        this.donante = donante;
     }
 
     public Integer getIdSocio() {
@@ -134,12 +153,12 @@ public class Socios implements Serializable {
         this.documento = documento;
     }
 
-    public String getTipoDocumento() {
-        return tipoDocumento;
+    public String getSexo() {
+        return sexo;
     }
 
-    public void setTipoDocumento(String tipoDocumento) {
-        this.tipoDocumento = tipoDocumento;
+    public void setSexo(String sexo) {
+        this.sexo = sexo;
     }
 
     public String getNombre() {
@@ -190,6 +209,14 @@ public class Socios implements Serializable {
         this.telefono = telefono;
     }
 
+    public String getCelular() {
+        return celular;
+    }
+
+    public void setCelular(String celular) {
+        this.celular = celular;
+    }
+
     public Date getFechaNacimiento() {
         return fechaNacimiento;
     }
@@ -214,12 +241,36 @@ public class Socios implements Serializable {
         this.direccion = direccion;
     }
 
-    public boolean getEliminado() {
-        return eliminado;
+    public Date getFechaBaja() {
+        return fechaBaja;
     }
 
-    public void setEliminado(boolean eliminado) {
-        this.eliminado = eliminado;
+    public void setFechaBaja(Date fechaBaja) {
+        this.fechaBaja = fechaBaja;
+    }
+
+    public boolean getSocio() {
+        return socio;
+    }
+
+    public void setSocio(boolean socio) {
+        this.socio = socio;
+    }
+
+    public boolean getAdherente() {
+        return adherente;
+    }
+
+    public void setAdherente(boolean adherente) {
+        this.adherente = adherente;
+    }
+
+    public boolean getDonante() {
+        return donante;
+    }
+
+    public void setDonante(boolean donante) {
+        this.donante = donante;
     }
 
     @Override

@@ -108,7 +108,7 @@
                               </Group>
                               <Group type="102" alignment="0" attributes="0">
                                   <EmptySpace min="-2" pref="143" max="-2" attributes="0"/>
-                                  <Component id="jBGenReport" min="-2" max="-2" attributes="0"/>
+                                  <Component id="jBGenReportIngresos" min="-2" max="-2" attributes="0"/>
                               </Group>
                           </Group>
                           <EmptySpace pref="31" max="32767" attributes="0"/>
@@ -136,7 +136,7 @@
                               <Component id="jBHasta" min="-2" pref="25" max="-2" attributes="0"/>
                           </Group>
                           <EmptySpace pref="63" max="32767" attributes="0"/>
-                          <Component id="jBGenReport" min="-2" pref="43" max="-2" attributes="0"/>
+                          <Component id="jBGenReportIngresos" min="-2" pref="43" max="-2" attributes="0"/>
                           <EmptySpace min="-2" pref="22" max="-2" attributes="0"/>
                       </Group>
                   </Group>
@@ -179,12 +179,12 @@
                     <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jBHastaActionPerformed"/>
                   </Events>
                 </Component>
-                <Component class="javax.swing.JButton" name="jBGenReport">
+                <Component class="javax.swing.JButton" name="jBGenReportIngresos">
                   <Properties>
                     <Property name="text" type="java.lang.String" value="Generar Reporte"/>
                   </Properties>
                   <Events>
-                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jBGenReportActionPerformed"/>
+                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jBGenReportIngresosActionPerformed"/>
                   </Events>
                 </Component>
               </SubComponents>
@@ -267,7 +267,7 @@
                       </Group>
                       <Group type="102" alignment="0" attributes="0">
                           <EmptySpace min="-2" pref="164" max="-2" attributes="0"/>
-                          <Component id="jBGenReport1" min="-2" max="-2" attributes="0"/>
+                          <Component id="jBGenReportEgresos" min="-2" max="-2" attributes="0"/>
                           <EmptySpace max="32767" attributes="0"/>
                       </Group>
                   </Group>
@@ -292,7 +292,7 @@
                               <Component id="jComboBoxTipoGasto" alignment="3" min="-2" max="-2" attributes="0"/>
                           </Group>
                           <EmptySpace pref="27" max="32767" attributes="0"/>
-                          <Component id="jBGenReport1" min="-2" pref="41" max="-2" attributes="0"/>
+                          <Component id="jBGenReportEgresos" min="-2" pref="41" max="-2" attributes="0"/>
                           <EmptySpace min="-2" pref="20" max="-2" attributes="0"/>
                       </Group>
                   </Group>
@@ -306,12 +306,12 @@
                 </Component>
                 <Component class="javax.swing.JTextField" name="jTFDesde1">
                 </Component>
-                <Component class="javax.swing.JButton" name="jBGenReport1">
+                <Component class="javax.swing.JButton" name="jBGenReportEgresos">
                   <Properties>
                     <Property name="text" type="java.lang.String" value="Generar Reporte"/>
                   </Properties>
                   <Events>
-                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jBGenReport1ActionPerformed"/>
+                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jBGenReportEgresosActionPerformed"/>
                   </Events>
                 </Component>
                 <Component class="javax.swing.JComboBox" name="jComboBoxTipoGasto">

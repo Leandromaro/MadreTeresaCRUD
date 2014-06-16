@@ -9,17 +9,24 @@ package madreteresacrud;
 import java.awt.Dimension;
 import java.beans.Beans;
 import java.math.BigDecimal;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.persistence.RollbackException;
 import javax.swing.JDesktopPane;
+import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JInternalFrame;
 import javax.swing.JPanel;
 import madreteresacrud.floresVida.FlorVidaABM;
 import madreteresacrud.floresVida.SociosFVABM;
 import reportes.IngresosEgresos;
+import utilidades.GenerarCuotas;
 
 /**
  *
@@ -70,6 +77,7 @@ public class MadreTeresaMain extends javax.swing.JFrame {
         jMenu4 = new javax.swing.JMenu();
         jMenuSocios = new javax.swing.JMenuItem();
         jMenuItem3 = new javax.swing.JMenuItem();
+        jMenuItem2 = new javax.swing.JMenuItem();
         jMenu6 = new javax.swing.JMenu();
         jMenuDonaciones = new javax.swing.JMenuItem();
         jMenuItem7 = new javax.swing.JMenuItem();
@@ -100,6 +108,14 @@ public class MadreTeresaMain extends javax.swing.JFrame {
             }
         });
         jMenu4.add(jMenuItem3);
+
+        jMenuItem2.setText("Generar cuotas ");
+        jMenuItem2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem2ActionPerformed(evt);
+            }
+        });
+        jMenu4.add(jMenuItem2);
 
         jMenuBar1.add(jMenu4);
 
@@ -181,7 +197,7 @@ public class MadreTeresaMain extends javax.swing.JFrame {
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jDesktopPane, javax.swing.GroupLayout.DEFAULT_SIZE, 628, Short.MAX_VALUE)
+            .addComponent(jDesktopPane, javax.swing.GroupLayout.DEFAULT_SIZE, 636, Short.MAX_VALUE)
         );
 
         pack();
@@ -362,7 +378,17 @@ public class MadreTeresaMain extends javax.swing.JFrame {
 //        frame.setVisible(true);
        
     }//GEN-LAST:event_jMenuItem7ActionPerformed
-    public void generarCuotas(){
+
+    private void jMenuItem2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem2ActionPerformed
+       JDialog genc = new GenerarCuotas(this,true);
+       genc.setLocationRelativeTo(null);
+       genc.setVisible(true);
+    }//GEN-LAST:event_jMenuItem2ActionPerformed
+    public boolean generarCuotas(int mes, int anio){
+        boolean band=false;      
+        boolean flag=false;
+        int cont;
+        Calendar cf = Calendar.getInstance();
         SociosABM socios = new SociosABM();
         Socios s = new Socios();
         CuotaSocialABM cs;
@@ -385,8 +411,11 @@ public class MadreTeresaMain extends javax.swing.JFrame {
             cs.setQuery();
             listaCuotas = cs.getListaCuotas();
             if(listaCuotas.isEmpty()){
+                band=true;
                 f1.setTime(f);
                 f1.set(Calendar.DAY_OF_MONTH,1);
+                f1.set(Calendar.MONTH,mes);
+                f1.set(Calendar.YEAR, anio);
                 c.setFechaActivacion(f1.getTime());                 
                 entityManager.persist(c);               
                 //Guardamos la cuota
@@ -399,13 +428,29 @@ public class MadreTeresaMain extends javax.swing.JFrame {
                 }
                 
             }else{
+                flag=false;
+                cont=0;           
                 for(Object cuota:listaCuotas){
                     c1 =(CuotaSocial)cuota;
-                    f = c1.getFechaActivacion();  
-                    if(f2.getMonth()>f.getMonth()){
-                        f1.setTime(f);        
-                        f1.add(Calendar.MONTH, 1); 
+                    f = c1.getFechaActivacion();                   
+                    cf.setTime(f);                      
+                    cont++;                    
+                    if((mes==f.getMonth())&&(anio==cf.get(Calendar.YEAR))){
+                        flag=true;
+                        break;
+                    }
+                    if(cont>5){
+                        break;
+                    }                  
+                }
+                
+                  if((flag==false)&&((anio+1)>=cf.get(Calendar.YEAR))){                     
+                       band=true;                       
+                        f1.setTime(f);     
+//                        f1.add(Calendar.MONTH, 1); 
                         f1.set(Calendar.DAY_OF_MONTH,1);
+                        f1.set(Calendar.MONTH,mes);
+                        f1.set(Calendar.YEAR, anio);                         
                         c.setFechaActivacion(f1.getTime());                         
                         entityManager.persist(c);
                 
@@ -417,15 +462,12 @@ public class MadreTeresaMain extends javax.swing.JFrame {
                             rex.printStackTrace();
                             entityManager.getTransaction().begin();            
                         }
-                    }
-                    break;
-                }
-                              
+                    }                             
                 
             }
             
         }
-        
+        return band;
     }
     public void setEntity(){
         entityManager = java.beans.Beans.isDesignTime() ? null : javax.persistence.Persistence.createEntityManagerFactory("madreTeresaCRUDPU").createEntityManager();                 
@@ -465,8 +507,8 @@ public class MadreTeresaMain extends javax.swing.JFrame {
             public void run() {
                 
                 MadreTeresaMain m  = new MadreTeresaMain(); 
-                m.setEntity();
-                m.generarCuotas();                                      
+//                m.setEntity();
+//                m.generarCuotas();                                      
                  
             }
         });
@@ -482,6 +524,7 @@ public class MadreTeresaMain extends javax.swing.JFrame {
     private javax.swing.JMenuItem jMenuDonaciones;
     private javax.swing.JMenuItem jMenuGastos;
     private javax.swing.JMenuItem jMenuItem1;
+    private javax.swing.JMenuItem jMenuItem2;
     private javax.swing.JMenuItem jMenuItem3;
     private javax.swing.JMenuItem jMenuItem4;
     private javax.swing.JMenuItem jMenuItem5;

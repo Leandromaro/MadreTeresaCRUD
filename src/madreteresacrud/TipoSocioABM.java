@@ -57,7 +57,7 @@ public class TipoSocioABM extends JPanel {
         columnBinding.setColumnClass(String.class);
         columnBinding.setEditable(false);
         columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${monto}"));
-        columnBinding.setColumnName("Monto");
+        columnBinding.setColumnName("Monto ($)");
         columnBinding.setColumnClass(java.math.BigDecimal.class);
         bindingGroup.addBinding(jTableBinding);
         jTableBinding.bind();

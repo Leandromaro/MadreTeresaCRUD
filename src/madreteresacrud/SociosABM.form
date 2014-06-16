@@ -19,6 +19,7 @@
         </Property>
       </Properties>
       <AuxValues>
+        <AuxValue name="JavaCodeGenerator_CreateCodeCustom" type="java.lang.String" value="java.beans.Beans.isDesignTime() ? null : entityManager.createQuery(&quot;SELECT s FROM Socios s WHERE s.socio=true ORDER BY s.apellido&quot;)"/>
         <AuxValue name="JavaCodeGenerator_VariableLocal" type="java.lang.Boolean" value="false"/>
         <AuxValue name="JavaCodeGenerator_VariableModifier" type="java.lang.Integer" value="2"/>
       </AuxValues>
@@ -34,65 +35,6 @@
         <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;madreteresacrud.Socios&gt;"/>
         <AuxValue name="JavaCodeGenerator_VariableLocal" type="java.lang.Boolean" value="false"/>
         <AuxValue name="JavaCodeGenerator_VariableModifier" type="java.lang.Integer" value="2"/>
-      </AuxValues>
-    </Component>
-    <Component class="javax.persistence.EntityManager" name="madreTeresaCRUDPUEntityManager">
-      <Properties>
-        <Property name="persistenceUnit" type="java.lang.String" value="madreTeresaCRUDPU"/>
-      </Properties>
-    </Component>
-    <Component class="javax.persistence.Query" name="tipoSocioQuery">
-      <Properties>
-        <Property name="query" type="java.lang.String" value="SELECT t FROM TipoSocio t"/>
-        <Property name="entityManager" type="java.lang.Object" editor="org.netbeans.modules.form.j2ee.J2EEPropertyModifier$EMProperty$EntityManagerEditor">
-          <ComponentRef name="madreTeresaCRUDPUEntityManager"/>
-        </Property>
-      </Properties>
-    </Component>
-    <Component class="java.util.List" name="tipoSocioList">
-      <Properties>
-        <Property name="query" type="java.lang.Object" editor="org.netbeans.modules.form.j2ee.J2EEPropertyModifier$QueryBeanProperty$QueryEditor">
-          <ComponentRef name="tipoSocioQuery"/>
-        </Property>
-      </Properties>
-      <AuxValues>
-        <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;madreteresacrud.TipoSocio&gt;"/>
-      </AuxValues>
-    </Component>
-    <Component class="javax.persistence.Query" name="tipoSocioQuery1">
-      <Properties>
-        <Property name="query" type="java.lang.String" value="SELECT t FROM TipoSocio t"/>
-        <Property name="entityManager" type="java.lang.Object" editor="org.netbeans.modules.form.j2ee.J2EEPropertyModifier$EMProperty$EntityManagerEditor">
-          <ComponentRef name="madreTeresaCRUDPUEntityManager"/>
-        </Property>
-      </Properties>
-    </Component>
-    <Component class="java.util.List" name="tipoSocioList1">
-      <Properties>
-        <Property name="query" type="java.lang.Object" editor="org.netbeans.modules.form.j2ee.J2EEPropertyModifier$QueryBeanProperty$QueryEditor">
-          <ComponentRef name="tipoSocioQuery1"/>
-        </Property>
-      </Properties>
-      <AuxValues>
-        <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;madreteresacrud.TipoSocio&gt;"/>
-      </AuxValues>
-    </Component>
-    <Component class="javax.persistence.Query" name="tipoSocioQuery2">
-      <Properties>
-        <Property name="query" type="java.lang.String" value="SELECT t FROM TipoSocio t"/>
-        <Property name="entityManager" type="java.lang.Object" editor="org.netbeans.modules.form.j2ee.J2EEPropertyModifier$EMProperty$EntityManagerEditor">
-          <ComponentRef name="madreTeresaCRUDPUEntityManager"/>
-        </Property>
-      </Properties>
-    </Component>
-    <Component class="java.util.List" name="tipoSocioList2">
-      <Properties>
-        <Property name="query" type="java.lang.Object" editor="org.netbeans.modules.form.j2ee.J2EEPropertyModifier$QueryBeanProperty$QueryEditor">
-          <ComponentRef name="tipoSocioQuery2"/>
-        </Property>
-      </Properties>
-      <AuxValues>
-        <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;madreteresacrud.TipoSocio&gt;"/>
       </AuxValues>
     </Component>
   </NonVisualComponents>
@@ -122,16 +64,16 @@
                   <Component id="jPanelForm" max="32767" attributes="0"/>
                   <Component id="jPanelTabla" max="32767" attributes="0"/>
               </Group>
-              <EmptySpace pref="18" max="32767" attributes="0"/>
+              <EmptySpace max="32767" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>
     <DimensionLayout dim="1">
       <Group type="103" groupAlignment="0" attributes="0">
           <Group type="102" alignment="0" attributes="0">
-              <Component id="jPanelTabla" min="-2" max="-2" attributes="0"/>
+              <Component id="jPanelTabla" max="32767" attributes="0"/>
               <EmptySpace max="-2" attributes="0"/>
-              <Component id="jPanelForm" max="32767" attributes="0"/>
+              <Component id="jPanelForm" min="-2" max="-2" attributes="0"/>
               <EmptySpace max="-2" attributes="0"/>
           </Group>
       </Group>
@@ -154,71 +96,89 @@
                   <EmptySpace min="-2" pref="20" max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="0" attributes="0">
                       <Component id="apellidoLabel" alignment="0" min="-2" max="-2" attributes="0"/>
-                      <Component id="jLabelTipoSocio" min="-2" max="-2" attributes="0"/>
-                      <Component id="nombreLabel" min="-2" max="-2" attributes="0"/>
-                      <Component id="tipoDocumentoLabel" alignment="0" min="-2" max="-2" attributes="0"/>
                       <Component id="jLabelCuil" alignment="0" min="-2" pref="77" max="-2" attributes="0"/>
                       <Component id="telefonoLabel" alignment="0" min="-2" max="-2" attributes="0"/>
                       <Component id="direccionLabel" alignment="0" min="-2" max="-2" attributes="0"/>
-                      <Component id="localidadLabel" alignment="0" min="-2" max="-2" attributes="0"/>
+                      <Component id="jLabelNumSoc" alignment="0" min="-2" max="-2" attributes="0"/>
+                      <Component id="documentoLabel" alignment="0" min="-2" max="-2" attributes="0"/>
+                      <Component id="emailLabel" min="-2" pref="69" max="-2" attributes="0"/>
+                      <Component id="jLabelBaja" min="-2" max="-2" attributes="0"/>
                   </Group>
                   <EmptySpace max="32767" attributes="0"/>
                   <Group type="103" groupAlignment="0" attributes="0">
                       <Group type="102" attributes="0">
-                          <Component id="refreshButton" min="-2" pref="83" max="-2" attributes="0"/>
-                          <EmptySpace type="separate" max="-2" attributes="0"/>
-                          <Component id="saveButton" min="-2" pref="93" max="-2" attributes="0"/>
-                      </Group>
-                      <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                          <Component id="apellidoField" alignment="0" max="32767" attributes="0"/>
-                          <Component id="nombreField" alignment="0" max="32767" attributes="0"/>
-                          <Component id="localidadField" alignment="0" max="32767" attributes="0"/>
-                          <Group type="102" alignment="0" attributes="0">
-                              <Group type="103" groupAlignment="0" attributes="0">
-                                  <Group type="103" alignment="0" groupAlignment="1" attributes="0">
-                                      <Component id="jComboTipSoc" min="-2" pref="170" max="-2" attributes="0"/>
-                                      <Component id="tipoDocumentoCB" min="-2" pref="170" max="-2" attributes="0"/>
-                                  </Group>
-                                  <Component id="jTextFieldCuil" alignment="0" min="-2" pref="170" max="-2" attributes="0"/>
-                                  <Component id="telefonoField" min="-2" pref="170" max="-2" attributes="0"/>
-                              </Group>
-                              <EmptySpace min="-2" pref="84" max="-2" attributes="0"/>
-                              <Group type="103" groupAlignment="0" attributes="0">
-                                  <Component id="emailLabel" min="-2" pref="69" max="-2" attributes="0"/>
-                                  <Component id="documentoLabel" min="-2" max="-2" attributes="0"/>
-                                  <Component id="jLabelNumSoc" min="-2" max="-2" attributes="0"/>
-                                  <Component id="fechaNacimientoLabel" min="-2" max="-2" attributes="0"/>
-                              </Group>
-                              <EmptySpace type="separate" max="-2" attributes="0"/>
-                              <Group type="103" groupAlignment="0" attributes="0">
-                                  <Group type="102" attributes="0">
-                                      <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                                          <Component id="jTextFieldNumSoc" pref="164" max="32767" attributes="0"/>
-                                          <Component id="documentoField" max="32767" attributes="0"/>
-                                          <Component id="fechaNacimientoField" alignment="0" max="32767" attributes="0"/>
+                          <Group type="103" groupAlignment="0" attributes="0">
+                              <Group type="102" alignment="0" attributes="0">
+                                  <Group type="103" groupAlignment="0" attributes="0">
+                                      <Component id="numSocField" alignment="0" min="-2" pref="164" max="-2" attributes="0"/>
+                                      <Component id="documentoField" alignment="0" min="-2" pref="164" max="-2" attributes="0"/>
+                                      <Group type="102" attributes="0">
+                                          <Group type="103" groupAlignment="0" max="-2" attributes="0">
+                                              <Component id="apellidoField" min="-2" pref="312" max="-2" attributes="0"/>
+                                              <Group type="102" alignment="1" attributes="0">
+                                                  <Group type="103" groupAlignment="1" attributes="0">
+                                                      <Component id="telefonoField" alignment="0" min="-2" pref="164" max="-2" attributes="0"/>
+                                                      <Component id="cuilField" min="-2" pref="164" max="-2" attributes="0"/>
+                                                  </Group>
+                                                  <EmptySpace min="-2" pref="148" max="-2" attributes="0"/>
+                                              </Group>
+                                          </Group>
+                                          <EmptySpace min="12" pref="12" max="-2" attributes="0"/>
+                                          <Group type="103" groupAlignment="0" attributes="0">
+                                              <Component id="jLabelTipoSocio" min="-2" max="-2" attributes="0"/>
+                                              <Component id="nombreLabel" min="-2" max="-2" attributes="0"/>
+                                              <Component id="tipoDocumentoLabel" alignment="0" min="-2" max="-2" attributes="0"/>
+                                              <Component id="fechaNacimientoLabel" alignment="0" min="-2" max="-2" attributes="0"/>
+                                              <Component id="jLabel1" alignment="0" min="-2" max="-2" attributes="0"/>
+                                          </Group>
                                       </Group>
-                                      <EmptySpace max="-2" attributes="0"/>
-                                      <Component id="jButtonFecha" min="-2" pref="35" max="-2" attributes="0"/>
+                                      <Group type="102" alignment="0" attributes="0">
+                                          <Group type="103" groupAlignment="1" max="-2" attributes="0">
+                                              <Component id="direccionField" alignment="0" pref="310" max="32767" attributes="0"/>
+                                              <Component id="emailField" alignment="0" max="32767" attributes="0"/>
+                                          </Group>
+                                          <EmptySpace type="separate" max="-2" attributes="0"/>
+                                          <Component id="localidadLabel" min="-2" max="-2" attributes="0"/>
+                                      </Group>
                                   </Group>
-                                  <Component id="emailField" min="-2" pref="381" max="-2" attributes="0"/>
+                                  <EmptySpace max="32767" attributes="0"/>
+                                  <Group type="103" groupAlignment="0" attributes="0">
+                                      <Component id="localidadField" min="-2" pref="272" max="-2" attributes="0"/>
+                                      <Component id="celularField" alignment="0" min="-2" pref="164" max="-2" attributes="0"/>
+                                      <Group type="102" alignment="0" attributes="0">
+                                          <Group type="103" groupAlignment="0" max="-2" attributes="0">
+                                              <Component id="fechaNacimientoField" pref="111" max="32767" attributes="0"/>
+                                              <Component id="sexoField" pref="0" max="32767" attributes="0"/>
+                                          </Group>
+                                          <EmptySpace max="-2" attributes="0"/>
+                                          <Component id="jButtonFecha" min="-2" pref="35" max="-2" attributes="0"/>
+                                      </Group>
+                                      <Component id="nombreField" min="-2" pref="360" max="-2" attributes="0"/>
+                                      <Component id="jComboTipSoc" alignment="0" min="-2" pref="111" max="-2" attributes="0"/>
+                                  </Group>
+                              </Group>
+                              <Group type="102" attributes="0">
+                                  <Component id="refreshButton" min="-2" pref="83" max="-2" attributes="0"/>
+                                  <EmptySpace type="separate" max="-2" attributes="0"/>
+                                  <Component id="saveButton" min="-2" pref="93" max="-2" attributes="0"/>
+                                  <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
                               </Group>
                           </Group>
-                          <Component id="direccionField" alignment="0" max="32767" attributes="0"/>
+                          <EmptySpace pref="24" max="32767" attributes="0"/>
+                      </Group>
+                      <Group type="102" attributes="0">
+                          <Component id="jLEliminado" min="-2" pref="98" max="-2" attributes="0"/>
+                          <EmptySpace min="-2" pref="36" max="-2" attributes="0"/>
+                          <Component id="jLabelSocio" min="-2" pref="46" max="-2" attributes="0"/>
+                          <EmptySpace max="32767" attributes="0"/>
                       </Group>
                   </Group>
-                  <EmptySpace pref="17" max="32767" attributes="0"/>
               </Group>
               <Group type="103" rootIndex="1" groupAlignment="0" attributes="0">
                   <Group type="102" alignment="0" attributes="0">
-                      <EmptySpace min="-2" pref="363" max="-2" attributes="0"/>
-                      <Group type="103" groupAlignment="0" attributes="0">
-                          <Group type="102" alignment="0" attributes="0">
-                              <EmptySpace min="-2" pref="27" max="-2" attributes="0"/>
-                              <Component id="jLabelTipSoc" min="-2" max="-2" attributes="0"/>
-                          </Group>
-                          <Component id="jLEliminado" alignment="0" min="-2" max="-2" attributes="0"/>
-                      </Group>
-                      <EmptySpace pref="532" max="32767" attributes="0"/>
+                      <EmptySpace min="-2" pref="59" max="-2" attributes="0"/>
+                      <Component id="jLabelTipSoc" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace pref="541" max="32767" attributes="0"/>
                   </Group>
               </Group>
           </Group>
@@ -226,77 +186,102 @@
         <DimensionLayout dim="1">
           <Group type="103" groupAlignment="0" attributes="0">
               <Group type="102" alignment="0" attributes="0">
+                  <Group type="103" groupAlignment="0" attributes="0">
+                      <Component id="jLEliminado" min="-2" pref="15" max="-2" attributes="0"/>
+                      <Component id="jLabelBaja" min="-2" max="-2" attributes="0"/>
+                      <Component id="jLabelSocio" min="-2" pref="15" max="-2" attributes="0"/>
+                  </Group>
                   <EmptySpace max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="3" attributes="0">
-                      <Component id="apellidoLabel" alignment="3" min="-2" pref="22" max="-2" attributes="0"/>
-                      <Component id="apellidoField" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="jLabelNumSoc" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="numSocField" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="jLabelTipoSocio" alignment="3" min="-2" pref="27" max="-2" attributes="0"/>
+                      <Component id="jComboTipSoc" alignment="3" min="-2" max="-2" attributes="0"/>
                   </Group>
                   <EmptySpace max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="3" attributes="0">
                       <Component id="nombreLabel" alignment="3" min="-2" pref="24" max="-2" attributes="0"/>
                       <Component id="nombreField" alignment="3" min="-2" max="-2" attributes="0"/>
-                  </Group>
-                  <EmptySpace max="-2" attributes="0"/>
-                  <Group type="103" groupAlignment="3" attributes="0">
-                      <Component id="jLabelTipoSocio" alignment="3" min="-2" pref="27" max="-2" attributes="0"/>
-                      <Component id="jComboTipSoc" alignment="3" min="-2" max="-2" attributes="0"/>
-                      <Component id="jLabelNumSoc" alignment="3" min="-2" max="-2" attributes="0"/>
-                      <Component id="jTextFieldNumSoc" alignment="3" min="-2" max="-2" attributes="0"/>
-                  </Group>
-                  <EmptySpace max="-2" attributes="0"/>
-                  <Group type="103" groupAlignment="3" attributes="0">
-                      <Component id="tipoDocumentoLabel" alignment="3" min="-2" max="-2" attributes="0"/>
-                      <Component id="tipoDocumentoCB" alignment="3" min="-2" max="-2" attributes="0"/>
-                      <Component id="documentoLabel" alignment="3" min="-2" max="-2" attributes="0"/>
-                      <Component id="documentoField" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="apellidoField" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="apellidoLabel" alignment="3" min="-2" pref="22" max="-2" attributes="0"/>
                   </Group>
                   <EmptySpace max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="0" attributes="0">
+                      <Component id="documentoLabel" min="-2" max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="3" attributes="0">
-                          <Component id="jLabelCuil" alignment="3" min="-2" max="-2" attributes="0"/>
-                          <Component id="jTextFieldCuil" alignment="3" min="-2" max="-2" attributes="0"/>
-                          <Component id="fechaNacimientoLabel" alignment="3" min="-2" max="-2" attributes="0"/>
-                          <Component id="fechaNacimientoField" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="documentoField" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="tipoDocumentoLabel" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="sexoField" alignment="3" min="-2" max="-2" attributes="0"/>
                       </Group>
-                      <Component id="jButtonFecha" min="-2" pref="25" max="-2" attributes="0"/>
                   </Group>
                   <EmptySpace max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="0" attributes="0">
-                      <Group type="103" groupAlignment="3" attributes="0">
-                          <Component id="telefonoLabel" alignment="3" min="-2" max="-2" attributes="0"/>
-                          <Component id="emailLabel" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Group type="102" alignment="0" attributes="0">
+                          <Group type="103" groupAlignment="0" attributes="0">
+                              <Component id="jLabelCuil" min="-2" max="-2" attributes="0"/>
+                              <Component id="fechaNacimientoLabel" alignment="0" min="-2" max="-2" attributes="0"/>
+                          </Group>
+                          <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                          <Component id="telefonoLabel" min="-2" max="-2" attributes="0"/>
                       </Group>
-                      <Component id="emailField" alignment="0" min="-2" max="-2" attributes="0"/>
-                      <Component id="telefonoField" alignment="0" min="-2" max="-2" attributes="0"/>
+                      <Group type="102" alignment="0" attributes="0">
+                          <Group type="103" groupAlignment="1" attributes="0">
+                              <Component id="jButtonFecha" min="-2" pref="25" max="-2" attributes="0"/>
+                              <Group type="103" groupAlignment="0" attributes="0">
+                                  <Component id="fechaNacimientoField" min="-2" max="-2" attributes="0"/>
+                                  <Component id="cuilField" min="-2" max="-2" attributes="0"/>
+                              </Group>
+                          </Group>
+                          <Group type="103" groupAlignment="0" attributes="0">
+                              <Group type="102" alignment="0" attributes="0">
+                                  <EmptySpace min="-2" pref="10" max="-2" attributes="0"/>
+                                  <Component id="telefonoField" min="-2" max="-2" attributes="0"/>
+                                  <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
+                              </Group>
+                              <Group type="102" alignment="0" attributes="0">
+                                  <EmptySpace min="-2" pref="3" max="-2" attributes="0"/>
+                                  <Group type="103" groupAlignment="3" attributes="0">
+                                      <Component id="jLabel1" alignment="3" min="-2" max="-2" attributes="0"/>
+                                      <Component id="celularField" alignment="3" min="-2" max="-2" attributes="0"/>
+                                  </Group>
+                                  <EmptySpace max="32767" attributes="0"/>
+                                  <Group type="103" groupAlignment="0" attributes="0">
+                                      <Group type="102" attributes="0">
+                                          <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
+                                          <Group type="103" groupAlignment="3" attributes="0">
+                                              <Component id="emailField" alignment="3" min="-2" max="-2" attributes="0"/>
+                                              <Component id="emailLabel" alignment="3" min="-2" max="-2" attributes="0"/>
+                                          </Group>
+                                      </Group>
+                                      <Group type="102" attributes="0">
+                                          <Group type="103" groupAlignment="0" attributes="0">
+                                              <Component id="localidadField" alignment="0" min="-2" max="-2" attributes="0"/>
+                                              <Component id="localidadLabel" min="-2" max="-2" attributes="0"/>
+                                          </Group>
+                                          <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
+                                      </Group>
+                                  </Group>
+                              </Group>
+                          </Group>
+                      </Group>
                   </Group>
-                  <EmptySpace max="-2" attributes="0"/>
-                  <Group type="103" groupAlignment="3" attributes="0">
-                      <Component id="localidadLabel" alignment="3" min="-2" max="-2" attributes="0"/>
-                      <Component id="localidadField" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <EmptySpace max="32767" attributes="0"/>
+                  <Group type="103" groupAlignment="0" attributes="0">
+                      <Component id="direccionLabel" min="-2" max="-2" attributes="0"/>
+                      <Component id="direccionField" min="-2" max="-2" attributes="0"/>
                   </Group>
-                  <EmptySpace min="-2" pref="6" max="-2" attributes="0"/>
-                  <Group type="103" groupAlignment="3" attributes="0">
-                      <Component id="direccionLabel" alignment="3" min="-2" max="-2" attributes="0"/>
-                      <Component id="direccionField" alignment="3" min="-2" max="-2" attributes="0"/>
-                  </Group>
-                  <EmptySpace type="separate" max="-2" attributes="0"/>
+                  <EmptySpace type="unrelated" max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="3" attributes="0">
                       <Component id="refreshButton" alignment="3" min="-2" max="-2" attributes="0"/>
                       <Component id="saveButton" alignment="3" min="-2" max="-2" attributes="0"/>
                   </Group>
-                  <EmptySpace pref="36" max="32767" attributes="0"/>
+                  <EmptySpace max="32767" attributes="0"/>
               </Group>
               <Group type="103" rootIndex="1" groupAlignment="0" attributes="0">
                   <Group type="102" alignment="0" attributes="0">
                       <EmptySpace min="-2" pref="75" max="-2" attributes="0"/>
-                      <Group type="103" groupAlignment="0" attributes="0">
-                          <Component id="jLabelTipSoc" alignment="0" min="-2" max="-2" attributes="0"/>
-                          <Group type="102" alignment="0" attributes="0">
-                              <EmptySpace min="-2" pref="15" max="-2" attributes="0"/>
-                              <Component id="jLEliminado" min="-2" max="-2" attributes="0"/>
-                          </Group>
-                      </Group>
-                      <EmptySpace pref="227" max="32767" attributes="0"/>
+                      <Component id="jLabelTipSoc" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace pref="182" max="32767" attributes="0"/>
                   </Group>
               </Group>
           </Group>
@@ -305,7 +290,7 @@
       <SubComponents>
         <Component class="javax.swing.JLabel" name="apellidoLabel">
           <Properties>
-            <Property name="text" type="java.lang.String" value="Apellido:"/>
+            <Property name="text" type="java.lang.String" value="Apellido/s:"/>
           </Properties>
         </Component>
         <Component class="javax.swing.JTextField" name="apellidoField">
@@ -318,7 +303,7 @@
         </Component>
         <Component class="javax.swing.JLabel" name="nombreLabel">
           <Properties>
-            <Property name="text" type="java.lang.String" value="Nombre:"/>
+            <Property name="text" type="java.lang.String" value="Nombre/s:"/>
           </Properties>
         </Component>
         <Component class="javax.swing.JTextField" name="nombreField">
@@ -331,12 +316,12 @@
         </Component>
         <Component class="javax.swing.JLabel" name="documentoLabel">
           <Properties>
-            <Property name="text" type="java.lang.String" value="Documento:"/>
+            <Property name="text" type="java.lang.String" value="DNI:"/>
           </Properties>
         </Component>
         <Component class="javax.swing.JLabel" name="tipoDocumentoLabel">
           <Properties>
-            <Property name="text" type="java.lang.String" value="Tipo Documento:"/>
+            <Property name="text" type="java.lang.String" value="Sexo"/>
           </Properties>
         </Component>
         <Component class="javax.swing.JLabel" name="emailLabel">
@@ -346,12 +331,14 @@
         </Component>
         <Component class="javax.swing.JLabel" name="telefonoLabel">
           <Properties>
-            <Property name="text" type="java.lang.String" value="Telefono:"/>
+            <Property name="text" type="java.lang.String" value="Tel&#xe9;fono:"/>
           </Properties>
         </Component>
         <Component class="javax.swing.JLabel" name="fechaNacimientoLabel">
           <Properties>
-            <Property name="text" type="java.lang.String" value="Fecha de Nacimiento:"/>
+            <Property name="text" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+              <Connection code=" &quot;&lt;html&gt;Fecha de&lt;P&gt;&quot; +&#xa;                &quot;&lt;html&gt;Nacimiento:&lt;P&gt;&quot;" type="code"/>
+            </Property>
           </Properties>
         </Component>
         <Component class="javax.swing.JLabel" name="localidadLabel">
@@ -361,24 +348,38 @@
         </Component>
         <Component class="javax.swing.JLabel" name="direccionLabel">
           <Properties>
-            <Property name="text" type="java.lang.String" value="Direccion:"/>
+            <Property name="text" type="java.lang.String" value="Direcci&#xf3;n:"/>
           </Properties>
         </Component>
         <Component class="javax.swing.JTextField" name="emailField">
+          <Properties>
+            <Property name="toolTipText" type="java.lang.String" value="Deber&#xed;a ser de la forma &quot;nombre@dominio.com&quot;"/>
+          </Properties>
           <BindingProperties>
             <BindingProperty name="text" source="masterTable" sourcePath="${selectedElement.email}" target="emailField" targetPath="text" updateStrategy="0" immediately="false">
               <Property name="incompletePathValue" type="java.lang.String" value="null"/>
             </BindingProperty>
             <BindingProperty name="enabled" source="masterTable" sourcePath="${selectedElement != null}" target="emailField" targetPath="enabled" updateStrategy="1" immediately="false"/>
           </BindingProperties>
+          <Events>
+            <EventHandler event="focusLost" listener="java.awt.event.FocusListener" parameters="java.awt.event.FocusEvent" handler="emailFieldFocusLost"/>
+          </Events>
         </Component>
         <Component class="javax.swing.JTextField" name="telefonoField">
+          <Properties>
+            <Property name="toolTipText" type="java.lang.String" value="Solo n&#xfa;meros."/>
+          </Properties>
           <BindingProperties>
             <BindingProperty name="text" source="masterTable" sourcePath="${selectedElement.telefono}" target="telefonoField" targetPath="text" updateStrategy="0" immediately="false">
               <Property name="incompletePathValue" type="java.lang.String" value="null"/>
             </BindingProperty>
             <BindingProperty name="enabled" source="masterTable" sourcePath="${selectedElement != null}" target="telefonoField" targetPath="enabled" updateStrategy="1" immediately="false"/>
           </BindingProperties>
+          <Events>
+            <EventHandler event="focusGained" listener="java.awt.event.FocusListener" parameters="java.awt.event.FocusEvent" handler="telefonoFieldFocusGained"/>
+            <EventHandler event="focusLost" listener="java.awt.event.FocusListener" parameters="java.awt.event.FocusEvent" handler="telefonoFieldFocusLost"/>
+            <EventHandler event="keyTyped" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="telefonoFieldKeyTyped"/>
+          </Events>
         </Component>
         <Component class="javax.swing.JTextField" name="fechaNacimientoField">
           <BindingProperties>
@@ -408,12 +409,12 @@
             <BindingProperty name="enabled" source="masterTable" sourcePath="${selectedElement != null}" target="direccionField" targetPath="enabled" updateStrategy="1" immediately="false"/>
           </BindingProperties>
         </Component>
-        <Component class="javax.swing.JTextField" name="jTextFieldCuil">
+        <Component class="javax.swing.JTextField" name="cuilField">
           <Properties>
             <Property name="enabled" type="boolean" value="false"/>
           </Properties>
           <BindingProperties>
-            <BindingProperty name="text" source="masterTable" sourcePath="${selectedElement.cuil}" target="jTextFieldCuil" targetPath="text" updateStrategy="0" immediately="false">
+            <BindingProperty name="text" source="masterTable" sourcePath="${selectedElement.cuil}" target="cuilField" targetPath="text" updateStrategy="0" immediately="false">
               <BindingParameter name="javax.swing.binding.ParameterKeys.TEXT_CHANGE_STRATEGY" value="javax.swing.binding.TextChangeStrategy.ON_TYPE"/>
             </BindingProperty>
           </BindingProperties>
@@ -428,12 +429,12 @@
             <Property name="text" type="java.lang.String" value="N&#xb0; Socio:"/>
           </Properties>
         </Component>
-        <Component class="javax.swing.JTextField" name="jTextFieldNumSoc">
+        <Component class="javax.swing.JTextField" name="numSocField">
           <Properties>
             <Property name="enabled" type="boolean" value="false"/>
           </Properties>
           <BindingProperties>
-            <BindingProperty name="text" source="masterTable" sourcePath="${selectedElement.numSoc}" target="jTextFieldNumSoc" targetPath="text" updateStrategy="0" immediately="false">
+            <BindingProperty name="text" source="masterTable" sourcePath="${selectedElement.numSoc}" target="numSocField" targetPath="text" updateStrategy="0" immediately="false">
               <BindingParameter name="javax.swing.binding.ParameterKeys.TEXT_CHANGE_STRATEGY" value="javax.swing.binding.TextChangeStrategy.ON_TYPE"/>
             </BindingProperty>
           </BindingProperties>
@@ -451,26 +452,26 @@
             <Property name="selectedItem" type="java.lang.Object" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
               <Connection code="&quot;Activo&quot;" type="code"/>
             </Property>
+            <Property name="enabled" type="boolean" value="false"/>
           </Properties>
           <Events>
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jComboTipSocActionPerformed"/>
           </Events>
         </Component>
-        <Component class="javax.swing.JComboBox" name="tipoDocumentoCB">
+        <Component class="javax.swing.JComboBox" name="sexoField">
           <Properties>
             <Property name="editable" type="boolean" value="true"/>
             <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
-              <StringArray count="3">
-                <StringItem index="0" value="DNI"/>
-                <StringItem index="1" value="LE"/>
-                <StringItem index="2" value="LC"/>
+              <StringArray count="2">
+                <StringItem index="0" value="M"/>
+                <StringItem index="1" value="F"/>
               </StringArray>
             </Property>
             <Property name="autoscrolls" type="boolean" value="true"/>
             <Property name="enabled" type="boolean" value="false"/>
           </Properties>
           <BindingProperties>
-            <BindingProperty name="selectedItem" source="masterTable" sourcePath="${selectedElement.tipoDocumento}" target="tipoDocumentoCB" targetPath="selectedItem" updateStrategy="0" immediately="false"/>
+            <BindingProperty name="selectedItem" source="masterTable" sourcePath="${selectedElement.sexo}" target="sexoField" targetPath="selectedItem" updateStrategy="0" immediately="false"/>
           </BindingProperties>
         </Component>
         <Component class="javax.swing.JButton" name="jButtonFecha">
@@ -509,8 +510,19 @@
           </AuxValues>
         </Component>
         <Component class="javax.swing.JLabel" name="jLEliminado">
+          <Properties>
+            <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+              <Font name="Verdana" size="12" style="0"/>
+            </Property>
+            <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+              <Color blue="0" green="0" id="red" palette="1" red="ff" type="palette"/>
+            </Property>
+          </Properties>
           <BindingProperties>
-            <BindingProperty name="text" source="masterTable" sourcePath="${selectedElement.eliminado}" target="jLEliminado" targetPath="text" updateStrategy="0" immediately="false">
+            <BindingProperty name="text" source="masterTable" sourcePath="${selectedElement.fechaBaja}" target="jLEliminado" targetPath="text" updateStrategy="0" immediately="false">
+              <Property name="converter" type="org.jdesktop.beansbinding.Converter" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+                <Connection code="dateConverter&#xa;        " type="code"/>
+              </Property>
               <Property name="name" type="java.lang.String" value=""/>
             </BindingProperty>
           </BindingProperties>
@@ -521,11 +533,54 @@
           </BindingProperties>
         </Component>
         <Component class="javax.swing.JTextField" name="documentoField">
+          <Properties>
+            <Property name="toolTipText" type="java.lang.String" value="Solo n&#xfa;meros con longitud m&#xe1;xima de 8 d&#xed;gitos. "/>
+          </Properties>
           <BindingProperties>
             <BindingProperty name="text" source="masterTable" sourcePath="${selectedElement.documento}" target="documentoField" targetPath="text" updateStrategy="0" immediately="false">
               <Property name="incompletePathValue" type="java.lang.String" value="null"/>
             </BindingProperty>
             <BindingProperty name="enabled" source="masterTable" sourcePath="${selectedElement != null}" target="documentoField" targetPath="enabled" updateStrategy="1" immediately="false"/>
+          </BindingProperties>
+          <Events>
+            <EventHandler event="keyTyped" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="documentoFieldKeyTyped"/>
+          </Events>
+        </Component>
+        <Component class="javax.swing.JLabel" name="jLabel1">
+          <Properties>
+            <Property name="text" type="java.lang.String" value="Celular:"/>
+          </Properties>
+        </Component>
+        <Component class="javax.swing.JTextField" name="celularField">
+          <Properties>
+            <Property name="toolTipText" type="java.lang.String" value="Solo n&#xfa;meros."/>
+            <Property name="enabled" type="boolean" value="false"/>
+          </Properties>
+          <BindingProperties>
+            <BindingProperty name="text" source="masterTable" sourcePath="${selectedElement.celular}" target="celularField" targetPath="text" updateStrategy="0" immediately="false">
+              <BindingParameter name="javax.swing.binding.ParameterKeys.TEXT_CHANGE_STRATEGY" value="javax.swing.binding.TextChangeStrategy.ON_TYPE"/>
+            </BindingProperty>
+          </BindingProperties>
+          <Events>
+            <EventHandler event="focusGained" listener="java.awt.event.FocusListener" parameters="java.awt.event.FocusEvent" handler="celularFieldFocusGained"/>
+            <EventHandler event="focusLost" listener="java.awt.event.FocusListener" parameters="java.awt.event.FocusEvent" handler="celularFieldFocusLost"/>
+            <EventHandler event="keyTyped" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="celularFieldKeyTyped"/>
+          </Events>
+        </Component>
+        <Component class="javax.swing.JLabel" name="jLabelBaja">
+          <Properties>
+            <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+              <Font name="Verdana" size="12" style="0"/>
+            </Property>
+            <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+              <Color blue="0" green="0" id="red" palette="1" red="ff" type="palette"/>
+            </Property>
+            <Property name="text" type="java.lang.String" value="Fecha de baja:"/>
+          </Properties>
+        </Component>
+        <Component class="javax.swing.JLabel" name="jLabelSocio">
+          <BindingProperties>
+            <BindingProperty name="text" source="masterTable" sourcePath="${selectedElement.socio}" target="jLabelSocio" targetPath="text" updateStrategy="0" immediately="false"/>
           </BindingProperties>
         </Component>
       </SubComponents>
@@ -555,18 +610,20 @@
                           <Component id="jBVerCuotas" min="-2" max="-2" attributes="0"/>
                       </Group>
                       <Group type="102" alignment="0" attributes="0">
-                          <EmptySpace min="-2" pref="132" max="-2" attributes="0"/>
+                          <EmptySpace min="-2" pref="110" max="-2" attributes="0"/>
                           <Component id="newButton" min="-2" max="-2" attributes="0"/>
-                          <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                          <Component id="deleteButton" min="-2" pref="82" max="-2" attributes="0"/>
+                          <EmptySpace type="separate" max="-2" attributes="0"/>
+                          <Component id="deleteButton" min="-2" pref="114" max="-2" attributes="0"/>
+                          <EmptySpace type="separate" max="-2" attributes="0"/>
+                          <Component id="jButtonAlta" min="-2" pref="119" max="-2" attributes="0"/>
                       </Group>
                   </Group>
-                  <EmptySpace max="32767" attributes="0"/>
+                  <EmptySpace pref="316" max="32767" attributes="0"/>
               </Group>
               <Group type="103" rootIndex="1" groupAlignment="0" attributes="0">
-                  <Group type="102" attributes="0">
+                  <Group type="102" alignment="0" attributes="0">
                       <EmptySpace max="-2" attributes="0"/>
-                      <Component id="masterScrollPane" pref="898" max="32767" attributes="0"/>
+                      <Component id="masterScrollPane" pref="907" max="32767" attributes="0"/>
                       <EmptySpace max="-2" attributes="0"/>
                   </Group>
               </Group>
@@ -582,18 +639,19 @@
                       <Component id="jButtonBuscar" alignment="3" min="-2" max="-2" attributes="0"/>
                       <Component id="jBVerCuotas" alignment="3" min="-2" max="-2" attributes="0"/>
                   </Group>
-                  <EmptySpace pref="165" max="32767" attributes="0"/>
+                  <EmptySpace pref="229" max="32767" attributes="0"/>
                   <Group type="103" groupAlignment="3" attributes="0">
                       <Component id="newButton" alignment="3" min="-2" max="-2" attributes="0"/>
                       <Component id="deleteButton" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="jButtonAlta" alignment="3" min="-2" max="-2" attributes="0"/>
                   </Group>
                   <EmptySpace max="-2" attributes="0"/>
               </Group>
               <Group type="103" rootIndex="1" groupAlignment="0" attributes="0">
                   <Group type="102" alignment="0" attributes="0">
                       <EmptySpace min="-2" pref="45" max="-2" attributes="0"/>
-                      <Component id="masterScrollPane" min="-2" pref="156" max="-2" attributes="0"/>
-                      <EmptySpace pref="42" max="32767" attributes="0"/>
+                      <Component id="masterScrollPane" min="-2" pref="210" max="-2" attributes="0"/>
+                      <EmptySpace pref="52" max="32767" attributes="0"/>
                   </Group>
               </Group>
           </Group>
@@ -666,7 +724,17 @@
                       <Editor/>
                       <Renderer/>
                     </Column>
-                    <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="false">
+                    <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="true">
+                      <Title/>
+                      <Editor/>
+                      <Renderer/>
+                    </Column>
+                    <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="true">
+                      <Title/>
+                      <Editor/>
+                      <Renderer/>
+                    </Column>
+                    <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="true">
                       <Title/>
                       <Editor/>
                       <Renderer/>
@@ -689,63 +757,81 @@
               </Properties>
               <BindingProperties>
                 <BindingProperty name="elements" source="list" target="masterTable" targetPath="elements" updateStrategy="0" immediately="true">
+                  <Subbinding sourcePath="${numSoc}">
+                    <BindingParameter name="NAME" value="N&#xb0; Socio"/>
+                    <BindingParameter name="javax.swing.binding.ParameterKeys.COLUMN_CLASS" value="Integer.class"/>
+                    <BindingParameter name="javax.swing.binding.ParameterKeys.EDITABLE" value="false"/>
+                  </Subbinding>
                   <Subbinding sourcePath="${apellido}">
                     <BindingParameter name="NAME" value="Apellido"/>
                     <BindingParameter name="javax.swing.binding.ParameterKeys.COLUMN_CLASS" value="String.class"/>
+                    <BindingParameter name="javax.swing.binding.ParameterKeys.EDITABLE" value="false"/>
                   </Subbinding>
                   <Subbinding sourcePath="${nombre}">
                     <BindingParameter name="NAME" value="Nombre"/>
                     <BindingParameter name="javax.swing.binding.ParameterKeys.COLUMN_CLASS" value="String.class"/>
-                  </Subbinding>
-                  <Subbinding sourcePath="${tipoDocumento}">
-                    <BindingParameter name="NAME" value="Tipo Documento"/>
-                    <BindingParameter name="javax.swing.binding.ParameterKeys.COLUMN_CLASS" value="String.class"/>
+                    <BindingParameter name="javax.swing.binding.ParameterKeys.EDITABLE" value="false"/>
                   </Subbinding>
                   <Subbinding sourcePath="${documento}">
-                    <BindingParameter name="NAME" value="Documento"/>
+                    <BindingParameter name="NAME" value="DNI"/>
                     <BindingParameter name="javax.swing.binding.ParameterKeys.COLUMN_CLASS" value="Integer.class"/>
+                    <BindingParameter name="javax.swing.binding.ParameterKeys.EDITABLE" value="false"/>
                   </Subbinding>
-                  <Subbinding sourcePath="${numSoc}">
-                    <BindingParameter name="NAME" value="N&#xb0; Socio"/>
-                    <BindingParameter name="javax.swing.binding.ParameterKeys.COLUMN_CLASS" value="Integer.class"/>
+                  <Subbinding sourcePath="${sexo}">
+                    <BindingParameter name="NAME" value="Sexo"/>
+                    <BindingParameter name="javax.swing.binding.ParameterKeys.EDITABLE" value="false"/>
                   </Subbinding>
                   <Subbinding sourcePath="${cuil}">
                     <BindingParameter name="NAME" value="Cuil"/>
                     <BindingParameter name="javax.swing.binding.ParameterKeys.COLUMN_CLASS" value="String.class"/>
+                    <BindingParameter name="javax.swing.binding.ParameterKeys.EDITABLE" value="false"/>
                   </Subbinding>
-                  <Subbinding sourcePath="${email}">
-                    <BindingParameter name="NAME" value="Email"/>
-                    <BindingParameter name="javax.swing.binding.ParameterKeys.COLUMN_CLASS" value="String.class"/>
+                  <Subbinding sourcePath="${fechaNacimiento}">
+                    <BindingParameter name="NAME" value="Fecha Naciemiento"/>
+                    <BindingParameter name="javax.swing.binding.ParameterKeys.EDITABLE" value="false"/>
                   </Subbinding>
                   <Subbinding sourcePath="${telefono}">
                     <BindingParameter name="NAME" value="Telefono"/>
                     <BindingParameter name="javax.swing.binding.ParameterKeys.COLUMN_CLASS" value="String.class"/>
+                    <BindingParameter name="javax.swing.binding.ParameterKeys.EDITABLE" value="false"/>
                   </Subbinding>
-                  <Subbinding sourcePath="${fechaNacimiento}">
-                    <BindingParameter name="NAME" value="Fecha Nacimiento"/>
-                    <BindingParameter name="javax.swing.binding.ParameterKeys.COLUMN_CLASS" value="java.util.Date.class"/>
+                  <Subbinding sourcePath="${celular}">
+                    <BindingParameter name="NAME" value="Celular"/>
+                    <BindingParameter name="javax.swing.binding.ParameterKeys.EDITABLE" value="false"/>
+                  </Subbinding>
+                  <Subbinding sourcePath="${email}">
+                    <BindingParameter name="NAME" value="Email"/>
+                    <BindingParameter name="javax.swing.binding.ParameterKeys.COLUMN_CLASS" value="String.class"/>
                     <BindingParameter name="javax.swing.binding.ParameterKeys.EDITABLE" value="false"/>
                   </Subbinding>
                   <Subbinding sourcePath="${localidad}">
                     <BindingParameter name="NAME" value="Localidad"/>
                     <BindingParameter name="javax.swing.binding.ParameterKeys.COLUMN_CLASS" value="String.class"/>
+                    <BindingParameter name="javax.swing.binding.ParameterKeys.EDITABLE" value="false"/>
                   </Subbinding>
                   <Subbinding sourcePath="${direccion}">
                     <BindingParameter name="NAME" value="Direccion"/>
                     <BindingParameter name="javax.swing.binding.ParameterKeys.COLUMN_CLASS" value="String.class"/>
+                    <BindingParameter name="javax.swing.binding.ParameterKeys.EDITABLE" value="false"/>
                   </Subbinding>
                   <Subbinding sourcePath="${idTipoSocio}">
                     <BindingParameter name="NAME" value="idTipoSoc"/>
                     <BindingParameter name="javax.swing.binding.ParameterKeys.COLUMN_CLASS" value="Integer.class"/>
                     <BindingParameter name="javax.swing.binding.ParameterKeys.EDITABLE" value="false"/>
                   </Subbinding>
-                  <Subbinding sourcePath="${eliminado}">
-                    <BindingParameter name="NAME" value="eliminado"/>
-                    <BindingParameter name="javax.swing.binding.ParameterKeys.COLUMN_CLASS" value="Boolean.class"/>
+                  <Subbinding sourcePath="${fechaBaja}">
+                    <BindingParameter name="NAME" value="fechaBaja"/>
+                    <BindingParameter name="javax.swing.binding.ParameterKeys.COLUMN_CLASS" value="java.util.Date.class"/>
+                    <BindingParameter name="javax.swing.binding.ParameterKeys.EDITABLE" value="false"/>
                   </Subbinding>
                   <Subbinding sourcePath="${idSocio}">
                     <BindingParameter name="NAME" value="idSocio"/>
                     <BindingParameter name="javax.swing.binding.ParameterKeys.COLUMN_CLASS" value="Integer.class"/>
+                    <BindingParameter name="javax.swing.binding.ParameterKeys.EDITABLE" value="false"/>
+                  </Subbinding>
+                  <Subbinding sourcePath="${socio}">
+                    <BindingParameter name="NAME" value="socio"/>
+                    <BindingParameter name="javax.swing.binding.ParameterKeys.COLUMN_CLASS" value="Boolean.class"/>
                   </Subbinding>
                 </BindingProperty>
               </BindingProperties>
@@ -773,7 +859,7 @@
         </Component>
         <Component class="javax.swing.JButton" name="deleteButton">
           <Properties>
-            <Property name="text" type="java.lang.String" value="Eliminar"/>
+            <Property name="text" type="java.lang.String" value="Dar de baja"/>
           </Properties>
           <BindingProperties>
             <BindingProperty name="enabled" source="masterTable" sourcePath="${selectedElement != null}" target="deleteButton" targetPath="enabled" updateStrategy="1" immediately="false"/>
@@ -814,6 +900,15 @@
           </Properties>
           <Events>
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jBVerCuotasActionPerformed"/>
+          </Events>
+        </Component>
+        <Component class="javax.swing.JButton" name="jButtonAlta">
+          <Properties>
+            <Property name="text" type="java.lang.String" value="Dar de alta"/>
+            <Property name="enabled" type="boolean" value="false"/>
+          </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jButtonAltaActionPerformed"/>
           </Events>
         </Component>
       </SubComponents>

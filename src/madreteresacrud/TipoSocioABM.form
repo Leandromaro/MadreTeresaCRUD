@@ -112,7 +112,7 @@
                 <BindingParameter name="javax.swing.binding.ParameterKeys.EDITABLE" value="false"/>
               </Subbinding>
               <Subbinding sourcePath="${monto}">
-                <BindingParameter name="NAME" value="Monto"/>
+                <BindingParameter name="NAME" value="Monto ($)"/>
                 <BindingParameter name="javax.swing.binding.ParameterKeys.COLUMN_CLASS" value="java.math.BigDecimal.class"/>
               </Subbinding>
             </BindingProperty>

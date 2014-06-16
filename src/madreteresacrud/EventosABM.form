@@ -183,17 +183,17 @@
         </Component>
         <Component class="javax.swing.JLabel" name="montoPublicLabel">
           <Properties>
-            <Property name="text" type="java.lang.String" value="Monto de Publicidad ($):"/>
+            <Property name="text" type="java.lang.String" value="Publicidad ($):"/>
           </Properties>
         </Component>
         <Component class="javax.swing.JLabel" name="montoRifasLabel">
           <Properties>
-            <Property name="text" type="java.lang.String" value="Monto de Rifas ($):"/>
+            <Property name="text" type="java.lang.String" value="Rifas ($):"/>
           </Properties>
         </Component>
         <Component class="javax.swing.JLabel" name="montoTarjetasLabel">
           <Properties>
-            <Property name="text" type="java.lang.String" value="Monto de Tarjetas ($):"/>
+            <Property name="text" type="java.lang.String" value="Tarjetas ($):"/>
           </Properties>
         </Component>
         <Component class="javax.swing.JTextField" name="motivoField">
@@ -376,15 +376,15 @@
                     <BindingParameter name="javax.swing.binding.ParameterKeys.EDITABLE" value="false"/>
                   </Subbinding>
                   <Subbinding sourcePath="${montoPublic}">
-                    <BindingParameter name="NAME" value="Monto de Publicidad ($)"/>
+                    <BindingParameter name="NAME" value="Publicidad ($)"/>
                     <BindingParameter name="javax.swing.binding.ParameterKeys.COLUMN_CLASS" value="java.math.BigDecimal.class"/>
                   </Subbinding>
                   <Subbinding sourcePath="${montoRifas}">
-                    <BindingParameter name="NAME" value="Monto de Rifas ($)"/>
+                    <BindingParameter name="NAME" value="Rifas ($)"/>
                     <BindingParameter name="javax.swing.binding.ParameterKeys.COLUMN_CLASS" value="java.math.BigDecimal.class"/>
                   </Subbinding>
                   <Subbinding sourcePath="${montoTarjetas}">
-                    <BindingParameter name="NAME" value="Monto de Tarjetas ($)"/>
+                    <BindingParameter name="NAME" value="Tarjetas ($)"/>
                     <BindingParameter name="javax.swing.binding.ParameterKeys.COLUMN_CLASS" value="java.math.BigDecimal.class"/>
                   </Subbinding>
                   <Subbinding sourcePath="${motivo}">

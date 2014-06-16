@@ -28,8 +28,8 @@ public class CuotaSocialForm extends javax.swing.JFrame {
         for (Object socio : listaSocios) {
             soc = new Socios();
             soc = (Socios) socio;
-            tipDoc = soc.getTipoDocumento().toString().split("-");              
-            textAutoCompleter.addItem(tipDoc[0].trim()+": "+soc.getDocumento()+" - "+soc.getApellido()+" "+soc.getNombre());
+//            tipDoc = soc.getTipoDocumento().toString().split("-");              
+//            textAutoCompleter.addItem(tipDoc[0].trim()+": "+soc.getDocumento()+" - "+soc.getApellido()+" "+soc.getNombre());
             
         }
 

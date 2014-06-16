@@ -70,12 +70,12 @@ public class IngresosEgresos extends javax.swing.JFrame {
         jTFHasta = new javax.swing.JTextField();
         jBDesde = new javax.swing.JButton();
         jBHasta = new javax.swing.JButton();
-        jBGenReport = new javax.swing.JButton();
+        jBGenReportIngresos = new javax.swing.JButton();
         jPanelEgresos = new javax.swing.JPanel();
         jPanel5 = new javax.swing.JPanel();
         jLabel3 = new javax.swing.JLabel();
         jTFDesde1 = new javax.swing.JTextField();
-        jBGenReport1 = new javax.swing.JButton();
+        jBGenReportEgresos = new javax.swing.JButton();
         jComboBoxTipoGasto = new javax.swing.JComboBox();
         jLabel5 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
@@ -109,10 +109,10 @@ public class IngresosEgresos extends javax.swing.JFrame {
             }
         });
 
-        jBGenReport.setText("Generar Reporte");
-        jBGenReport.addActionListener(new java.awt.event.ActionListener() {
+        jBGenReportIngresos.setText("Generar Reporte");
+        jBGenReportIngresos.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jBGenReportActionPerformed(evt);
+                jBGenReportIngresosActionPerformed(evt);
             }
         });
 
@@ -131,7 +131,7 @@ public class IngresosEgresos extends javax.swing.JFrame {
                         .addComponent(jBDesde, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addGap(143, 143, 143)
-                        .addComponent(jBGenReport)))
+                        .addComponent(jBGenReportIngresos)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 31, Short.MAX_VALUE)
                 .addComponent(jLabel2)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -153,7 +153,7 @@ public class IngresosEgresos extends javax.swing.JFrame {
                     .addComponent(jBDesde, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jBHasta, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 63, Short.MAX_VALUE)
-                .addComponent(jBGenReport, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jBGenReportIngresos, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(22, 22, 22))
         );
 
@@ -182,10 +182,10 @@ public class IngresosEgresos extends javax.swing.JFrame {
 
         jLabel3.setText("Fecha Desde:");
 
-        jBGenReport1.setText("Generar Reporte");
-        jBGenReport1.addActionListener(new java.awt.event.ActionListener() {
+        jBGenReportEgresos.setText("Generar Reporte");
+        jBGenReportEgresos.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jBGenReport1ActionPerformed(evt);
+                jBGenReportEgresosActionPerformed(evt);
             }
         });
 
@@ -239,7 +239,7 @@ public class IngresosEgresos extends javax.swing.JFrame {
                 .addContainerGap())
             .addGroup(jPanel5Layout.createSequentialGroup()
                 .addGap(164, 164, 164)
-                .addComponent(jBGenReport1)
+                .addComponent(jBGenReportEgresos)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel5Layout.setVerticalGroup(
@@ -259,7 +259,7 @@ public class IngresosEgresos extends javax.swing.JFrame {
                     .addComponent(jLabel5)
                     .addComponent(jComboBoxTipoGasto, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 27, Short.MAX_VALUE)
-                .addComponent(jBGenReport1, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jBGenReportEgresos, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(20, 20, 20))
         );
 
@@ -286,7 +286,7 @@ public class IngresosEgresos extends javax.swing.JFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jTabbedPane1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 584, Short.MAX_VALUE)
+            .addComponent(jTabbedPane1, javax.swing.GroupLayout.Alignment.TRAILING)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -307,7 +307,7 @@ public class IngresosEgresos extends javax.swing.JFrame {
         new Calendario((JFrame) SwingUtilities.getWindowAncestor(this),true,jTFDesde).setVisible(true);
     }//GEN-LAST:event_jBDesdeActionPerformed
 
-    private void jBGenReportActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBGenReportActionPerformed
+    private void jBGenReportIngresosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBGenReportIngresosActionPerformed
        
         SimpleDateFormat formatoDelTexto = new SimpleDateFormat("dd/MM/yyyy");
         Date fechaD = null;
@@ -321,7 +321,7 @@ public class IngresosEgresos extends javax.swing.JFrame {
              ex.printStackTrace();
 
         }
-        if(fechaD.getDate() <= fechaH.getDate()){
+        if(fechaD.before(fechaH)  || fechaD.equals(fechaH)){     
         lista.removeAll(lista);
         String [] fd = jTFDesde.getText().split("/");
         String [] fh = jTFHasta.getText().split("/");
@@ -411,7 +411,7 @@ public class IngresosEgresos extends javax.swing.JFrame {
         } 
        } else
             JOptionPane.showMessageDialog(null, "El periodo de fecha ingresado no es válido");
-    }//GEN-LAST:event_jBGenReportActionPerformed
+    }//GEN-LAST:event_jBGenReportIngresosActionPerformed
 
     private void jBDesde1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBDesde1ActionPerformed
         new Calendario((JFrame) SwingUtilities.getWindowAncestor(this),true,jTFDesde1).setVisible(true);
@@ -421,7 +421,7 @@ public class IngresosEgresos extends javax.swing.JFrame {
         new Calendario((JFrame) SwingUtilities.getWindowAncestor(this),true,jTFHasta1).setVisible(true);
     }//GEN-LAST:event_jBHasta1ActionPerformed
 
-    private void jBGenReport1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBGenReport1ActionPerformed
+    private void jBGenReportEgresosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBGenReportEgresosActionPerformed
         SimpleDateFormat formatoDelTexto = new SimpleDateFormat("dd/MM/yyyy");
         Date fechaD = null;
         Date fechaH=null;
@@ -433,8 +433,8 @@ public class IngresosEgresos extends javax.swing.JFrame {
 
              ex.printStackTrace();
 
-        }
-        if(fechaD.getDate() <= fechaH.getDate()){
+        }     
+        if(fechaD.before(fechaH)  || fechaD.equals(fechaH)){         
         String [] fd = jTFDesde1.getText().split("/");
         String [] fh = jTFHasta1.getText().split("/");
         List listaE = new ArrayList();        
@@ -480,8 +480,8 @@ public class IngresosEgresos extends javax.swing.JFrame {
                 tipo="de la "+tipo;
             }
             Map parametro = new HashMap();
-            parametro.put("fechaDesde", jTFDesde.getText());
-            parametro.put("fechaHasta", jTFHasta.getText());  
+            parametro.put("fechaDesde", jTFDesde1.getText());
+            parametro.put("fechaHasta", jTFHasta1.getText());  
             parametro.put("leyenda", tipo);
             parametro.put("total", "$"+df.format(tot));
             JasperPrint jprint= JasperFillManager.fillReport(reporte, parametro,new JRBeanCollectionDataSource(listaE));
@@ -492,7 +492,7 @@ public class IngresosEgresos extends javax.swing.JFrame {
         }      
        } else
             JOptionPane.showMessageDialog(null, "El periodo de fecha ingresado no es válido");
-    }//GEN-LAST:event_jBGenReport1ActionPerformed
+    }//GEN-LAST:event_jBGenReportEgresosActionPerformed
     
     
     private String retornaMes(int mes){
@@ -585,8 +585,8 @@ public class IngresosEgresos extends javax.swing.JFrame {
     private javax.swing.ButtonGroup buttonGroup2;
     private javax.swing.JButton jBDesde;
     private javax.swing.JButton jBDesde1;
-    private javax.swing.JButton jBGenReport;
-    private javax.swing.JButton jBGenReport1;
+    private javax.swing.JButton jBGenReportEgresos;
+    private javax.swing.JButton jBGenReportIngresos;
     private javax.swing.JButton jBHasta;
     private javax.swing.JButton jBHasta1;
     private javax.swing.JComboBox jComboBoxTipoGasto;
