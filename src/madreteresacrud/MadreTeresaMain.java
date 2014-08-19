@@ -90,6 +90,7 @@ public class MadreTeresaMain extends javax.swing.JFrame {
         jMenuItem4 = new javax.swing.JMenuItem();
         jMenu2 = new javax.swing.JMenu();
         jMenuItem8 = new javax.swing.JMenuItem();
+        jMenuItem9 = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -198,6 +199,14 @@ public class MadreTeresaMain extends javax.swing.JFrame {
             }
         });
         jMenu2.add(jMenuItem8);
+
+        jMenuItem9.setText("Cambiar Usuario");
+        jMenuItem9.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem9ActionPerformed(evt);
+            }
+        });
+        jMenu2.add(jMenuItem9);
 
         jMenuBar1.add(jMenu2);
 
@@ -418,6 +427,14 @@ public class MadreTeresaMain extends javax.swing.JFrame {
         jDesktopPane.repaint();
         internal.setVisible(true);
     }//GEN-LAST:event_jMenuItem8ActionPerformed
+
+    private void jMenuItem9ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem9ActionPerformed
+       IngresoSistema i = new IngresoSistema();
+       i.setResizable(false);
+       i.setLocationRelativeTo(null);
+       i.setVisible(true);
+       this.dispose();
+    }//GEN-LAST:event_jMenuItem9ActionPerformed
     public boolean generarCuotas(int mes, int anio){
         boolean band=false;      
         boolean flag=false;
@@ -532,6 +549,7 @@ public class MadreTeresaMain extends javax.swing.JFrame {
     private javax.swing.JMenuItem jMenuItem6;
     private javax.swing.JMenuItem jMenuItem7;
     private javax.swing.JMenuItem jMenuItem8;
+    private javax.swing.JMenuItem jMenuItem9;
     private javax.swing.JMenuItem jMenuSocios;
     // End of variables declaration//GEN-END:variables
 
