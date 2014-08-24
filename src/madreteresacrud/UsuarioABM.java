@@ -56,10 +56,10 @@ public class UsuarioABM extends JPanel {
         org.jdesktop.swingbinding.JTableBinding jTableBinding = org.jdesktop.swingbinding.SwingBindings.createJTableBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, list, masterTable);
         org.jdesktop.swingbinding.JTableBinding.ColumnBinding columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${nombre}"));
         columnBinding.setColumnName("Nombre");
-        columnBinding.setColumnClass(String.class);
+        columnBinding.setColumnClass(Object.class);
         columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${password}"));
         columnBinding.setColumnName("Password");
-        columnBinding.setColumnClass(String.class);
+        columnBinding.setColumnClass(Object.class);
         bindingGroup.addBinding(jTableBinding);
 
         masterScrollPane.setViewportView(masterTable);
@@ -167,14 +167,32 @@ public class UsuarioABM extends JPanel {
     
 
     private void deleteButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteButtonActionPerformed
-        int[] selected = masterTable.getSelectedRows();
-        List<madreteresacrud.Usuario> toRemove = new ArrayList<madreteresacrud.Usuario>(selected.length);
-        for (int idx = 0; idx < selected.length; idx++) {
-            madreteresacrud.Usuario u = list.get(masterTable.convertRowIndexToModel(selected[idx]));
-            toRemove.add(u);
-            entityManager.remove(u);
-        }
-        list.removeAll(toRemove);
+        javax.persistence.Query query = entityManager.createQuery("SELECT u FROM Usuario u");
+            if (query.getResultList().size()==1){
+                JOptionPane.showMessageDialog(null, "No puede eliminar el unico usuario");
+            }else{    
+                int[] selected = masterTable.getSelectedRows();
+                List<madreteresacrud.Usuario> toRemove = new ArrayList<madreteresacrud.Usuario>(selected.length);
+                for (int idx = 0; idx < selected.length; idx++) {
+                    madreteresacrud.Usuario u = list.get(masterTable.convertRowIndexToModel(selected[idx]));
+                    toRemove.add(u);
+                    entityManager.remove(u);
+                }
+                list.removeAll(toRemove);
+                try {
+                    entityManager.getTransaction().commit();
+                    entityManager.getTransaction().begin();
+                } catch (RollbackException rex) {
+                    rex.printStackTrace();
+                    entityManager.getTransaction().begin();
+                    List<madreteresacrud.Usuario> merged = new ArrayList<madreteresacrud.Usuario>(list.size());
+                    for (madreteresacrud.Usuario u : list) {
+                        merged.add(entityManager.merge(u));
+                    }
+                    list.clear();
+                    list.addAll(merged);
+                }
+            }
     }//GEN-LAST:event_deleteButtonActionPerformed
 
     private void newButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_newButtonActionPerformed
@@ -184,21 +202,12 @@ public class UsuarioABM extends JPanel {
         int row = list.size() - 1;
         masterTable.setRowSelectionInterval(row, row);
         masterTable.scrollRectToVisible(masterTable.getCellRect(row, 0, true));
-        
     }//GEN-LAST:event_newButtonActionPerformed
     
     private void saveButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveButtonActionPerformed
         try {
             entityManager.getTransaction().commit();
             entityManager.getTransaction().begin();
-            entityManager.getTransaction().rollback();
-            entityManager.getTransaction().begin();
-            java.util.Collection data = query.getResultList();
-            for (Object entity : data) {
-                entityManager.refresh(entity);
-            }
-            list.clear();
-            list.addAll(data);
         } catch (RollbackException rex) {
             rex.printStackTrace();
             entityManager.getTransaction().begin();
@@ -210,7 +219,6 @@ public class UsuarioABM extends JPanel {
             list.addAll(merged);
         }
     }//GEN-LAST:event_saveButtonActionPerformed
-    
     public boolean Log(String usu, String pas) {
         String item;  
         javax.persistence.Query query = entityManager.createQuery("SELECT DISTINCT u.nombre FROM Usuario u WHERE u.nombre='"+usu+"' AND u.password='"+pas+"'");
