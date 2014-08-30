@@ -19,28 +19,28 @@
 			<staticText>
 				<reportElement x="99" y="15" width="120" height="20" uuid="98dc9c73-acca-4bf9-a1bb-f6895c9d2757"/>
 				<textElement>
-					<font fontName="Times New Roman" size="14" isBold="true"/>
+					<font fontName="SansSerif" size="14" isBold="true"/>
 				</textElement>
 				<text><![CDATA[Egresos del periodo]]></text>
 			</staticText>
 			<textField>
 				<reportElement x="219" y="15" width="75" height="20" uuid="d42fb41a-be7c-4bd4-877e-670ff72e522d"/>
 				<textElement>
-					<font fontName="Times New Roman" size="14" isBold="true"/>
+					<font fontName="SansSerif" size="14" isBold="true"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{fechaDesde}]]></textFieldExpression>
 			</textField>
 			<staticText>
 				<reportElement x="294" y="15" width="14" height="20" uuid="ab8f5107-e290-4eb7-a31f-e606f8e7ff94"/>
 				<textElement>
-					<font fontName="Times New Roman" size="14" isBold="true"/>
+					<font fontName="SansSerif" size="14" isBold="true"/>
 				</textElement>
 				<text><![CDATA[al]]></text>
 			</staticText>
 			<textField>
 				<reportElement x="308" y="15" width="100" height="20" uuid="70277fd6-e949-47b4-aa6f-fbd213ed4cc4"/>
 				<textElement>
-					<font fontName="Times New Roman" size="14" isBold="true"/>
+					<font fontName="SansSerif" size="14" isBold="true"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{fechaHasta}]]></textFieldExpression>
 			</textField>
@@ -51,14 +51,14 @@
 			<staticText>
 				<reportElement x="161" y="5" width="81" height="20" uuid="bdf615ad-ed9b-4c87-bf36-b6ef1074ddc4"/>
 				<textElement>
-					<font fontName="Times New Roman" size="12" isBold="true"/>
+					<font fontName="SansSerif" size="12" isBold="true"/>
 				</textElement>
 				<text><![CDATA[Gastos propios]]></text>
 			</staticText>
 			<textField>
 				<reportElement x="242" y="5" width="100" height="20" uuid="9f1d8428-e47b-4b45-985f-0c0cf25f0622"/>
 				<textElement>
-					<font fontName="Times New Roman" size="12" isBold="true"/>
+					<font fontName="SansSerif" size="12" isBold="true"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{leyenda}]]></textFieldExpression>
 			</textField>
@@ -69,21 +69,21 @@
 			<staticText>
 				<reportElement x="61" y="20" width="100" height="20" uuid="d4b39a88-13ba-4918-add2-9f14bab4abce"/>
 				<textElement>
-					<font fontName="Times New Roman" size="12" isBold="true"/>
+					<font fontName="SansSerif" size="12" isBold="true"/>
 				</textElement>
 				<text><![CDATA[Item]]></text>
 			</staticText>
 			<staticText>
 				<reportElement x="208" y="20" width="100" height="20" uuid="8944c737-033a-437a-ab05-9f48bedc8870"/>
 				<textElement>
-					<font fontName="Times New Roman" size="12" isBold="true"/>
+					<font fontName="SansSerif" size="12" isBold="true"/>
 				</textElement>
-				<text><![CDATA[Mes]]></text>
+				<text><![CDATA[Periodo]]></text>
 			</staticText>
 			<staticText>
 				<reportElement x="370" y="20" width="100" height="20" uuid="db6d19fa-f811-4d64-a9dd-c68fecdac509"/>
 				<textElement>
-					<font fontName="Times New Roman" size="12" isBold="true"/>
+					<font fontName="SansSerif" size="12" isBold="true"/>
 				</textElement>
 				<text><![CDATA[Monto]]></text>
 			</staticText>
@@ -94,21 +94,21 @@
 			<textField>
 				<reportElement x="61" y="8" width="100" height="20" uuid="fe5e223d-3716-44b5-87bd-c4f8e2e3797f"/>
 				<textElement>
-					<font fontName="Times New Roman"/>
+					<font fontName="SansSerif"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{item}]]></textFieldExpression>
 			</textField>
 			<textField>
 				<reportElement x="208" y="8" width="100" height="20" uuid="97780485-b08c-4620-bd4a-18786b6566f7"/>
 				<textElement>
-					<font fontName="Times New Roman"/>
+					<font fontName="SansSerif"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{mes}]]></textFieldExpression>
 			</textField>
 			<textField>
 				<reportElement x="370" y="8" width="100" height="20" uuid="882f7820-0337-495c-89ba-47009f05206e"/>
 				<textElement>
-					<font fontName="Times New Roman"/>
+					<font fontName="SansSerif"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{monto}]]></textFieldExpression>
 			</textField>
@@ -122,28 +122,28 @@
 			<textField>
 				<reportElement x="435" y="27" width="80" height="20" uuid="49502a6e-17bc-4b9f-a6bd-7b5968bb8987"/>
 				<textElement textAlignment="Right">
-					<font fontName="Times New Roman"/>
+					<font fontName="SansSerif"/>
 				</textElement>
 				<textFieldExpression><![CDATA["Pagina "+$V{PAGE_NUMBER}+" de"]]></textFieldExpression>
 			</textField>
 			<textField evaluationTime="Report">
 				<reportElement x="515" y="27" width="40" height="20" uuid="8c8fd8b5-dc98-459e-a36d-4131a09fb82a"/>
 				<textElement>
-					<font fontName="Times New Roman"/>
+					<font fontName="SansSerif"/>
 				</textElement>
 				<textFieldExpression><![CDATA[" " + $V{PAGE_NUMBER}]]></textFieldExpression>
 			</textField>
 			<textField pattern="dd/MM/yyyy">
 				<reportElement x="116" y="28" width="100" height="20" uuid="b658fe7b-ea1a-4cb6-8cd0-c1892b4c3d49"/>
 				<textElement>
-					<font fontName="Times New Roman"/>
+					<font fontName="SansSerif"/>
 				</textElement>
 				<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
 			</textField>
 			<staticText>
 				<reportElement x="10" y="27" width="106" height="20" uuid="4dc66514-4b71-44cd-8c52-2faf90a6480f"/>
 				<textElement>
-					<font fontName="Times New Roman"/>
+					<font fontName="SansSerif"/>
 				</textElement>
 				<text><![CDATA[Fecha de Impresión:]]></text>
 			</staticText>
@@ -154,14 +154,14 @@
 			<textField>
 				<reportElement x="370" y="11" width="100" height="20" uuid="41c3e276-0b9b-4cba-91cf-fb2d10712c87"/>
 				<textElement>
-					<font fontName="Times New Roman" size="13"/>
+					<font fontName="SansSerif" size="13"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{total}]]></textFieldExpression>
 			</textField>
 			<staticText>
 				<reportElement x="320" y="11" width="50" height="20" uuid="ae28aa48-7121-4b5b-8bcb-ed96d6b82687"/>
 				<textElement>
-					<font fontName="Times New Roman" size="14" isBold="true"/>
+					<font fontName="SansSerif" size="14" isBold="true"/>
 				</textElement>
 				<text><![CDATA[Total:]]></text>
 			</staticText>

@@ -403,16 +403,9 @@ public class MadreTeresaMain extends javax.swing.JFrame {
     }//GEN-LAST:event_jMenuItem7ActionPerformed
 
     private void jMenuItem2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem2ActionPerformed
-       JInternalFrame internal =  new JInternalFrame("Eventos");
-        JPanel p = new EventosABM();
-        internal.add(p);          
-        internal.pack();
-        internal.setResizable(true);        
-        internal.setClosable(true);    
-        jDesktopPane.removeAll();
-        jDesktopPane.add(internal);
-        jDesktopPane.repaint();
-        internal.setVisible(true);
+       JDialog genc = new GenerarCuotas(this,true);
+       genc.setLocationRelativeTo(null);
+       genc.setVisible(true);
     }//GEN-LAST:event_jMenuItem2ActionPerformed
 
     private void jMenuItem8ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem8ActionPerformed

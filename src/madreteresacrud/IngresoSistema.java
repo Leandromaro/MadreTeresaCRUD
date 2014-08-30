@@ -185,7 +185,7 @@ private void txtcontraActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIR
 }//GEN-LAST:event_txtcontraActionPerformed
 
     private void btnsalirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnsalirActionPerformed
-        this.dispose();
+        System.exit(0);
     
     }//GEN-LAST:event_btnsalirActionPerformed
 

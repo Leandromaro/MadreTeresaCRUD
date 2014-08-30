@@ -11,10 +11,20 @@ package reportes;
 public class ListaEgresos {
     private String monto;
     private String mes;
+    private String anio;
+
+    public String getAnio() {
+        return anio;
+    }
+
+    public void setAnio(String anio) {
+        this.anio = anio;
+    }
     private String item;
 
-    public ListaEgresos(String mes, String item, String monto) {        
+    public ListaEgresos(String mes, String anio, String item, String monto) {        
         this.mes = mes;
+        this.anio=anio;
         this.item = item;
         this.monto = monto;
     }

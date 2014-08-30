@@ -42,9 +42,9 @@ public class IngresosEgresos extends javax.swing.JFrame {
     /**
      * Creates new form Ingresos
      */
-    List lista = new ArrayList();
-    ConexionBD cc= new ConexionBD();
-    Connection cn = cc.conexion();
+    public List lista = new ArrayList();
+    public ConexionBD cc= new ConexionBD();
+    public Connection cn;
     public IngresosEgresos() {
         super("Generación de Informes");
         initComponents();
@@ -321,94 +321,104 @@ public class IngresosEgresos extends javax.swing.JFrame {
              ex.printStackTrace();
 
         }
+        //Comprueba que la fecha desde sea menor o igual a la de hasta
         if(fechaD.before(fechaH)  || fechaD.equals(fechaH)){     
-        lista.removeAll(lista);
-        String [] fd = jTFDesde.getText().split("/");
-        String [] fh = jTFHasta.getText().split("/");
-        Double totCuota =0.0;
-        Double totDonac =0.0;
-        Double totfv =0.0;
-        Double totPublic =0.0;
-        Double totTarj =0.0;
-        Double totRif =0.0;
-        ListaIngresos list;
-        DecimalFormat df = new DecimalFormat("0.00##");        
-        String sql = "SELECT MONTH(fechaPago) mes,SUM(monto) monto FROM cuotaSocial WHERE fechaPago BETWEEN '"+fd[2]+"-"+fd[1]+"-"+fd[0]+"' AND '"+
-                fh[2]+"-"+fh[1]+"-"+fh[0]+"' AND fechaPago IS NOT NULL GROUP BY MONTH(fechaPago)";
-         
-         //Cuotas Sociales
-        try {
-             Statement st = cn.createStatement();
-             ResultSet rs = st.executeQuery(sql);             
-             while(rs.next()){
-                 totCuota=totCuota+rs.getDouble("monto");
-                 ListaIngresos ingresos= new ListaIngresos(rs.getString("mes").toString(),"$"+rs.getString("monto").toString(),"---","---","---","---","---");
-                 lista.add(ingresos);                
-             } 
-             
-        } catch (SQLException ex) {
-            Logger.getLogger(IngresosEgresos.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        
-        //Donaciones
-        sql = "SELECT MONTH(fechaDonacion) mes,SUM(monto) monto FROM donaciones WHERE fechaDonacion BETWEEN '"+fd[2]+"-"+fd[1]+"-"+fd[0]+"' AND '"+
-                fh[2]+"-"+fh[1]+"-"+fh[0]+"' GROUP BY MONTH(fechaDonacion)";
-        totDonac=getConsulta(sql,"donac");      
-        
-         //Flores de vida
-        sql = "SELECT MONTH(fechaPago) mes,SUM(monto) monto FROM cuotaFlorDeVida WHERE fechaPago BETWEEN '"+fd[2]+"-"+fd[1]+"-"+fd[0]+"' AND '"+
-                fh[2]+"-"+fh[1]+"-"+fh[0]+"' GROUP BY MONTH(fechaPago)";
-        totfv=getConsulta(sql, "flores");
-      
-        //Publicidades
-        sql = "SELECT MONTH(fecha) mes,SUM(montoPublic) monto FROM eventos WHERE fecha BETWEEN '"+fd[2]+"-"+fd[1]+"-"+fd[0]+"' AND '"+
-                fh[2]+"-"+fh[1]+"-"+fh[0]+"' AND montoPublic IS NOT NULL GROUP BY MONTH(fecha)";
-        totPublic=getConsulta(sql, "public");
-        
-        //Rifas
-        sql = "SELECT MONTH(fecha) mes,SUM(montoRifas) monto FROM eventos WHERE fecha BETWEEN '"+fd[2]+"-"+fd[1]+"-"+fd[0]+"' AND '"+
-                fh[2]+"-"+fh[1]+"-"+fh[0]+"' AND montoRifas IS NOT NULL GROUP BY MONTH(fecha)";
-        totRif=getConsulta(sql, "rifas");
-        
-        //Tarjetas
-        sql = "SELECT MONTH(fecha) mes,SUM(montoTarjetas) monto FROM eventos WHERE fecha BETWEEN '"+fd[2]+"-"+fd[1]+"-"+fd[0]+"' AND '"+
-                fh[2]+"-"+fh[1]+"-"+fh[0]+"' AND montoTarjetas IS NOT NULL GROUP BY MONTH(fecha)";
-        totTarj=getConsulta(sql, "tarj");
-        
-        //Ordenamos la lista         
-        Collections.sort(lista, new Comparator<ListaIngresos>() {
-            @Override
-            public int compare(ListaIngresos l1, ListaIngresos l2) {
-                    return new Integer(Integer.parseInt(l1.getMes())).compareTo(new Integer(Integer.parseInt(l2.getMes())));
-            }          
-         });
-        
-        for(int i=0;i<lista.size();i++){
-            list = (ListaIngresos)lista.get(i);
-            list.setMes(retornaMes(Integer.parseInt(list.getMes())));
-                    
-        }
-        //Creamos el informe
-        try {            
-            File fichero = new File("Ingresos.jasper");            
-            JasperReport reporte= (JasperReport) JRLoader.loadObject(fichero);//(JasperReport) JRLoader.loadObject("Ingresos.jasper");
-           
-            Map parametro = new HashMap();
-            parametro.put("fechaDesde", jTFDesde.getText());
-            parametro.put("fechaHasta", jTFHasta.getText());
-            parametro.put("totDonac", "$"+df.format(totDonac));
-            parametro.put("totCuota", "$"+df.format(totCuota));
-            parametro.put("totFV", "$"+df.format(totfv));
-            parametro.put("totPublic", "$"+df.format(totPublic));
-            parametro.put("totRifas", "$"+df.format(totRif));
-            parametro.put("totTar", "$"+df.format(totTarj));
-            parametro.put("total", "$"+df.format(totCuota+totDonac+totfv+totPublic+totRif+totTarj));
-            JasperPrint jprint= JasperFillManager.fillReport(reporte, parametro,new JRBeanCollectionDataSource(lista));
+            lista.removeAll(lista);
+            String [] fd = jTFDesde.getText().split("/");
+            String [] fh = jTFHasta.getText().split("/");
+            Double totCuota =0.0;
+            Double totDonac =0.0;
+            Double totfv =0.0;
+            Double totPublic =0.0;
+            Double totTarj =0.0;
+            Double totRif =0.0;
+            ListaIngresos list;
+            DecimalFormat df = new DecimalFormat("0.00##");        
+            String sql = "SELECT YEAR(fechaPago) anio,MONTH(fechaPago) mes,SUM(monto) monto FROM cuotaSocial WHERE fechaPago BETWEEN '"+fd[2]+"-"+fd[1]+"-"+fd[0]+"' AND '"+
+                    fh[2]+"-"+fh[1]+"-"+fh[0]+"' AND fechaPago IS NOT NULL GROUP BY YEAR(fechaPago),MONTH(fechaPago)";
+
+             //Cuotas Sociales
+            try {
+                 cn = cc.conexion();
+                 Statement st = cn.createStatement();
+                 ResultSet rs = st.executeQuery(sql);             
+                 while(rs.next()){
+                     totCuota=totCuota+rs.getDouble("monto");
+                     ListaIngresos ingresos= new ListaIngresos(rs.getString("mes").toString(),rs.getString("anio").toString(),"$"+rs.getString("monto").toString(),"---","---","---","---","---");
+                     lista.add(ingresos);                
+                 }
+                 cn.close();
+
+            } catch (SQLException ex) {
+                Logger.getLogger(IngresosEgresos.class.getName()).log(Level.SEVERE, null, ex);
+            }
+
+            //Donaciones
+            sql = "SELECT YEAR(fechaDonacion) anio,MONTH(fechaDonacion) mes,SUM(monto) monto FROM donaciones WHERE fechaDonacion BETWEEN '"+fd[2]+"-"+fd[1]+"-"+fd[0]+"' AND '"+
+                    fh[2]+"-"+fh[1]+"-"+fh[0]+"' GROUP BY YEAR(fechaDonacion),MONTH(fechaDonacion)";
+            totDonac=getConsulta(sql,"donac");      
+
+             //Flores de vida
+            sql = "SELECT YEAR(fechaPago) anio,MONTH(fechaPago) mes,SUM(monto) monto FROM cuotaFlorDeVida WHERE fechaPago BETWEEN '"+fd[2]+"-"+fd[1]+"-"+fd[0]+"' AND '"+
+                    fh[2]+"-"+fh[1]+"-"+fh[0]+"' GROUP BY YEAR(fechaPago),MONTH(fechaPago)";
+            totfv=getConsulta(sql, "flores");
+
+            //Publicidades
+            sql = "SELECT YEAR(fecha) anio,MONTH(fecha) mes,SUM(montoPublic) monto FROM eventos WHERE fecha BETWEEN '"+fd[2]+"-"+fd[1]+"-"+fd[0]+"' AND '"+
+                    fh[2]+"-"+fh[1]+"-"+fh[0]+"' AND montoPublic IS NOT NULL GROUP BY YEAR(fecha),MONTH(fecha)";
+            totPublic=getConsulta(sql, "public");
+
+            //Rifas
+            sql = "SELECT YEAR(fecha) anio,MONTH(fecha) mes,SUM(montoRifas) monto FROM eventos WHERE fecha BETWEEN '"+fd[2]+"-"+fd[1]+"-"+fd[0]+"' AND '"+
+                    fh[2]+"-"+fh[1]+"-"+fh[0]+"' AND montoRifas IS NOT NULL GROUP BY YEAR(fecha),MONTH(fecha)";
+            totRif=getConsulta(sql, "rifas");
+
+            //Tarjetas
+            sql = "SELECT YEAR(fecha) anio,MONTH(fecha) mes,SUM(montoTarjetas) monto FROM eventos WHERE fecha BETWEEN '"+fd[2]+"-"+fd[1]+"-"+fd[0]+"' AND '"+
+                    fh[2]+"-"+fh[1]+"-"+fh[0]+"' AND montoTarjetas IS NOT NULL GROUP BY YEAR(fecha),MONTH(fecha)";
+            totTarj=getConsulta(sql, "tarj");
+
+            //Ordenamos la lista         
+            Collections.sort(lista, new Comparator<ListaIngresos>() {
+                @Override
+                public int compare(ListaIngresos l1, ListaIngresos l2) {
+                        return new Integer(Integer.parseInt(l1.getMes())).compareTo(new Integer(Integer.parseInt(l2.getMes())));
+                }          
+             });
             
-            JasperViewer.viewReport(jprint,false);
-        } catch (JRException ex) {
-            Logger.getLogger(IngresosEgresos.class.getName()).log(Level.SEVERE, null, ex);
-        } 
+            Collections.sort(lista, new Comparator<ListaIngresos>() {
+                @Override
+                public int compare(ListaIngresos l1, ListaIngresos l2) {
+                        return new Integer(Integer.parseInt(l1.getAnio())).compareTo(new Integer(Integer.parseInt(l2.getAnio())));
+                }          
+             });
+
+//            for(int i=0;i<lista.size();i++){
+//                list = (ListaIngresos)lista.get(i);
+//                list.setMes(retornaMes(Integer.parseInt(list.getMes())));
+//
+//            }
+            //Creamos el informe
+            try {            
+                File fichero = new File("Ingresos.jasper");            
+                JasperReport reporte= (JasperReport) JRLoader.loadObject(fichero);//(JasperReport) JRLoader.loadObject("Ingresos.jasper");
+
+                Map parametro = new HashMap();
+                parametro.put("fechaDesde", jTFDesde.getText());
+                parametro.put("fechaHasta", jTFHasta.getText());
+                parametro.put("totDonac", "$"+df.format(totDonac));
+                parametro.put("totCuota", "$"+df.format(totCuota));
+                parametro.put("totFV", "$"+df.format(totfv));
+                parametro.put("totPublic", "$"+df.format(totPublic));
+                parametro.put("totRifas", "$"+df.format(totRif));
+                parametro.put("totTar", "$"+df.format(totTarj));
+                parametro.put("total", "$"+df.format(totCuota+totDonac+totfv+totPublic+totRif+totTarj));
+                JasperPrint jprint= JasperFillManager.fillReport(reporte, parametro,new JRBeanCollectionDataSource(lista));
+
+                JasperViewer.viewReport(jprint,false);
+            } catch (JRException ex) {
+                Logger.getLogger(IngresosEgresos.class.getName()).log(Level.SEVERE, null, ex);
+            } 
        } else
             JOptionPane.showMessageDialog(null, "El periodo de fecha ingresado no es válido");
     }//GEN-LAST:event_jBGenReportIngresosActionPerformed
@@ -441,33 +451,41 @@ public class IngresosEgresos extends javax.swing.JFrame {
         Double tot =0.0;
         ListaEgresos list;
         DecimalFormat df = new DecimalFormat("0.00##");        
-        String sql = "SELECT tg.Elemento item, MONTH(g.fechaGasto) mes, SUM(monto) monto FROM tipoGasto tg, gastos g WHERE g.fechaGasto BETWEEN '"+fd[2]+"-"+fd[1]+"-"+fd[0]+"' AND '"+
-                fh[2]+"-"+fh[1]+"-"+fh[0]+"' AND tg.idtipo_gasto=g.tipo_gasto_idtipo_gasto AND tg.TipoGasto='"+jComboBoxTipoGasto.getSelectedItem().toString().trim() +"' GROUP BY  item, mes ";
+        String sql = "SELECT tg.Elemento item, MONTH(g.fechaGasto) mes, YEAR(g.fechaGasto) anio,SUM(monto) monto FROM tipoGasto tg, gastos g WHERE g.fechaGasto BETWEEN '"+fd[2]+"-"+fd[1]+"-"+fd[0]+"' AND '"+
+                fh[2]+"-"+fh[1]+"-"+fh[0]+"' AND tg.idtipo_gasto=g.tipo_gasto_idtipo_gasto AND tg.TipoGasto='"+jComboBoxTipoGasto.getSelectedItem().toString().trim() +"' GROUP BY  item, mes, anio ";
         try {
+             cn = cc.conexion();
              Statement st = cn.createStatement();
              ResultSet rs = st.executeQuery(sql);             
              while(rs.next()){
                  tot=tot+rs.getDouble("monto");
-                 ListaEgresos egresos= new ListaEgresos(rs.getString("mes").toString(),rs.getString("item").toString(),"$"+rs.getString("monto").toString());
+                 ListaEgresos egresos= new ListaEgresos(rs.getString("mes").toString(),rs.getString("anio"),rs.getString("item").toString(),"$"+rs.getString("monto").toString());
                  listaE.add(egresos);                
              } 
-             
+             cn.close();
         } catch (SQLException ex) {
             Logger.getLogger(IngresosEgresos.class.getName()).log(Level.SEVERE, null, ex);
         }
         
         //Ordenamos la lista         
-//        Collections.sort(listaE, new Comparator<ListaEgresos>() {
-//            @Override
-//            public int compare(ListaEgresos l1, ListaEgresos l2) {
-//                    return new Integer(Integer.parseInt(l1.getMes())).compareTo(new Integer(Integer.parseInt(l2.getMes())));
-//            }          
-//         });
-         for(int i=0;i<listaE.size();i++){
-            list = (ListaEgresos)listaE.get(i);
-            list.setMes(retornaMes(Integer.parseInt(list.getMes())));
-                    
-        }
+        Collections.sort(listaE, new Comparator<ListaEgresos>() {
+            @Override
+            public int compare(ListaEgresos l1, ListaEgresos l2) {
+                    return new Integer(Integer.parseInt(l1.getMes())).compareTo(new Integer(Integer.parseInt(l2.getMes())));
+            }          
+         });
+        Collections.sort(listaE, new Comparator<ListaEgresos>() {
+            @Override
+            public int compare(ListaEgresos l1, ListaEgresos l2) {
+                    return new Integer(Integer.parseInt(l1.getAnio())).compareTo(new Integer(Integer.parseInt(l2.getAnio())));
+            }          
+         });
+        
+//         for(int i=0;i<listaE.size();i++){
+//            list = (ListaEgresos)listaE.get(i);
+//            list.setMes(retornaMes(Integer.parseInt(list.getMes())));
+//                    
+//         }
          
          //Creamos el informe
         try {            
@@ -505,7 +523,8 @@ public class IngresosEgresos extends javax.swing.JFrame {
         Double tot=0.0;
        
         boolean band;
-        try {            
+        try {  
+             cn = cc.conexion();
              Statement st = cn.createStatement();
              ResultSet rs = st.executeQuery(sql);
              
@@ -514,8 +533,8 @@ public class IngresosEgresos extends javax.swing.JFrame {
                  band = false;
                  for(int i=0;i<lista.size();i++){
                      list = (ListaIngresos)lista.get(i); 
-                     
-                      if(rs.getString("mes").equals(list.getMes())){
+                     //acá ingresa cuando existe en la lista un mes y año igual al registro actual
+                      if(rs.getString("mes").equals(list.getMes())&& rs.getString("anio").equals(list.getAnio())){
                          band=true;  
                          switch(tipoList){
                             case "donac": list.setDonacion("$"+rs.getString("monto"));break;
@@ -527,20 +546,23 @@ public class IngresosEgresos extends javax.swing.JFrame {
                         
                      }
                  }
+                 //acá ingresa  cuando no existe en la lista
+                 //ningún valor con el mes y año del registro actual
                  if(band==false){                      
                      ListaIngresos ingresos=null;
                       switch(tipoList){
-                            case "donac": ingresos= new ListaIngresos(rs.getString("mes").toString(),"---","$"+rs.getString("monto").toString(),"---","---","---","---");break;
-                            case "flores": ingresos= new ListaIngresos(rs.getString("mes").toString(),"---","---","$"+rs.getString("monto").toString(),"---","---","---");break;
-                            case "public": ingresos= new ListaIngresos(rs.getString("mes").toString(),"---","---","---","$"+rs.getString("monto").toString(),"---","---");break;    
-                            case "rifas": ingresos= new ListaIngresos(rs.getString("mes").toString(),"---","---","---","---","$"+rs.getString("monto").toString(),"---");break;        
-                            case "tarj": ingresos= new ListaIngresos(rs.getString("mes").toString(),"---","---","---","---","-","$"+rs.getString("monto").toString());            
+                            case "donac": ingresos= new ListaIngresos(rs.getString("mes").toString(),rs.getString("anio").toString(),"---","$"+rs.getString("monto").toString(),"---","---","---","---");break;
+                            case "flores": ingresos= new ListaIngresos(rs.getString("mes").toString(),rs.getString("anio").toString(),"---","---","$"+rs.getString("monto").toString(),"---","---","---");break;
+                            case "public": ingresos= new ListaIngresos(rs.getString("mes").toString(),rs.getString("anio").toString(),"---","---","---","$"+rs.getString("monto").toString(),"---","---");break;    
+                            case "rifas": ingresos= new ListaIngresos(rs.getString("mes").toString(),rs.getString("anio").toString(),"---","---","---","---","$"+rs.getString("monto").toString(),"---");break;        
+                            case "tarj": ingresos= new ListaIngresos(rs.getString("mes").toString(),rs.getString("anio").toString(),"---","---","---","---","-","$"+rs.getString("monto").toString());            
                             
                       }
                      
                      lista.add(ingresos);                     
                  }                
-             }              
+             }     
+             cn.close();
         } catch (SQLException ex) {
             Logger.getLogger(IngresosEgresos.class.getName()).log(Level.SEVERE, null, ex);
         }

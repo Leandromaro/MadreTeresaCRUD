@@ -9,6 +9,7 @@ package reportes;
  */
 public class ListaIngresos {
     private String mes;
+    private String anio;
     private String cuotaSoc="";
     private String donacion="";
     private String floresVida="";
@@ -31,8 +32,9 @@ public class ListaIngresos {
 //        this.tarjetas = tarjetas;
 //    } 
         
-    public ListaIngresos(String mes, String cuotaSoc, String donacion, String floresVida, String publicidad, String rifas, String tarjetas) {
+    public ListaIngresos(String mes, String anio, String cuotaSoc, String donacion, String floresVida, String publicidad, String rifas, String tarjetas) {
         this.mes = mes;
+        this.anio = anio;
         this.cuotaSoc = cuotaSoc;
         this.donacion = donacion;
         this.floresVida = floresVida;
@@ -40,6 +42,14 @@ public class ListaIngresos {
         this.rifas = rifas;
         this.tarjetas = tarjetas;
         
+    }
+
+    public String getAnio() {
+        return anio;
+    }
+
+    public void setAnio(String anio) {
+        this.anio = anio;
     }
         
     public ListaIngresos() {
@@ -70,14 +80,6 @@ public class ListaIngresos {
         this.donacion = donacion;
     }   
 
-    public String getMes() {
-        return mes;
-    }
-
-    public void setMes(String mes) {
-        this.mes = mes;
-    }
-
     public String getPublicidad() {
         return publicidad;
     }
@@ -100,6 +102,14 @@ public class ListaIngresos {
 
     public void setTarjetas(String tarjetas) {
         this.tarjetas = tarjetas;
+    }
+
+    public String getMes() {
+        return mes;
+    }
+
+    public void setMes(String mes) {
+        this.mes = mes;
     }
     
 }
