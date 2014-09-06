@@ -842,8 +842,45 @@ public class SociosABM extends JPanel {
 
     }//GEN-LAST:event_deleteButtonActionPerformed
 
+    private boolean findByDNI(int numDoc ){
+        query = entityManager.createQuery("SELECT s FROM Socios s WHERE s.documento=" + numDoc);
+        if(query!=null){
+            return true;
+        }
+        else{
+            return false;
+        }
+    }
+    
+    public void setByDNI(int numDoc){
+        if(findByDNI(numDoc)){
+        SociosABM s = new SociosABM();
+        int dialogResult = 0;
+            if(query!=null){
+                int pos=0;
+                for(int i=0; i<s.list.size(); i++){
+                    if(list.get(i).getDocumento()==numDoc){
+                        pos=i;
+                    }
+                }
+                if (pos!=0){
+                    dialogResult = JOptionPane.showConfirmDialog(null, "Es usted "+list.get(pos).getNombre()+" "+list.get(pos).getApellido()+"?");
+                    pos=0;
+                }
+                if(JOptionPane.YES_OPTION == dialogResult){
+                    JOptionPane.showMessageDialog(null, "Socio Actualizado");
+                    dialogResult=0;
+                    query = entityManager.createQuery("UPDATE Socios SET donante=true WHERE documento="+numDoc);
+                }
+            }
+        }
+    }
+    
+    
     private void newButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_newButtonActionPerformed
-
+        
+        JOptionPane.showMessageDialog(null, "Debe rellenar todos los campos");
+        
         jComboTipSoc.setSelectedIndex(0);
         TipoSocioABM tipoG = new TipoSocioABM();
         if (tipoG.getId(jComboTipSoc.getSelectedItem().toString()) != null) {
@@ -946,6 +983,8 @@ public class SociosABM extends JPanel {
 
     }//GEN-LAST:event_jButtonBuscarActionPerformed
 
+   
+    
     private void jBVerCuotasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBVerCuotasActionPerformed
         int selected = masterTable.getSelectedRow();
         int id = Integer.valueOf(masterTable.getValueAt(selected, 14).toString());

@@ -6,8 +6,6 @@
 
 package madreteresacrud;
 
-import java.beans.PropertyChangeListener;
-import java.beans.PropertyChangeSupport;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
@@ -22,7 +20,8 @@ import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
-import javax.persistence.Transient;
+import javax.validation.constraints.Size;
+import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  *
@@ -30,24 +29,26 @@ import javax.persistence.Transient;
  */
 @Entity
 @Table(name = "donaciones")
+@XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "Donaciones.findAll", query = "SELECT d FROM Donaciones d"),
     @NamedQuery(name = "Donaciones.findByIddonaciones", query = "SELECT d FROM Donaciones d WHERE d.iddonaciones = :iddonaciones"),
     @NamedQuery(name = "Donaciones.findByNombre", query = "SELECT d FROM Donaciones d WHERE d.nombre = :nombre"),
     @NamedQuery(name = "Donaciones.findByApellido", query = "SELECT d FROM Donaciones d WHERE d.apellido = :apellido"),
     @NamedQuery(name = "Donaciones.findByMonto", query = "SELECT d FROM Donaciones d WHERE d.monto = :monto"),
-    @NamedQuery(name = "Donaciones.findByFechaDonacion", query = "SELECT d FROM Donaciones d WHERE d.fechaDonacion = :fechaDonacion")})
+    @NamedQuery(name = "Donaciones.findByFechaDonacion", query = "SELECT d FROM Donaciones d WHERE d.fechaDonacion = :fechaDonacion"),
+    @NamedQuery(name = "Donaciones.findByDni", query = "SELECT d FROM Donaciones d WHERE d.dni = :dni")})
 public class Donaciones implements Serializable {
-    @Transient
-    private PropertyChangeSupport changeSupport = new PropertyChangeSupport(this);
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
     @Column(name = "iddonaciones")
     private Integer iddonaciones;
+    @Size(max = 100)
     @Column(name = "nombre")
     private String nombre;
+    @Size(max = 50)
     @Column(name = "apellido")
     private String apellido;
     // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
@@ -56,6 +57,8 @@ public class Donaciones implements Serializable {
     @Column(name = "fechaDonacion")
     @Temporal(TemporalType.DATE)
     private Date fechaDonacion;
+    @Column(name = "DNI")
+    private Integer dni;
 
     public Donaciones() {
     }
@@ -69,9 +72,7 @@ public class Donaciones implements Serializable {
     }
 
     public void setIddonaciones(Integer iddonaciones) {
-        Integer oldIddonaciones = this.iddonaciones;
         this.iddonaciones = iddonaciones;
-        changeSupport.firePropertyChange("iddonaciones", oldIddonaciones, iddonaciones);
     }
 
     public String getNombre() {
@@ -79,9 +80,7 @@ public class Donaciones implements Serializable {
     }
 
     public void setNombre(String nombre) {
-        String oldNombre = this.nombre;
         this.nombre = nombre;
-        changeSupport.firePropertyChange("nombre", oldNombre, nombre);
     }
 
     public String getApellido() {
@@ -89,9 +88,7 @@ public class Donaciones implements Serializable {
     }
 
     public void setApellido(String apellido) {
-        String oldApellido = this.apellido;
         this.apellido = apellido;
-        changeSupport.firePropertyChange("apellido", oldApellido, apellido);
     }
 
     public BigDecimal getMonto() {
@@ -99,9 +96,7 @@ public class Donaciones implements Serializable {
     }
 
     public void setMonto(BigDecimal monto) {
-        BigDecimal oldMonto = this.monto;
         this.monto = monto;
-        changeSupport.firePropertyChange("monto", oldMonto, monto);
     }
 
     public Date getFechaDonacion() {
@@ -109,9 +104,15 @@ public class Donaciones implements Serializable {
     }
 
     public void setFechaDonacion(Date fechaDonacion) {
-        Date oldFechaDonacion = this.fechaDonacion;
         this.fechaDonacion = fechaDonacion;
-        changeSupport.firePropertyChange("fechaDonacion", oldFechaDonacion, fechaDonacion);
+    }
+
+    public Integer getDni() {
+        return dni;
+    }
+
+    public void setDni(Integer dni) {
+        this.dni = dni;
     }
 
     @Override
@@ -137,14 +138,6 @@ public class Donaciones implements Serializable {
     @Override
     public String toString() {
         return "madreteresacrud.Donaciones[ iddonaciones=" + iddonaciones + " ]";
-    }
-
-    public void addPropertyChangeListener(PropertyChangeListener listener) {
-        changeSupport.addPropertyChangeListener(listener);
-    }
-
-    public void removePropertyChangeListener(PropertyChangeListener listener) {
-        changeSupport.removePropertyChangeListener(listener);
     }
     
 }
