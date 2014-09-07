@@ -167,14 +167,18 @@ public class UsuarioABM extends JPanel {
     
 
     private void deleteButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteButtonActionPerformed
-        int[] selected = masterTable.getSelectedRows();
-        List<madreteresacrud.Usuario> toRemove = new ArrayList<madreteresacrud.Usuario>(selected.length);
-        for (int idx = 0; idx < selected.length; idx++) {
-            madreteresacrud.Usuario u = list.get(masterTable.convertRowIndexToModel(selected[idx]));
-            toRemove.add(u);
-            entityManager.remove(u);
+        int reply = JOptionPane.showConfirmDialog(null, "¿Está seguro de eliminar el registro?", "Eliminacion de Registro", JOptionPane.YES_NO_OPTION);
+        if (reply == JOptionPane.YES_OPTION) {
+            JOptionPane.showMessageDialog(null, "Registro Eliminado");
+            int[] selected = masterTable.getSelectedRows();
+            List<madreteresacrud.Usuario> toRemove = new ArrayList<madreteresacrud.Usuario>(selected.length);
+            for (int idx = 0; idx < selected.length; idx++) {
+                madreteresacrud.Usuario u = list.get(masterTable.convertRowIndexToModel(selected[idx]));
+                toRemove.add(u);
+                entityManager.remove(u);
+            }
+            list.removeAll(toRemove);
         }
-        list.removeAll(toRemove);
     }//GEN-LAST:event_deleteButtonActionPerformed
 
     private void newButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_newButtonActionPerformed

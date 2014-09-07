@@ -9,6 +9,9 @@ import java.awt.Color;
 import java.awt.Frame;
 import java.awt.Toolkit;
 import java.beans.Beans;
+import java.sql.Connection;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -25,6 +28,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 import org.jdesktop.beansbinding.Converter;
+import reportes.ConexionBD;
 import utilidades.Calendario;
 import utilidades.UtilGraficos;
 
@@ -749,6 +753,9 @@ public class SociosABM extends JPanel {
 
 
     private void deleteButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteButtonActionPerformed
+    int reply = JOptionPane.showConfirmDialog(null, "¿Está seguro de eliminar el registro?", "Eliminacion de Registro", JOptionPane.YES_NO_OPTION);
+    if (reply == JOptionPane.YES_OPTION) {
+        JOptionPane.showMessageDialog(null, "Registro Eliminado");    
 //        int[] selected = masterTable.getSelectedRows();
 //        List<madreteresacrud.Socios> toRemove = new ArrayList<madreteresacrud.Socios>(selected.length);
 //        for (int idx = 0; idx < selected.length; idx++) {
@@ -839,7 +846,7 @@ public class SociosABM extends JPanel {
                 numSocField.setEnabled(false);
             }
         }
-
+    }
     }//GEN-LAST:event_deleteButtonActionPerformed
 
     private boolean findByDNI(int numDoc ){
@@ -852,28 +859,34 @@ public class SociosABM extends JPanel {
         }
     }
     
-    public void setByDNI(int numDoc){
+    public void setDonanteByDNI(int numDoc){
         if(findByDNI(numDoc)){
+            boolean t= true;
+//            this.ApeYNom(numDoc).setDonante(t);
+//            this.ApeYNom(numDoc).setAdherente(t);
+        String sql = "UPDATE Socios s SET s.donante = true WHERE s.documento ="+numDoc;
+        System.out.println(sql);
+        ConexionBD cc= new ConexionBD();
+        Connection cn = cc.conexion();
+            try {
+                 Statement st = cn.createStatement();
+                 st.executeUpdate(sql);
+                 cn.close();
+                 JOptionPane.showMessageDialog(null, "Se pudo actualizar el registro");
+            } catch (SQLException ex) {
+              JOptionPane.showMessageDialog(null, "No se pudo actualizar el registro");
+            }            
+        }
+    }
+    
+    public Socios ApeYNom(int dni){
         SociosABM s = new SociosABM();
-        int dialogResult = 0;
-            if(query!=null){
-                int pos=0;
-                for(int i=0; i<s.list.size(); i++){
-                    if(list.get(i).getDocumento()==numDoc){
-                        pos=i;
-                    }
-                }
-                if (pos!=0){
-                    dialogResult = JOptionPane.showConfirmDialog(null, "Es usted "+list.get(pos).getNombre()+" "+list.get(pos).getApellido()+"?");
-                    pos=0;
-                }
-                if(JOptionPane.YES_OPTION == dialogResult){
-                    JOptionPane.showMessageDialog(null, "Socio Actualizado");
-                    dialogResult=0;
-                    query = entityManager.createQuery("UPDATE Socios SET donante=true WHERE documento="+numDoc);
-                }
+        for(int i=0; i<s.list.size(); i++){
+            if(list.get(i).getDocumento()==dni){
+                return list.get(i);
             }
         }
+        return null;
     }
     
     

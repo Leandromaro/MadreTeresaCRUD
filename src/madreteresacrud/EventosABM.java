@@ -13,6 +13,7 @@ import java.util.Calendar;
 import java.util.List;
 import javax.persistence.RollbackException;
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 import org.jdesktop.beansbinding.Converter;
@@ -318,6 +319,9 @@ public class EventosABM extends JPanel {
     }//GEN-LAST:event_refreshButtonActionPerformed
     
     private void deleteButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteButtonActionPerformed
+        int reply = JOptionPane.showConfirmDialog(null, "¿Está seguro de eliminar el registro?", "Eliminacion de Registro", JOptionPane.YES_NO_OPTION);
+        if (reply == JOptionPane.YES_OPTION) {
+            JOptionPane.showMessageDialog(null, "Registro Eliminado");
         int[] selected = masterTable.getSelectedRows();
         List<madreteresacrud.Eventos> toRemove = new ArrayList<madreteresacrud.Eventos>(selected.length);
         for (int idx = 0; idx < selected.length; idx++) {
@@ -326,6 +330,7 @@ public class EventosABM extends JPanel {
             entityManager.remove(e);
         }
         list.removeAll(toRemove);
+        }
     }//GEN-LAST:event_deleteButtonActionPerformed
     
     private void newButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_newButtonActionPerformed

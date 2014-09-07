@@ -15,13 +15,14 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 import javax.persistence.RollbackException;
+import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 import org.jdesktop.beansbinding.Converter;
+import org.jdesktop.swingx.autocomplete.*;
 import utilidades.Calendario;
-
 /**
  *
  * @author leandro
@@ -50,6 +51,7 @@ public class DonacionesABM extends JPanel {
         entityManager = java.beans.Beans.isDesignTime() ? null : javax.persistence.Persistence.createEntityManagerFactory("madreTeresaCRUDPU").createEntityManager();
         query = java.beans.Beans.isDesignTime() ? null : entityManager.createQuery("SELECT d FROM Donaciones d");
         list = java.beans.Beans.isDesignTime() ? java.util.Collections.emptyList() : org.jdesktop.observablecollections.ObservableCollections.observableList(query.getResultList());
+        buttonGroup1 = new javax.swing.ButtonGroup();
         jPanelTabla = new javax.swing.JPanel();
         masterScrollPane = new javax.swing.JScrollPane();
         masterTable = new javax.swing.JTable();
@@ -67,9 +69,10 @@ public class DonacionesABM extends JPanel {
         saveButton = new javax.swing.JButton();
         refreshButton = new javax.swing.JButton();
         jButtonCalendar = new javax.swing.JButton();
-        jLabel1 = new javax.swing.JLabel();
         documentoField = new javax.swing.JTextField();
-        jCheckEmpresa = new javax.swing.JCheckBox();
+        jLabel1 = new javax.swing.JLabel();
+        jButtonBuscar = new javax.swing.JButton();
+        jCheckBoxSoc = new javax.swing.JCheckBox();
 
         FormListener formListener = new FormListener();
 
@@ -90,7 +93,7 @@ public class DonacionesABM extends JPanel {
         columnBinding.setColumnClass(java.util.Date.class);
         columnBinding.setEditable(false);
         columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${dni}"));
-        columnBinding.setColumnName("DNI");
+        columnBinding.setColumnName("DNI / Cuil");
         columnBinding.setColumnClass(Integer.class);
         bindingGroup.addBinding(jTableBinding);
         jTableBinding.bind();
@@ -115,7 +118,7 @@ public class DonacionesABM extends JPanel {
                 .addComponent(newButton)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(deleteButton)
-                .addContainerGap(195, Short.MAX_VALUE))
+                .addContainerGap(521, Short.MAX_VALUE))
             .addGroup(jPanelTablaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(jPanelTablaLayout.createSequentialGroup()
                     .addContainerGap()
@@ -184,8 +187,6 @@ public class DonacionesABM extends JPanel {
         jButtonCalendar.setContentAreaFilled(false);
         jButtonCalendar.addActionListener(formListener);
 
-        jLabel1.setText("DNI");
-
         documentoField.setToolTipText("Solo números con longitud máxima de 8 dígitos. ");
         documentoField.setEnabled(false);
 
@@ -195,41 +196,53 @@ public class DonacionesABM extends JPanel {
         documentoField.addActionListener(formListener);
         documentoField.addKeyListener(formListener);
 
+        jLabel1.setText("Dni/Cuil");
+
+        jButtonBuscar.setText("Buscar");
+        jButtonBuscar.addActionListener(formListener);
+
+        jCheckBoxSoc.setText("Socio Actual");
+        jCheckBoxSoc.setEnabled(false);
+        jCheckBoxSoc.addActionListener(formListener);
+
         javax.swing.GroupLayout jPanelFormLayout = new javax.swing.GroupLayout(jPanelForm);
         jPanelForm.setLayout(jPanelFormLayout);
         jPanelFormLayout.setHorizontalGroup(
             jPanelFormLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanelFormLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanelFormLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(apellidoLabel)
+                    .addComponent(montoLabel)
+                    .addComponent(fechaDonacionLabel)
+                    .addComponent(nombreLabel)
+                    .addComponent(jLabel1))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanelFormLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanelFormLayout.createSequentialGroup()
-                        .addGap(137, 137, 137)
+                        .addComponent(jButtonBuscar, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(refreshButton)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGap(12, 12, 12)
                         .addComponent(saveButton))
+                    .addGroup(jPanelFormLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                        .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanelFormLayout.createSequentialGroup()
+                            .addGroup(jPanelFormLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                .addComponent(montoField, javax.swing.GroupLayout.Alignment.LEADING)
+                                .addComponent(fechaDonacionField, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 144, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                            .addComponent(jButtonCalendar, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(apellidoField, javax.swing.GroupLayout.PREFERRED_SIZE, 353, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(jPanelFormLayout.createSequentialGroup()
-                        .addContainerGap()
                         .addGroup(jPanelFormLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(apellidoLabel)
-                            .addComponent(montoLabel)
-                            .addComponent(fechaDonacionLabel)
-                            .addComponent(jLabel1))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(jPanelFormLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(documentoField, javax.swing.GroupLayout.PREFERRED_SIZE, 146, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanelFormLayout.createSequentialGroup()
+                                .addComponent(documentoField)
+                                .addGap(164, 164, 164))
                             .addGroup(jPanelFormLayout.createSequentialGroup()
-                                .addGroup(jPanelFormLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                                    .addComponent(montoField, javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(fechaDonacionField, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 144, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jButtonCalendar, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addComponent(apellidoField, javax.swing.GroupLayout.PREFERRED_SIZE, 353, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(nombreField, javax.swing.GroupLayout.PREFERRED_SIZE, 356, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                .addContainerGap(45, Short.MAX_VALUE))
-            .addGroup(jPanelFormLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(jPanelFormLayout.createSequentialGroup()
-                    .addContainerGap()
-                    .addComponent(nombreLabel)
-                    .addContainerGap(467, Short.MAX_VALUE)))
+                                .addComponent(nombreField, javax.swing.GroupLayout.PREFERRED_SIZE, 356, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)))
+                        .addComponent(jCheckBoxSoc)))
+                .addContainerGap(260, Short.MAX_VALUE))
         );
 
         jPanelFormLayout.linkSize(javax.swing.SwingConstants.HORIZONTAL, new java.awt.Component[] {refreshButton, saveButton});
@@ -237,9 +250,17 @@ public class DonacionesABM extends JPanel {
         jPanelFormLayout.setVerticalGroup(
             jPanelFormLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanelFormLayout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(nombreField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 8, Short.MAX_VALUE)
+                .addContainerGap(40, Short.MAX_VALUE)
+                .addGroup(jPanelFormLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel1, javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanelFormLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(documentoField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jCheckBoxSoc)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanelFormLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(nombreField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(nombreLabel))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanelFormLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(apellidoLabel, javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(apellidoField, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -248,30 +269,18 @@ public class DonacionesABM extends JPanel {
                     .addComponent(montoLabel)
                     .addComponent(montoField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanelFormLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(jPanelFormLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(jPanelFormLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(fechaDonacionLabel)
                         .addComponent(fechaDonacionField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(jButtonCalendar, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanelFormLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel1)
-                    .addComponent(documentoField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanelFormLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(refreshButton)
-                    .addComponent(saveButton))
-                .addContainerGap())
-            .addGroup(jPanelFormLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(jPanelFormLayout.createSequentialGroup()
-                    .addContainerGap()
-                    .addComponent(nombreLabel)
-                    .addContainerGap(196, Short.MAX_VALUE)))
+                    .addComponent(saveButton)
+                    .addComponent(jButtonBuscar))
+                .addGap(18, 18, 18))
         );
-
-        jCheckEmpresa.setText("Empresa");
-        jCheckEmpresa.setEnabled(false);
-        jCheckEmpresa.addActionListener(formListener);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
@@ -281,10 +290,6 @@ public class DonacionesABM extends JPanel {
                 .addContainerGap()
                 .addComponent(jPanelForm, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addContainerGap())
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jCheckEmpresa, javax.swing.GroupLayout.PREFERRED_SIZE, 118, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(78, 78, 78))
             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(layout.createSequentialGroup()
                     .addContainerGap()
@@ -294,9 +299,7 @@ public class DonacionesABM extends JPanel {
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(274, Short.MAX_VALUE)
-                .addComponent(jCheckEmpresa, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(27, 27, 27)
+                .addContainerGap(305, Short.MAX_VALUE)
                 .addComponent(jPanelForm, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -332,11 +335,14 @@ public class DonacionesABM extends JPanel {
             else if (evt.getSource() == jButtonCalendar) {
                 DonacionesABM.this.jButtonCalendarActionPerformed(evt);
             }
-            else if (evt.getSource() == jCheckEmpresa) {
-                DonacionesABM.this.jCheckEmpresaActionPerformed(evt);
-            }
             else if (evt.getSource() == documentoField) {
                 DonacionesABM.this.documentoFieldActionPerformed(evt);
+            }
+            else if (evt.getSource() == jButtonBuscar) {
+                DonacionesABM.this.jButtonBuscarActionPerformed(evt);
+            }
+            else if (evt.getSource() == jCheckBoxSoc) {
+                DonacionesABM.this.jCheckBoxSocActionPerformed(evt);
             }
         }
 
@@ -357,6 +363,8 @@ public class DonacionesABM extends JPanel {
 
     @SuppressWarnings("unchecked")
     private void refreshButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_refreshButtonActionPerformed
+        documentoField.setEnabled(false);
+        documentoField.setText("null");
         entityManager.getTransaction().rollback();
         entityManager.getTransaction().begin();
         java.util.Collection data = query.getResultList();
@@ -367,7 +375,12 @@ public class DonacionesABM extends JPanel {
         list.addAll(data);
     }//GEN-LAST:event_refreshButtonActionPerformed
 
+   
+    
     private void deleteButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteButtonActionPerformed
+        int reply = JOptionPane.showConfirmDialog(null, "¿Está seguro de eliminar el registro?", "Eliminacion de Registro", JOptionPane.YES_NO_OPTION);
+        if (reply == JOptionPane.YES_OPTION) {
+            JOptionPane.showMessageDialog(null, "Registro Eliminado");
         int[] selected = masterTable.getSelectedRows();
         List<madreteresacrud.Donaciones> toRemove = new ArrayList<madreteresacrud.Donaciones>(selected.length);
         for (int idx = 0; idx < selected.length; idx++) {
@@ -376,11 +389,13 @@ public class DonacionesABM extends JPanel {
             entityManager.remove(d);
         }
         list.removeAll(toRemove);
+        }
     }//GEN-LAST:event_deleteButtonActionPerformed
 
     private void newButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_newButtonActionPerformed
-        jCheckEmpresa.setEnabled(true);
-        jCheckEmpresa.setSelected(false);
+        jButtonBuscar.setEnabled(false);
+        jCheckBoxSoc.setSelected(false);
+        jCheckBoxSoc.setEnabled(true);
         documentoField.setText("");
         documentoField.setEnabled(true);
         jButtonCalendar.enable(true);
@@ -395,18 +410,23 @@ public class DonacionesABM extends JPanel {
     
     private void saveButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveButtonActionPerformed
         try {
-            SociosABM s = new SociosABM();
             int doc = Integer.parseInt(documentoField.getText().trim());
-            s.setByDNI(doc);
-            if(!documentoField.getText().isEmpty()&&(documentoField.getSize().width == 8)){
-                //consulto si quiere buscar los datos 
-                int respuesta = JOptionPane.showConfirmDialog(null, "¿Desea buscar los datos del usuario para ver si fueron cargados con anterioridad?", "Buscar Donante", JOptionPane.OK_CANCEL_OPTION);
-                if (respuesta == JOptionPane.YES_OPTION) {
-                    JOptionPane.showMessageDialog(null, "Funca");
-                }else {
-                    JOptionPane.showMessageDialog(null, "GOODBYE");
-                    System.exit(0);
-                }
+            if(doc!=0){
+                SociosABM s = new SociosABM();
+                Socios soc = s.ApeYNom(doc);
+                if(soc !=null){
+                    int dialogResult = JOptionPane.showConfirmDialog(null, "Es usted "+soc.getNombre()+" "+soc.getApellido()+"?");
+                    if(JOptionPane.YES_OPTION == dialogResult){
+                        s.setDonanteByDNI(doc);
+                        apellidoField.setText(soc.getApellido());
+                        nombreField.setText(soc.getNombre());
+                        apellidoField.setEnabled(true);
+                        nombreField.setEnabled(true);
+                        montoField.setEnabled(true);
+                        fechaDonacionField.setEnabled(true);
+                        dialogResult=0;
+                    }
+                }                  
             }
             entityManager.getTransaction().commit();
             entityManager.getTransaction().begin();
@@ -428,7 +448,6 @@ public class DonacionesABM extends JPanel {
         for (Object entity : data) {
             entityManager.refresh(entity);
         }
-        jCheckEmpresa.setEnabled(false);
         list.clear();
         list.addAll(data);
     }//GEN-LAST:event_saveButtonActionPerformed
@@ -449,26 +468,51 @@ public class DonacionesABM extends JPanel {
         }
     }//GEN-LAST:event_documentoFieldKeyTyped
 
-    private void jCheckEmpresaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jCheckEmpresaActionPerformed
-        if (jCheckEmpresa.isSelected()){
-            masterTable.getColumnModel().getColumn(4).setMaxWidth(0);
-            masterTable.getColumnModel().getColumn(4).setMinWidth(0);
-            masterTable.getColumnModel().getColumn(4).setPreferredWidth(0);
-            documentoField.setEnabled(false);
-        }else{
-            int width = masterTable.getColumnModel().getColumn(1).getWidth();
-            masterTable.getColumnModel().getColumn(4).setMaxWidth(width);
-            masterTable.getColumnModel().getColumn(4).setMinWidth(width);
-            masterTable.getColumnModel().getColumn(4).setPreferredWidth(width);
-            documentoField.setText("");
-            documentoField.setEnabled(true);
-        }
-        
-    }//GEN-LAST:event_jCheckEmpresaActionPerformed
-
     private void documentoFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_documentoFieldActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_documentoFieldActionPerformed
+
+    private void jButtonBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonBuscarActionPerformed
+        saveButton.setEnabled(true);
+        int doc = Integer.parseInt(documentoField.getText().trim());
+            if(doc!=0){
+                SociosABM s = new SociosABM();
+                Socios soc = s.ApeYNom(doc);
+                if(soc !=null){
+                    int dialogResult = JOptionPane.showConfirmDialog(null, "Es usted "+soc.getNombre()+" "+soc.getApellido()+"?");
+                    if(JOptionPane.YES_OPTION == dialogResult){
+                        apellidoField.setText(soc.getApellido());
+                        nombreField.setText(soc.getNombre());
+                        apellidoField.setEnabled(true);
+                        nombreField.setEnabled(true);
+                        montoField.setEnabled(true);
+                        fechaDonacionField.setEnabled(true);
+                        dialogResult=0;       
+                    }
+                }else{
+                    JOptionPane.showConfirmDialog(null, "No se encuentra Socio con ese DNI");
+                }                  
+            }
+         
+    }//GEN-LAST:event_jButtonBuscarActionPerformed
+
+    private void jCheckBoxSocActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jCheckBoxSocActionPerformed
+        if(jCheckBoxSoc.isSelected()){
+            jButtonBuscar.setEnabled(true);
+            fechaDonacionField.setEnabled(false);
+            montoField.setEnabled(false);
+            apellidoField.setEnabled(false);
+            nombreField.setEnabled(false);
+            saveButton.setEnabled(false);
+        }else{
+            jButtonBuscar.setEnabled(false);
+            fechaDonacionField.setEnabled(true);
+            montoField.setEnabled(true);
+            apellidoField.setEnabled(true);
+            nombreField.setEnabled(true);
+            saveButton.setEnabled(true);
+        }
+    }//GEN-LAST:event_jCheckBoxSocActionPerformed
     
     //OBJETO PARA PODER ENLAZAR LA FECHA DESDE LA BD EN EL TEXTFIELD fechaNacimiento
     Converter dateConverter = new Converter<java.util.Date, String>() {
@@ -493,13 +537,15 @@ public class DonacionesABM extends JPanel {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTextField apellidoField;
     private javax.swing.JLabel apellidoLabel;
+    private javax.swing.ButtonGroup buttonGroup1;
     private javax.swing.JButton deleteButton;
     private javax.swing.JTextField documentoField;
     private javax.persistence.EntityManager entityManager;
     private javax.swing.JTextField fechaDonacionField;
     private javax.swing.JLabel fechaDonacionLabel;
+    private javax.swing.JButton jButtonBuscar;
     private javax.swing.JButton jButtonCalendar;
-    private javax.swing.JCheckBox jCheckEmpresa;
+    private javax.swing.JCheckBox jCheckBoxSoc;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JPanel jPanelForm;
     private javax.swing.JPanel jPanelTabla;
