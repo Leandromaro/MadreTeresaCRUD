@@ -219,8 +219,6 @@ public class FlorVidaSocio extends JPanel {
         }
       
     }
-    private javax.persistence.EntityManager entityManager1;
-    private  javax.persistence.Query query1;
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton agregarFV;
     private javax.swing.JButton deleteButton;

@@ -20,7 +20,7 @@ import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
-import javax.validation.constraints.Size;
+//import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
 
 /**
@@ -45,10 +45,10 @@ public class Donaciones implements Serializable {
     @Basic(optional = false)
     @Column(name = "iddonaciones")
     private Integer iddonaciones;
-    @Size(max = 100)
+    //@Size(max = 100)
     @Column(name = "nombre")
     private String nombre;
-    @Size(max = 50)
+    //@Size(max = 50)
     @Column(name = "apellido")
     private String apellido;
     // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation

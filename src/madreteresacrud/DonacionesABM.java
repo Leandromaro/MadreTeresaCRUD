@@ -6,7 +6,6 @@
 
 package madreteresacrud;
 
-import java.awt.EventQueue;
 import java.awt.Toolkit;
 import java.beans.Beans;
 import java.text.DateFormat;
@@ -15,13 +14,11 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 import javax.persistence.RollbackException;
-import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 import org.jdesktop.beansbinding.Converter;
-import org.jdesktop.swingx.autocomplete.*;
 import utilidades.Calendario;
 /**
  *
@@ -415,7 +412,7 @@ public class DonacionesABM extends JPanel {
                 SociosABM s = new SociosABM();
                 Socios soc = s.ApeYNom(doc);
                 if(soc !=null){
-                    int dialogResult = JOptionPane.showConfirmDialog(null, "Es usted "+soc.getNombre()+" "+soc.getApellido()+"?");
+                    int dialogResult = JOptionPane.showConfirmDialog(null, "Es usted "+soc.getNombre()+" "+soc.getApellido()+"?", "Selección de Registro", JOptionPane.YES_NO_OPTION);
                     if(JOptionPane.YES_OPTION == dialogResult){
                         s.setDonanteByDNI(doc);
                         apellidoField.setText(soc.getApellido());
@@ -479,7 +476,7 @@ public class DonacionesABM extends JPanel {
                 SociosABM s = new SociosABM();
                 Socios soc = s.ApeYNom(doc);
                 if(soc !=null){
-                    int dialogResult = JOptionPane.showConfirmDialog(null, "Es usted "+soc.getNombre()+" "+soc.getApellido()+"?");
+                    int dialogResult = JOptionPane.showConfirmDialog(null, "Es usted "+soc.getNombre()+" "+soc.getApellido()+"?", "Selección de Registro", JOptionPane.YES_NO_OPTION);
                     if(JOptionPane.YES_OPTION == dialogResult){
                         apellidoField.setText(soc.getApellido());
                         nombreField.setText(soc.getNombre());
@@ -490,7 +487,7 @@ public class DonacionesABM extends JPanel {
                         dialogResult=0;       
                     }
                 }else{
-                    JOptionPane.showConfirmDialog(null, "No se encuentra Socio con ese DNI");
+                    JOptionPane.showMessageDialog(null, "No se encuentra Socio con ese DNI");
                 }                  
             }
          

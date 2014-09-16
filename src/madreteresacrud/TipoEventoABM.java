@@ -9,6 +9,7 @@ package madreteresacrud;
 import java.awt.EventQueue;
 import java.beans.Beans;
 import java.util.ArrayList;
+
 import java.util.List;
 import javax.persistence.RollbackException;
 import javax.swing.JFrame;
@@ -17,11 +18,11 @@ import javax.swing.JPanel;
 
 /**
  *
- * @author leandro
+ * @author francis
  */
-public class UsuarioABM extends JPanel {
+public class TipoEventoABM extends JPanel {
     
-    public UsuarioABM() {
+    public TipoEventoABM() {
         initComponents();
         if (!Beans.isDesignTime()) {
             entityManager.getTransaction().begin();
@@ -39,14 +40,12 @@ public class UsuarioABM extends JPanel {
         bindingGroup = new org.jdesktop.beansbinding.BindingGroup();
 
         entityManager = java.beans.Beans.isDesignTime() ? null : javax.persistence.Persistence.createEntityManagerFactory("madreTeresaCRUDPU").createEntityManager();
-        query = java.beans.Beans.isDesignTime() ? null : entityManager.createQuery("SELECT u FROM Usuario u");
+        query = java.beans.Beans.isDesignTime() ? null : entityManager.createQuery("SELECT t FROM TipoEvento t");
         list = java.beans.Beans.isDesignTime() ? java.util.Collections.emptyList() : org.jdesktop.observablecollections.ObservableCollections.observableList(query.getResultList());
         masterScrollPane = new javax.swing.JScrollPane();
         masterTable = new javax.swing.JTable();
-        nombreLabel = new javax.swing.JLabel();
-        passwordLabel = new javax.swing.JLabel();
-        nombreField = new javax.swing.JTextField();
-        passwordField = new javax.swing.JTextField();
+        descripcionLabel = new javax.swing.JLabel();
+        descripcionField = new javax.swing.JTextField();
         saveButton = new javax.swing.JButton();
         newButton = new javax.swing.JButton();
         deleteButton = new javax.swing.JButton();
@@ -54,30 +53,19 @@ public class UsuarioABM extends JPanel {
         FormListener formListener = new FormListener();
 
         org.jdesktop.swingbinding.JTableBinding jTableBinding = org.jdesktop.swingbinding.SwingBindings.createJTableBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, list, masterTable);
-        org.jdesktop.swingbinding.JTableBinding.ColumnBinding columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${nombre}"));
-        columnBinding.setColumnName("Nombre");
-        columnBinding.setColumnClass(Object.class);
-        columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${password}"));
-        columnBinding.setColumnName("Password");
-        columnBinding.setColumnClass(Object.class);
+        org.jdesktop.swingbinding.JTableBinding.ColumnBinding columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${descripcion}"));
+        columnBinding.setColumnName("Tipo de Eventos");
+        columnBinding.setColumnClass(String.class);
         bindingGroup.addBinding(jTableBinding);
-
+        jTableBinding.bind();
         masterScrollPane.setViewportView(masterTable);
 
-        nombreLabel.setText("Nombre:");
+        descripcionLabel.setText("Tipo de Evento:");
 
-        passwordLabel.setText("Password:");
-
-        org.jdesktop.beansbinding.Binding binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, masterTable, org.jdesktop.beansbinding.ELProperty.create("${selectedElement.nombre}"), nombreField, org.jdesktop.beansbinding.BeanProperty.create("text"));
+        org.jdesktop.beansbinding.Binding binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, masterTable, org.jdesktop.beansbinding.ELProperty.create("${selectedElement.descripcion}"), descripcionField, org.jdesktop.beansbinding.BeanProperty.create("text"));
         binding.setSourceUnreadableValue("null");
         bindingGroup.addBinding(binding);
-        binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ, masterTable, org.jdesktop.beansbinding.ELProperty.create("${selectedElement != null}"), nombreField, org.jdesktop.beansbinding.BeanProperty.create("enabled"));
-        bindingGroup.addBinding(binding);
-
-        binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, masterTable, org.jdesktop.beansbinding.ELProperty.create("${selectedElement.password}"), passwordField, org.jdesktop.beansbinding.BeanProperty.create("text"));
-        binding.setSourceUnreadableValue("null");
-        bindingGroup.addBinding(binding);
-        binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ, masterTable, org.jdesktop.beansbinding.ELProperty.create("${selectedElement != null}"), passwordField, org.jdesktop.beansbinding.BeanProperty.create("enabled"));
+        binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ, masterTable, org.jdesktop.beansbinding.ELProperty.create("${selectedElement != null}"), descripcionField, org.jdesktop.beansbinding.BeanProperty.create("enabled"));
         bindingGroup.addBinding(binding);
 
         saveButton.setText("Guardar");
@@ -110,14 +98,11 @@ public class UsuarioABM extends JPanel {
                         .addContainerGap()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(nombreLabel)
-                                    .addComponent(passwordLabel))
+                                .addComponent(descripcionLabel)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(nombreField, javax.swing.GroupLayout.DEFAULT_SIZE, 315, Short.MAX_VALUE)
-                                    .addComponent(passwordField, javax.swing.GroupLayout.DEFAULT_SIZE, 315, Short.MAX_VALUE)))
-                            .addComponent(masterScrollPane, javax.swing.GroupLayout.DEFAULT_SIZE, 380, Short.MAX_VALUE))))
+                                .addComponent(descripcionField, javax.swing.GroupLayout.DEFAULT_SIZE, 294, Short.MAX_VALUE)
+                                .addGap(9, 9, 9))
+                            .addComponent(masterScrollPane, javax.swing.GroupLayout.DEFAULT_SIZE, 422, Short.MAX_VALUE))))
                 .addContainerGap())
         );
 
@@ -128,15 +113,11 @@ public class UsuarioABM extends JPanel {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(masterScrollPane, javax.swing.GroupLayout.DEFAULT_SIZE, 130, Short.MAX_VALUE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGap(26, 26, 26)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(nombreLabel)
-                    .addComponent(nombreField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(passwordLabel)
-                    .addComponent(passwordField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                    .addComponent(descripcionLabel)
+                    .addComponent(descripcionField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(19, 19, 19)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(saveButton)
                     .addComponent(deleteButton)
@@ -153,13 +134,13 @@ public class UsuarioABM extends JPanel {
         FormListener() {}
         public void actionPerformed(java.awt.event.ActionEvent evt) {
             if (evt.getSource() == saveButton) {
-                UsuarioABM.this.saveButtonActionPerformed(evt);
+                TipoEventoABM.this.saveButtonActionPerformed(evt);
             }
             else if (evt.getSource() == newButton) {
-                UsuarioABM.this.newButtonActionPerformed(evt);
+                TipoEventoABM.this.newButtonActionPerformed(evt);
             }
             else if (evt.getSource() == deleteButton) {
-                UsuarioABM.this.deleteButtonActionPerformed(evt);
+                TipoEventoABM.this.deleteButtonActionPerformed(evt);
             }
         }
     }// </editor-fold>//GEN-END:initComponents
@@ -167,38 +148,23 @@ public class UsuarioABM extends JPanel {
     
 
     private void deleteButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteButtonActionPerformed
-        javax.persistence.Query query = entityManager.createQuery("SELECT u FROM Usuario u");
-            if (query.getResultList().size()==1){
-                JOptionPane.showMessageDialog(null, "No puede eliminar el unico usuario");
-            }else{    
-                int[] selected = masterTable.getSelectedRows();
-                List<madreteresacrud.Usuario> toRemove = new ArrayList<madreteresacrud.Usuario>(selected.length);
-                for (int idx = 0; idx < selected.length; idx++) {
-                    madreteresacrud.Usuario u = list.get(masterTable.convertRowIndexToModel(selected[idx]));
-                    toRemove.add(u);
-                    entityManager.remove(u);
-                }
-                list.removeAll(toRemove);
-                try {
-                    entityManager.getTransaction().commit();
-                    entityManager.getTransaction().begin();
-                } catch (RollbackException rex) {
-                    rex.printStackTrace();
-                    entityManager.getTransaction().begin();
-                    List<madreteresacrud.Usuario> merged = new ArrayList<madreteresacrud.Usuario>(list.size());
-                    for (madreteresacrud.Usuario u : list) {
-                        merged.add(entityManager.merge(u));
-                    }
-                    list.clear();
-                    list.addAll(merged);
-                }
+        int reply = JOptionPane.showConfirmDialog(null, "¿Está seguro de eliminar el registro?", "Eliminacion de Registro", JOptionPane.YES_NO_OPTION);
+        if (reply == JOptionPane.YES_OPTION) {
+            int[] selected = masterTable.getSelectedRows();
+            List<madreteresacrud.TipoEvento> toRemove = new ArrayList<madreteresacrud.TipoEvento>(selected.length);
+            for (int idx = 0; idx < selected.length; idx++) {
+                madreteresacrud.TipoEvento t = list.get(masterTable.convertRowIndexToModel(selected[idx]));
+                toRemove.add(t);
+                entityManager.remove(t);
             }
+            list.removeAll(toRemove);
+        }
     }//GEN-LAST:event_deleteButtonActionPerformed
 
     private void newButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_newButtonActionPerformed
-        madreteresacrud.Usuario u = new madreteresacrud.Usuario();
-        entityManager.persist(u);
-        list.add(u);
+        madreteresacrud.TipoEvento t = new madreteresacrud.TipoEvento();
+        entityManager.persist(t);
+        list.add(t);
         int row = list.size() - 1;
         masterTable.setRowSelectionInterval(row, row);
         masterTable.scrollRectToVisible(masterTable.getCellRect(row, 0, true));
@@ -211,40 +177,32 @@ public class UsuarioABM extends JPanel {
         } catch (RollbackException rex) {
             rex.printStackTrace();
             entityManager.getTransaction().begin();
-            List<madreteresacrud.Usuario> merged = new ArrayList<madreteresacrud.Usuario>(list.size());
-            for (madreteresacrud.Usuario u : list) {
-                merged.add(entityManager.merge(u));
+            List<madreteresacrud.TipoEvento> merged = new ArrayList<madreteresacrud.TipoEvento>(list.size());
+            for (madreteresacrud.TipoEvento t : list) {
+                merged.add(entityManager.merge(t));
             }
             list.clear();
             list.addAll(merged);
         }
     }//GEN-LAST:event_saveButtonActionPerformed
-    public boolean Log(String usu, String pas) {
-        String item;  
-        javax.persistence.Query query = entityManager.createQuery("SELECT DISTINCT u.nombre FROM Usuario u WHERE u.nombre='"+usu+"' AND u.password='"+pas+"'");
-        java.util.Collection data = query.getResultList();        
-        if (!data.isEmpty()){
-            return true;
-        }
-        return false;
-        
+
+    public List<TipoEvento> getTipoEvento() {
+        return list;
     }
+
+    
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton deleteButton;
+    private javax.swing.JTextField descripcionField;
+    private javax.swing.JLabel descripcionLabel;
     private javax.persistence.EntityManager entityManager;
-    private java.util.List<madreteresacrud.Usuario> list;
+    private java.util.List<madreteresacrud.TipoEvento> list;
     private javax.swing.JScrollPane masterScrollPane;
     private javax.swing.JTable masterTable;
     private javax.swing.JButton newButton;
-    private javax.swing.JTextField nombreField;
-    private javax.swing.JLabel nombreLabel;
-    private javax.swing.JTextField passwordField;
-    private javax.swing.JLabel passwordLabel;
     private javax.persistence.Query query;
     private javax.swing.JButton saveButton;
     private org.jdesktop.beansbinding.BindingGroup bindingGroup;
     // End of variables declaration//GEN-END:variables
-    
-    
 }

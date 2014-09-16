@@ -4,13 +4,9 @@
  */
 package madreteresacrud;
 
-import java.awt.Component;
-import java.awt.EventQueue;
-import java.awt.Window;
 import java.beans.Beans;
 import java.text.DateFormat;
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -24,6 +20,7 @@ import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 import org.jdesktop.beansbinding.Converter;
 import utilidades.Calendario;
+import utilidades.CalendarioDialog;
 
 /**
  *
@@ -368,7 +365,7 @@ public class CuotaSocialABM extends JPanel {
     }//GEN-LAST:event_saveButtonActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        new Calendario((JFrame) SwingUtilities.getWindowAncestor(this),true,fechaPagoField).setVisible(true);
+        new CalendarioDialog((JDialog) SwingUtilities.getWindowAncestor(this),true,fechaPagoField).setVisible(true);
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void genCuotaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_genCuotaActionPerformed
@@ -435,7 +432,7 @@ public class CuotaSocialABM extends JPanel {
     }//GEN-LAST:event_genCuotaActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-        new Calendario((JFrame) SwingUtilities.getWindowAncestor(this),true,fechaActivacionField).setVisible(true);
+        new CalendarioDialog((JDialog) SwingUtilities.getWindowAncestor(this),true,fechaActivacionField).setVisible(true);
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void jButtonSalirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonSalirActionPerformed

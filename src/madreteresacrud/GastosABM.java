@@ -383,10 +383,8 @@ public class GastosABM extends JPanel {
             list.removeAll(toRemove);
 
             jComboBoxElemento.setEnabled(false);
-            jComboBoxTipoGasto.setEnabled(false);  
-            
+            jComboBoxTipoGasto.setEnabled(false);
         }
-      
     }//GEN-LAST:event_deleteButtonActionPerformed
     
     private void newButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_newButtonActionPerformed

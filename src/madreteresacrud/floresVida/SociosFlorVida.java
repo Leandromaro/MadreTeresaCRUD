@@ -34,6 +34,14 @@ import javax.persistence.Transient;
     @NamedQuery(name = "SociosFlorVida.findByTelefono", query = "SELECT s FROM SociosFlorVida s WHERE s.telefono = :telefono"),
     @NamedQuery(name = "SociosFlorVida.findByCuil", query = "SELECT s FROM SociosFlorVida s WHERE s.cuil = :cuil")})
 public class SociosFlorVida implements Serializable {
+    @Column(name = "sexo")
+    private String sexo;
+    @Column(name = "email")
+    private String email;
+    @Column(name = "celular")
+    private String celular;
+    @Column(name = "dni")
+    private Integer dni;
     @Transient
     private PropertyChangeSupport changeSupport = new PropertyChangeSupport(this);
     private static final long serialVersionUID = 1L;
@@ -163,6 +171,38 @@ public class SociosFlorVida implements Serializable {
 
     public void removePropertyChangeListener(PropertyChangeListener listener) {
         changeSupport.removePropertyChangeListener(listener);
+    }
+
+    public String getSexo() {
+        return sexo;
+    }
+
+    public void setSexo(String sexo) {
+        this.sexo = sexo;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String getCelular() {
+        return celular;
+    }
+
+    public void setCelular(String celular) {
+        this.celular = celular;
+    }
+
+    public Integer getDni() {
+        return dni;
+    }
+
+    public void setDni(Integer dni) {
+        this.dni = dni;
     }
     
 }

@@ -80,9 +80,11 @@ public class MadreTeresaMain extends javax.swing.JFrame {
         jMenuItem2 = new javax.swing.JMenuItem();
         jMenu6 = new javax.swing.JMenu();
         jMenuDonaciones = new javax.swing.JMenuItem();
-        jMenuItem7 = new javax.swing.JMenuItem();
         jMenuItem5 = new javax.swing.JMenuItem();
         jMenuItem6 = new javax.swing.JMenuItem();
+        jMenu3 = new javax.swing.JMenu();
+        jMenuItem7 = new javax.swing.JMenuItem();
+        jMenuItem11 = new javax.swing.JMenuItem();
         jMenu7 = new javax.swing.JMenu();
         jMenuGastos = new javax.swing.JMenuItem();
         jMenuItem1 = new javax.swing.JMenuItem();
@@ -132,14 +134,6 @@ public class MadreTeresaMain extends javax.swing.JFrame {
         });
         jMenu6.add(jMenuDonaciones);
 
-        jMenuItem7.setText("Registrar Evento");
-        jMenuItem7.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMenuItem7ActionPerformed(evt);
-            }
-        });
-        jMenu6.add(jMenuItem7);
-
         jMenuItem5.setText("Registrar Flores de Vida");
         jMenuItem5.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -155,6 +149,26 @@ public class MadreTeresaMain extends javax.swing.JFrame {
             }
         });
         jMenu6.add(jMenuItem6);
+
+        jMenu3.setText("Eventos");
+
+        jMenuItem7.setText("Registrar Evento");
+        jMenuItem7.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem7ActionPerformed(evt);
+            }
+        });
+        jMenu3.add(jMenuItem7);
+
+        jMenuItem11.setText("Registrar tipo de Eventos");
+        jMenuItem11.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem11ActionPerformed(evt);
+            }
+        });
+        jMenu3.add(jMenuItem11);
+
+        jMenu6.add(jMenu3);
 
         jMenuBar1.add(jMenu6);
 
@@ -361,7 +375,7 @@ public class MadreTeresaMain extends javax.swing.JFrame {
     }//GEN-LAST:event_jMenuItem5ActionPerformed
 
     private void jMenuItem6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem6ActionPerformed
-        JInternalFrame internal =  new JInternalFrame("Aderentes de flores de vida");
+        JInternalFrame internal =  new JInternalFrame("Adherentes de flores de vida");
         JPanel p = new SociosFVABM();
         internal.add(p);          
         internal.pack();
@@ -428,6 +442,19 @@ public class MadreTeresaMain extends javax.swing.JFrame {
        i.setVisible(true);
        this.dispose();
     }//GEN-LAST:event_jMenuItem9ActionPerformed
+
+    private void jMenuItem11ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem11ActionPerformed
+        JInternalFrame internal =  new JInternalFrame("Tipos de Eventos");
+        JPanel u = new TipoEventoABM();
+        internal.add(u);          
+        internal.pack();
+        internal.setResizable(true);        
+        internal.setClosable(true);    
+        jDesktopPane.removeAll();
+        jDesktopPane.add(internal);
+        jDesktopPane.repaint();
+        internal.setVisible(true);
+    }//GEN-LAST:event_jMenuItem11ActionPerformed
     public boolean generarCuotas(int mes, int anio){
         boolean band=false;      
         boolean flag=false;
@@ -528,6 +555,7 @@ public class MadreTeresaMain extends javax.swing.JFrame {
     private javax.swing.JDesktopPane jDesktopPane;
     private javax.swing.JMenu jMenu1;
     private javax.swing.JMenu jMenu2;
+    private javax.swing.JMenu jMenu3;
     private javax.swing.JMenu jMenu4;
     private javax.swing.JMenu jMenu6;
     private javax.swing.JMenu jMenu7;
@@ -535,6 +563,7 @@ public class MadreTeresaMain extends javax.swing.JFrame {
     private javax.swing.JMenuItem jMenuDonaciones;
     private javax.swing.JMenuItem jMenuGastos;
     private javax.swing.JMenuItem jMenuItem1;
+    private javax.swing.JMenuItem jMenuItem11;
     private javax.swing.JMenuItem jMenuItem2;
     private javax.swing.JMenuItem jMenuItem3;
     private javax.swing.JMenuItem jMenuItem4;

@@ -26,6 +26,10 @@ import utilidades.Calendario;
 public class EventosABM extends JPanel {
     
     public EventosABM() {
+        TipoEventoABM t = new TipoEventoABM();
+        for(int i=0; i<t.getTipoEvento().size(); i++){
+            jComboBoxEvento.addItem(t.getTipoEvento().get(i));
+        }
         initComponents();
 //        refreshButton.setVisible(false);
         if (!Beans.isDesignTime()) {
@@ -45,7 +49,7 @@ public class EventosABM extends JPanel {
         bindingGroup = new org.jdesktop.beansbinding.BindingGroup();
 
         entityManager = java.beans.Beans.isDesignTime() ? null : javax.persistence.Persistence.createEntityManagerFactory("madreTeresaCRUDPU").createEntityManager();
-        query = java.beans.Beans.isDesignTime() ? null : entityManager.createQuery("SELECT e FROM Eventos e ORDER BY e.fecha DESC");
+        query = java.beans.Beans.isDesignTime() ? null : entityManager.createQuery("SELECT e FROM Eventos e");
         list = java.beans.Beans.isDesignTime() ? java.util.Collections.emptyList() : org.jdesktop.observablecollections.ObservableCollections.observableList(query.getResultList());
         jPanelForm = new javax.swing.JPanel();
         motivoLabel = new javax.swing.JLabel();
@@ -53,7 +57,6 @@ public class EventosABM extends JPanel {
         montoPublicLabel = new javax.swing.JLabel();
         montoRifasLabel = new javax.swing.JLabel();
         montoTarjetasLabel = new javax.swing.JLabel();
-        motivoField = new javax.swing.JTextField();
         fechaField = new javax.swing.JTextField();
         montoPublicField = new javax.swing.JTextField();
         montoRifasField = new javax.swing.JTextField();
@@ -61,6 +64,7 @@ public class EventosABM extends JPanel {
         saveButton = new javax.swing.JButton();
         refreshButton = new javax.swing.JButton();
         jButton1 = new javax.swing.JButton();
+        jComboBoxEvento = new javax.swing.JComboBox();
         jPanelTabla = new javax.swing.JPanel();
         masterScrollPane = new javax.swing.JScrollPane();
         masterTable = new javax.swing.JTable();
@@ -81,33 +85,27 @@ public class EventosABM extends JPanel {
 
         montoTarjetasLabel.setText("Tarjetas ($):");
 
-        org.jdesktop.beansbinding.Binding binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, masterTable, org.jdesktop.beansbinding.ELProperty.create("${selectedElement.motivo}"), motivoField, org.jdesktop.beansbinding.BeanProperty.create("text"));
-        binding.setSourceUnreadableValue(null);
-        bindingGroup.addBinding(binding);
-        binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ, masterTable, org.jdesktop.beansbinding.ELProperty.create("${selectedElement != null}"), motivoField, org.jdesktop.beansbinding.BeanProperty.create("enabled"));
-        bindingGroup.addBinding(binding);
-
-        binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, masterTable, org.jdesktop.beansbinding.ELProperty.create("${selectedElement.fecha}"), fechaField, org.jdesktop.beansbinding.BeanProperty.create("text"));
-        binding.setSourceUnreadableValue(null);
+        org.jdesktop.beansbinding.Binding binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, masterTable, org.jdesktop.beansbinding.ELProperty.create("${selectedElement.fecha}"), fechaField, org.jdesktop.beansbinding.BeanProperty.create("text"));
+        binding.setSourceUnreadableValue("null");
         binding.setConverter(dateConverter);
         bindingGroup.addBinding(binding);
         binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ, masterTable, org.jdesktop.beansbinding.ELProperty.create("${selectedElement != null}"), fechaField, org.jdesktop.beansbinding.BeanProperty.create("enabled"));
         bindingGroup.addBinding(binding);
 
         binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, masterTable, org.jdesktop.beansbinding.ELProperty.create("${selectedElement.montoPublic}"), montoPublicField, org.jdesktop.beansbinding.BeanProperty.create("text"));
-        binding.setSourceUnreadableValue(null);
+        binding.setSourceUnreadableValue("null");
         bindingGroup.addBinding(binding);
         binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ, masterTable, org.jdesktop.beansbinding.ELProperty.create("${selectedElement != null}"), montoPublicField, org.jdesktop.beansbinding.BeanProperty.create("enabled"));
         bindingGroup.addBinding(binding);
 
         binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, masterTable, org.jdesktop.beansbinding.ELProperty.create("${selectedElement.montoRifas}"), montoRifasField, org.jdesktop.beansbinding.BeanProperty.create("text"));
-        binding.setSourceUnreadableValue(null);
+        binding.setSourceUnreadableValue("null");
         bindingGroup.addBinding(binding);
         binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ, masterTable, org.jdesktop.beansbinding.ELProperty.create("${selectedElement != null}"), montoRifasField, org.jdesktop.beansbinding.BeanProperty.create("enabled"));
         bindingGroup.addBinding(binding);
 
         binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, masterTable, org.jdesktop.beansbinding.ELProperty.create("${selectedElement.montoTarjetas}"), montoTarjetasField, org.jdesktop.beansbinding.BeanProperty.create("text"));
-        binding.setSourceUnreadableValue(null);
+        binding.setSourceUnreadableValue("null");
         bindingGroup.addBinding(binding);
         binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ, masterTable, org.jdesktop.beansbinding.ELProperty.create("${selectedElement != null}"), montoTarjetasField, org.jdesktop.beansbinding.BeanProperty.create("enabled"));
         bindingGroup.addBinding(binding);
@@ -122,16 +120,23 @@ public class EventosABM extends JPanel {
         jButton1.setContentAreaFilled(false);
         jButton1.addActionListener(formListener);
 
+        jComboBoxEvento.setEnabled(false);
+
         javax.swing.GroupLayout jPanelFormLayout = new javax.swing.GroupLayout(jPanelForm);
         jPanelForm.setLayout(jPanelFormLayout);
         jPanelFormLayout.setHorizontalGroup(
             jPanelFormLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanelFormLayout.createSequentialGroup()
-                .addGap(161, 161, 161)
-                .addComponent(refreshButton)
-                .addGap(43, 43, 43)
-                .addComponent(saveButton)
-                .addContainerGap(295, Short.MAX_VALUE))
+                .addGroup(jPanelFormLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanelFormLayout.createSequentialGroup()
+                        .addGap(161, 161, 161)
+                        .addComponent(refreshButton)
+                        .addGap(43, 43, 43)
+                        .addComponent(saveButton))
+                    .addGroup(jPanelFormLayout.createSequentialGroup()
+                        .addGap(152, 152, 152)
+                        .addComponent(jComboBoxEvento, javax.swing.GroupLayout.PREFERRED_SIZE, 304, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(191, Short.MAX_VALUE))
             .addGroup(jPanelFormLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(jPanelFormLayout.createSequentialGroup()
                     .addContainerGap()
@@ -142,18 +147,14 @@ public class EventosABM extends JPanel {
                         .addComponent(montoRifasLabel)
                         .addComponent(montoTarjetasLabel))
                     .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                    .addGroup(jPanelFormLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addComponent(motivoField, javax.swing.GroupLayout.DEFAULT_SIZE, 449, Short.MAX_VALUE)
-                        .addGroup(jPanelFormLayout.createSequentialGroup()
-                            .addGroup(jPanelFormLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                                .addComponent(montoTarjetasField, javax.swing.GroupLayout.Alignment.LEADING)
-                                .addComponent(montoRifasField, javax.swing.GroupLayout.Alignment.LEADING)
-                                .addComponent(montoPublicField, javax.swing.GroupLayout.Alignment.LEADING)
-                                .addComponent(fechaField, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 123, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                            .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGap(0, 0, Short.MAX_VALUE)))
-                    .addContainerGap()))
+                    .addGroup(jPanelFormLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                        .addComponent(montoTarjetasField, javax.swing.GroupLayout.Alignment.LEADING)
+                        .addComponent(montoRifasField, javax.swing.GroupLayout.Alignment.LEADING)
+                        .addComponent(montoPublicField, javax.swing.GroupLayout.Alignment.LEADING)
+                        .addComponent(fechaField, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 123, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                    .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addContainerGap(331, Short.MAX_VALUE)))
         );
 
         jPanelFormLayout.linkSize(javax.swing.SwingConstants.HORIZONTAL, new java.awt.Component[] {refreshButton, saveButton});
@@ -161,7 +162,9 @@ public class EventosABM extends JPanel {
         jPanelFormLayout.setVerticalGroup(
             jPanelFormLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanelFormLayout.createSequentialGroup()
-                .addContainerGap(157, Short.MAX_VALUE)
+                .addContainerGap(145, Short.MAX_VALUE)
+                .addComponent(jComboBoxEvento, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanelFormLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(refreshButton)
                     .addComponent(saveButton))
@@ -187,10 +190,8 @@ public class EventosABM extends JPanel {
                         .addComponent(montoTarjetasLabel)
                         .addComponent(montoTarjetasField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addGroup(jPanelFormLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(motivoLabel)
-                        .addComponent(motivoField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGap(51, 51, 51)))
+                    .addComponent(motivoLabel)
+                    .addGap(56, 56, 56)))
         );
 
         jPanelTabla.setBorder(javax.swing.BorderFactory.createEtchedBorder());
@@ -322,18 +323,19 @@ public class EventosABM extends JPanel {
         int reply = JOptionPane.showConfirmDialog(null, "¿Está seguro de eliminar el registro?", "Eliminacion de Registro", JOptionPane.YES_NO_OPTION);
         if (reply == JOptionPane.YES_OPTION) {
             JOptionPane.showMessageDialog(null, "Registro Eliminado");
-        int[] selected = masterTable.getSelectedRows();
-        List<madreteresacrud.Eventos> toRemove = new ArrayList<madreteresacrud.Eventos>(selected.length);
-        for (int idx = 0; idx < selected.length; idx++) {
-            madreteresacrud.Eventos e = list.get(masterTable.convertRowIndexToModel(selected[idx]));
-            toRemove.add(e);
-            entityManager.remove(e);
-        }
-        list.removeAll(toRemove);
+            int[] selected = masterTable.getSelectedRows();
+            List<madreteresacrud.Eventos> toRemove = new ArrayList<madreteresacrud.Eventos>(selected.length);
+            for (int idx = 0; idx < selected.length; idx++) {
+                madreteresacrud.Eventos e = list.get(masterTable.convertRowIndexToModel(selected[idx]));
+                toRemove.add(e);
+                entityManager.remove(e);
+            }
+            list.removeAll(toRemove);
         }
     }//GEN-LAST:event_deleteButtonActionPerformed
     
     private void newButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_newButtonActionPerformed
+        jComboBoxEvento.setEnabled(true);
         madreteresacrud.Eventos e = new madreteresacrud.Eventos();
         entityManager.persist(e);
         list.add(e);
@@ -393,6 +395,7 @@ public class EventosABM extends JPanel {
     private javax.swing.JTextField fechaField;
     private javax.swing.JLabel fechaLabel;
     private javax.swing.JButton jButton1;
+    private javax.swing.JComboBox jComboBoxEvento;
     private javax.swing.JPanel jPanelForm;
     private javax.swing.JPanel jPanelTabla;
     private java.util.List<madreteresacrud.Eventos> list;
@@ -404,7 +407,6 @@ public class EventosABM extends JPanel {
     private javax.swing.JLabel montoRifasLabel;
     private javax.swing.JTextField montoTarjetasField;
     private javax.swing.JLabel montoTarjetasLabel;
-    private javax.swing.JTextField motivoField;
     private javax.swing.JLabel motivoLabel;
     private javax.swing.JButton newButton;
     private javax.persistence.Query query;
