@@ -187,7 +187,7 @@ public class TipoEventoABM extends JPanel {
     }//GEN-LAST:event_saveButtonActionPerformed
 
     public List<TipoEvento> getTipoEvento() {
-        return list;
+        return query.getResultList();
     }
 
     

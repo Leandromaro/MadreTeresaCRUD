@@ -68,9 +68,6 @@ public class GastosABM extends JPanel {
         entityManager = java.beans.Beans.isDesignTime() ? null : javax.persistence.Persistence.createEntityManagerFactory("madreTeresaCRUDPU").createEntityManager();
         query = java.beans.Beans.isDesignTime() ? null : entityManager.createQuery("SELECT g FROM Gastos g");
         list = java.beans.Beans.isDesignTime() ? java.util.Collections.emptyList() : org.jdesktop.observablecollections.ObservableCollections.observableList(query.getResultList());
-        entityManager0 = java.beans.Beans.isDesignTime() ? null : javax.persistence.Persistence.createEntityManagerFactory("sistcalcuta?zeroDateTimeBehavior=convertToNullPU").createEntityManager();
-        gastosQuery = java.beans.Beans.isDesignTime() ? null : entityManager0.createQuery("SELECT g FROM Gastos g");
-        gastosList = java.beans.Beans.isDesignTime() ? java.util.Collections.emptyList() : gastosQuery.getResultList();
         jPanelTabla = new javax.swing.JPanel();
         masterScrollPane = new javax.swing.JScrollPane();
         masterTable = new javax.swing.JTable();
@@ -250,7 +247,7 @@ public class GastosABM extends JPanel {
         jPanelFormLayout.setVerticalGroup(
             jPanelFormLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanelFormLayout.createSequentialGroup()
-                .addGap(0, 187, Short.MAX_VALUE)
+                .addGap(0, 191, Short.MAX_VALUE)
                 .addGroup(jPanelFormLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(refreshButton)
                     .addComponent(saveButton)))
@@ -528,11 +525,8 @@ public class GastosABM extends JPanel {
     private javax.swing.JTextField descripcionField;
     private javax.swing.JLabel descripcionLabel;
     private javax.persistence.EntityManager entityManager;
-    private javax.persistence.EntityManager entityManager0;
     private javax.swing.JTextField fechaGastoField;
     private javax.swing.JLabel fechaGastoLabel;
-    private java.util.List<madreteresacrud.Gastos> gastosList;
-    private javax.persistence.Query gastosQuery;
     private javax.swing.JLabel idgastosLabel;
     private javax.swing.JButton jButton1;
     private javax.swing.JComboBox jComboBoxElemento;
