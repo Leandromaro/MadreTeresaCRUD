@@ -35,7 +35,7 @@ public class IngresoSistema extends javax.swing.JFrame {
     void acceder(String usuario, String pass){
        UsuarioABM u = new UsuarioABM();
        if (u.Log(usuario, pass)){
-          JOptionPane.showMessageDialog(null, "Bienvenido");
+          //JOptionPane.showMessageDialog(null, "Bienvenido");
           this.setVisible(false);
           MadreTeresaMain m = new MadreTeresaMain();
           m.setVisible(true);

@@ -21,12 +21,10 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import javax.persistence.RollbackException;
-import javax.swing.JComboBox;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-import javax.swing.JTextField;
 import javax.swing.SwingUtilities;
 import org.jdesktop.beansbinding.Converter;
 import org.jdesktop.swingx.autocomplete.AutoCompleteDecorator;
@@ -73,7 +71,7 @@ public class SociosABM extends JPanel {
         setComboSexo();
         setComboLocalidades();
 
-        //jLabelTipSoc.setVisible(false);
+        jLabelTipSoc.setVisible(false);
         jLEliminado.setVisible(false);
         jLabelBaja.setVisible(false);
         jLabelSocio.setText("true");
@@ -747,9 +745,6 @@ public class SociosABM extends JPanel {
 
 
     private void deleteButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteButtonActionPerformed
-        int reply = JOptionPane.showConfirmDialog(null, "¿Está seguro de eliminar el registro?", "Eliminacion de Registro", JOptionPane.YES_NO_OPTION);
-        if (reply == JOptionPane.YES_OPTION) {
-            JOptionPane.showMessageDialog(null, "Registro Eliminado");
 //        int[] selected = masterTable.getSelectedRows();
 //        List<madreteresacrud.Socios> toRemove = new ArrayList<madreteresacrud.Socios>(selected.length);
 //        for (int idx = 0; idx < selected.length; idx++) {
@@ -767,8 +762,10 @@ public class SociosABM extends JPanel {
             int idCuota = 0;
             for (Object cuota : lc) {
                 cs = (CuotaSocial) cuota;
-                idCuota = cs.getIdCuotaSocial();
-
+                if(cs.getFechaPago() == null){
+                    idCuota = cs.getIdCuotaSocial();                    
+                }
+                
             }
             //Preguntamos si adeuda cuotas
             if (idCuota != 0) {
@@ -839,8 +836,7 @@ public class SociosABM extends JPanel {
                     cuilField.setEnabled(false);
                     numSocField.setEnabled(false);
                 }
-            }
-        }
+            }        
     }//GEN-LAST:event_deleteButtonActionPerformed
 
     private boolean findByDNI(int numDoc) {
@@ -885,15 +881,7 @@ public class SociosABM extends JPanel {
 
     private void newButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_newButtonActionPerformed
 
-        //JOptionPane.showMessageDialog(null, "Debe rellenar todos los campos");
-        
-        jCBSexo.setSelectedItem("M");
-        jComboTipSoc.setSelectedItem("Activo");
-        TipoSocioABM tipoG = new TipoSocioABM();
-        if (tipoG.getId(jComboTipSoc.getSelectedItem().toString()) != null) {
-            Integer var = tipoG.getId(jComboTipSoc.getSelectedItem().toString());
-            jLabelTipSoc.setText(Integer.toString(var));
-        }
+        //JOptionPane.showMessageDialog(null, "Debe rellenar todos los campos");       
 
         madreteresacrud.Socios s = new madreteresacrud.Socios();
         entityManager.persist(s);
@@ -930,12 +918,20 @@ public class SociosABM extends JPanel {
         deleteButton.setEnabled(false);
         jButtonAlta.setEnabled(false);
         jBVerCuotas.setEnabled(false);
+        
+        jCBSexo.setSelectedItem("M");
+        jComboTipSoc.setSelectedItem("Activo");
+        TipoSocioABM tipoG = new TipoSocioABM();
+        if (tipoG.getId(jComboTipSoc.getSelectedItem().toString()) != null) {
+            Integer var = tipoG.getId(jComboTipSoc.getSelectedItem().toString());
+            jLabelTipSoc.setText(Integer.toString(var));
+        }
 
-        int ax = JOptionPane.showConfirmDialog(this,"¿El socio a ingresar es adherente?",null,JOptionPane.OK_CANCEL_OPTION);
-        if (ax == JOptionPane.YES_OPTION) { 
-            
+        int ax = JOptionPane.showConfirmDialog(this, "¿El socio a ingresar es adherente?", null, JOptionPane.YES_NO_OPTION);
+        if (ax == JOptionPane.YES_OPTION) {
+
             new BuscarAdherente((JFrame) SwingUtilities.getWindowAncestor(this), true, this).setVisible(true);
-            
+
         }
 
     }//GEN-LAST:event_newButtonActionPerformed
@@ -1413,7 +1409,7 @@ public class SociosABM extends JPanel {
         for (Object entity : lista) {
             s = (Socios) entity;
         }
-        
+
         return s;
 
     }
@@ -1457,8 +1453,8 @@ public class SociosABM extends JPanel {
     public void setTelefonoField(String telefonoField) {
         this.telefonoField.setText(telefonoField);
     }
-    
-    
+
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTextField apellidoField;
     private javax.swing.JLabel apellidoLabel;
