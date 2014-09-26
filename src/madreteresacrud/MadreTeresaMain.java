@@ -464,7 +464,7 @@ public class MadreTeresaMain extends javax.swing.JFrame {
         Socios s = new Socios();
         CuotaSocialABM cs;
         Date f = new Date();
-        Date f2 = new Date();
+        //Date f2 = new Date();
         Calendar f1 = GregorianCalendar.getInstance(); 
         BigDecimal monto;
         TipoSocioABM ts = new TipoSocioABM();
@@ -472,12 +472,15 @@ public class MadreTeresaMain extends javax.swing.JFrame {
         
         java.util.Collection listaSocios = socios.getListaSocios();
         java.util.Collection listaCuotas;
+    
         for(Object socio:listaSocios){
             s = (Socios)socio;
+            if(s.getFechaBaja() == null){            
             CuotaSocial c = new CuotaSocial();
             monto = ts.getMonto(ts.getTipoSoc(s.getIdTipoSocio()));                   
             c.setMonto(monto);
             c.setIdSocio(s.getIdSocio());
+            c.setCuota(String.valueOf(mes+1)+"/"+String.valueOf(anio));
             cs = new CuotaSocialABM(s.getIdSocio());
             cs.setQuery();
             listaCuotas = cs.getListaCuotas();
@@ -537,6 +540,7 @@ public class MadreTeresaMain extends javax.swing.JFrame {
                 
             }
             
+           }            
         }
         return band;
     }

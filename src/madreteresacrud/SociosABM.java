@@ -43,6 +43,18 @@ public class SociosABM extends JPanel {
         initComponents();
 //        refreshButton.setVisible(false);
         //Ocultamos la columna correspondiente al idTipoSocio
+        masterTable.getColumnModel().getColumn(4).setMaxWidth(0);
+        masterTable.getColumnModel().getColumn(4).setMinWidth(0);
+        masterTable.getColumnModel().getColumn(4).setPreferredWidth(0);
+        
+        masterTable.getColumnModel().getColumn(6).setMaxWidth(0);
+        masterTable.getColumnModel().getColumn(6).setMinWidth(0);
+        masterTable.getColumnModel().getColumn(6).setPreferredWidth(0);
+        
+        masterTable.getColumnModel().getColumn(9).setMaxWidth(0);
+        masterTable.getColumnModel().getColumn(9).setMinWidth(0);
+        masterTable.getColumnModel().getColumn(9).setPreferredWidth(0);
+        
         masterTable.getColumnModel().getColumn(14).setMaxWidth(0);
         masterTable.getColumnModel().getColumn(14).setMinWidth(0);
         masterTable.getColumnModel().getColumn(14).setPreferredWidth(0);
@@ -769,7 +781,7 @@ public class SociosABM extends JPanel {
             }
             //Preguntamos si adeuda cuotas
             if (idCuota != 0) {
-                int ax = JOptionPane.showConfirmDialog(null, "El socio seleccionado adeuda cuotas, decea darlo de baja de todas formas?");
+                int ax = JOptionPane.showConfirmDialog(null, "El socio seleccionado adeuda cuotas, desea darlo de baja de todas formas?");
                 if (ax == JOptionPane.YES_OPTION) {
                     String patron = "dd/MM/yyyy";
                     SimpleDateFormat formato = new SimpleDateFormat(patron);
@@ -1246,7 +1258,7 @@ public class SociosABM extends JPanel {
         return query.getResultList();
 
     }
-
+    
     private void buscarSocio() {
         String ele = jCBBusqueda.getSelectedItem().toString();
         String[] apeYnom = ele.split(", ");

@@ -36,6 +36,8 @@ import javax.persistence.Transient;
     @NamedQuery(name = "CuotaSocial.findByFechaPago", query = "SELECT c FROM CuotaSocial c WHERE c.fechaPago = :fechaPago"),
     @NamedQuery(name = "CuotaSocial.findByMonto", query = "SELECT c FROM CuotaSocial c WHERE c.monto = :monto")})
 public class CuotaSocial implements Serializable {
+    @Column(name = "cuota")
+    private String cuota;
     @Transient
     private PropertyChangeSupport changeSupport = new PropertyChangeSupport(this);
     private static final long serialVersionUID = 1L;
@@ -152,6 +154,16 @@ public class CuotaSocial implements Serializable {
 
     public void removePropertyChangeListener(PropertyChangeListener listener) {
         changeSupport.removePropertyChangeListener(listener);
+    }
+
+    public String getCuota() {
+        return cuota;
+    }
+
+    public void setCuota(String cuota) {
+        String oldCuota = this.cuota;
+        this.cuota = cuota;
+        changeSupport.firePropertyChange("cuota", oldCuota, cuota);
     }
     
 }
