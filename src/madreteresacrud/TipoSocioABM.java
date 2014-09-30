@@ -64,7 +64,9 @@ public class TipoSocioABM extends JPanel {
         masterTable.addMouseListener(formListener);
         masterTable.addKeyListener(formListener);
         masterScrollPane.setViewportView(masterTable);
-        masterTable.getColumnModel().getColumn(0).setResizable(false);
+        if (masterTable.getColumnModel().getColumnCount() > 0) {
+            masterTable.getColumnModel().getColumn(0).setResizable(false);
+        }
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);

@@ -62,6 +62,7 @@ public class UsuarioABM extends JPanel {
         columnBinding.setColumnClass(Object.class);
         bindingGroup.addBinding(jTableBinding);
 
+        masterTable.addMouseListener(formListener);
         masterScrollPane.setViewportView(masterTable);
 
         nombreLabel.setText("Nombre:");
@@ -149,7 +150,7 @@ public class UsuarioABM extends JPanel {
 
     // Code for dispatching events from components to event handlers.
 
-    private class FormListener implements java.awt.event.ActionListener {
+    private class FormListener implements java.awt.event.ActionListener, java.awt.event.MouseListener {
         FormListener() {}
         public void actionPerformed(java.awt.event.ActionEvent evt) {
             if (evt.getSource() == saveButton) {
@@ -162,6 +163,24 @@ public class UsuarioABM extends JPanel {
                 UsuarioABM.this.deleteButtonActionPerformed(evt);
             }
         }
+
+        public void mouseClicked(java.awt.event.MouseEvent evt) {
+            if (evt.getSource() == masterTable) {
+                UsuarioABM.this.masterTableMouseClicked(evt);
+            }
+        }
+
+        public void mouseEntered(java.awt.event.MouseEvent evt) {
+        }
+
+        public void mouseExited(java.awt.event.MouseEvent evt) {
+        }
+
+        public void mousePressed(java.awt.event.MouseEvent evt) {
+        }
+
+        public void mouseReleased(java.awt.event.MouseEvent evt) {
+        }
     }// </editor-fold>//GEN-END:initComponents
 
     
@@ -172,25 +191,30 @@ public class UsuarioABM extends JPanel {
                 JOptionPane.showMessageDialog(null, "No puede eliminar el unico usuario");
             }else{    
                 int[] selected = masterTable.getSelectedRows();
-                List<madreteresacrud.Usuario> toRemove = new ArrayList<madreteresacrud.Usuario>(selected.length);
-                for (int idx = 0; idx < selected.length; idx++) {
-                    madreteresacrud.Usuario u = list.get(masterTable.convertRowIndexToModel(selected[idx]));
-                    toRemove.add(u);
-                    entityManager.remove(u);
-                }
-                list.removeAll(toRemove);
-                try {
-                    entityManager.getTransaction().commit();
-                    entityManager.getTransaction().begin();
-                } catch (RollbackException rex) {
-                    rex.printStackTrace();
-                    entityManager.getTransaction().begin();
-                    List<madreteresacrud.Usuario> merged = new ArrayList<madreteresacrud.Usuario>(list.size());
-                    for (madreteresacrud.Usuario u : list) {
-                        merged.add(entityManager.merge(u));
+                if (selected.length>1){
+                    JOptionPane.showMessageDialog(null, "No se pueden eliminar usuarios multiples"); 
+                }else{
+                    List<madreteresacrud.Usuario> toRemove = new ArrayList<madreteresacrud.Usuario>(selected.length);
+                    for (int idx = 0; idx < selected.length; idx++) {
+                        madreteresacrud.Usuario u = list.get(masterTable.convertRowIndexToModel(selected[idx]));
+                        toRemove.add(u);
+                        entityManager.remove(u);
+
                     }
-                    list.clear();
-                    list.addAll(merged);
+                    list.removeAll(toRemove);
+                    try {
+                        entityManager.getTransaction().commit();
+                        entityManager.getTransaction().begin();
+                    } catch (RollbackException rex) {
+                        rex.printStackTrace();
+                        entityManager.getTransaction().begin();
+                        List<madreteresacrud.Usuario> merged = new ArrayList<madreteresacrud.Usuario>(list.size());
+                        for (madreteresacrud.Usuario u : list) {
+                            merged.add(entityManager.merge(u));
+                        }
+                        list.clear();
+                        list.addAll(merged);
+                    }
                 }
             }
     }//GEN-LAST:event_deleteButtonActionPerformed
@@ -218,7 +242,19 @@ public class UsuarioABM extends JPanel {
             list.clear();
             list.addAll(merged);
         }
+        entityManager.getTransaction().rollback();
+        entityManager.getTransaction().begin();
+        java.util.Collection data = query.getResultList();
+        for (Object entity : data) {
+            entityManager.refresh(entity);
+        }
+        list.clear();
+        list.addAll(data);
     }//GEN-LAST:event_saveButtonActionPerformed
+
+    private void masterTableMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_masterTableMouseClicked
+        
+    }//GEN-LAST:event_masterTableMouseClicked
     public boolean Log(String usu, String pas) {
         String item;  
         javax.persistence.Query query = entityManager.createQuery("SELECT DISTINCT u.nombre FROM Usuario u WHERE u.nombre='"+usu+"' AND u.password='"+pas+"'");

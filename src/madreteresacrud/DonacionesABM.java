@@ -94,6 +94,7 @@ public class DonacionesABM extends JPanel {
         columnBinding.setColumnClass(Integer.class);
         bindingGroup.addBinding(jTableBinding);
         jTableBinding.bind();
+        masterTable.addMouseListener(formListener);
         masterScrollPane.setViewportView(masterTable);
 
         deleteButton.setText("Eliminar Donacion");
@@ -237,7 +238,7 @@ public class DonacionesABM extends JPanel {
                                 .addGap(164, 164, 164))
                             .addGroup(jPanelFormLayout.createSequentialGroup()
                                 .addComponent(nombreField, javax.swing.GroupLayout.PREFERRED_SIZE, 356, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                         .addComponent(jCheckBoxSoc)))
                 .addContainerGap(260, Short.MAX_VALUE))
         );
@@ -311,7 +312,7 @@ public class DonacionesABM extends JPanel {
 
     // Code for dispatching events from components to event handlers.
 
-    private class FormListener implements java.awt.event.ActionListener, java.awt.event.KeyListener {
+    private class FormListener implements java.awt.event.ActionListener, java.awt.event.KeyListener, java.awt.event.MouseListener {
         FormListener() {}
         public void actionPerformed(java.awt.event.ActionEvent evt) {
             if (evt.getSource() == deleteButton) {
@@ -354,6 +355,24 @@ public class DonacionesABM extends JPanel {
                 DonacionesABM.this.documentoFieldKeyTyped(evt);
             }
         }
+
+        public void mouseClicked(java.awt.event.MouseEvent evt) {
+            if (evt.getSource() == masterTable) {
+                DonacionesABM.this.masterTableMouseClicked(evt);
+            }
+        }
+
+        public void mouseEntered(java.awt.event.MouseEvent evt) {
+        }
+
+        public void mouseExited(java.awt.event.MouseEvent evt) {
+        }
+
+        public void mousePressed(java.awt.event.MouseEvent evt) {
+        }
+
+        public void mouseReleased(java.awt.event.MouseEvent evt) {
+        }
     }// </editor-fold>//GEN-END:initComponents
 
     
@@ -385,6 +404,11 @@ public class DonacionesABM extends JPanel {
             toRemove.add(d);
             entityManager.remove(d);
         }
+        try {
+                entityManager.getTransaction().commit();
+                entityManager.getTransaction().begin();
+            } catch (Exception e) {
+            }
         list.removeAll(toRemove);
         }
     }//GEN-LAST:event_deleteButtonActionPerformed
@@ -510,6 +534,11 @@ public class DonacionesABM extends JPanel {
             saveButton.setEnabled(true);
         }
     }//GEN-LAST:event_jCheckBoxSocActionPerformed
+
+    private void masterTableMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_masterTableMouseClicked
+        documentoField.setEnabled(true);
+        jCheckBoxSoc.setEnabled(true);
+    }//GEN-LAST:event_masterTableMouseClicked
     
     //OBJETO PARA PODER ENLAZAR LA FECHA DESDE LA BD EN EL TEXTFIELD fechaNacimiento
     Converter dateConverter = new Converter<java.util.Date, String>() {

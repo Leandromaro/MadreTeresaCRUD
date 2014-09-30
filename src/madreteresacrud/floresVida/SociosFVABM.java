@@ -561,6 +561,11 @@ public class SociosFVABM extends JPanel {
             toRemove.add(s);
             entityManager.remove(s);
         }
+        try {
+                entityManager.getTransaction().commit();
+                entityManager.getTransaction().begin();
+            } catch (Exception e) {
+            }
         list.removeAll(toRemove);
     }//GEN-LAST:event_deleteButtonActionPerformed
 

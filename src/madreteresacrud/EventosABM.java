@@ -334,6 +334,11 @@ public class EventosABM extends JPanel {
                 toRemove.add(e);
                 entityManager.remove(e);
             }
+            try {
+                entityManager.getTransaction().commit();
+                entityManager.getTransaction().begin();
+            } catch (Exception e) {
+            }
             list.removeAll(toRemove);
         }
     }//GEN-LAST:event_deleteButtonActionPerformed

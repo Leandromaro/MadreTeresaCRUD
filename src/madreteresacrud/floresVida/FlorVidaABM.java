@@ -364,6 +364,11 @@ public class FlorVidaABM extends JPanel {
             toRemove.add(f);
             entityManager.remove(f);
         }
+        try {
+                entityManager.getTransaction().commit();
+                entityManager.getTransaction().begin();
+            } catch (Exception e) {
+            }
         list.removeAll(toRemove);
     }//GEN-LAST:event_deleteButtonActionPerformed
     

@@ -377,6 +377,11 @@ public class GastosABM extends JPanel {
                 toRemove.add(g);
                 entityManager.remove(g);
             }
+            try {
+                entityManager.getTransaction().commit();
+                entityManager.getTransaction().begin();
+            } catch (Exception e) {
+            }
             list.removeAll(toRemove);
 
             jComboBoxElemento.setEnabled(false);
