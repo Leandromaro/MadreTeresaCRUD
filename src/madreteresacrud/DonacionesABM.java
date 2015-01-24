@@ -112,11 +112,11 @@ public class DonacionesABM extends JPanel {
         jPanelTablaLayout.setHorizontalGroup(
             jPanelTablaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanelTablaLayout.createSequentialGroup()
-                .addGap(78, 78, 78)
+                .addGap(140, 140, 140)
                 .addComponent(newButton)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(deleteButton)
-                .addContainerGap(521, Short.MAX_VALUE))
+                .addContainerGap(464, Short.MAX_VALUE))
             .addGroup(jPanelTablaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(jPanelTablaLayout.createSequentialGroup()
                     .addContainerGap()
@@ -126,11 +126,11 @@ public class DonacionesABM extends JPanel {
         jPanelTablaLayout.setVerticalGroup(
             jPanelTablaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanelTablaLayout.createSequentialGroup()
-                .addContainerGap(225, Short.MAX_VALUE)
+                .addContainerGap(239, Short.MAX_VALUE)
                 .addGroup(jPanelTablaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(deleteButton)
                     .addComponent(newButton))
-                .addGap(21, 21, 21))
+                .addContainerGap())
             .addGroup(jPanelTablaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(jPanelTablaLayout.createSequentialGroup()
                     .addContainerGap()
@@ -160,11 +160,17 @@ public class DonacionesABM extends JPanel {
         binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ, masterTable, org.jdesktop.beansbinding.ELProperty.create("${selectedElement != null}"), apellidoField, org.jdesktop.beansbinding.BeanProperty.create("enabled"));
         bindingGroup.addBinding(binding);
 
+        montoField.setToolTipText("Solo números y coma.");
+
         binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, masterTable, org.jdesktop.beansbinding.ELProperty.create("${selectedElement.monto}"), montoField, org.jdesktop.beansbinding.BeanProperty.create("text"));
         binding.setSourceUnreadableValue("null");
         bindingGroup.addBinding(binding);
         binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ, masterTable, org.jdesktop.beansbinding.ELProperty.create("${selectedElement != null}"), montoField, org.jdesktop.beansbinding.BeanProperty.create("enabled"));
         bindingGroup.addBinding(binding);
+
+        montoField.addKeyListener(formListener);
+
+        fechaDonacionField.setEditable(false);
 
         binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, masterTable, org.jdesktop.beansbinding.ELProperty.create("${selectedElement.fechaDonacion}"), fechaDonacionField, org.jdesktop.beansbinding.BeanProperty.create("text"));
         binding.setSourceUnreadableValue("null");
@@ -173,7 +179,7 @@ public class DonacionesABM extends JPanel {
         binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ, masterTable, org.jdesktop.beansbinding.ELProperty.create("${selectedElement != null}"), fechaDonacionField, org.jdesktop.beansbinding.BeanProperty.create("enabled"));
         bindingGroup.addBinding(binding);
 
-        fechaDonacionField.addActionListener(formListener);
+        fechaDonacionField.addMouseListener(formListener);
 
         saveButton.setText("Guardar");
         saveButton.addActionListener(formListener);
@@ -248,7 +254,7 @@ public class DonacionesABM extends JPanel {
         jPanelFormLayout.setVerticalGroup(
             jPanelFormLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanelFormLayout.createSequentialGroup()
-                .addContainerGap(40, Short.MAX_VALUE)
+                .addContainerGap(12, Short.MAX_VALUE)
                 .addGroup(jPanelFormLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel1, javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanelFormLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -260,8 +266,8 @@ public class DonacionesABM extends JPanel {
                     .addComponent(nombreLabel))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanelFormLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(apellidoLabel, javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(apellidoField, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(apellidoField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(apellidoLabel))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanelFormLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(montoLabel)
@@ -272,7 +278,7 @@ public class DonacionesABM extends JPanel {
                         .addComponent(fechaDonacionLabel)
                         .addComponent(fechaDonacionField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(jButtonCalendar, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGap(18, 18, 18)
                 .addGroup(jPanelFormLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(refreshButton)
                     .addComponent(saveButton)
@@ -297,7 +303,7 @@ public class DonacionesABM extends JPanel {
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(305, Short.MAX_VALUE)
+                .addContainerGap(361, Short.MAX_VALUE)
                 .addComponent(jPanelForm, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -320,9 +326,6 @@ public class DonacionesABM extends JPanel {
             }
             else if (evt.getSource() == newButton) {
                 DonacionesABM.this.newButtonActionPerformed(evt);
-            }
-            else if (evt.getSource() == fechaDonacionField) {
-                DonacionesABM.this.fechaDonacionFieldActionPerformed(evt);
             }
             else if (evt.getSource() == saveButton) {
                 DonacionesABM.this.saveButtonActionPerformed(evt);
@@ -351,7 +354,10 @@ public class DonacionesABM extends JPanel {
         }
 
         public void keyTyped(java.awt.event.KeyEvent evt) {
-            if (evt.getSource() == documentoField) {
+            if (evt.getSource() == montoField) {
+                DonacionesABM.this.montoFieldKeyTyped(evt);
+            }
+            else if (evt.getSource() == documentoField) {
                 DonacionesABM.this.documentoFieldKeyTyped(evt);
             }
         }
@@ -359,6 +365,9 @@ public class DonacionesABM extends JPanel {
         public void mouseClicked(java.awt.event.MouseEvent evt) {
             if (evt.getSource() == masterTable) {
                 DonacionesABM.this.masterTableMouseClicked(evt);
+            }
+            else if (evt.getSource() == fechaDonacionField) {
+                DonacionesABM.this.fechaDonacionFieldMouseClicked(evt);
             }
         }
 
@@ -477,10 +486,6 @@ public class DonacionesABM extends JPanel {
         new Calendario((JFrame) SwingUtilities.getWindowAncestor(this),true,fechaDonacionField).setVisible(true);
     }//GEN-LAST:event_jButtonCalendarActionPerformed
 
-    private void fechaDonacionFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_fechaDonacionFieldActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_fechaDonacionFieldActionPerformed
-
     private void documentoFieldKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_documentoFieldKeyTyped
         if ((!Character.isDigit(evt.getKeyChar()) && !Character.isISOControl(evt.getKeyChar())) || (documentoField.getText().trim().length() >= 8))//para permitir el punto && evt.getKeyChar()!='.')
         {
@@ -539,6 +544,18 @@ public class DonacionesABM extends JPanel {
         documentoField.setEnabled(true);
         jCheckBoxSoc.setEnabled(true);
     }//GEN-LAST:event_masterTableMouseClicked
+
+    private void montoFieldKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_montoFieldKeyTyped
+        if (!Character.isDigit(evt.getKeyChar()) && !Character.isISOControl(evt.getKeyChar()) && evt.getKeyChar() != '.')
+        {
+            Toolkit.getDefaultToolkit().beep();
+            evt.consume();
+        }
+    }//GEN-LAST:event_montoFieldKeyTyped
+
+    private void fechaDonacionFieldMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_fechaDonacionFieldMouseClicked
+        new Calendario((JFrame) SwingUtilities.getWindowAncestor(this),true,fechaDonacionField).setVisible(true);
+    }//GEN-LAST:event_fechaDonacionFieldMouseClicked
     
     //OBJETO PARA PODER ENLAZAR LA FECHA DESDE LA BD EN EL TEXTFIELD fechaNacimiento
     Converter dateConverter = new Converter<java.util.Date, String>() {

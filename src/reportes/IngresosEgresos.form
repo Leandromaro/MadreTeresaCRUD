@@ -149,6 +149,12 @@
                   </Properties>
                 </Component>
                 <Component class="javax.swing.JTextField" name="jTFDesde">
+                  <Properties>
+                    <Property name="editable" type="boolean" value="false"/>
+                  </Properties>
+                  <Events>
+                    <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="jTFDesdeMouseClicked"/>
+                  </Events>
                 </Component>
                 <Component class="javax.swing.JLabel" name="jLabel2">
                   <Properties>
@@ -156,6 +162,12 @@
                   </Properties>
                 </Component>
                 <Component class="javax.swing.JTextField" name="jTFHasta">
+                  <Properties>
+                    <Property name="editable" type="boolean" value="false"/>
+                  </Properties>
+                  <Events>
+                    <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="jTFHastaMouseClicked"/>
+                  </Events>
                 </Component>
                 <Component class="javax.swing.JButton" name="jBDesde">
                   <Properties>
@@ -305,6 +317,12 @@
                   </Properties>
                 </Component>
                 <Component class="javax.swing.JTextField" name="jTFDesde1">
+                  <Properties>
+                    <Property name="editable" type="boolean" value="false"/>
+                  </Properties>
+                  <Events>
+                    <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="jTFDesde1MouseClicked"/>
+                  </Events>
                 </Component>
                 <Component class="javax.swing.JButton" name="jBGenReportEgresos">
                   <Properties>
@@ -338,6 +356,12 @@
                   </Properties>
                 </Component>
                 <Component class="javax.swing.JTextField" name="jTFHasta1">
+                  <Properties>
+                    <Property name="editable" type="boolean" value="false"/>
+                  </Properties>
+                  <Events>
+                    <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="jTFHasta1MouseClicked"/>
+                  </Events>
                 </Component>
                 <Component class="javax.swing.JButton" name="jBDesde1">
                   <Properties>

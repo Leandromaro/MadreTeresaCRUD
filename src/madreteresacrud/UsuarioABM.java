@@ -188,7 +188,7 @@ public class UsuarioABM extends JPanel {
     private void deleteButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteButtonActionPerformed
         javax.persistence.Query query = entityManager.createQuery("SELECT u FROM Usuario u");
             if (query.getResultList().size()==1){
-                JOptionPane.showMessageDialog(null, "No puede eliminar el unico usuario");
+                JOptionPane.showMessageDialog(null, "No se puede eliminar el único usuario del sistema!");
             }else{    
                 int[] selected = masterTable.getSelectedRows();
                 if (selected.length>1){

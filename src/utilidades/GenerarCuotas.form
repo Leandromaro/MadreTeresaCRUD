@@ -114,6 +114,9 @@
           </Properties>
         </Component>
         <Component class="com.toedter.calendar.JYearChooser" name="jYearChooser1">
+          <Events>
+            <EventHandler event="keyTyped" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="jYearChooser1KeyTyped"/>
+          </Events>
         </Component>
         <Component class="javax.swing.JButton" name="jButton2">
           <Properties>

@@ -48,6 +48,14 @@ public class IngresosEgresos extends javax.swing.JFrame {
     public IngresosEgresos() {
         super("Generación de Informes");
         initComponents();
+        
+        //Seteamos los campos de fechas a las de hoy por defecto...
+        SimpleDateFormat formatoDelTexto = new SimpleDateFormat("dd/MM/yyyy");
+        Date hoy = new Date();
+        jTFDesde.setText(formatoDelTexto.format(hoy));
+        jTFHasta.setText(formatoDelTexto.format(hoy));
+        jTFDesde1.setText(formatoDelTexto.format(hoy));
+        jTFHasta1.setText(formatoDelTexto.format(hoy));
     }
 
     /**
@@ -91,7 +99,21 @@ public class IngresosEgresos extends javax.swing.JFrame {
 
         jLabel1.setText("Fecha Desde:");
 
+        jTFDesde.setEditable(false);
+        jTFDesde.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jTFDesdeMouseClicked(evt);
+            }
+        });
+
         jLabel2.setText("Hasta:");
+
+        jTFHasta.setEditable(false);
+        jTFHasta.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jTFHastaMouseClicked(evt);
+            }
+        });
 
         jBDesde.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/calendario.GIF"))); // NOI18N
         jBDesde.setContentAreaFilled(false);
@@ -182,6 +204,13 @@ public class IngresosEgresos extends javax.swing.JFrame {
 
         jLabel3.setText("Fecha Desde:");
 
+        jTFDesde1.setEditable(false);
+        jTFDesde1.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jTFDesde1MouseClicked(evt);
+            }
+        });
+
         jBGenReportEgresos.setText("Generar Reporte");
         jBGenReportEgresos.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -195,6 +224,13 @@ public class IngresosEgresos extends javax.swing.JFrame {
         jLabel5.setText("Seleccionar tipo de gasto:");
 
         jLabel4.setText("Hasta:");
+
+        jTFHasta1.setEditable(false);
+        jTFHasta1.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jTFHasta1MouseClicked(evt);
+            }
+        });
 
         jBDesde1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/calendario.GIF"))); // NOI18N
         jBDesde1.setContentAreaFilled(false);
@@ -511,7 +547,22 @@ public class IngresosEgresos extends javax.swing.JFrame {
        } else
             JOptionPane.showMessageDialog(null, "El periodo de fecha ingresado no es válido");
     }//GEN-LAST:event_jBGenReportEgresosActionPerformed
-    
+
+    private void jTFDesdeMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTFDesdeMouseClicked
+        new Calendario((JFrame) SwingUtilities.getWindowAncestor(this),true,jTFDesde).setVisible(true);
+    }//GEN-LAST:event_jTFDesdeMouseClicked
+
+    private void jTFHastaMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTFHastaMouseClicked
+        new Calendario((JFrame) SwingUtilities.getWindowAncestor(this),true,jTFHasta).setVisible(true);
+    }//GEN-LAST:event_jTFHastaMouseClicked
+
+    private void jTFDesde1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTFDesde1MouseClicked
+        new Calendario((JFrame) SwingUtilities.getWindowAncestor(this),true,jTFDesde1).setVisible(true);
+    }//GEN-LAST:event_jTFDesde1MouseClicked
+
+    private void jTFHasta1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTFHasta1MouseClicked
+        new Calendario((JFrame) SwingUtilities.getWindowAncestor(this),true,jTFHasta1).setVisible(true);
+    }//GEN-LAST:event_jTFHasta1MouseClicked
     
     private String retornaMes(int mes){
         String [] meses = {"Enero","Febrero","Marzo","Abril","Mayo","Junio","Julio","Agosto","Septimbre","Octubre","Noviembre","Diciembre"};

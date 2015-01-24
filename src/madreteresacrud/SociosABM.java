@@ -4,6 +4,7 @@
  */
 package madreteresacrud;
 
+import utilidades.RendererTablaSocios;
 import java.awt.Color;
 import java.awt.Frame;
 import java.awt.Toolkit;
@@ -161,8 +162,6 @@ public class SociosABM extends JPanel {
 
         FormListener formListener = new FormListener();
 
-        setBorder(null);
-
         jPanelForm.setBorder(javax.swing.BorderFactory.createEtchedBorder());
 
         apellidoLabel.setText("Apellido/s:");
@@ -217,12 +216,16 @@ public class SociosABM extends JPanel {
         telefonoField.addFocusListener(formListener);
         telefonoField.addKeyListener(formListener);
 
+        fechaNacimientoField.setEditable(false);
+
         binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, masterTable, org.jdesktop.beansbinding.ELProperty.create("${selectedElement.fechaNacimiento}"), fechaNacimientoField, org.jdesktop.beansbinding.BeanProperty.create("text"));
         binding.setSourceUnreadableValue("null");
         binding.setConverter(dateConverter);
         bindingGroup.addBinding(binding);
         binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ, masterTable, org.jdesktop.beansbinding.ELProperty.create("${selectedElement != null}"), fechaNacimientoField, org.jdesktop.beansbinding.BeanProperty.create("enabled"));
         bindingGroup.addBinding(binding);
+
+        fechaNacimientoField.addMouseListener(formListener);
 
         binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, masterTable, org.jdesktop.beansbinding.ELProperty.create("${selectedElement.direccion}"), direccionField, org.jdesktop.beansbinding.BeanProperty.create("text"));
         binding.setSourceUnreadableValue("null");
@@ -737,7 +740,10 @@ public class SociosABM extends JPanel {
         }
 
         public void mouseClicked(java.awt.event.MouseEvent evt) {
-            if (evt.getSource() == masterTable) {
+            if (evt.getSource() == fechaNacimientoField) {
+                SociosABM.this.fechaNacimientoFieldMouseClicked(evt);
+            }
+            else if (evt.getSource() == masterTable) {
                 SociosABM.this.masterTableMouseClicked(evt);
             }
         }
@@ -1233,6 +1239,10 @@ public class SociosABM extends JPanel {
             buscarSocio();
         }
     }//GEN-LAST:event_jCBBusquedaKeyPressed
+
+    private void fechaNacimientoFieldMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_fechaNacimientoFieldMouseClicked
+        new Calendario((JFrame) SwingUtilities.getWindowAncestor(this), true, fechaNacimientoField).setVisible(true);
+    }//GEN-LAST:event_fechaNacimientoFieldMouseClicked
 
     //OBJETO PARA PODER ENLAZAR LA FECHA DESDE LA BD EN EL TEXTFIELD fechaNacimiento
     Converter dateConverter = new Converter<java.util.Date, String>() {

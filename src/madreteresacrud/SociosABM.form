@@ -38,11 +38,6 @@
       </AuxValues>
     </Component>
   </NonVisualComponents>
-  <Properties>
-    <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
-      <Border info="null"/>
-    </Property>
-  </Properties>
   <AuxValues>
     <AuxValue name="FormSettings_autoResourcing" type="java.lang.Integer" value="0"/>
     <AuxValue name="FormSettings_autoSetComponentName" type="java.lang.Boolean" value="false"/>
@@ -385,6 +380,9 @@
           </Events>
         </Component>
         <Component class="javax.swing.JTextField" name="fechaNacimientoField">
+          <Properties>
+            <Property name="editable" type="boolean" value="false"/>
+          </Properties>
           <BindingProperties>
             <BindingProperty name="text" source="masterTable" sourcePath="${selectedElement.fechaNacimiento}" target="fechaNacimientoField" targetPath="text" updateStrategy="0" immediately="false">
               <BindingParameter name="javax.swing.binding.ParameterKeys.TEXT_CHANGE_STRATEGY" value="javax.swing.binding.TextChangeStrategy.ON_TYPE"/>
@@ -395,6 +393,9 @@
             </BindingProperty>
             <BindingProperty name="enabled" source="masterTable" sourcePath="${selectedElement != null}" target="fechaNacimientoField" targetPath="enabled" updateStrategy="1" immediately="false"/>
           </BindingProperties>
+          <Events>
+            <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="fechaNacimientoFieldMouseClicked"/>
+          </Events>
         </Component>
         <Component class="javax.swing.JTextField" name="direccionField">
           <BindingProperties>

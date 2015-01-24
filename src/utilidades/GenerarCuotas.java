@@ -4,6 +4,7 @@
  */
 package utilidades;
 
+import java.awt.Toolkit;
 import javax.swing.JOptionPane;
 import madreteresacrud.MadreTeresaMain;
 
@@ -45,6 +46,12 @@ public class GenerarCuotas extends javax.swing.JDialog {
         jLabel1.setText("Mes");
 
         jLabel2.setText("Año");
+
+        jYearChooser1.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                jYearChooser1KeyTyped(evt);
+            }
+        });
 
         jButton2.setText("Salir");
         jButton2.addActionListener(new java.awt.event.ActionListener() {
@@ -134,6 +141,14 @@ public class GenerarCuotas extends javax.swing.JDialog {
               JOptionPane.showMessageDialog(null,"Las cuotas no fueron generadas porque ya existen!");
         }        
     }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void jYearChooser1KeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jYearChooser1KeyTyped
+       if (!Character.isDigit(evt.getKeyChar()) && !Character.isISOControl(evt.getKeyChar()))
+        {
+            Toolkit.getDefaultToolkit().beep();
+            evt.consume();
+        }
+    }//GEN-LAST:event_jYearChooser1KeyTyped
 
     /**
      * @param args the command line arguments

@@ -19,6 +19,7 @@
         </Property>
       </Properties>
       <AuxValues>
+        <AuxValue name="JavaCodeGenerator_CreateCodeCustom" type="java.lang.String" value="java.beans.Beans.isDesignTime() ? null : entityManager.createQuery(&quot;SELECT e FROM Eventos e ORDER BY e.fecha DESC&quot;)"/>
         <AuxValue name="JavaCodeGenerator_VariableLocal" type="java.lang.Boolean" value="false"/>
         <AuxValue name="JavaCodeGenerator_VariableModifier" type="java.lang.Integer" value="2"/>
       </AuxValues>
@@ -68,8 +69,8 @@
               <EmptySpace max="-2" attributes="0"/>
               <Component id="jPanelTabla" min="-2" max="-2" attributes="0"/>
               <EmptySpace type="unrelated" max="-2" attributes="0"/>
-              <Component id="jPanelForm" min="-2" max="-2" attributes="0"/>
-              <EmptySpace pref="22" max="32767" attributes="0"/>
+              <Component id="jPanelForm" max="32767" attributes="0"/>
+              <EmptySpace max="-2" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>
@@ -96,7 +97,9 @@
                           <Component id="saveButton" linkSize="1" min="-2" max="-2" attributes="0"/>
                       </Group>
                       <Group type="102" alignment="0" attributes="0">
-                          <EmptySpace min="-2" pref="152" max="-2" attributes="0"/>
+                          <EmptySpace max="-2" attributes="0"/>
+                          <Component id="motivoLabel" min="-2" max="-2" attributes="0"/>
+                          <EmptySpace max="-2" attributes="0"/>
                           <Component id="jComboBoxEvento" min="-2" pref="304" max="-2" attributes="0"/>
                       </Group>
                   </Group>
@@ -106,13 +109,12 @@
                   <Group type="102" attributes="0">
                       <EmptySpace max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="0" attributes="0">
-                          <Component id="motivoLabel" alignment="0" min="-2" max="-2" attributes="0"/>
                           <Component id="fechaLabel" alignment="0" min="-2" max="-2" attributes="0"/>
                           <Component id="montoPublicLabel" alignment="0" min="-2" max="-2" attributes="0"/>
                           <Component id="montoRifasLabel" alignment="0" min="-2" max="-2" attributes="0"/>
                           <Component id="montoTarjetasLabel" alignment="0" min="-2" max="-2" attributes="0"/>
                       </Group>
-                      <EmptySpace min="-2" max="-2" attributes="0"/>
+                      <EmptySpace min="-2" pref="17" max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="1" max="-2" attributes="0">
                           <Component id="montoTarjetasField" alignment="0" max="32767" attributes="0"/>
                           <Component id="montoRifasField" alignment="0" max="32767" attributes="0"/>
@@ -129,9 +131,12 @@
         <DimensionLayout dim="1">
           <Group type="103" groupAlignment="0" attributes="0">
               <Group type="102" alignment="1" attributes="0">
-                  <EmptySpace pref="145" max="32767" attributes="0"/>
-                  <Component id="jComboBoxEvento" min="-2" max="-2" attributes="0"/>
-                  <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                  <EmptySpace pref="144" max="32767" attributes="0"/>
+                  <Group type="103" groupAlignment="0" attributes="0">
+                      <Component id="motivoLabel" min="-2" max="-2" attributes="0"/>
+                      <Component id="jComboBoxEvento" min="-2" max="-2" attributes="0"/>
+                  </Group>
+                  <EmptySpace min="-2" pref="23" max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="3" attributes="0">
                       <Component id="refreshButton" alignment="3" min="-2" max="-2" attributes="0"/>
                       <Component id="saveButton" alignment="3" min="-2" max="-2" attributes="0"/>
@@ -163,9 +168,7 @@
                           <Component id="montoTarjetasLabel" alignment="3" min="-2" max="-2" attributes="0"/>
                           <Component id="montoTarjetasField" alignment="3" min="-2" max="-2" attributes="0"/>
                       </Group>
-                      <EmptySpace max="32767" attributes="0"/>
-                      <Component id="motivoLabel" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace min="-2" pref="56" max="-2" attributes="0"/>
+                      <EmptySpace pref="97" max="32767" attributes="0"/>
                   </Group>
               </Group>
           </Group>
@@ -198,6 +201,9 @@
           </Properties>
         </Component>
         <Component class="javax.swing.JTextField" name="fechaField">
+          <Properties>
+            <Property name="editable" type="boolean" value="false"/>
+          </Properties>
           <BindingProperties>
             <BindingProperty name="text" source="masterTable" sourcePath="${selectedElement.fecha}" target="fechaField" targetPath="text" updateStrategy="0" immediately="false">
               <BindingParameter name="javax.swing.binding.ParameterKeys.TEXT_CHANGE_STRATEGY" value="javax.swing.binding.TextChangeStrategy.ON_TYPE"/>
@@ -208,30 +214,51 @@
             </BindingProperty>
             <BindingProperty name="enabled" source="masterTable" sourcePath="${selectedElement != null}" target="fechaField" targetPath="enabled" updateStrategy="1" immediately="false"/>
           </BindingProperties>
+          <Events>
+            <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="fechaFieldMouseClicked"/>
+          </Events>
         </Component>
         <Component class="javax.swing.JTextField" name="montoPublicField">
+          <Properties>
+            <Property name="toolTipText" type="java.lang.String" value="Solo n&#xfa;meros y coma."/>
+          </Properties>
           <BindingProperties>
             <BindingProperty name="text" source="masterTable" sourcePath="${selectedElement.montoPublic}" target="montoPublicField" targetPath="text" updateStrategy="0" immediately="false">
               <Property name="incompletePathValue" type="java.lang.String" value="null"/>
             </BindingProperty>
             <BindingProperty name="enabled" source="masterTable" sourcePath="${selectedElement != null}" target="montoPublicField" targetPath="enabled" updateStrategy="1" immediately="false"/>
           </BindingProperties>
+          <Events>
+            <EventHandler event="keyTyped" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="montoPublicFieldKeyTyped"/>
+          </Events>
         </Component>
         <Component class="javax.swing.JTextField" name="montoRifasField">
+          <Properties>
+            <Property name="toolTipText" type="java.lang.String" value="Solo n&#xfa;meros y coma."/>
+          </Properties>
           <BindingProperties>
             <BindingProperty name="text" source="masterTable" sourcePath="${selectedElement.montoRifas}" target="montoRifasField" targetPath="text" updateStrategy="0" immediately="false">
               <Property name="incompletePathValue" type="java.lang.String" value="null"/>
             </BindingProperty>
             <BindingProperty name="enabled" source="masterTable" sourcePath="${selectedElement != null}" target="montoRifasField" targetPath="enabled" updateStrategy="1" immediately="false"/>
           </BindingProperties>
+          <Events>
+            <EventHandler event="keyTyped" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="montoRifasFieldKeyTyped"/>
+          </Events>
         </Component>
         <Component class="javax.swing.JTextField" name="montoTarjetasField">
+          <Properties>
+            <Property name="toolTipText" type="java.lang.String" value="Solo n&#xfa;meros y coma."/>
+          </Properties>
           <BindingProperties>
             <BindingProperty name="text" source="masterTable" sourcePath="${selectedElement.montoTarjetas}" target="montoTarjetasField" targetPath="text" updateStrategy="0" immediately="false">
               <Property name="incompletePathValue" type="java.lang.String" value="null"/>
             </BindingProperty>
             <BindingProperty name="enabled" source="masterTable" sourcePath="${selectedElement != null}" target="montoTarjetasField" targetPath="enabled" updateStrategy="1" immediately="false"/>
           </BindingProperties>
+          <Events>
+            <EventHandler event="keyTyped" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="montoTarjetasFieldKeyTyped"/>
+          </Events>
         </Component>
         <Component class="javax.swing.JButton" name="saveButton">
           <Properties>
@@ -312,7 +339,7 @@
         <DimensionLayout dim="1">
           <Group type="103" groupAlignment="0" attributes="0">
               <Group type="102" alignment="1" attributes="0">
-                  <EmptySpace pref="214" max="32767" attributes="0"/>
+                  <EmptySpace pref="216" max="32767" attributes="0"/>
                   <Group type="103" groupAlignment="3" attributes="0">
                       <Component id="deleteButton" alignment="3" min="-2" max="-2" attributes="0"/>
                       <Component id="newButton" alignment="3" min="-2" max="-2" attributes="0"/>
@@ -366,6 +393,11 @@
                       <Editor/>
                       <Renderer/>
                     </Column>
+                    <Column maxWidth="-1" minWidth="50" prefWidth="-1" resizable="true">
+                      <Title/>
+                      <Editor/>
+                      <Renderer/>
+                    </Column>
                   </TableColumnModel>
                 </Property>
                 <Property name="tableHeader" type="javax.swing.table.JTableHeader" editor="org.netbeans.modules.form.editors2.JTableHeaderEditor">
@@ -391,12 +423,19 @@
                     <BindingParameter name="NAME" value="Tarjetas ($)"/>
                     <BindingParameter name="javax.swing.binding.ParameterKeys.COLUMN_CLASS" value="java.math.BigDecimal.class"/>
                   </Subbinding>
+                  <Subbinding sourcePath="${A}">
+                    <BindingParameter name="NAME" value="Recaudaci&#xf3;n Total ($)"/>
+                    <BindingParameter name="javax.swing.binding.ParameterKeys.EDITABLE" value="false"/>
+                  </Subbinding>
                   <Subbinding sourcePath="${motivo}">
                     <BindingParameter name="NAME" value="Motivo del Evento"/>
                     <BindingParameter name="javax.swing.binding.ParameterKeys.COLUMN_CLASS" value="String.class"/>
                   </Subbinding>
                 </BindingProperty>
               </BindingProperties>
+              <Events>
+                <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="masterTableMouseClicked"/>
+              </Events>
               <AuxValues>
                 <AuxValue name="JavaCodeGenerator_VariableLocal" type="java.lang.Boolean" value="false"/>
                 <AuxValue name="JavaCodeGenerator_VariableModifier" type="java.lang.Integer" value="2"/>

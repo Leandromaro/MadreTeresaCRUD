@@ -4,6 +4,7 @@
  */
 package madreteresacrud;
 
+import java.awt.Toolkit;
 import java.beans.Beans;
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -109,6 +110,8 @@ public class CuotaSocialABM extends JPanel {
 
         montoLabel.setText("Monto ($):");
 
+        fechaPagoField.setEditable(false);
+
         org.jdesktop.beansbinding.Binding binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, masterTable, org.jdesktop.beansbinding.ELProperty.create("${selectedElement.fechaPago}"), fechaPagoField, org.jdesktop.beansbinding.BeanProperty.create("text"));
         binding.setSourceUnreadableValue("null");
         binding.setConverter(dateConverter);
@@ -116,11 +119,15 @@ public class CuotaSocialABM extends JPanel {
         binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ, masterTable, org.jdesktop.beansbinding.ELProperty.create("${selectedElement != null}"), fechaPagoField, org.jdesktop.beansbinding.BeanProperty.create("enabled"));
         bindingGroup.addBinding(binding);
 
+        fechaPagoField.addMouseListener(formListener);
+
         binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, masterTable, org.jdesktop.beansbinding.ELProperty.create("${selectedElement.monto}"), montoField, org.jdesktop.beansbinding.BeanProperty.create("text"));
         binding.setSourceUnreadableValue("null");
         bindingGroup.addBinding(binding);
         binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ, masterTable, org.jdesktop.beansbinding.ELProperty.create("${selectedElement != null}"), montoField, org.jdesktop.beansbinding.BeanProperty.create("enabled"));
         bindingGroup.addBinding(binding);
+
+        montoField.addKeyListener(formListener);
 
         jButton1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/calendario.GIF"))); // NOI18N
         jButton1.setContentAreaFilled(false);
@@ -147,7 +154,7 @@ public class CuotaSocialABM extends JPanel {
                                 .addGap(18, 18, 18)
                                 .addComponent(jButtonSalir, javax.swing.GroupLayout.PREFERRED_SIZE, 62, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addGroup(jPanelFormLayout.createSequentialGroup()
-                                .addGap(46, 46, 46)
+                                .addGap(41, 41, 41)
                                 .addComponent(montoField, javax.swing.GroupLayout.PREFERRED_SIZE, 132, javax.swing.GroupLayout.PREFERRED_SIZE)))
                         .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanelFormLayout.createSequentialGroup()
@@ -168,10 +175,10 @@ public class CuotaSocialABM extends JPanel {
                         .addComponent(fechaPagoField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addComponent(fechaPagoLabel)))
                 .addGap(18, 18, 18)
-                .addGroup(jPanelFormLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(jPanelFormLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(montoLabel)
                     .addComponent(montoField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(23, 23, 23)
+                .addGap(29, 29, 29)
                 .addGroup(jPanelFormLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(cancelar)
                     .addComponent(saveButton)
@@ -223,7 +230,7 @@ public class CuotaSocialABM extends JPanel {
         jPanelTablaLayout.setVerticalGroup(
             jPanelTablaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanelTablaLayout.createSequentialGroup()
-                .addContainerGap(233, Short.MAX_VALUE)
+                .addContainerGap(237, Short.MAX_VALUE)
                 .addComponent(genCuota)
                 .addContainerGap())
             .addGroup(jPanelTablaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -258,7 +265,7 @@ public class CuotaSocialABM extends JPanel {
 
     // Code for dispatching events from components to event handlers.
 
-    private class FormListener implements java.awt.event.ActionListener, java.awt.event.MouseListener {
+    private class FormListener implements java.awt.event.ActionListener, java.awt.event.KeyListener, java.awt.event.MouseListener {
         FormListener() {}
         public void actionPerformed(java.awt.event.ActionEvent evt) {
             if (evt.getSource() == saveButton) {
@@ -278,9 +285,24 @@ public class CuotaSocialABM extends JPanel {
             }
         }
 
+        public void keyPressed(java.awt.event.KeyEvent evt) {
+        }
+
+        public void keyReleased(java.awt.event.KeyEvent evt) {
+        }
+
+        public void keyTyped(java.awt.event.KeyEvent evt) {
+            if (evt.getSource() == montoField) {
+                CuotaSocialABM.this.montoFieldKeyTyped(evt);
+            }
+        }
+
         public void mouseClicked(java.awt.event.MouseEvent evt) {
             if (evt.getSource() == masterTable) {
                 CuotaSocialABM.this.masterTableMouseClicked(evt);
+            }
+            else if (evt.getSource() == fechaPagoField) {
+                CuotaSocialABM.this.fechaPagoFieldMouseClicked(evt);
             }
         }
 
@@ -419,6 +441,18 @@ public class CuotaSocialABM extends JPanel {
     private void masterTableMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_masterTableMouseClicked
         saveButton.setEnabled(true);
     }//GEN-LAST:event_masterTableMouseClicked
+
+    private void fechaPagoFieldMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_fechaPagoFieldMouseClicked
+        new CalendarioDialog((JDialog) SwingUtilities.getWindowAncestor(this), true, fechaPagoField).setVisible(true);
+    }//GEN-LAST:event_fechaPagoFieldMouseClicked
+
+    private void montoFieldKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_montoFieldKeyTyped
+        if (!Character.isDigit(evt.getKeyChar()) && !Character.isISOControl(evt.getKeyChar()) && evt.getKeyChar() != '.')
+        {
+            Toolkit.getDefaultToolkit().beep();
+            evt.consume();
+        }
+    }//GEN-LAST:event_montoFieldKeyTyped
 
     public java.util.Collection getListaCuotas() {
 

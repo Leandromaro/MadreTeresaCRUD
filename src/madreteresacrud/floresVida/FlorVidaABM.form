@@ -90,17 +90,17 @@
               <Group type="102" attributes="0">
                   <Group type="103" groupAlignment="0" attributes="0">
                       <Group type="102" attributes="0">
-                          <EmptySpace min="-2" pref="302" max="-2" attributes="0"/>
-                          <Component id="jButton1" min="-2" pref="35" max="-2" attributes="0"/>
-                      </Group>
-                      <Group type="102" alignment="0" attributes="0">
                           <EmptySpace min="-2" pref="150" max="-2" attributes="0"/>
                           <Component id="refreshButton" linkSize="1" min="-2" max="-2" attributes="0"/>
                           <EmptySpace type="separate" max="-2" attributes="0"/>
                           <Component id="saveButton" linkSize="1" min="-2" max="-2" attributes="0"/>
                       </Group>
+                      <Group type="102" alignment="0" attributes="0">
+                          <EmptySpace min="-2" pref="335" max="-2" attributes="0"/>
+                          <Component id="jButton1" min="-2" pref="35" max="-2" attributes="0"/>
+                      </Group>
                   </Group>
-                  <EmptySpace pref="442" max="32767" attributes="0"/>
+                  <EmptySpace max="32767" attributes="0"/>
               </Group>
               <Group type="103" rootIndex="1" groupAlignment="0" attributes="0">
                   <Group type="102" attributes="0">
@@ -135,9 +135,9 @@
         <DimensionLayout dim="1">
           <Group type="103" groupAlignment="0" attributes="0">
               <Group type="102" alignment="1" attributes="0">
-                  <EmptySpace pref="115" max="32767" attributes="0"/>
+                  <EmptySpace pref="105" max="32767" attributes="0"/>
                   <Component id="jButton1" min="-2" pref="30" max="-2" attributes="0"/>
-                  <EmptySpace min="-2" pref="41" max="-2" attributes="0"/>
+                  <EmptySpace min="-2" pref="51" max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="3" attributes="0">
                       <Component id="refreshButton" alignment="3" min="-2" max="-2" attributes="0"/>
                       <Component id="saveButton" alignment="3" min="-2" max="-2" attributes="0"/>
@@ -246,6 +246,9 @@
           </BindingProperties>
         </Component>
         <Component class="javax.swing.JTextField" name="fechaDefuncionField">
+          <Properties>
+            <Property name="editable" type="boolean" value="false"/>
+          </Properties>
           <BindingProperties>
             <BindingProperty name="text" source="masterTable" sourcePath="${selectedElement.fechaDefuncion}" target="fechaDefuncionField" targetPath="text" updateStrategy="0" immediately="false">
               <BindingParameter name="javax.swing.binding.ParameterKeys.TEXT_CHANGE_STRATEGY" value="javax.swing.binding.TextChangeStrategy.ON_TYPE"/>
@@ -256,6 +259,9 @@
             </BindingProperty>
             <BindingProperty name="enabled" source="masterTable" sourcePath="${selectedElement != null}" target="fechaDefuncionField" targetPath="enabled" updateStrategy="1" immediately="false"/>
           </BindingProperties>
+          <Events>
+            <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="fechaDefuncionFieldMouseClicked"/>
+          </Events>
         </Component>
         <Component class="javax.swing.JTextField" name="telefonoField">
           <BindingProperties>
@@ -333,7 +339,7 @@
         <DimensionLayout dim="1">
           <Group type="103" groupAlignment="0" attributes="0">
               <Group type="102" alignment="1" attributes="0">
-                  <EmptySpace pref="269" max="32767" attributes="0"/>
+                  <EmptySpace pref="271" max="32767" attributes="0"/>
                   <Group type="103" groupAlignment="3" attributes="0">
                       <Component id="deleteButton" alignment="3" min="-2" max="-2" attributes="0"/>
                       <Component id="newButton" alignment="3" min="-2" max="-2" attributes="0"/>

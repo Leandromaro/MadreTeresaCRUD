@@ -160,7 +160,7 @@ public class MadreTeresaMain extends javax.swing.JFrame {
         });
         jMenu3.add(jMenuItem7);
 
-        jMenuItem11.setText("Registrar tipo de Eventos");
+        jMenuItem11.setText("Registrar Tipo de Eventos");
         jMenuItem11.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jMenuItem11ActionPerformed(evt);
@@ -345,14 +345,6 @@ public class MadreTeresaMain extends javax.swing.JFrame {
         
     }//GEN-LAST:event_jMenuItem3ActionPerformed
 
-    private void jMenuItem4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem4ActionPerformed
-         IngresosEgresos ing = new IngresosEgresos();
-         ing.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
-         ing.setLocationRelativeTo(null);
-         ing.setVisible(true);
-         
-    }//GEN-LAST:event_jMenuItem4ActionPerformed
-
     private void jMenuItem5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem5ActionPerformed
         JInternalFrame internal =  new JInternalFrame("Flores de vida");
         JPanel p = new FlorVidaABM();
@@ -455,6 +447,14 @@ public class MadreTeresaMain extends javax.swing.JFrame {
         jDesktopPane.repaint();
         internal.setVisible(true);
     }//GEN-LAST:event_jMenuItem11ActionPerformed
+
+    private void jMenuItem4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem4ActionPerformed
+        IngresosEgresos ing = new IngresosEgresos();
+        ing.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
+        ing.setLocationRelativeTo(null);
+        ing.setVisible(true);
+
+    }//GEN-LAST:event_jMenuItem4ActionPerformed
     public boolean generarCuotas(int mes, int anio){
         boolean band=false;      
         boolean flag=false;

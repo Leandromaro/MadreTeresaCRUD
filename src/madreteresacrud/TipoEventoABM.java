@@ -3,16 +3,13 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package madreteresacrud;
 
-import java.awt.EventQueue;
 import java.beans.Beans;
 import java.util.ArrayList;
 
 import java.util.List;
 import javax.persistence.RollbackException;
-import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
@@ -21,7 +18,7 @@ import javax.swing.JPanel;
  * @author francis
  */
 public class TipoEventoABM extends JPanel {
-    
+
     public TipoEventoABM() {
         initComponents();
         if (!Beans.isDesignTime()) {
@@ -145,7 +142,6 @@ public class TipoEventoABM extends JPanel {
         }
     }// </editor-fold>//GEN-END:initComponents
 
-    
 
     private void deleteButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteButtonActionPerformed
         
@@ -154,9 +150,9 @@ public class TipoEventoABM extends JPanel {
             int[] selected = masterTable.getSelectedRows();
             List<madreteresacrud.TipoEvento> toRemove = new ArrayList<madreteresacrud.TipoEvento>(selected.length);
             for (int idx = 0; idx < selected.length; idx++) {
-                madreteresacrud.TipoEvento t = list.get(masterTable.convertRowIndexToModel(selected[idx]));
-                toRemove.add(t);
-                entityManager.remove(t);
+                madreteresacrud.TipoEvento d = list.get(masterTable.convertRowIndexToModel(selected[idx]));
+                toRemove.add(d);
+                entityManager.remove(d);
             }
             try {
                 entityManager.getTransaction().commit();
@@ -175,7 +171,7 @@ public class TipoEventoABM extends JPanel {
         masterTable.setRowSelectionInterval(row, row);
         masterTable.scrollRectToVisible(masterTable.getCellRect(row, 0, true));
     }//GEN-LAST:event_newButtonActionPerformed
-    
+
     private void saveButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveButtonActionPerformed
         try {
             entityManager.getTransaction().commit();
@@ -190,13 +186,21 @@ public class TipoEventoABM extends JPanel {
             list.clear();
             list.addAll(merged);
         }
+        //Recargamos la tabla de nuevo
+        entityManager.getTransaction().rollback();
+        entityManager.getTransaction().begin();
+        java.util.Collection data = query.getResultList();
+        for (Object entity : data) {
+            entityManager.refresh(entity);
+        }
+        list.clear();
+        list.addAll(data);
     }//GEN-LAST:event_saveButtonActionPerformed
 
     public List<TipoEvento> getTipoEvento() {
         return query.getResultList();
     }
 
-    
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton deleteButton;

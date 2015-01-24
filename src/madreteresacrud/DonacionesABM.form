@@ -71,7 +71,7 @@
     <DimensionLayout dim="1">
       <Group type="103" groupAlignment="0" attributes="0">
           <Group type="102" alignment="1" attributes="0">
-              <EmptySpace pref="305" max="32767" attributes="0"/>
+              <EmptySpace pref="361" max="32767" attributes="0"/>
               <Component id="jPanelForm" min="-2" max="-2" attributes="0"/>
               <EmptySpace max="-2" attributes="0"/>
           </Group>
@@ -98,12 +98,12 @@
       <Layout>
         <DimensionLayout dim="0">
           <Group type="103" groupAlignment="0" attributes="0">
-              <Group type="102" attributes="0">
-                  <EmptySpace min="-2" pref="78" max="-2" attributes="0"/>
+              <Group type="102" alignment="0" attributes="0">
+                  <EmptySpace min="-2" pref="140" max="-2" attributes="0"/>
                   <Component id="newButton" min="-2" max="-2" attributes="0"/>
                   <EmptySpace max="-2" attributes="0"/>
                   <Component id="deleteButton" min="-2" max="-2" attributes="0"/>
-                  <EmptySpace pref="521" max="32767" attributes="0"/>
+                  <EmptySpace pref="464" max="32767" attributes="0"/>
               </Group>
               <Group type="103" rootIndex="1" groupAlignment="0" attributes="0">
                   <Group type="102" attributes="0">
@@ -117,12 +117,12 @@
         <DimensionLayout dim="1">
           <Group type="103" groupAlignment="0" attributes="0">
               <Group type="102" alignment="1" attributes="0">
-                  <EmptySpace pref="225" max="32767" attributes="0"/>
+                  <EmptySpace pref="239" max="32767" attributes="0"/>
                   <Group type="103" groupAlignment="3" attributes="0">
                       <Component id="deleteButton" alignment="3" min="-2" max="-2" attributes="0"/>
                       <Component id="newButton" alignment="3" min="-2" max="-2" attributes="0"/>
                   </Group>
-                  <EmptySpace min="-2" pref="21" max="-2" attributes="0"/>
+                  <EmptySpace max="-2" attributes="0"/>
               </Group>
               <Group type="103" rootIndex="1" groupAlignment="0" attributes="0">
                   <Group type="102" alignment="0" attributes="0">
@@ -303,7 +303,7 @@
         <DimensionLayout dim="1">
           <Group type="103" groupAlignment="0" attributes="0">
               <Group type="102" alignment="1" attributes="0">
-                  <EmptySpace pref="40" max="32767" attributes="0"/>
+                  <EmptySpace pref="12" max="32767" attributes="0"/>
                   <Group type="103" groupAlignment="0" attributes="0">
                       <Component id="jLabel1" alignment="1" min="-2" max="-2" attributes="0"/>
                       <Group type="103" alignment="1" groupAlignment="3" attributes="0">
@@ -318,8 +318,8 @@
                   </Group>
                   <EmptySpace max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="0" attributes="0">
-                      <Component id="apellidoLabel" alignment="1" min="-2" max="-2" attributes="0"/>
-                      <Component id="apellidoField" alignment="1" min="-2" max="-2" attributes="0"/>
+                      <Component id="apellidoField" min="-2" max="-2" attributes="0"/>
+                      <Component id="apellidoLabel" alignment="0" min="-2" max="-2" attributes="0"/>
                   </Group>
                   <EmptySpace max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="1" attributes="0">
@@ -334,7 +334,7 @@
                       </Group>
                       <Component id="jButtonCalendar" min="-2" pref="25" max="-2" attributes="0"/>
                   </Group>
-                  <EmptySpace max="-2" attributes="0"/>
+                  <EmptySpace type="separate" max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="3" attributes="0">
                       <Component id="refreshButton" alignment="3" min="-2" max="-2" attributes="0"/>
                       <Component id="saveButton" alignment="3" min="-2" max="-2" attributes="0"/>
@@ -383,14 +383,23 @@
           </BindingProperties>
         </Component>
         <Component class="javax.swing.JTextField" name="montoField">
+          <Properties>
+            <Property name="toolTipText" type="java.lang.String" value="Solo n&#xfa;meros y coma."/>
+          </Properties>
           <BindingProperties>
             <BindingProperty name="text" source="masterTable" sourcePath="${selectedElement.monto}" target="montoField" targetPath="text" updateStrategy="0" immediately="false">
               <Property name="incompletePathValue" type="java.lang.String" value="null"/>
             </BindingProperty>
             <BindingProperty name="enabled" source="masterTable" sourcePath="${selectedElement != null}" target="montoField" targetPath="enabled" updateStrategy="1" immediately="false"/>
           </BindingProperties>
+          <Events>
+            <EventHandler event="keyTyped" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="montoFieldKeyTyped"/>
+          </Events>
         </Component>
         <Component class="javax.swing.JTextField" name="fechaDonacionField">
+          <Properties>
+            <Property name="editable" type="boolean" value="false"/>
+          </Properties>
           <BindingProperties>
             <BindingProperty name="text" source="masterTable" sourcePath="${selectedElement.fechaDonacion}" target="fechaDonacionField" targetPath="text" updateStrategy="0" immediately="false">
               <BindingParameter name="javax.swing.binding.ParameterKeys.TEXT_CHANGE_STRATEGY" value="javax.swing.binding.TextChangeStrategy.ON_TYPE"/>
@@ -402,7 +411,7 @@
             <BindingProperty name="enabled" source="masterTable" sourcePath="${selectedElement != null}" target="fechaDonacionField" targetPath="enabled" updateStrategy="1" immediately="false"/>
           </BindingProperties>
           <Events>
-            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="fechaDonacionFieldActionPerformed"/>
+            <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="fechaDonacionFieldMouseClicked"/>
           </Events>
           <AuxValues>
             <AuxValue name="JavaCodeGenerator_SerializeTo" type="java.lang.String" value="DonacionesABM_fechaDonacionField"/>
