@@ -40,10 +40,7 @@ public class EventosABM extends JPanel {
         if (!Beans.isDesignTime()) {
             entityManager.getTransaction().begin();
         }
-        TableColumn col = new TableColumn(6);
-        
-        masterTable.addColumn(col);
-        masterTable.setDefaultRenderer(Object.class, new RendererTablaEventos(4));
+        //masterTable.setDefaultRenderer(Object.class, new RendererTablaEventos(4));
     }
 
     /**
@@ -166,7 +163,7 @@ public class EventosABM extends JPanel {
                         .addComponent(motivoLabel)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jComboBoxEvento, javax.swing.GroupLayout.PREFERRED_SIZE, 304, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(191, Short.MAX_VALUE))
+                .addContainerGap(404, Short.MAX_VALUE))
             .addGroup(jPanelFormLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(jPanelFormLayout.createSequentialGroup()
                     .addContainerGap()
@@ -225,6 +222,8 @@ public class EventosABM extends JPanel {
 
         jPanelTabla.setBorder(javax.swing.BorderFactory.createEtchedBorder());
 
+        masterTable.setAutoCreateRowSorter(true);
+
         org.jdesktop.swingbinding.JTableBinding jTableBinding = org.jdesktop.swingbinding.SwingBindings.createJTableBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, list, masterTable);
         org.jdesktop.swingbinding.JTableBinding.ColumnBinding columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${fecha}"));
         columnBinding.setColumnName("Fecha del Evento");
@@ -233,24 +232,33 @@ public class EventosABM extends JPanel {
         columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${montoPublic}"));
         columnBinding.setColumnName("Publicidad ($)");
         columnBinding.setColumnClass(java.math.BigDecimal.class);
+        columnBinding.setEditable(false);
         columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${montoRifas}"));
         columnBinding.setColumnName("Rifas ($)");
         columnBinding.setColumnClass(java.math.BigDecimal.class);
+        columnBinding.setEditable(false);
         columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${montoTarjetas}"));
         columnBinding.setColumnName("Tarjetas ($)");
         columnBinding.setColumnClass(java.math.BigDecimal.class);
-        columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${A}"));
+        columnBinding.setEditable(false);
+        columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${montoPublic+montoRifas+montoTarjetas}"));
         columnBinding.setColumnName("Recaudación Total ($)");
         columnBinding.setEditable(false);
         columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${motivo}"));
         columnBinding.setColumnName("Motivo del Evento");
         columnBinding.setColumnClass(String.class);
+        columnBinding.setEditable(false);
         bindingGroup.addBinding(jTableBinding);
         jTableBinding.bind();
         masterTable.addMouseListener(formListener);
         masterScrollPane.setViewportView(masterTable);
         if (masterTable.getColumnModel().getColumnCount() > 0) {
-            masterTable.getColumnModel().getColumn(5).setMinWidth(50);
+            masterTable.getColumnModel().getColumn(0).setPreferredWidth(50);
+            masterTable.getColumnModel().getColumn(1).setPreferredWidth(50);
+            masterTable.getColumnModel().getColumn(2).setPreferredWidth(50);
+            masterTable.getColumnModel().getColumn(3).setPreferredWidth(50);
+            masterTable.getColumnModel().getColumn(4).setPreferredWidth(100);
+            masterTable.getColumnModel().getColumn(5).setPreferredWidth(150);
         }
 
         deleteButton.setText("Eliminar");
