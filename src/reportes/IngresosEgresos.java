@@ -483,12 +483,16 @@ public class IngresosEgresos extends javax.swing.JFrame {
         if(fechaD.before(fechaH)  || fechaD.equals(fechaH)){         
         String [] fd = jTFDesde1.getText().split("/");
         String [] fh = jTFHasta1.getText().split("/");
-        List listaE = new ArrayList();        
+        String fechaDesde = fd[2]+"-"+fd[1]+"-"+fd[0];
+        String fechaHasta = fh[2]+"-"+fh[1]+"-"+fh[0];
+        String tipoGasto =  jComboBoxTipoGasto.getSelectedItem().toString().trim(); 
         Double tot =0.0;
+        
+        List listaE = new ArrayList();   
         ListaEgresos list;
         DecimalFormat df = new DecimalFormat("0.00##");        
-        String sql = "SELECT tg.Elemento item, MONTH(g.fechaGasto) mes, YEAR(g.fechaGasto) anio,SUM(monto) monto FROM tipoGasto tg, gastos g WHERE g.fechaGasto BETWEEN '"+fd[2]+"-"+fd[1]+"-"+fd[0]+"' AND '"+
-                fh[2]+"-"+fh[1]+"-"+fh[0]+"' AND tg.idtipo_gasto=g.tipo_gasto_idtipo_gasto AND tg.TipoGasto='"+jComboBoxTipoGasto.getSelectedItem().toString().trim() +"' GROUP BY  item, mes, anio ";
+        String sql = "SELECT tg.Elemento item, YEAR(g.fechaGasto) anio,MONTH(g.fechaGasto) mes,SUM(monto) monto FROM tipoGasto tg, gastos g WHERE g.fechaGasto BETWEEN '"+fd[2]+"-"+fd[1]+"-"+fd[0]+"' AND '"+
+                fh[2]+"-"+fh[1]+"-"+fh[0]+"' AND tg.idtipo_gasto=g.tipo_gasto_idtipo_gasto AND tg.TipoGasto='"+jComboBoxTipoGasto.getSelectedItem().toString().trim() +"' GROUP BY  item, anio, mes ";
         try {
              cn = cc.conexion();
              Statement st = cn.createStatement();
@@ -504,18 +508,18 @@ public class IngresosEgresos extends javax.swing.JFrame {
         }
         
         //Ordenamos la lista         
-        Collections.sort(listaE, new Comparator<ListaEgresos>() {
-            @Override
-            public int compare(ListaEgresos l1, ListaEgresos l2) {
-                    return new Integer(Integer.parseInt(l1.getMes())).compareTo(new Integer(Integer.parseInt(l2.getMes())));
-            }          
-         });
-        Collections.sort(listaE, new Comparator<ListaEgresos>() {
-            @Override
-            public int compare(ListaEgresos l1, ListaEgresos l2) {
-                    return new Integer(Integer.parseInt(l1.getAnio())).compareTo(new Integer(Integer.parseInt(l2.getAnio())));
-            }          
-         });
+//        Collections.sort(listaE, new Comparator<ListaEgresos>() {
+//            @Override
+//            public int compare(ListaEgresos l1, ListaEgresos l2) {
+//                    return new Integer(Integer.parseInt(l1.getMes())).compareTo(new Integer(Integer.parseInt(l2.getMes())));
+//            }          
+//         });
+//        Collections.sort(listaE, new Comparator<ListaEgresos>() {
+//            @Override
+//            public int compare(ListaEgresos l1, ListaEgresos l2) {
+//                    return new Integer(Integer.parseInt(l1.getAnio())).compareTo(new Integer(Integer.parseInt(l2.getAnio())));
+//            }          
+//         });
         
 //         for(int i=0;i<listaE.size();i++){
 //            list = (ListaEgresos)listaE.get(i);
@@ -525,7 +529,7 @@ public class IngresosEgresos extends javax.swing.JFrame {
          
          //Creamos el informe
         try {            
-            File fichero = new File("Egresos.jasper");            
+            File fichero = new File("Egresos1.jasper");            
             JasperReport reporte= (JasperReport) JRLoader.loadObject(fichero);//(JasperReport) JRLoader.loadObject("Ingresos.jasper");
             String tipo=jComboBoxTipoGasto.getSelectedItem().toString().trim();
             if("Hogar".equals(tipo)){
@@ -538,6 +542,11 @@ public class IngresosEgresos extends javax.swing.JFrame {
             parametro.put("fechaHasta", jTFHasta1.getText());  
             parametro.put("leyenda", tipo);
             parametro.put("total", "$"+df.format(tot));
+            parametro.put("fdSQL",fechaDesde);
+            parametro.put("fhSQL",fechaHasta);
+            parametro.put("tipoGasto",tipoGasto);
+            //parametro.put("REPORT_CONNECTION",cc.conexion());
+            //JasperPrint jprint= JasperFillManager.fillReport(reporte, parametro,cc.conexion());
             JasperPrint jprint= JasperFillManager.fillReport(reporte, parametro,new JRBeanCollectionDataSource(listaE));
             
             JasperViewer.viewReport(jprint,false);

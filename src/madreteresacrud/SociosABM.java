@@ -26,6 +26,7 @@ import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JTextField;
 import javax.swing.SwingUtilities;
 import org.jdesktop.beansbinding.Converter;
 import org.jdesktop.swingx.autocomplete.AutoCompleteDecorator;
@@ -171,6 +172,8 @@ public class SociosABM extends JPanel {
         bindingGroup.addBinding(binding);
         binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ, masterTable, org.jdesktop.beansbinding.ELProperty.create("${selectedElement != null}"), apellidoField, org.jdesktop.beansbinding.BeanProperty.create("enabled"));
         bindingGroup.addBinding(binding);
+
+        apellidoField.addKeyListener(formListener);
 
         nombreLabel.setText("Nombre/s:");
 
@@ -737,6 +740,9 @@ public class SociosABM extends JPanel {
             else if (evt.getSource() == celularField) {
                 SociosABM.this.celularFieldKeyTyped(evt);
             }
+            else if (evt.getSource() == apellidoField) {
+                SociosABM.this.apellidoFieldKeyTyped(evt);
+            }
         }
 
         public void mouseClicked(java.awt.event.MouseEvent evt) {
@@ -1247,6 +1253,10 @@ public class SociosABM extends JPanel {
         new Calendario((JFrame) SwingUtilities.getWindowAncestor(this), true, fechaNacimientoField).setVisible(true);
     }//GEN-LAST:event_fechaNacimientoFieldMouseClicked
 
+    private void apellidoFieldKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_apellidoFieldKeyTyped
+        convertirMayuscula(apellidoField);
+    }//GEN-LAST:event_apellidoFieldKeyTyped
+
     //OBJETO PARA PODER ENLAZAR LA FECHA DESDE LA BD EN EL TEXTFIELD fechaNacimiento
     Converter dateConverter = new Converter<java.util.Date, String>() {
         @Override
@@ -1437,6 +1447,10 @@ public class SociosABM extends JPanel {
 
         return s;
 
+    }
+    
+    private void convertirMayuscula(JTextField textField){
+        textField.setText(textField.getText().toUpperCase());
     }
 
     public void setApellidoField(String apellidoField) {

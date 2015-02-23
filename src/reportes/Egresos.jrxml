@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="report name" pageWidth="595" pageHeight="842" columnWidth="535" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="42804366-de16-414f-bae7-2723c28d63a8">
-	<property name="ireport.zoom" value="1.0"/>
-	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="0"/>
+	<property name="ireport.zoom" value="1.771561000000001"/>
+	<property name="ireport.x" value="29"/>
+	<property name="ireport.y" value="24"/>
 	<parameter name="anio" class="java.lang.String"/>
 	<parameter name="leyenda" class="java.lang.String"/>
 	<parameter name="total" class="java.lang.String"/>
@@ -112,6 +112,18 @@
 				</textElement>
 				<textFieldExpression><![CDATA[$F{monto}]]></textFieldExpression>
 			</textField>
+			<line>
+				<reportElement x="185" y="0" width="1" height="31" uuid="1af01087-9aa4-498f-ad87-643b066f1637"/>
+			</line>
+			<line>
+				<reportElement x="342" y="0" width="1" height="31" uuid="093f974d-ac77-4ca0-b166-ed55a72bb83b"/>
+			</line>
+			<line>
+				<reportElement x="48" y="0" width="1" height="31" uuid="89cfaee1-87ea-4fd1-8c84-77f88965785b"/>
+			</line>
+			<line>
+				<reportElement x="481" y="-1" width="1" height="31" uuid="e3c248ff-16b9-4d80-881d-2ee23d42caf6"/>
+			</line>
 		</band>
 	</detail>
 	<columnFooter>
