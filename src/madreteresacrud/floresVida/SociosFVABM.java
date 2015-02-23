@@ -554,19 +554,23 @@ public class SociosFVABM extends JPanel {
 
 
     private void deleteButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteButtonActionPerformed
-        int[] selected = masterTable.getSelectedRows();
-        List<madreteresacrud.floresVida.SociosFlorVida> toRemove = new ArrayList<madreteresacrud.floresVida.SociosFlorVida>(selected.length);
-        for (int idx = 0; idx < selected.length; idx++) {
-            madreteresacrud.floresVida.SociosFlorVida s = list.get(masterTable.convertRowIndexToModel(selected[idx]));
-            toRemove.add(s);
-            entityManager.remove(s);
-        }
-        try {
-                entityManager.getTransaction().commit();
-                entityManager.getTransaction().begin();
-            } catch (Exception e) {
+     int reply = JOptionPane.showConfirmDialog(null, "¿Está seguro de eliminar el registro?", "Eliminacion de Registro", JOptionPane.YES_NO_OPTION);
+        if (reply == JOptionPane.YES_OPTION) {
+
+            int[] selected = masterTable.getSelectedRows();
+            List<madreteresacrud.floresVida.SociosFlorVida> toRemove = new ArrayList<madreteresacrud.floresVida.SociosFlorVida>(selected.length);
+            for (int idx = 0; idx < selected.length; idx++) {
+                madreteresacrud.floresVida.SociosFlorVida s = list.get(masterTable.convertRowIndexToModel(selected[idx]));
+                toRemove.add(s);
+                entityManager.remove(s);
             }
-        list.removeAll(toRemove);
+            try {
+                    entityManager.getTransaction().commit();
+                    entityManager.getTransaction().begin();
+                } catch (Exception e) {
+                }
+            list.removeAll(toRemove);
+        }
     }//GEN-LAST:event_deleteButtonActionPerformed
 
     private void newButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_newButtonActionPerformed

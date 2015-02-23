@@ -763,98 +763,101 @@ public class SociosABM extends JPanel {
 
 
     private void deleteButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteButtonActionPerformed
-//        int[] selected = masterTable.getSelectedRows();
-//        List<madreteresacrud.Socios> toRemove = new ArrayList<madreteresacrud.Socios>(selected.length);
-//        for (int idx = 0; idx < selected.length; idx++) {
-//            madreteresacrud.Socios s = list.get(masterTable.convertRowIndexToModel(selected[idx]));
-//            toRemove.add(s);
-//            entityManager.remove(s);
-//        }
-//        list.removeAll(toRemove);
-            //Buscamos las cuotas del socio seleccionado
-            int selected = masterTable.getSelectedRow();
-            int id = Integer.valueOf(masterTable.getValueAt(selected, 14).toString());
-            CuotaSocialABM csabm = new CuotaSocialABM(id);
-            java.util.Collection lc = csabm.getListaCuotas();
-            CuotaSocial cs = new CuotaSocial();
-            int idCuota = 0;
-            for (Object cuota : lc) {
-                cs = (CuotaSocial) cuota;
-                if(cs.getFechaPago() == null){
-                    idCuota = cs.getIdCuotaSocial();                    
-                }
-                
-            }
-            //Preguntamos si adeuda cuotas
-            if (idCuota != 0) {
-                int ax = JOptionPane.showConfirmDialog(null, "El socio seleccionado adeuda cuotas, desea darlo de baja de todas formas?");
-                if (ax == JOptionPane.YES_OPTION) {
-                    String patron = "dd/MM/yyyy";
-                    SimpleDateFormat formato = new SimpleDateFormat(patron);
-                    Date calendario = new Date();
-                    jLEliminado.setText(formato.format(calendario));
-//                setBusqueda();
-                    try {
-                        entityManager.getTransaction().commit();
-                        entityManager.getTransaction().begin();
-                    } catch (RollbackException rex) {
-                        rex.printStackTrace();
-                        entityManager.getTransaction().begin();
-                        List<madreteresacrud.Socios> merged = new ArrayList<madreteresacrud.Socios>(list.size());
-                        for (madreteresacrud.Socios s : list) {
-                            merged.add(entityManager.merge(s));
-                        }
-                        list.clear();
-                        list.addAll(merged);
-                    }
-                    //Volvemos a cargar la tabla
-                    entityManager.getTransaction().rollback();
-                    entityManager.getTransaction().begin();
-                    java.util.Collection data = query.getResultList();
-                    for (Object entity : data) {
-                        entityManager.refresh(entity);
-                    }
-                    list.clear();
-                    list.addAll(data);
-                    jComboTipSoc.setEnabled(false);
-                }
-            } else {
-                int ax = JOptionPane.showConfirmDialog(null, "Dar de baja el socio seleccionado?");
-                if (ax == JOptionPane.YES_OPTION) {
-                    String patron = "dd/MM/yyyy";
-                    SimpleDateFormat formato = new SimpleDateFormat(patron);
-                    Date calendario = new Date();
-                    jLEliminado.setText(formato.format(calendario));
-//                setBusqueda();
-                    try {
-                        entityManager.getTransaction().commit();
-                        entityManager.getTransaction().begin();
-                    } catch (RollbackException rex) {
-                        rex.printStackTrace();
-                        entityManager.getTransaction().begin();
-                        List<madreteresacrud.Socios> merged = new ArrayList<madreteresacrud.Socios>(list.size());
-                        for (madreteresacrud.Socios s : list) {
-                            merged.add(entityManager.merge(s));
-                        }
-                        list.clear();
-                        list.addAll(merged);
+     int reply = JOptionPane.showConfirmDialog(null, "¿Está seguro de dar de baja el registro?", "Eliminacion de Registro", JOptionPane.YES_NO_OPTION);
+        if (reply == JOptionPane.YES_OPTION) {
+    //        int[] selected = masterTable.getSelectedRows();
+    //        List<madreteresacrud.Socios> toRemove = new ArrayList<madreteresacrud.Socios>(selected.length);
+    //        for (int idx = 0; idx < selected.length; idx++) {
+    //            madreteresacrud.Socios s = list.get(masterTable.convertRowIndexToModel(selected[idx]));
+    //            toRemove.add(s);
+    //            entityManager.remove(s);
+    //        }
+    //        list.removeAll(toRemove);
+                //Buscamos las cuotas del socio seleccionado
+                int selected = masterTable.getSelectedRow();
+                int id = Integer.valueOf(masterTable.getValueAt(selected, 14).toString());
+                CuotaSocialABM csabm = new CuotaSocialABM(id);
+                java.util.Collection lc = csabm.getListaCuotas();
+                CuotaSocial cs = new CuotaSocial();
+                int idCuota = 0;
+                for (Object cuota : lc) {
+                    cs = (CuotaSocial) cuota;
+                    if(cs.getFechaPago() == null){
+                        idCuota = cs.getIdCuotaSocial();                    
                     }
 
-                    //Volvemos a cargar la tabla
-                    entityManager.getTransaction().rollback();
-                    entityManager.getTransaction().begin();
-                    java.util.Collection data = query.getResultList();
-                    for (Object entity : data) {
-                        entityManager.refresh(entity);
-                    }
-                    list.clear();
-                    list.addAll(data);
-                    jComboTipSoc.setEnabled(false);
-                    jCBSexo.setEnabled(false);
-                    cuilField.setEnabled(false);
-                    numSocField.setEnabled(false);
                 }
-            }        
+                //Preguntamos si adeuda cuotas
+                if (idCuota != 0) {
+                    int ax = JOptionPane.showConfirmDialog(null, "El socio seleccionado adeuda cuotas, desea darlo de baja de todas formas?");
+                    if (ax == JOptionPane.YES_OPTION) {
+                        String patron = "dd/MM/yyyy";
+                        SimpleDateFormat formato = new SimpleDateFormat(patron);
+                        Date calendario = new Date();
+                        jLEliminado.setText(formato.format(calendario));
+    //                setBusqueda();
+                        try {
+                            entityManager.getTransaction().commit();
+                            entityManager.getTransaction().begin();
+                        } catch (RollbackException rex) {
+                            rex.printStackTrace();
+                            entityManager.getTransaction().begin();
+                            List<madreteresacrud.Socios> merged = new ArrayList<madreteresacrud.Socios>(list.size());
+                            for (madreteresacrud.Socios s : list) {
+                                merged.add(entityManager.merge(s));
+                            }
+                            list.clear();
+                            list.addAll(merged);
+                        }
+                        //Volvemos a cargar la tabla
+                        entityManager.getTransaction().rollback();
+                        entityManager.getTransaction().begin();
+                        java.util.Collection data = query.getResultList();
+                        for (Object entity : data) {
+                            entityManager.refresh(entity);
+                        }
+                        list.clear();
+                        list.addAll(data);
+                        jComboTipSoc.setEnabled(false);
+                    }
+                } else {
+                    int ax = JOptionPane.showConfirmDialog(null, "Dar de baja el socio seleccionado?");
+                    if (ax == JOptionPane.YES_OPTION) {
+                        String patron = "dd/MM/yyyy";
+                        SimpleDateFormat formato = new SimpleDateFormat(patron);
+                        Date calendario = new Date();
+                        jLEliminado.setText(formato.format(calendario));
+    //                setBusqueda();
+                        try {
+                            entityManager.getTransaction().commit();
+                            entityManager.getTransaction().begin();
+                        } catch (RollbackException rex) {
+                            rex.printStackTrace();
+                            entityManager.getTransaction().begin();
+                            List<madreteresacrud.Socios> merged = new ArrayList<madreteresacrud.Socios>(list.size());
+                            for (madreteresacrud.Socios s : list) {
+                                merged.add(entityManager.merge(s));
+                            }
+                            list.clear();
+                            list.addAll(merged);
+                        }
+
+                        //Volvemos a cargar la tabla
+                        entityManager.getTransaction().rollback();
+                        entityManager.getTransaction().begin();
+                        java.util.Collection data = query.getResultList();
+                        for (Object entity : data) {
+                            entityManager.refresh(entity);
+                        }
+                        list.clear();
+                        list.addAll(data);
+                        jComboTipSoc.setEnabled(false);
+                        jCBSexo.setEnabled(false);
+                        cuilField.setEnabled(false);
+                        numSocField.setEnabled(false);
+                    }
+                }     
+        }
     }//GEN-LAST:event_deleteButtonActionPerformed
 
     private boolean findByDNI(int numDoc) {

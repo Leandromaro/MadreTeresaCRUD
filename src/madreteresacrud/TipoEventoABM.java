@@ -144,7 +144,7 @@ public class TipoEventoABM extends JPanel {
 
 
     private void deleteButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteButtonActionPerformed
-        
+      
         int reply = JOptionPane.showConfirmDialog(null, "¿Está seguro de eliminar el registro?", "Eliminacion de Registro", JOptionPane.YES_NO_OPTION);
         if (reply == JOptionPane.YES_OPTION) {
             int[] selected = masterTable.getSelectedRows();

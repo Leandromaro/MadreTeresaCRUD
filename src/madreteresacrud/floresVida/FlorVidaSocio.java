@@ -178,20 +178,22 @@ public class FlorVidaSocio extends JPanel {
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void deleteButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteButtonActionPerformed
-        
-        int selected = masterTable.getSelectedRow();                
-        eliminarRelac(this.idSoc,Integer.parseInt(masterTable.getValueAt(selected, 5).toString()));
+     int reply = JOptionPane.showConfirmDialog(null, "¿Está seguro de eliminar el registro?", "Eliminacion de Registro", JOptionPane.YES_NO_OPTION);
+        if (reply == JOptionPane.YES_OPTION) {        
+            int selected = masterTable.getSelectedRow();                
+            eliminarRelac(this.idSoc,Integer.parseInt(masterTable.getValueAt(selected, 5).toString()));
 
-        //Recargamos la tabla
-        entityManager.getTransaction().rollback();
-        entityManager.getTransaction().begin();
-        
-        java.util.Collection data1 = query.getResultList();
-        for (Object entity : data1) {
-            entityManager.refresh(entity);
+            //Recargamos la tabla
+            entityManager.getTransaction().rollback();
+            entityManager.getTransaction().begin();
+
+            java.util.Collection data1 = query.getResultList();
+            for (Object entity : data1) {
+                entityManager.refresh(entity);
+            }
+            list.clear();
+            list.addAll(data1);  
         }
-        list.clear();
-        list.addAll(data1);       
     }//GEN-LAST:event_deleteButtonActionPerformed
    
     public void setTabla(){
