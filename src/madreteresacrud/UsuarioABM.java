@@ -3,32 +3,24 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package madreteresacrud;
 
-import java.awt.EventQueue;
+import java.awt.Window;
 import java.beans.Beans;
-import static java.lang.Boolean.TRUE;
 import java.util.ArrayList;
-import static java.util.Collections.list;
 import java.util.Date;
 import java.util.List;
 import javax.persistence.RollbackException;
-import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-import reportes.ConexionBD;
-import java.sql.Connection;
-import java.sql.SQLException;
-import java.sql.Statement;
-import javax.persistence.Query;
+import javax.swing.SwingUtilities;
 
 /**
  *
  * @author leandro
  */
 public class UsuarioABM extends JPanel {
- 
+
     public UsuarioABM() {
         initComponents();
         if (!Beans.isDesignTime()) {
@@ -191,21 +183,45 @@ public class UsuarioABM extends JPanel {
         }
     }// </editor-fold>//GEN-END:initComponents
 
-    
 
     private void deleteButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteButtonActionPerformed
         int reply = JOptionPane.showConfirmDialog(null, "¿Está seguro de eliminar el registro?", "Eliminacion de Registro", JOptionPane.YES_NO_OPTION);
         if (reply == JOptionPane.YES_OPTION) {
             javax.persistence.Query query = entityManager.createQuery("SELECT u FROM Usuario u");
-                if (query.getResultList().size()==1){
-                    JOptionPane.showMessageDialog(null, "No se puede eliminar el único usuario del sistema!");
-                }else{    
-                    int[] selected = masterTable.getSelectedRows();
-                    if (selected.length>1){
-                        JOptionPane.showMessageDialog(null, "No se pueden eliminar usuarios multiples"); 
-                    }else{
-                        //Verifica que no sea el usuario que está seleccionado
-                        if(!esMismoUsuario(nombreField.getText().trim())){
+            if (query.getResultList().size() == 1) {
+                JOptionPane.showMessageDialog(null, "No se puede eliminar el único usuario del sistema!");
+            } else {
+                int[] selected = masterTable.getSelectedRows();
+                if (selected.length > 1) {
+                    JOptionPane.showMessageDialog(null, "No se pueden eliminar usuarios multiples");
+                } else {
+                    //Verifica que no sea el usuario que está seleccionado
+                    if (!esMismoUsuario(nombreField.getText().trim())) {
+                        List<madreteresacrud.Usuario> toRemove = new ArrayList<madreteresacrud.Usuario>(selected.length);
+                        for (int idx = 0; idx < selected.length; idx++) {
+                            madreteresacrud.Usuario u = list.get(masterTable.convertRowIndexToModel(selected[idx]));
+                            toRemove.add(u);
+                            entityManager.remove(u);
+
+                        }
+                        list.removeAll(toRemove);
+                        try {
+                            entityManager.getTransaction().commit();
+                            entityManager.getTransaction().begin();
+                        } catch (RollbackException rex) {
+                            rex.printStackTrace();
+                            entityManager.getTransaction().begin();
+                            List<madreteresacrud.Usuario> merged = new ArrayList<madreteresacrud.Usuario>(list.size());
+                            for (madreteresacrud.Usuario u : list) {
+                                merged.add(entityManager.merge(u));
+                            }
+                            list.clear();
+                            list.addAll(merged);
+                        }
+                    } else {
+                        //Si es el mismo usuario pregunto si desea borrarse
+                        int replyUsu = JOptionPane.showConfirmDialog(null, "¿Está seguro de eliminar su propio usuario?", "Eliminacion de Registro", JOptionPane.YES_NO_OPTION);
+                        if (replyUsu == JOptionPane.YES_OPTION) {
                             List<madreteresacrud.Usuario> toRemove = new ArrayList<madreteresacrud.Usuario>(selected.length);
                             for (int idx = 0; idx < selected.length; idx++) {
                                 madreteresacrud.Usuario u = list.get(masterTable.convertRowIndexToModel(selected[idx]));
@@ -227,49 +243,22 @@ public class UsuarioABM extends JPanel {
                                 list.clear();
                                 list.addAll(merged);
                             }
-                        }else{
-                                //Si es el mismo usuario pregunto si desea borrarse
-                                int replyUsu = JOptionPane.showConfirmDialog(null, "¿Está seguro de eliminar su propio usuario?", "Eliminacion de Registro", JOptionPane.YES_NO_OPTION);
-                                if (replyUsu == JOptionPane.YES_OPTION) {
-                                   List<madreteresacrud.Usuario> toRemove = new ArrayList<madreteresacrud.Usuario>(selected.length);
-                                for (int idx = 0; idx < selected.length; idx++) {
-                                    madreteresacrud.Usuario u = list.get(masterTable.convertRowIndexToModel(selected[idx]));
-                                    toRemove.add(u);
-                                    entityManager.remove(u);
-
-                                }
-                                list.removeAll(toRemove);
-                                try {
-                                    entityManager.getTransaction().commit();
-                                    entityManager.getTransaction().begin();
-                                } catch (RollbackException rex) {
-                                    rex.printStackTrace();
-                                    entityManager.getTransaction().begin();
-                                    List<madreteresacrud.Usuario> merged = new ArrayList<madreteresacrud.Usuario>(list.size());
-                                    for (madreteresacrud.Usuario u : list) {
-                                        merged.add(entityManager.merge(u));
-                                    }
-                                    list.clear();
-                                    list.addAll(merged);
-                                }         
-                                /*
-                                Acá deberia ir la cerrada de pantalla. 
-                                Hacer que hace Gestionar Usuario
-                                */
-                                IngresoSistema i = new IngresoSistema();
-                                i.setResizable(false);
-                                i.setLocationRelativeTo(null);
-                                i.setVisible(true);
-                                this.setVisible(false);
-                                }
+                            //Abrimos Ingreso al sistema
+                            IngresoSistema i = new IngresoSistema();
+                            i.setResizable(false);
+                            i.setLocationRelativeTo(null);
+                            i.setVisible(true);
+                            //ocultamos el MadreTeresaMain
+                            Window topFrame = SwingUtilities.getWindowAncestor(this);
+                            topFrame.dispose();
                         }
                     }
                 }
+            }
         }
     }//GEN-LAST:event_deleteButtonActionPerformed
 
-   
-    
+
     private void newButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_newButtonActionPerformed
         madreteresacrud.Usuario u = new madreteresacrud.Usuario();
         entityManager.persist(u);
@@ -278,7 +267,7 @@ public class UsuarioABM extends JPanel {
         masterTable.setRowSelectionInterval(row, row);
         masterTable.scrollRectToVisible(masterTable.getCellRect(row, 0, true));
     }//GEN-LAST:event_newButtonActionPerformed
-    
+
     private void saveButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveButtonActionPerformed
         try {
             entityManager.getTransaction().commit();
@@ -304,45 +293,45 @@ public class UsuarioABM extends JPanel {
     }//GEN-LAST:event_saveButtonActionPerformed
 
     private void masterTableMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_masterTableMouseClicked
-        
+
     }//GEN-LAST:event_masterTableMouseClicked
     public boolean Log(String usu, String pas) {
-        String item;  
-        javax.persistence.Query query = entityManager.createQuery("SELECT DISTINCT u.nombre FROM Usuario u WHERE u.nombre='"+usu+"' AND u.password='"+pas+"'");
-        if (!query.getResultList().isEmpty()){
+        String item;
+        javax.persistence.Query query = entityManager.createQuery("SELECT DISTINCT u.nombre FROM Usuario u WHERE u.nombre='" + usu + "' AND u.password='" + pas + "'");
+        if (!query.getResultList().isEmpty()) {
             try {
-                String sql = "UPDATE LogUsuario l SET l.activo= "+ 0 +" WHERE l.activo= " + 1;
+                String sql = "UPDATE LogUsuario l SET l.activo= " + 0 + " WHERE l.activo= " + 1;
                 System.out.println(sql);
                 entityManager.createQuery(sql).executeUpdate();
-            LogUsuario log = new LogUsuario();
-            java.util.Date fecha = new Date();
-            log.setFecha(fecha);
-            log.setActivo(1);
-            log.setNombreUsuario(usu);
-            entityManager.persist(log);
-            entityManager.getTransaction().commit();
-  
-        } catch (RollbackException rex) {
-            System.out.println(rex);
-        }
-        
-        return true;
+                LogUsuario log = new LogUsuario();
+                java.util.Date fecha = new Date();
+                log.setFecha(fecha);
+                log.setActivo(1);
+                log.setNombreUsuario(usu);
+                entityManager.persist(log);
+                entityManager.getTransaction().commit();
+
+            } catch (RollbackException rex) {
+                System.out.println(rex);
+            }
+
+            return true;
         }
         return false;
-        
+
     }
 
-    private boolean esMismoUsuario(String usuario){
+    private boolean esMismoUsuario(String usuario) {
         javax.persistence.Query query = entityManager.createQuery("SELECT DISTINCT l.nombreUsuario FROM LogUsuario l  WHERE l.activo= " + 1);
         String usuarioActual = query.getResultList().get(0).toString();
-         if(usuarioActual.equals(usuario)){
-             return true;
-         }else{
-             return false;
-         }
+        if (usuarioActual.equals(usuario)) {
+            return true;
+        } else {
+            return false;
+        }
     }
-    
-    
+
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton deleteButton;
     private javax.persistence.EntityManager entityManager;
@@ -358,6 +347,5 @@ public class UsuarioABM extends JPanel {
     private javax.swing.JButton saveButton;
     private org.jdesktop.beansbinding.BindingGroup bindingGroup;
     // End of variables declaration//GEN-END:variables
-    
-    
+
 }
