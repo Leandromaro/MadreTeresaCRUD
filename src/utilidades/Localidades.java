@@ -3,23 +3,24 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package utilidades;
 
-import java.beans.PropertyChangeListener;
-import java.beans.PropertyChangeSupport;
 import java.io.Serializable;
+import java.util.List;
 import javax.persistence.Basic;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
-import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
-import javax.persistence.Transient;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
+import madreteresacrud.Socios;
 
 /**
  *
@@ -28,46 +29,37 @@ import javax.xml.bind.annotation.XmlRootElement;
 @Entity
 @Table(name = "localidades")
 @XmlRootElement
-@NamedQueries({
-    @NamedQuery(name = "Localidades.findAll", query = "SELECT l FROM Localidades l"),
-    @NamedQuery(name = "Localidades.findByCodLoc", query = "SELECT l FROM Localidades l WHERE l.localidadesPK.codLoc = :codLoc"),
-    @NamedQuery(name = "Localidades.findByCodProv", query = "SELECT l FROM Localidades l WHERE l.localidadesPK.codProv = :codProv"),
-    @NamedQuery(name = "Localidades.findByLocalidad", query = "SELECT l FROM Localidades l WHERE l.localidad = :localidad")})
 public class Localidades implements Serializable {
-    @Transient
-    private PropertyChangeSupport changeSupport = new PropertyChangeSupport(this);
+
     private static final long serialVersionUID = 1L;
-    @EmbeddedId
-    protected LocalidadesPK localidadesPK;
+
+    @Id
+//    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Basic(optional = false)
+    @Column(name = "codLoc")
+    private Integer idLocalidad;
+
     @Basic(optional = false)
     @Column(name = "localidad")
     private String localidad;
-    @JoinColumn(name = "codProv", referencedColumnName = "codProv", insertable = false, updatable = false)
+
+    @JoinColumn(name = "codProv", referencedColumnName = "codProv")
     @ManyToOne(optional = false)
     private Provincias provincias;
+
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "localidad")
+    private List<Socios> sociosList;
+    
 
     public Localidades() {
     }
 
-    public Localidades(LocalidadesPK localidadesPK) {
-        this.localidadesPK = localidadesPK;
+    public Integer getIdLocalidad() {
+        return idLocalidad;
     }
 
-    public Localidades(LocalidadesPK localidadesPK, String localidad) {
-        this.localidadesPK = localidadesPK;
-        this.localidad = localidad;
-    }
-
-    public Localidades(int codLoc, int codProv) {
-        this.localidadesPK = new LocalidadesPK(codLoc, codProv);
-    }
-
-    public LocalidadesPK getLocalidadesPK() {
-        return localidadesPK;
-    }
-
-    public void setLocalidadesPK(LocalidadesPK localidadesPK) {
-        this.localidadesPK = localidadesPK;
+    public void setIdLocalidad(Integer idLocalidad) {
+        this.idLocalidad = idLocalidad;
     }
 
     public String getLocalidad() {
@@ -75,52 +67,29 @@ public class Localidades implements Serializable {
     }
 
     public void setLocalidad(String localidad) {
-        String oldLocalidad = this.localidad;
         this.localidad = localidad;
-        changeSupport.firePropertyChange("localidad", oldLocalidad, localidad);
+    }
+
+    public void setProvincias(Provincias provincias) {
+        this.provincias = provincias;
     }
 
     public Provincias getProvincias() {
         return provincias;
     }
 
-    public void setProvincias(Provincias provincias) {
-        Provincias oldProvincias = this.provincias;
-        this.provincias = provincias;
-        changeSupport.firePropertyChange("provincias", oldProvincias, provincias);
+    @XmlTransient
+    public List<Socios> getSociosList() {
+        return sociosList;
     }
 
-    @Override
-    public int hashCode() {
-        int hash = 0;
-        hash += (localidadesPK != null ? localidadesPK.hashCode() : 0);
-        return hash;
-    }
-
-    @Override
-    public boolean equals(Object object) {
-        // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof Localidades)) {
-            return false;
-        }
-        Localidades other = (Localidades) object;
-        if ((this.localidadesPK == null && other.localidadesPK != null) || (this.localidadesPK != null && !this.localidadesPK.equals(other.localidadesPK))) {
-            return false;
-        }
-        return true;
+    public void setSociosList(List<Socios> sociosList) {
+        this.sociosList = sociosList;
     }
 
     @Override
     public String toString() {
-        return "utilidades.Localidades[ localidadesPK=" + localidadesPK + " ]";
+        return localidad+" - "+provincias.getProvincia();
     }
 
-    public void addPropertyChangeListener(PropertyChangeListener listener) {
-        changeSupport.addPropertyChangeListener(listener);
-    }
-
-    public void removePropertyChangeListener(PropertyChangeListener listener) {
-        changeSupport.removePropertyChangeListener(listener);
-    }
-    
 }

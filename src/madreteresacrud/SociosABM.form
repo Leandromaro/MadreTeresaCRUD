@@ -99,7 +99,7 @@
                       <Component id="emailLabel" min="-2" pref="69" max="-2" attributes="0"/>
                       <Component id="jLabelBaja" min="-2" max="-2" attributes="0"/>
                   </Group>
-                  <EmptySpace max="32767" attributes="0"/>
+                  <EmptySpace pref="41" max="32767" attributes="0"/>
                   <Group type="103" groupAlignment="0" attributes="0">
                       <Group type="102" attributes="0">
                           <Component id="jLEliminado" min="-2" pref="98" max="-2" attributes="0"/>
@@ -145,30 +145,22 @@
                           </Group>
                           <Group type="103" groupAlignment="0" attributes="0">
                               <Group type="102" attributes="0">
-                                  <EmptySpace max="32767" attributes="0"/>
-                                  <Group type="103" groupAlignment="0" attributes="0">
-                                      <Group type="102" attributes="0">
-                                          <Component id="jLabelTipSoc" min="-2" pref="11" max="-2" attributes="0"/>
-                                          <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
-                                      </Group>
-                                      <Group type="102" attributes="0">
+                                  <EmptySpace pref="27" max="32767" attributes="0"/>
+                                  <Group type="103" groupAlignment="0" max="-2" attributes="0">
+                                      <Group type="102" alignment="0" attributes="0">
                                           <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                                              <Group type="102" alignment="0" attributes="0">
-                                                  <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                                                      <Component id="fechaNacimientoField" pref="111" max="32767" attributes="0"/>
-                                                      <Component id="jCBSexo" pref="0" max="32767" attributes="0"/>
-                                                  </Group>
-                                                  <EmptySpace max="-2" attributes="0"/>
-                                                  <Component id="jButtonFecha" min="-2" pref="35" max="-2" attributes="0"/>
-                                              </Group>
-                                              <Component id="nombreField" pref="360" max="32767" attributes="0"/>
-                                              <Component id="jComboTipSoc" alignment="0" min="-2" pref="111" max="-2" attributes="0"/>
-                                              <Component id="celularField" alignment="0" min="-2" pref="164" max="-2" attributes="0"/>
-                                              <Component id="jCBLocalididad" alignment="0" max="32767" attributes="0"/>
+                                              <Component id="fechaNacimientoField" pref="111" max="32767" attributes="0"/>
+                                              <Component id="jCBSexo" pref="0" max="32767" attributes="0"/>
                                           </Group>
-                                          <EmptySpace pref="24" max="32767" attributes="0"/>
+                                          <EmptySpace max="-2" attributes="0"/>
+                                          <Component id="jButtonFecha" min="-2" pref="35" max="-2" attributes="0"/>
                                       </Group>
+                                      <Component id="nombreField" pref="360" max="32767" attributes="0"/>
+                                      <Component id="jComboTipSoc" alignment="0" min="-2" pref="111" max="-2" attributes="0"/>
+                                      <Component id="celularField" alignment="0" min="-2" pref="164" max="-2" attributes="0"/>
+                                      <Component id="jCBLocalididad" alignment="0" max="32767" attributes="0"/>
                                   </Group>
+                                  <EmptySpace pref="38" max="32767" attributes="0"/>
                               </Group>
                               <Group type="102" alignment="0" attributes="0">
                                   <EmptySpace min="-2" pref="55" max="-2" attributes="0"/>
@@ -273,12 +265,9 @@
                           <EmptySpace min="-2" pref="3" max="-2" attributes="0"/>
                       </Group>
                   </Group>
-                  <Group type="103" groupAlignment="0" attributes="0">
-                      <Group type="103" groupAlignment="3" attributes="0">
-                          <Component id="refreshButton" alignment="3" min="-2" max="-2" attributes="0"/>
-                          <Component id="saveButton" alignment="3" min="-2" max="-2" attributes="0"/>
-                      </Group>
-                      <Component id="jLabelTipSoc" min="-2" pref="12" max="-2" attributes="0"/>
+                  <Group type="103" groupAlignment="3" attributes="0">
+                      <Component id="refreshButton" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="saveButton" alignment="3" min="-2" max="-2" attributes="0"/>
                   </Group>
                   <EmptySpace max="32767" attributes="0"/>
               </Group>
@@ -454,14 +443,11 @@
         </Component>
         <Component class="javax.swing.JComboBox" name="jComboTipSoc">
           <Properties>
-            <Property name="selectedItem" type="java.lang.Object" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-              <Connection code="&quot;Activo&quot;" type="code"/>
-            </Property>
             <Property name="enabled" type="boolean" value="false"/>
           </Properties>
-          <Events>
-            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jComboTipSocActionPerformed"/>
-          </Events>
+          <BindingProperties>
+            <BindingProperty name="selectedItem" source="masterTable" sourcePath="${selectedElement.idTipoSocio}" target="jComboTipSoc" targetPath="selectedItem" updateStrategy="0" immediately="false"/>
+          </BindingProperties>
         </Component>
         <Component class="javax.swing.JComboBox" name="jCBSexo">
           <Properties>
@@ -526,11 +512,6 @@
               </Property>
               <Property name="name" type="java.lang.String" value=""/>
             </BindingProperty>
-          </BindingProperties>
-        </Component>
-        <Component class="javax.swing.JLabel" name="jLabelTipSoc">
-          <BindingProperties>
-            <BindingProperty name="text" source="masterTable" sourcePath="${selectedElement.idTipoSocio}" target="jLabelTipSoc" targetPath="text" updateStrategy="0" immediately="false"/>
           </BindingProperties>
         </Component>
         <Component class="javax.swing.JTextField" name="documentoField">
@@ -655,7 +636,7 @@
                       <Component id="jLabel2" alignment="3" min="-2" max="-2" attributes="0"/>
                       <Component id="jCBBusqueda" alignment="3" min="-2" max="-2" attributes="0"/>
                   </Group>
-                  <EmptySpace pref="232" max="32767" attributes="0"/>
+                  <EmptySpace pref="233" max="32767" attributes="0"/>
                   <Group type="103" groupAlignment="3" attributes="0">
                       <Component id="newButton" alignment="3" min="-2" max="-2" attributes="0"/>
                       <Component id="deleteButton" alignment="3" min="-2" max="-2" attributes="0"/>
@@ -683,9 +664,35 @@
           <SubComponents>
             <Component class="javax.swing.JTable" name="masterTable">
               <Properties>
+                <Property name="autoCreateRowSorter" type="boolean" value="true"/>
                 <Property name="columnModel" type="javax.swing.table.TableColumnModel" editor="org.netbeans.modules.form.editors2.TableColumnModelEditor">
                   <TableColumnModel selectionModel="0">
+                    <Column maxWidth="-1" minWidth="-1" prefWidth="10" resizable="true">
+                      <Title/>
+                      <Editor/>
+                      <Renderer/>
+                    </Column>
+                    <Column maxWidth="-1" minWidth="-1" prefWidth="70" resizable="true">
+                      <Title/>
+                      <Editor/>
+                      <Renderer/>
+                    </Column>
+                    <Column maxWidth="-1" minWidth="-1" prefWidth="70" resizable="true">
+                      <Title/>
+                      <Editor/>
+                      <Renderer/>
+                    </Column>
+                    <Column maxWidth="-1" minWidth="-1" prefWidth="40" resizable="true">
+                      <Title/>
+                      <Editor/>
+                      <Renderer/>
+                    </Column>
                     <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="true">
+                      <Title/>
+                      <Editor/>
+                      <Renderer/>
+                    </Column>
+                    <Column maxWidth="-1" minWidth="-1" prefWidth="65" resizable="true">
                       <Title/>
                       <Editor/>
                       <Renderer/>
@@ -715,37 +722,12 @@
                       <Editor/>
                       <Renderer/>
                     </Column>
-                    <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="true">
+                    <Column maxWidth="-1" minWidth="-1" prefWidth="70" resizable="true">
                       <Title/>
                       <Editor/>
                       <Renderer/>
                     </Column>
-                    <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="true">
-                      <Title/>
-                      <Editor/>
-                      <Renderer/>
-                    </Column>
-                    <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="true">
-                      <Title/>
-                      <Editor/>
-                      <Renderer/>
-                    </Column>
-                    <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="true">
-                      <Title/>
-                      <Editor/>
-                      <Renderer/>
-                    </Column>
-                    <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="true">
-                      <Title/>
-                      <Editor/>
-                      <Renderer/>
-                    </Column>
-                    <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="true">
-                      <Title/>
-                      <Editor/>
-                      <Renderer/>
-                    </Column>
-                    <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="true">
+                    <Column maxWidth="-1" minWidth="-1" prefWidth="50" resizable="true">
                       <Title/>
                       <Editor/>
                       <Renderer/>
@@ -825,7 +807,6 @@
                   </Subbinding>
                   <Subbinding sourcePath="${localidad}">
                     <BindingParameter name="NAME" value="Localidad"/>
-                    <BindingParameter name="javax.swing.binding.ParameterKeys.COLUMN_CLASS" value="String.class"/>
                     <BindingParameter name="javax.swing.binding.ParameterKeys.EDITABLE" value="false"/>
                   </Subbinding>
                   <Subbinding sourcePath="${direccion}">
@@ -834,8 +815,7 @@
                     <BindingParameter name="javax.swing.binding.ParameterKeys.EDITABLE" value="false"/>
                   </Subbinding>
                   <Subbinding sourcePath="${idTipoSocio}">
-                    <BindingParameter name="NAME" value="idTipoSoc"/>
-                    <BindingParameter name="javax.swing.binding.ParameterKeys.COLUMN_CLASS" value="Integer.class"/>
+                    <BindingParameter name="NAME" value="Tipo de Socio"/>
                     <BindingParameter name="javax.swing.binding.ParameterKeys.EDITABLE" value="false"/>
                   </Subbinding>
                   <Subbinding sourcePath="${fechaBaja}">

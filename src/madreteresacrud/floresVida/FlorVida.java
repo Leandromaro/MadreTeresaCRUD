@@ -14,12 +14,15 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.persistence.Transient;
+import utilidades.Localidades;
 
 /**
  *
@@ -44,9 +47,9 @@ public class FlorVida implements Serializable {
     private String apellido;
     @Column(name = "nombre")
     private String nombre;
-    @Basic(optional = false)
-    @Column(name = "localidad")
-    private String localidad;
+    @JoinColumn(name = "localidad", referencedColumnName = "codLoc")
+    @ManyToOne(optional = false)
+    private Localidades localidad;
     @Column(name = "direccion")
     private String direccion;
     @Column(name = "fechaDefuncion")
@@ -68,7 +71,7 @@ public class FlorVida implements Serializable {
         this.idFV = idFV;
     }
 
-    public FlorVida(Integer idFV, String localidad, String telefono) {
+    public FlorVida(Integer idFV, Localidades localidad, String telefono) {
         this.idFV = idFV;
         this.localidad = localidad;
         this.telefono = telefono;
@@ -94,12 +97,12 @@ public class FlorVida implements Serializable {
         changeSupport.firePropertyChange("nombre", oldNombre, nombre);
     }
 
-    public String getLocalidad() {
+    public Localidades getLocalidad() {
         return localidad;
     }
 
-    public void setLocalidad(String localidad) {
-        String oldLocalidad = this.localidad;
+    public void setLocalidad(Localidades localidad) {
+        Localidades oldLocalidad = this.localidad;
         this.localidad = localidad;
         changeSupport.firePropertyChange("localidad", oldLocalidad, localidad);
     }

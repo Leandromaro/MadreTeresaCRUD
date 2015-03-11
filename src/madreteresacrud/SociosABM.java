@@ -21,6 +21,8 @@ import java.util.Date;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import javax.persistence.EntityManager;
+import javax.persistence.Query;
 import javax.persistence.RollbackException;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
@@ -33,6 +35,7 @@ import org.jdesktop.swingx.autocomplete.AutoCompleteDecorator;
 import reportes.ConexionBD;
 import utilidades.BuscarAdherente;
 import utilidades.Calendario;
+import utilidades.Localidades;
 import utilidades.UtilGraficos;
 
 /**
@@ -41,33 +44,38 @@ import utilidades.UtilGraficos;
  */
 public class SociosABM extends JPanel {
 
+    private static EntityManager em;
+
     public SociosABM() {
         initComponents();
 //        refreshButton.setVisible(false);
-        //Ocultamos la columna correspondiente al idTipoSocio
+        //Ocultamos la columna Sexo
         masterTable.getColumnModel().getColumn(4).setMaxWidth(0);
         masterTable.getColumnModel().getColumn(4).setMinWidth(0);
         masterTable.getColumnModel().getColumn(4).setPreferredWidth(0);
-        
+        //ocultamos el cuil
+        masterTable.getColumnModel().getColumn(5).setMaxWidth(0);
+        masterTable.getColumnModel().getColumn(5).setMinWidth(0);
+        masterTable.getColumnModel().getColumn(5).setPreferredWidth(0);
+        //ocultamos la columna fecha nacimiento
         masterTable.getColumnModel().getColumn(6).setMaxWidth(0);
         masterTable.getColumnModel().getColumn(6).setMinWidth(0);
         masterTable.getColumnModel().getColumn(6).setPreferredWidth(0);
-        
+        //ocultamos la columna de email
         masterTable.getColumnModel().getColumn(9).setMaxWidth(0);
         masterTable.getColumnModel().getColumn(9).setMinWidth(0);
         masterTable.getColumnModel().getColumn(9).setPreferredWidth(0);
-        
-        masterTable.getColumnModel().getColumn(14).setMaxWidth(0);
-        masterTable.getColumnModel().getColumn(14).setMinWidth(0);
-        masterTable.getColumnModel().getColumn(14).setPreferredWidth(0);
 
-        masterTable.getColumnModel().getColumn(12).setMaxWidth(0);
-        masterTable.getColumnModel().getColumn(12).setMinWidth(0);
-        masterTable.getColumnModel().getColumn(12).setPreferredWidth(0);
-
+//        masterTable.getColumnModel().getColumn(12).setMaxWidth(0);
+//        masterTable.getColumnModel().getColumn(12).setMinWidth(0);
+//        masterTable.getColumnModel().getColumn(12).setPreferredWidth(0);
         masterTable.getColumnModel().getColumn(13).setMaxWidth(0);
         masterTable.getColumnModel().getColumn(13).setMinWidth(0);
         masterTable.getColumnModel().getColumn(13).setPreferredWidth(0);
+        //ocultamos el id de socio
+        masterTable.getColumnModel().getColumn(14).setMaxWidth(0);
+        masterTable.getColumnModel().getColumn(14).setMinWidth(0);
+        masterTable.getColumnModel().getColumn(14).setPreferredWidth(0);
 
         masterTable.getColumnModel().getColumn(15).setMaxWidth(0);
         masterTable.getColumnModel().getColumn(15).setMinWidth(0);
@@ -85,7 +93,6 @@ public class SociosABM extends JPanel {
         setComboSexo();
         setComboLocalidades();
 
-        jLabelTipSoc.setVisible(false);
         jLEliminado.setVisible(false);
         jLabelBaja.setVisible(false);
         jLabelSocio.setText("true");
@@ -142,7 +149,6 @@ public class SociosABM extends JPanel {
         refreshButton = new javax.swing.JButton();
         saveButton = new javax.swing.JButton();
         jLEliminado = new javax.swing.JLabel();
-        jLabelTipSoc = new javax.swing.JLabel();
         documentoField = new javax.swing.JTextField();
         celularLabel = new javax.swing.JLabel();
         celularField = new javax.swing.JTextField();
@@ -259,9 +265,10 @@ public class SociosABM extends JPanel {
 
         tipoSocioLabel.setText("Tipo de Socio:");
 
-        jComboTipSoc.setSelectedItem("Activo");
         jComboTipSoc.setEnabled(false);
-        jComboTipSoc.addActionListener(formListener);
+
+        binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, masterTable, org.jdesktop.beansbinding.ELProperty.create("${selectedElement.idTipoSocio}"), jComboTipSoc, org.jdesktop.beansbinding.BeanProperty.create("selectedItem"));
+        bindingGroup.addBinding(binding);
 
         jCBSexo.setMaximumRowCount(2);
         jCBSexo.setEnabled(false);
@@ -287,9 +294,6 @@ public class SociosABM extends JPanel {
         binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, masterTable, org.jdesktop.beansbinding.ELProperty.create("${selectedElement.fechaBaja}"), jLEliminado, org.jdesktop.beansbinding.BeanProperty.create("text"), "");
         binding.setConverter(dateConverter
         );
-        bindingGroup.addBinding(binding);
-
-        binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, masterTable, org.jdesktop.beansbinding.ELProperty.create("${selectedElement.idTipoSocio}"), jLabelTipSoc, org.jdesktop.beansbinding.BeanProperty.create("text"));
         bindingGroup.addBinding(binding);
 
         documentoField.setToolTipText("Solo números con longitud máxima de 8 dígitos. ");
@@ -341,7 +345,7 @@ public class SociosABM extends JPanel {
                     .addComponent(documentoLabel)
                     .addComponent(emailLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 69, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabelBaja))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 41, Short.MAX_VALUE)
                 .addGroup(jPanelFormLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanelFormLayout.createSequentialGroup()
                         .addComponent(jLEliminado, javax.swing.GroupLayout.PREFERRED_SIZE, 98, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -377,24 +381,19 @@ public class SociosABM extends JPanel {
                                 .addComponent(saveButton, javax.swing.GroupLayout.PREFERRED_SIZE, 93, javax.swing.GroupLayout.PREFERRED_SIZE)))
                         .addGroup(jPanelFormLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(jPanelFormLayout.createSequentialGroup()
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addGroup(jPanelFormLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addGroup(jPanelFormLayout.createSequentialGroup()
-                                        .addComponent(jLabelTipSoc, javax.swing.GroupLayout.PREFERRED_SIZE, 11, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addGap(0, 0, Short.MAX_VALUE))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 27, Short.MAX_VALUE)
+                                .addGroup(jPanelFormLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                                     .addGroup(jPanelFormLayout.createSequentialGroup()
                                         .addGroup(jPanelFormLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                            .addGroup(jPanelFormLayout.createSequentialGroup()
-                                                .addGroup(jPanelFormLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                                    .addComponent(fechaNacimientoField, javax.swing.GroupLayout.DEFAULT_SIZE, 111, Short.MAX_VALUE)
-                                                    .addComponent(jCBSexo, 0, 1, Short.MAX_VALUE))
-                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                                .addComponent(jButtonFecha, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                            .addComponent(nombreField, javax.swing.GroupLayout.DEFAULT_SIZE, 360, Short.MAX_VALUE)
-                                            .addComponent(jComboTipSoc, javax.swing.GroupLayout.PREFERRED_SIZE, 111, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                            .addComponent(celularField, javax.swing.GroupLayout.PREFERRED_SIZE, 164, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                            .addComponent(jCBLocalididad, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                                        .addContainerGap(24, Short.MAX_VALUE))))
+                                            .addComponent(fechaNacimientoField, javax.swing.GroupLayout.DEFAULT_SIZE, 111, Short.MAX_VALUE)
+                                            .addComponent(jCBSexo, 0, 1, Short.MAX_VALUE))
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(jButtonFecha, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addComponent(nombreField, javax.swing.GroupLayout.DEFAULT_SIZE, 360, Short.MAX_VALUE)
+                                    .addComponent(jComboTipSoc, javax.swing.GroupLayout.PREFERRED_SIZE, 111, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(celularField, javax.swing.GroupLayout.PREFERRED_SIZE, 164, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(jCBLocalididad, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                .addContainerGap(38, Short.MAX_VALUE))
                             .addGroup(jPanelFormLayout.createSequentialGroup()
                                 .addGap(55, 55, 55)
                                 .addComponent(jLabelSocio, javax.swing.GroupLayout.PREFERRED_SIZE, 46, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -469,15 +468,15 @@ public class SociosABM extends JPanel {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(jLabelSocio, javax.swing.GroupLayout.PREFERRED_SIZE, 15, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(3, 3, 3)))
-                .addGroup(jPanelFormLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanelFormLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(refreshButton)
-                        .addComponent(saveButton))
-                    .addComponent(jLabelTipSoc, javax.swing.GroupLayout.PREFERRED_SIZE, 12, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGroup(jPanelFormLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(refreshButton)
+                    .addComponent(saveButton))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         jPanelTabla.setBorder(javax.swing.BorderFactory.createEtchedBorder());
+
+        masterTable.setAutoCreateRowSorter(true);
 
         org.jdesktop.swingbinding.JTableBinding jTableBinding = org.jdesktop.swingbinding.SwingBindings.createJTableBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, list, masterTable);
         org.jdesktop.swingbinding.JTableBinding.ColumnBinding columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${numSoc}"));
@@ -522,15 +521,13 @@ public class SociosABM extends JPanel {
         columnBinding.setEditable(false);
         columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${localidad}"));
         columnBinding.setColumnName("Localidad");
-        columnBinding.setColumnClass(String.class);
         columnBinding.setEditable(false);
         columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${direccion}"));
         columnBinding.setColumnName("Direccion");
         columnBinding.setColumnClass(String.class);
         columnBinding.setEditable(false);
         columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${idTipoSocio}"));
-        columnBinding.setColumnName("idTipoSoc");
-        columnBinding.setColumnClass(Integer.class);
+        columnBinding.setColumnName("Tipo de Socio");
         columnBinding.setEditable(false);
         columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${fechaBaja}"));
         columnBinding.setColumnName("fechaBaja");
@@ -548,6 +545,15 @@ public class SociosABM extends JPanel {
         jTableBinding.bind();
         masterTable.addMouseListener(formListener);
         masterScrollPane.setViewportView(masterTable);
+        if (masterTable.getColumnModel().getColumnCount() > 0) {
+            masterTable.getColumnModel().getColumn(0).setPreferredWidth(10);
+            masterTable.getColumnModel().getColumn(1).setPreferredWidth(70);
+            masterTable.getColumnModel().getColumn(2).setPreferredWidth(70);
+            masterTable.getColumnModel().getColumn(3).setPreferredWidth(40);
+            masterTable.getColumnModel().getColumn(5).setPreferredWidth(65);
+            masterTable.getColumnModel().getColumn(11).setPreferredWidth(70);
+            masterTable.getColumnModel().getColumn(12).setPreferredWidth(50);
+        }
 
         newButton.setText("Nuevo Socio");
         newButton.addActionListener(formListener);
@@ -618,7 +624,7 @@ public class SociosABM extends JPanel {
                     .addComponent(jBVerCuotas)
                     .addComponent(jLabel2)
                     .addComponent(jCBBusqueda, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 232, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 233, Short.MAX_VALUE)
                 .addGroup(jPanelTablaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(newButton)
                     .addComponent(deleteButton)
@@ -659,10 +665,7 @@ public class SociosABM extends JPanel {
     private class FormListener implements java.awt.event.ActionListener, java.awt.event.FocusListener, java.awt.event.KeyListener, java.awt.event.MouseListener {
         FormListener() {}
         public void actionPerformed(java.awt.event.ActionEvent evt) {
-            if (evt.getSource() == jComboTipSoc) {
-                SociosABM.this.jComboTipSocActionPerformed(evt);
-            }
-            else if (evt.getSource() == jCBSexo) {
+            if (evt.getSource() == jCBSexo) {
                 SociosABM.this.jCBSexoActionPerformed(evt);
             }
             else if (evt.getSource() == jButtonFecha) {
@@ -725,7 +728,10 @@ public class SociosABM extends JPanel {
         }
 
         public void keyTyped(java.awt.event.KeyEvent evt) {
-            if (evt.getSource() == telefonoField) {
+            if (evt.getSource() == apellidoField) {
+                SociosABM.this.apellidoFieldKeyTyped(evt);
+            }
+            else if (evt.getSource() == telefonoField) {
                 SociosABM.this.telefonoFieldKeyTyped(evt);
             }
             else if (evt.getSource() == cuilField) {
@@ -739,9 +745,6 @@ public class SociosABM extends JPanel {
             }
             else if (evt.getSource() == celularField) {
                 SociosABM.this.celularFieldKeyTyped(evt);
-            }
-            else if (evt.getSource() == apellidoField) {
-                SociosABM.this.apellidoFieldKeyTyped(evt);
             }
         }
 
@@ -769,100 +772,100 @@ public class SociosABM extends JPanel {
 
 
     private void deleteButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteButtonActionPerformed
-     int reply = JOptionPane.showConfirmDialog(null, "¿Está seguro de dar de baja el registro?", "Eliminacion de Registro", JOptionPane.YES_NO_OPTION);
+        int reply = JOptionPane.showConfirmDialog(null, "¿Está seguro de dar de baja el registro?", "Eliminacion de Registro", JOptionPane.YES_NO_OPTION);
         if (reply == JOptionPane.YES_OPTION) {
-    //        int[] selected = masterTable.getSelectedRows();
-    //        List<madreteresacrud.Socios> toRemove = new ArrayList<madreteresacrud.Socios>(selected.length);
-    //        for (int idx = 0; idx < selected.length; idx++) {
-    //            madreteresacrud.Socios s = list.get(masterTable.convertRowIndexToModel(selected[idx]));
-    //            toRemove.add(s);
-    //            entityManager.remove(s);
-    //        }
-    //        list.removeAll(toRemove);
-                //Buscamos las cuotas del socio seleccionado
-                int selected = masterTable.getSelectedRow();
-                int id = Integer.valueOf(masterTable.getValueAt(selected, 14).toString());
-                CuotaSocialABM csabm = new CuotaSocialABM(id);
-                java.util.Collection lc = csabm.getListaCuotas();
-                CuotaSocial cs = new CuotaSocial();
-                int idCuota = 0;
-                for (Object cuota : lc) {
-                    cs = (CuotaSocial) cuota;
-                    if(cs.getFechaPago() == null){
-                        idCuota = cs.getIdCuotaSocial();                    
-                    }
-
+            //        int[] selected = masterTable.getSelectedRows();
+            //        List<madreteresacrud.Socios> toRemove = new ArrayList<madreteresacrud.Socios>(selected.length);
+            //        for (int idx = 0; idx < selected.length; idx++) {
+            //            madreteresacrud.Socios s = list.get(masterTable.convertRowIndexToModel(selected[idx]));
+            //            toRemove.add(s);
+            //            entityManager.remove(s);
+            //        }
+            //        list.removeAll(toRemove);
+            //Buscamos las cuotas del socio seleccionado
+            int selected = masterTable.getSelectedRow();
+            int id = Integer.valueOf(masterTable.getValueAt(selected, 14).toString());
+            CuotaSocialABM csabm = new CuotaSocialABM(id);
+            java.util.Collection lc = csabm.getListaCuotas();
+            CuotaSocial cs = new CuotaSocial();
+            int idCuota = 0;
+            for (Object cuota : lc) {
+                cs = (CuotaSocial) cuota;
+                if (cs.getFechaPago() == null) {
+                    idCuota = cs.getIdCuotaSocial();
                 }
-                //Preguntamos si adeuda cuotas
-                if (idCuota != 0) {
-                    int ax = JOptionPane.showConfirmDialog(null, "El socio seleccionado adeuda cuotas, desea darlo de baja de todas formas?");
-                    if (ax == JOptionPane.YES_OPTION) {
-                        String patron = "dd/MM/yyyy";
-                        SimpleDateFormat formato = new SimpleDateFormat(patron);
-                        Date calendario = new Date();
-                        jLEliminado.setText(formato.format(calendario));
-    //                setBusqueda();
-                        try {
-                            entityManager.getTransaction().commit();
-                            entityManager.getTransaction().begin();
-                        } catch (RollbackException rex) {
-                            rex.printStackTrace();
-                            entityManager.getTransaction().begin();
-                            List<madreteresacrud.Socios> merged = new ArrayList<madreteresacrud.Socios>(list.size());
-                            for (madreteresacrud.Socios s : list) {
-                                merged.add(entityManager.merge(s));
-                            }
-                            list.clear();
-                            list.addAll(merged);
-                        }
-                        //Volvemos a cargar la tabla
-                        entityManager.getTransaction().rollback();
-                        entityManager.getTransaction().begin();
-                        java.util.Collection data = query.getResultList();
-                        for (Object entity : data) {
-                            entityManager.refresh(entity);
-                        }
-                        list.clear();
-                        list.addAll(data);
-                        jComboTipSoc.setEnabled(false);
-                    }
-                } else {
-                    int ax = JOptionPane.showConfirmDialog(null, "Dar de baja el socio seleccionado?");
-                    if (ax == JOptionPane.YES_OPTION) {
-                        String patron = "dd/MM/yyyy";
-                        SimpleDateFormat formato = new SimpleDateFormat(patron);
-                        Date calendario = new Date();
-                        jLEliminado.setText(formato.format(calendario));
-    //                setBusqueda();
-                        try {
-                            entityManager.getTransaction().commit();
-                            entityManager.getTransaction().begin();
-                        } catch (RollbackException rex) {
-                            rex.printStackTrace();
-                            entityManager.getTransaction().begin();
-                            List<madreteresacrud.Socios> merged = new ArrayList<madreteresacrud.Socios>(list.size());
-                            for (madreteresacrud.Socios s : list) {
-                                merged.add(entityManager.merge(s));
-                            }
-                            list.clear();
-                            list.addAll(merged);
-                        }
 
-                        //Volvemos a cargar la tabla
-                        entityManager.getTransaction().rollback();
+            }
+            //Preguntamos si adeuda cuotas
+            if (idCuota != 0) {
+                int ax = JOptionPane.showConfirmDialog(null, "El socio seleccionado adeuda cuotas, desea darlo de baja de todas formas?");
+                if (ax == JOptionPane.YES_OPTION) {
+                    String patron = "dd/MM/yyyy";
+                    SimpleDateFormat formato = new SimpleDateFormat(patron);
+                    Date calendario = new Date();
+                    jLEliminado.setText(formato.format(calendario));
+                    //                setBusqueda();
+                    try {
+                        entityManager.getTransaction().commit();
                         entityManager.getTransaction().begin();
-                        java.util.Collection data = query.getResultList();
-                        for (Object entity : data) {
-                            entityManager.refresh(entity);
+                    } catch (RollbackException rex) {
+                        rex.printStackTrace();
+                        entityManager.getTransaction().begin();
+                        List<madreteresacrud.Socios> merged = new ArrayList<madreteresacrud.Socios>(list.size());
+                        for (madreteresacrud.Socios s : list) {
+                            merged.add(entityManager.merge(s));
                         }
                         list.clear();
-                        list.addAll(data);
-                        jComboTipSoc.setEnabled(false);
-                        jCBSexo.setEnabled(false);
-                        cuilField.setEnabled(false);
-                        numSocField.setEnabled(false);
+                        list.addAll(merged);
                     }
-                }     
+                    //Volvemos a cargar la tabla
+                    entityManager.getTransaction().rollback();
+                    entityManager.getTransaction().begin();
+                    java.util.Collection data = query.getResultList();
+                    for (Object entity : data) {
+                        entityManager.refresh(entity);
+                    }
+                    list.clear();
+                    list.addAll(data);
+                    jComboTipSoc.setEnabled(false);
+                }
+            } else {
+                int ax = JOptionPane.showConfirmDialog(null, "Dar de baja el socio seleccionado?");
+                if (ax == JOptionPane.YES_OPTION) {
+                    String patron = "dd/MM/yyyy";
+                    SimpleDateFormat formato = new SimpleDateFormat(patron);
+                    Date calendario = new Date();
+                    jLEliminado.setText(formato.format(calendario));
+                    //                setBusqueda();
+                    try {
+                        entityManager.getTransaction().commit();
+                        entityManager.getTransaction().begin();
+                    } catch (RollbackException rex) {
+                        rex.printStackTrace();
+                        entityManager.getTransaction().begin();
+                        List<madreteresacrud.Socios> merged = new ArrayList<madreteresacrud.Socios>(list.size());
+                        for (madreteresacrud.Socios s : list) {
+                            merged.add(entityManager.merge(s));
+                        }
+                        list.clear();
+                        list.addAll(merged);
+                    }
+
+                    //Volvemos a cargar la tabla
+                    entityManager.getTransaction().rollback();
+                    entityManager.getTransaction().begin();
+                    java.util.Collection data = query.getResultList();
+                    for (Object entity : data) {
+                        entityManager.refresh(entity);
+                    }
+                    list.clear();
+                    list.addAll(data);
+                    jComboTipSoc.setEnabled(false);
+                    jCBSexo.setEnabled(false);
+                    cuilField.setEnabled(false);
+                    numSocField.setEnabled(false);
+                }
+            }
         }
     }//GEN-LAST:event_deleteButtonActionPerformed
 
@@ -909,7 +912,6 @@ public class SociosABM extends JPanel {
     private void newButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_newButtonActionPerformed
 
         //JOptionPane.showMessageDialog(null, "Debe rellenar todos los campos");       
-
         madreteresacrud.Socios s = new madreteresacrud.Socios();
         entityManager.persist(s);
         list.add(s);
@@ -925,10 +927,9 @@ public class SociosABM extends JPanel {
 
         }
 
-        jCBLocalididad.setSelectedItem("RESISTENCIA - Chaco");
-        jLabelSocio.setText("true");
         numSocField.setText(String.valueOf(max + 1));
         numSocField.requestFocusInWindow();
+        jLabelSocio.setText("true");
         numSocField.setEnabled(true);
         apellidoField.setEnabled(true);
         nombreField.setEnabled(true);
@@ -945,14 +946,6 @@ public class SociosABM extends JPanel {
         deleteButton.setEnabled(false);
         jButtonAlta.setEnabled(false);
         jBVerCuotas.setEnabled(false);
-        
-        jCBSexo.setSelectedItem("M");
-        jComboTipSoc.setSelectedItem("Activo");
-        TipoSocioABM tipoG = new TipoSocioABM();
-        if (tipoG.getId(jComboTipSoc.getSelectedItem().toString()) != null) {
-            Integer var = tipoG.getId(jComboTipSoc.getSelectedItem().toString());
-            jLabelTipSoc.setText(Integer.toString(var));
-        }
 
         int ax = JOptionPane.showConfirmDialog(this, "¿El socio a ingresar es adherente?", null, JOptionPane.YES_NO_OPTION);
         if (ax == JOptionPane.YES_OPTION) {
@@ -960,9 +953,10 @@ public class SociosABM extends JPanel {
             new BuscarAdherente((JFrame) SwingUtilities.getWindowAncestor(this), true, this).setVisible(true);
 
         }
+        jCBLocalididad.setSelectedItem("RESISTENCIA - CHACO");
 
     }//GEN-LAST:event_newButtonActionPerformed
-    TipoSocioABM tipoS = new TipoSocioABM();
+
     private void masterTableMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_masterTableMouseClicked
         int selected = masterTable.getSelectedRow();
         if (masterTable.getValueAt(selected, 13) != null) {
@@ -1002,11 +996,6 @@ public class SociosABM extends JPanel {
             jLabelBaja.setVisible(false);
             jButtonAlta.setEnabled(false);
             deleteButton.setEnabled(true);
-            String var = tipoS.getTipoSoc(Integer.valueOf(jLabelTipSoc.getText()));
-            if (var != null) {
-
-                jComboTipSoc.setSelectedItem(var);
-            }
         }
         jBVerCuotas.setEnabled(true);
     }//GEN-LAST:event_masterTableMouseClicked
@@ -1020,8 +1009,6 @@ public class SociosABM extends JPanel {
         int selected = masterTable.getSelectedRow();
         int id = Integer.valueOf(masterTable.getValueAt(selected, 14).toString());
         CuotaSocialABM csabm = new CuotaSocialABM(id);
-        csabm.s = new Socios();
-        csabm.s.setIdTipoSocio(Integer.valueOf(masterTable.getValueAt(selected, 12).toString()));
         if (csabm.getListaCuotasDeudas().isEmpty()) {
             JOptionPane.showMessageDialog(null, masterTable.getValueAt(selected, 1).toString() + " " + masterTable.getValueAt(selected, 2).toString() + " no adeuda cuotas.");
         }
@@ -1096,14 +1083,6 @@ public class SociosABM extends JPanel {
     private void jButtonFechaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonFechaActionPerformed
         new Calendario((JFrame) SwingUtilities.getWindowAncestor(this), true, fechaNacimientoField).setVisible(true);
     }//GEN-LAST:event_jButtonFechaActionPerformed
-
-    private void jComboTipSocActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboTipSocActionPerformed
-
-        if (tipoS.getId(jComboTipSoc.getSelectedItem().toString()) != null) {
-            Integer var = tipoS.getId(jComboTipSoc.getSelectedItem().toString());
-            jLabelTipSoc.setText(Integer.toString(var));
-        }
-    }//GEN-LAST:event_jComboTipSocActionPerformed
 
     private void telefonoFieldFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_telefonoFieldFocusGained
         if (telefonoField.getText().trim().isEmpty()) {
@@ -1281,7 +1260,7 @@ public class SociosABM extends JPanel {
         return query.getResultList();
 
     }
-    
+
     private void buscarSocio() {
         String ele = jCBBusqueda.getSelectedItem().toString();
         String[] apeYnom = ele.split(", ");
@@ -1331,11 +1310,6 @@ public class SociosABM extends JPanel {
                     jLabelBaja.setVisible(false);
                     jButtonAlta.setEnabled(false);
                     deleteButton.setEnabled(true);
-                    String var = tipoS.getTipoSoc(Integer.valueOf(jLabelTipSoc.getText()));
-                    if (var != null) {
-
-                        jComboTipSoc.setSelectedItem(var);
-                    }
                 }
                 break;
 
@@ -1397,7 +1371,7 @@ public class SociosABM extends JPanel {
 
     private List getLocalidades() {
         javax.persistence.Query query1;
-        String sql = "SELECT l.localidad, p.provincia FROM Localidades l, Provincias p WHERE l.localidadesPK.codProv=p.codProv";
+        String sql = "SELECT l FROM Localidades l";
 
         query1 = java.beans.Beans.isDesignTime() ? null : entityManager.createQuery(sql);
         List<Object[]> lista = query1.getResultList();
@@ -1407,9 +1381,9 @@ public class SociosABM extends JPanel {
 
     private void setComboLocalidades() {
         //seteamos el combo de localidades con la lista de todas ellas
-        List<Object[]> localidades = getLocalidades();
-        for (Object[] objects : localidades) {
-            jCBLocalididad.addItem(objects[0] + " - " + objects[1]);
+        List<Localidades> localidades = getLocalidades();
+        for (Localidades objects : localidades) {
+            jCBLocalididad.addItem(objects);
         }
 
         // jCBLocalididad.setName("jCBLocalididad");
@@ -1422,34 +1396,37 @@ public class SociosABM extends JPanel {
         jCBSexo.addItem("F");
     }
 
+    private List getTipoSocios() {
+        javax.persistence.Query query1;
+        String sql = "SELECT t FROM TipoSocio t";
+
+        query1 = java.beans.Beans.isDesignTime() ? null : entityManager.createQuery(sql);
+        List<Object[]> lista = query1.getResultList();
+        return lista;
+
+    }
+
     private void setComboTipoSocio() {
         //Agregamos los tipos de socios al combo
-        java.util.Collection lista = new TipoSocioABM().getTipoSoc();
-        String t;
-        for (Object entity : lista) {
-            t = (String) entity;
-            jComboTipSoc.addItem(t);
+        List<TipoSocio> lista = getTipoSocios();
+        for (TipoSocio entity : lista) {
+            jComboTipSoc.addItem(entity);
         }
 
     }
 
-    public Socios getSocio(int nroSocio) {
+    public static Socios getSocio(int idSocio) {
 
-        String sql = "SELECT s FROM Socios s WHERE s.numSoc=" + nroSocio;
-        query = java.beans.Beans.isDesignTime() ? null : entityManager.createQuery(sql);
-        java.util.Collection lista = query.getResultList();
-
-        Socios s = new Socios();
-
-        for (Object entity : lista) {
-            s = (Socios) entity;
-        }
+        String sql = "SELECT s FROM Socios s WHERE s.idSocio=" + idSocio;
+        em = java.beans.Beans.isDesignTime() ? null : javax.persistence.Persistence.createEntityManagerFactory("madreTeresaCRUDPU").createEntityManager();
+        Query q = java.beans.Beans.isDesignTime() ? null : em.createQuery(sql);
+        Socios s = (Socios) q.getSingleResult();
 
         return s;
 
     }
-    
-    private void convertirMayuscula(JTextField textField){
+
+    private void convertirMayuscula(JTextField textField) {
         textField.setText(textField.getText().toUpperCase());
     }
 
@@ -1524,7 +1501,6 @@ public class SociosABM extends JPanel {
     private javax.swing.JLabel jLabelBaja;
     private javax.swing.JLabel jLabelBuscar;
     private javax.swing.JLabel jLabelSocio;
-    private javax.swing.JLabel jLabelTipSoc;
     private javax.swing.JPanel jPanelForm;
     private javax.swing.JPanel jPanelTabla;
     private java.util.List<madreteresacrud.Socios> list;

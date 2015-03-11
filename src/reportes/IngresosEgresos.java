@@ -437,7 +437,7 @@ public class IngresosEgresos extends javax.swing.JFrame {
             //Creamos el informe
             try {            
                 File fichero = new File("Ingresos.jasper");            
-                JasperReport reporte= (JasperReport) JRLoader.loadObject(fichero);//(JasperReport) JRLoader.loadObject("Ingresos.jasper");
+                JasperReport reporte= (JasperReport) JRLoader.loadObject(fichero);
 
                 Map parametro = new HashMap();
                 parametro.put("fechaDesde", jTFDesde.getText());

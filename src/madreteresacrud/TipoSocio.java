@@ -4,23 +4,14 @@
  */
 package madreteresacrud;
 
-import java.beans.PropertyChangeListener;
-import java.beans.PropertyChangeSupport;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
 import javax.persistence.Table;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
-import javax.persistence.Transient;
 
 /**
  *
@@ -28,18 +19,11 @@ import javax.persistence.Transient;
  */
 @Entity
 @Table(name = "tipoSocio")
-@NamedQueries({
-    @NamedQuery(name = "TipoSocio.findAll", query = "SELECT t FROM TipoSocio t"),
-    @NamedQuery(name = "TipoSocio.findByIdTipoSocio", query = "SELECT t FROM TipoSocio t WHERE t.idTipoSocio = :idTipoSocio"),
-    @NamedQuery(name = "TipoSocio.findByTipoSocio", query = "SELECT t FROM TipoSocio t WHERE t.tipoSocio = :tipoSocio"),
-    @NamedQuery(name = "TipoSocio.findByMonto", query = "SELECT t FROM TipoSocio t WHERE t.monto = :monto"),
-    @NamedQuery(name = "TipoSocio.findByFechaModif", query = "SELECT t FROM TipoSocio t WHERE t.fechaModif = :fechaModif")})
 public class TipoSocio implements Serializable {
-    @Transient
-    private PropertyChangeSupport changeSupport = new PropertyChangeSupport(this);
+
     private static final long serialVersionUID = 1L;
+
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
     @Column(name = "idTipoSocio")
     private Integer idTipoSocio;
@@ -50,10 +34,6 @@ public class TipoSocio implements Serializable {
     @Basic(optional = false)
     @Column(name = "monto")
     private BigDecimal monto;
-    @Basic(optional = false)
-    @Column(name = "fechaModif")
-    @Temporal(TemporalType.DATE)
-    private Date fechaModif;
 
     public TipoSocio() {
     }
@@ -66,7 +46,6 @@ public class TipoSocio implements Serializable {
         this.idTipoSocio = idTipoSocio;
         this.tipoSocio = tipoSocio;
         this.monto = monto;
-        this.fechaModif = fechaModif;
     }
 
     public Integer getIdTipoSocio() {
@@ -74,9 +53,8 @@ public class TipoSocio implements Serializable {
     }
 
     public void setIdTipoSocio(Integer idTipoSocio) {
-        Integer oldIdTipoSocio = this.idTipoSocio;
+
         this.idTipoSocio = idTipoSocio;
-        changeSupport.firePropertyChange("idTipoSocio", oldIdTipoSocio, idTipoSocio);
     }
 
     public String getTipoSocio() {
@@ -84,9 +62,7 @@ public class TipoSocio implements Serializable {
     }
 
     public void setTipoSocio(String tipoSocio) {
-        String oldTipoSocio = this.tipoSocio;
         this.tipoSocio = tipoSocio;
-        changeSupport.firePropertyChange("tipoSocio", oldTipoSocio, tipoSocio);
     }
 
     public BigDecimal getMonto() {
@@ -94,19 +70,7 @@ public class TipoSocio implements Serializable {
     }
 
     public void setMonto(BigDecimal monto) {
-        BigDecimal oldMonto = this.monto;
         this.monto = monto;
-        changeSupport.firePropertyChange("monto", oldMonto, monto);
-    }
-
-    public Date getFechaModif() {
-        return fechaModif;
-    }
-
-    public void setFechaModif(Date fechaModif) {
-        Date oldFechaModif = this.fechaModif;
-        this.fechaModif = fechaModif;
-        changeSupport.firePropertyChange("fechaModif", oldFechaModif, fechaModif);
     }
 
     @Override
@@ -131,15 +95,7 @@ public class TipoSocio implements Serializable {
 
     @Override
     public String toString() {
-        return "madreteresacrud.TipoSocio[ idTipoSocio=" + idTipoSocio + " ]";
+        return tipoSocio;
     }
 
-    public void addPropertyChangeListener(PropertyChangeListener listener) {
-        changeSupport.addPropertyChangeListener(listener);
-    }
-
-    public void removePropertyChangeListener(PropertyChangeListener listener) {
-        changeSupport.removePropertyChangeListener(listener);
-    }
-    
 }

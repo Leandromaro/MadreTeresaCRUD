@@ -1,9 +1,11 @@
 /*
- * To change this template, choose Tools | Templates
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
 package madreteresacrud;
 
+import java.beans.PropertyChangeSupport;
 import java.io.Serializable;
 import java.util.Date;
 import javax.persistence.Basic;
@@ -12,50 +14,34 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
-import javax.xml.bind.annotation.XmlRootElement;
+import javax.persistence.Transient;
+import utilidades.Localidades;
 
 /**
  *
- * @author francis
+ * @author Francisco M. Viola <francimviola@gmail.com>
  */
 @Entity
 @Table(name = "socios")
-@XmlRootElement
-@NamedQueries({
-    @NamedQuery(name = "Socios.findAll", query = "SELECT s FROM Socios s"),
-    @NamedQuery(name = "Socios.findByIdSocio", query = "SELECT s FROM Socios s WHERE s.idSocio = :idSocio"),
-    @NamedQuery(name = "Socios.findByIdTipoSocio", query = "SELECT s FROM Socios s WHERE s.idTipoSocio = :idTipoSocio"),
-    @NamedQuery(name = "Socios.findByDocumento", query = "SELECT s FROM Socios s WHERE s.documento = :documento"),
-    @NamedQuery(name = "Socios.findBySexo", query = "SELECT s FROM Socios s WHERE s.sexo = :sexo"),
-    @NamedQuery(name = "Socios.findByNombre", query = "SELECT s FROM Socios s WHERE s.nombre = :nombre"),
-    @NamedQuery(name = "Socios.findByApellido", query = "SELECT s FROM Socios s WHERE s.apellido = :apellido"),
-    @NamedQuery(name = "Socios.findByCuil", query = "SELECT s FROM Socios s WHERE s.cuil = :cuil"),
-    @NamedQuery(name = "Socios.findByNumSoc", query = "SELECT s FROM Socios s WHERE s.numSoc = :numSoc"),
-    @NamedQuery(name = "Socios.findByEmail", query = "SELECT s FROM Socios s WHERE s.email = :email"),
-    @NamedQuery(name = "Socios.findByTelefono", query = "SELECT s FROM Socios s WHERE s.telefono = :telefono"),
-    @NamedQuery(name = "Socios.findByCelular", query = "SELECT s FROM Socios s WHERE s.celular = :celular"),
-    @NamedQuery(name = "Socios.findByFechaNacimiento", query = "SELECT s FROM Socios s WHERE s.fechaNacimiento = :fechaNacimiento"),
-    @NamedQuery(name = "Socios.findByLocalidad", query = "SELECT s FROM Socios s WHERE s.localidad = :localidad"),
-    @NamedQuery(name = "Socios.findByDireccion", query = "SELECT s FROM Socios s WHERE s.direccion = :direccion"),
-    @NamedQuery(name = "Socios.findByFechaBaja", query = "SELECT s FROM Socios s WHERE s.fechaBaja = :fechaBaja"),
-    @NamedQuery(name = "Socios.findBySocio", query = "SELECT s FROM Socios s WHERE s.socio = :socio"),
-    @NamedQuery(name = "Socios.findByAdherente", query = "SELECT s FROM Socios s WHERE s.adherente = :adherente"),
-    @NamedQuery(name = "Socios.findByDonante", query = "SELECT s FROM Socios s WHERE s.donante = :donante")})
 public class Socios implements Serializable {
+    @Transient
+    private PropertyChangeSupport changeSupport = new PropertyChangeSupport(this);
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
     @Column(name = "idSocio")
     private Integer idSocio;
-    @Basic(optional = false)
-    @Column(name = "idTipoSocio")
-    private int idTipoSocio;
+
+    @JoinColumn(name = "idTipoSocio", referencedColumnName = "idTipoSocio")
+    @ManyToOne(optional = false)
+    private TipoSocio idTipoSocio;
+
     @Basic(optional = false)
     @Column(name = "documento")
     private int documento;
@@ -72,22 +58,15 @@ public class Socios implements Serializable {
     private String cuil;
     @Column(name = "numSoc")
     private Integer numSoc;
-    @Basic(optional = false)
     @Column(name = "email")
     private String email;
-    @Basic(optional = false)
     @Column(name = "telefono")
     private String telefono;
-    @Basic(optional = false)
     @Column(name = "celular")
     private String celular;
-    @Basic(optional = false)
     @Column(name = "fechaNacimiento")
     @Temporal(TemporalType.DATE)
     private Date fechaNacimiento;
-    @Basic(optional = false)
-    @Column(name = "localidad")
-    private String localidad;
     @Basic(optional = false)
     @Column(name = "direccion")
     private String direccion;
@@ -103,6 +82,9 @@ public class Socios implements Serializable {
     @Basic(optional = false)
     @Column(name = "donante")
     private boolean donante;
+    @JoinColumn(name = "localidad", referencedColumnName = "codLoc")
+    @ManyToOne(optional = false)
+    private Localidades localidad;
 
     public Socios() {
     }
@@ -111,18 +93,13 @@ public class Socios implements Serializable {
         this.idSocio = idSocio;
     }
 
-    public Socios(Integer idSocio, int idTipoSocio, int documento, String sexo, String nombre, String apellido, String email, String telefono, String celular, Date fechaNacimiento, String localidad, String direccion, boolean socio, boolean adherente, boolean donante) {
+    public Socios(Integer idSocio, TipoSocio idTipoSocio, int documento, String sexo, String nombre, String apellido, String direccion, boolean socio, boolean adherente, boolean donante) {
         this.idSocio = idSocio;
         this.idTipoSocio = idTipoSocio;
         this.documento = documento;
         this.sexo = sexo;
         this.nombre = nombre;
         this.apellido = apellido;
-        this.email = email;
-        this.telefono = telefono;
-        this.celular = celular;
-        this.fechaNacimiento = fechaNacimiento;
-        this.localidad = localidad;
         this.direccion = direccion;
         this.socio = socio;
         this.adherente = adherente;
@@ -137,12 +114,15 @@ public class Socios implements Serializable {
         this.idSocio = idSocio;
     }
 
-    public int getIdTipoSocio() {
+    public TipoSocio getIdTipoSocio() {
         return idTipoSocio;
     }
 
-    public void setIdTipoSocio(int idTipoSocio) {
-        this.idTipoSocio = idTipoSocio;
+    public void setIdTipoSocio(TipoSocio idTipoSocio) {
+       TipoSocio oldIdTipoSocio = this.idTipoSocio;
+       this.idTipoSocio = idTipoSocio;
+        changeSupport.firePropertyChange("idTipoSocio", oldIdTipoSocio, idTipoSocio);
+        
     }
 
     public int getDocumento() {
@@ -225,14 +205,6 @@ public class Socios implements Serializable {
         this.fechaNacimiento = fechaNacimiento;
     }
 
-    public String getLocalidad() {
-        return localidad;
-    }
-
-    public void setLocalidad(String localidad) {
-        this.localidad = localidad;
-    }
-
     public String getDireccion() {
         return direccion;
     }
@@ -273,6 +245,16 @@ public class Socios implements Serializable {
         this.donante = donante;
     }
 
+    public Localidades getLocalidad() {
+        return localidad;
+    }
+
+    public void setLocalidad(Localidades localidad) {
+        Localidades oldLocalidad = this.localidad;
+        this.localidad = localidad;
+        changeSupport.firePropertyChange("localidad", oldLocalidad, localidad);
+    }
+
     @Override
     public int hashCode() {
         int hash = 0;
@@ -297,5 +279,5 @@ public class Socios implements Serializable {
     public String toString() {
         return "madreteresacrud.Socios[ idSocio=" + idSocio + " ]";
     }
-    
+
 }

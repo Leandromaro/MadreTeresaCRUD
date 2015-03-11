@@ -28,21 +28,20 @@ import utilidades.CalendarioDialog;
  */
 public class CuotaSocialABM extends JPanel {
 
-    private int idSocio;
-    public Socios s;
+    private Socios s;
 
     public CuotaSocialABM(int idSoc) {
-        this.idSocio = idSoc;
+        s = SociosABM.getSocio(idSoc);
         initComponents();
-        
+
         masterTable.getColumnModel().getColumn(3).setMaxWidth(0);
         masterTable.getColumnModel().getColumn(3).setMinWidth(0);
         masterTable.getColumnModel().getColumn(3).setPreferredWidth(0);
-        
+
         saveButton.setEnabled(false);
         if (!Beans.isDesignTime()) {
             entityManager.getTransaction().begin();
-        }    
+        }
         //Selecciona automaticamente la primer fila de la tabla si existen cuotas del socio..
         if (masterTable.getRowCount() != 0 && masterTable.getValueAt(0, 1) == null) {
             masterTable.changeSelection(0, 1, false, false);
@@ -51,8 +50,7 @@ public class CuotaSocialABM extends JPanel {
         }
     }
 
-    public CuotaSocialABM(Socios s) {
-        this.idSocio = s.getIdSocio();
+    public CuotaSocialABM(Socios s) {        
         this.s = s;
         initComponents();
         saveButton.setEnabled(false);
@@ -80,7 +78,7 @@ public class CuotaSocialABM extends JPanel {
         bindingGroup = new org.jdesktop.beansbinding.BindingGroup();
 
         entityManager = java.beans.Beans.isDesignTime() ? null : javax.persistence.Persistence.createEntityManagerFactory("madreTeresaCRUDPU").createEntityManager();
-        query = java.beans.Beans.isDesignTime() ? null : entityManager.createQuery("SELECT c FROM CuotaSocial c WHERE c.idSocio="+this.idSocio+" ORDER BY c.fechaActivacion DESC");
+        query = java.beans.Beans.isDesignTime() ? null : entityManager.createQuery("SELECT c FROM CuotaSocial c WHERE c.idSocio="+this.s.getIdSocio()+" ORDER BY c.fechaActivacion DESC");
         list = java.beans.Beans.isDesignTime() ? java.util.Collections.emptyList() : org.jdesktop.observablecollections.ObservableCollections.observableList(query.getResultList());
         jPanelForm = new javax.swing.JPanel();
         saveButton = new javax.swing.JButton();
@@ -191,6 +189,8 @@ public class CuotaSocialABM extends JPanel {
         genCuota.setText("Generar cuota adelantada");
         genCuota.addActionListener(formListener);
 
+        masterTable.setAutoCreateRowSorter(true);
+
         org.jdesktop.swingbinding.JTableBinding jTableBinding = org.jdesktop.swingbinding.SwingBindings.createJTableBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, list, masterTable);
         org.jdesktop.swingbinding.JTableBinding.ColumnBinding columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${cuota}"));
         columnBinding.setColumnName("Cuota");
@@ -298,11 +298,11 @@ public class CuotaSocialABM extends JPanel {
         }
 
         public void mouseClicked(java.awt.event.MouseEvent evt) {
-            if (evt.getSource() == masterTable) {
-                CuotaSocialABM.this.masterTableMouseClicked(evt);
-            }
-            else if (evt.getSource() == fechaPagoField) {
+            if (evt.getSource() == fechaPagoField) {
                 CuotaSocialABM.this.fechaPagoFieldMouseClicked(evt);
+            }
+            else if (evt.getSource() == masterTable) {
+                CuotaSocialABM.this.masterTableMouseClicked(evt);
             }
         }
 
@@ -323,7 +323,8 @@ public class CuotaSocialABM extends JPanel {
     private void cancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cancelarActionPerformed
         entityManager.getTransaction().rollback();
         entityManager.getTransaction().begin();
-        query = java.beans.Beans.isDesignTime() ? null : entityManager.createQuery("SELECT c FROM CuotaSocial c WHERE c.idSocio=" + this.idSocio + " ORDER BY c.fechaActivacion DESC");
+        query = java.beans.Beans.isDesignTime() ? null : entityManager.createQuery("SELECT c FROM CuotaSocial c WHERE c.idSocio=" 
+                + this.s.getIdSocio() + " ORDER BY c.fechaActivacion DESC");
         java.util.Collection data = query.getResultList();
         for (Object entity : data) {
             entityManager.refresh(entity);
@@ -348,7 +349,8 @@ public class CuotaSocialABM extends JPanel {
             list.addAll(merged);
         }
 
-        query = java.beans.Beans.isDesignTime() ? null : entityManager.createQuery("SELECT c FROM CuotaSocial c WHERE c.idSocio=" + this.idSocio + " ORDER BY c.fechaActivacion DESC");
+        query = java.beans.Beans.isDesignTime() ? null : entityManager.createQuery("SELECT c FROM CuotaSocial c WHERE c.idSocio=" 
+                + this.s.getIdSocio() + " ORDER BY c.fechaActivacion DESC");
         entityManager.getTransaction().rollback();
         entityManager.getTransaction().begin();
         java.util.Collection data = query.getResultList();
@@ -369,14 +371,15 @@ public class CuotaSocialABM extends JPanel {
         //montoField.setEnabled(false);
         madreteresacrud.CuotaSocial cs = new madreteresacrud.CuotaSocial();
         madreteresacrud.CuotaSocial csaux = new madreteresacrud.CuotaSocial();
-        cs.setIdSocio(this.idSocio);
+        cs.setIdSocio(this.s.getIdSocio());
         //Seteamos la fecha de pago
         Date f = new Date();
         Calendar f1 = GregorianCalendar.getInstance();
         cs.setFechaPago(f);
 
         //Setamos la fecha de activacion
-        query = java.beans.Beans.isDesignTime() ? null : entityManager.createQuery("SELECT c FROM CuotaSocial c WHERE c.idSocio=" + this.idSocio + " ORDER BY c.fechaActivacion DESC");
+        query = java.beans.Beans.isDesignTime() ? null : entityManager.createQuery("SELECT c FROM CuotaSocial c WHERE c.idSocio=" 
+                + this.s.getIdSocio() + " ORDER BY c.fechaActivacion DESC");
         java.util.Collection data = query.getResultList();
 
         for (Object entity : data) {
@@ -389,15 +392,15 @@ public class CuotaSocialABM extends JPanel {
         f1.add(Calendar.MONTH, 1);
         f1.set(Calendar.DAY_OF_MONTH, 1);
         cs.setFechaActivacion(f1.getTime());
-        
+
         //Seteamos la cuota
-        String formato="yyyy";
+        String formato = "yyyy";
         SimpleDateFormat dateFormat = new SimpleDateFormat(formato);
-        cs.setCuota(String.valueOf(f1.getTime().getMonth()+1)+"/"+String.valueOf( Integer.parseInt(dateFormat.format(f))));
-        
+        cs.setCuota(String.valueOf(f1.getTime().getMonth() + 1) + "/" + String.valueOf(Integer.parseInt(dateFormat.format(f))));
+
         //Seteamos el monto
         TipoSocioABM ts = new TipoSocioABM();
-        String tipo = ts.getTipoSoc(s.getIdTipoSocio());
+        String tipo = ts.getTipoSoc(s.getIdTipoSocio().getIdTipoSocio());
         cs.setMonto(ts.getMonto(tipo));
 
         entityManager.persist(cs);
@@ -447,8 +450,7 @@ public class CuotaSocialABM extends JPanel {
     }//GEN-LAST:event_fechaPagoFieldMouseClicked
 
     private void montoFieldKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_montoFieldKeyTyped
-        if (!Character.isDigit(evt.getKeyChar()) && !Character.isISOControl(evt.getKeyChar()) && evt.getKeyChar() != '.')
-        {
+        if (!Character.isDigit(evt.getKeyChar()) && !Character.isISOControl(evt.getKeyChar()) && evt.getKeyChar() != '.') {
             Toolkit.getDefaultToolkit().beep();
             evt.consume();
         }
@@ -461,13 +463,15 @@ public class CuotaSocialABM extends JPanel {
     }
 
     public java.util.Collection getListaCuotasDeudas() {
-        javax.persistence.Query query1 = java.beans.Beans.isDesignTime() ? null : entityManager.createQuery("SELECT c FROM CuotaSocial c WHERE c.idSocio=" + this.idSocio + " AND c.fechaPago IS NULL");
+        javax.persistence.Query query1 = java.beans.Beans.isDesignTime() ? null : entityManager.createQuery("SELECT c FROM CuotaSocial c WHERE c.idSocio=" 
+                + this.s.getIdSocio() + " AND c.fechaPago IS NULL");
         return query1.getResultList();
 
     }
 
     public void setQuery() {
-        query = java.beans.Beans.isDesignTime() ? null : entityManager.createQuery("SELECT c FROM CuotaSocial c WHERE c.idSocio=" + this.idSocio + " ORDER BY c.fechaActivacion DESC");
+        query = java.beans.Beans.isDesignTime() ? null : entityManager.createQuery("SELECT c FROM CuotaSocial c WHERE c.idSocio=" 
+                + this.s.getIdSocio() + " ORDER BY c.fechaActivacion DESC");
     }
     Converter dateConverter = new Converter<java.util.Date, String>() {
         @Override

@@ -159,8 +159,8 @@ public class TipoSocioABM extends JPanel {
         }
         return null;            
     }
-    public java.util.Collection getTipoSoc(){
-        javax.persistence.Query query1 = java.beans.Beans.isDesignTime() ? null : entityManager.createQuery("SELECT DISTINCT t.tipoSocio FROM TipoSocio t ORDER BY t.tipoSocio ASC");
+    public List<TipoSocio> getTipoSoc(){
+        javax.persistence.Query query1 = java.beans.Beans.isDesignTime() ? null : entityManager.createQuery("SELECT DISTINCT t FROM TipoSocio t ORDER BY t.tipoSocio ASC");
         return query1.getResultList();
                  
     }

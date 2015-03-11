@@ -3,22 +3,14 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package madreteresacrud;
 
-import java.awt.Dimension;
 import java.beans.Beans;
 import java.math.BigDecimal;
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.persistence.RollbackException;
-import javax.swing.JDesktopPane;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JInternalFrame;
@@ -36,31 +28,30 @@ public class MadreTeresaMain extends javax.swing.JFrame {
 
     /**
      * Creates new form MadreTeresaMain
-     */  
-    
+     */
     //static JDesktopPane dp = new JDesktopPane();
     public MadreTeresaMain() {
-        super("Sistema Madre Teresa de Calcuta");        
-        initComponents();    
-        
-        JInternalFrame internal =  new JInternalFrame("Socios");
-        JPanel p = new SociosABM();
-        internal.add(p);          
-        internal.pack();
-        internal.setResizable(true);        
-        internal.setClosable(true);    
-          
-        jDesktopPane.add(internal);         
-        this.setExtendedState(JFrame.MAXIMIZED_BOTH);
-        this.getContentPane().add(jDesktopPane);        
-          internal.setVisible(true); 
-        
-        this.setLocationRelativeTo(null); 
-        this.setVisible(true);  
+        super("Sistema Madre Teresa de Calcuta");
+        initComponents();
 
-         jDesktopPane.setSize(this.getSize().width, this.getSize().height);
-         jDesktopPane.repaint();  
-       
+        JInternalFrame internal = new JInternalFrame("Socios");
+        JPanel p = new SociosABM();
+        internal.add(p);
+        internal.pack();
+        internal.setResizable(true);
+        internal.setClosable(true);
+
+        jDesktopPane.add(internal);
+        this.setExtendedState(JFrame.MAXIMIZED_BOTH);
+        this.getContentPane().add(jDesktopPane);
+        internal.setVisible(true);
+
+        this.setLocationRelativeTo(null);
+        this.setVisible(true);
+
+        jDesktopPane.setSize(this.getSize().width, this.getSize().height);
+        jDesktopPane.repaint();
+
     }
 
     /**
@@ -230,49 +221,49 @@ public class MadreTeresaMain extends javax.swing.JFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jDesktopPane, javax.swing.GroupLayout.DEFAULT_SIZE, 891, Short.MAX_VALUE)
+            .addComponent(jDesktopPane, javax.swing.GroupLayout.DEFAULT_SIZE, 1024, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jDesktopPane, javax.swing.GroupLayout.DEFAULT_SIZE, 636, Short.MAX_VALUE)
+            .addComponent(jDesktopPane, javax.swing.GroupLayout.DEFAULT_SIZE, 768, Short.MAX_VALUE)
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
     private void jMenuSociosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuSociosActionPerformed
-        JInternalFrame internal =  new JInternalFrame("Socios");
+        JInternalFrame internal = new JInternalFrame("Socios");
         JPanel p = new SociosABM();
-        internal.add(p);          
+        internal.add(p);
         internal.pack();
-        internal.setResizable(true);        
-        internal.setClosable(true);    
+        internal.setResizable(true);
+        internal.setClosable(true);
         jDesktopPane.removeAll();
         jDesktopPane.add(internal);
         jDesktopPane.repaint();
-        internal.setVisible(true); 
-        
+        internal.setVisible(true);
+
 //        JFrame frame = new JFrame("Socios");
 //        frame.setContentPane(new SociosABM());
 //        frame.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
 //        frame.pack();
 //        frame.setVisible(true);
 //        frame.setLocationRelativeTo(null);
-            
+
     }//GEN-LAST:event_jMenuSociosActionPerformed
 
     private void jMenuDonacionesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuDonacionesActionPerformed
-        JInternalFrame internal =  new JInternalFrame("Donaciones");
+        JInternalFrame internal = new JInternalFrame("Donaciones");
         JPanel p = new DonacionesABM();
-        internal.add(p);          
+        internal.add(p);
         internal.pack();
-        internal.setResizable(true);        
-        internal.setClosable(true);    
+        internal.setResizable(true);
+        internal.setClosable(true);
         jDesktopPane.removeAll();
         jDesktopPane.add(internal);
         jDesktopPane.repaint();
-        internal.setVisible(true); 
-        
+        internal.setVisible(true);
+
 //        JFrame frame = new JFrame("Donaciones");
 //        frame.setContentPane(new DonacionesABM());
 //        frame.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
@@ -282,145 +273,145 @@ public class MadreTeresaMain extends javax.swing.JFrame {
     }//GEN-LAST:event_jMenuDonacionesActionPerformed
 
     private void jMenuGastosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuGastosActionPerformed
-        JInternalFrame internal =  new JInternalFrame("Gastos");
+        JInternalFrame internal = new JInternalFrame("Gastos");
         JPanel p = new GastosABM();
-        internal.add(p);          
+        internal.add(p);
         internal.pack();
-        internal.setResizable(true);        
-        internal.setClosable(true);    
+        internal.setResizable(true);
+        internal.setClosable(true);
         jDesktopPane.removeAll();
         jDesktopPane.add(internal);
         jDesktopPane.repaint();
-        internal.setVisible(true); 
-        
+        internal.setVisible(true);
+
 //        JFrame frame = new JFrame("Gastos");
 //        frame.setContentPane(new GastosABM());
 //        frame.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
 //        frame.pack();
 //        frame.setLocationRelativeTo(null);
 //        frame.setVisible(true);
-       
+
     }//GEN-LAST:event_jMenuGastosActionPerformed
 
     private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
-        JInternalFrame internal =  new JInternalFrame("Tipos de Gastos");
+        JInternalFrame internal = new JInternalFrame("Tipos de Gastos");
         JPanel p = new TipoGastoABM();
-        internal.add(p);          
+        internal.add(p);
         internal.pack();
-        internal.setResizable(true);        
-        internal.setClosable(true);    
+        internal.setResizable(true);
+        internal.setClosable(true);
         jDesktopPane.removeAll();
         jDesktopPane.add(internal);
         jDesktopPane.repaint();
-        internal.setVisible(true); 
-        
+        internal.setVisible(true);
+
 //        JFrame frame = new JFrame("Tipos de Gastos");
 //        frame.setContentPane(new TipoGastoABM());
 //        frame.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
 //        frame.pack();
 //        frame.setLocationRelativeTo(null);
 //        frame.setVisible(true);
-        
+
     }//GEN-LAST:event_jMenuItem1ActionPerformed
 
     private void jMenuItem3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem3ActionPerformed
 
-        JInternalFrame internal =  new JInternalFrame("Montos de Cuotas");
+        JInternalFrame internal = new JInternalFrame("Montos de Cuotas");
         JPanel p = new TipoSocioABM();
-        internal.add(p);          
+        internal.add(p);
         internal.pack();
-        internal.setResizable(true);        
-        internal.setClosable(true);    
+        internal.setResizable(true);
+        internal.setClosable(true);
         jDesktopPane.removeAll();
         jDesktopPane.add(internal);
         jDesktopPane.repaint();
         internal.setVisible(true);
-        
+
         //        JFrame frame = new JFrame("Tipos de Socios");
 //        frame.setContentPane(new TipoSocioABM());
 //        frame.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
 //        frame.pack();
 //        frame.setLocationRelativeTo(null);
 //        frame.setVisible(true);
-        
+
     }//GEN-LAST:event_jMenuItem3ActionPerformed
 
     private void jMenuItem5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem5ActionPerformed
-        JInternalFrame internal =  new JInternalFrame("Flores de vida");
+        JInternalFrame internal = new JInternalFrame("Flores de vida");
         JPanel p = new FlorVidaABM();
-        internal.add(p);          
+        internal.add(p);
         internal.pack();
-        internal.setResizable(true);        
-        internal.setClosable(true);    
+        internal.setResizable(true);
+        internal.setClosable(true);
         jDesktopPane.removeAll();
         jDesktopPane.add(internal);
         jDesktopPane.repaint();
         internal.setVisible(true);
-        
+
 //        JFrame frame = new JFrame("Flores de vida");
 //        frame.setContentPane(new FlorVidaABM());
 //        frame.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
 //        frame.pack();
 //        frame.setLocationRelativeTo(null);
 //        frame.setVisible(true);
-      
+
     }//GEN-LAST:event_jMenuItem5ActionPerformed
 
     private void jMenuItem6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem6ActionPerformed
-        JInternalFrame internal =  new JInternalFrame("Adherentes de flores de vida");
+        JInternalFrame internal = new JInternalFrame("Adherentes de flores de vida");
         JPanel p = new SociosFVABM();
-        internal.add(p);          
+        internal.add(p);
         internal.pack();
-        internal.setResizable(true);        
-        internal.setClosable(true);    
+        internal.setResizable(true);
+        internal.setClosable(true);
         jDesktopPane.removeAll();
         jDesktopPane.add(internal);
         jDesktopPane.repaint();
         internal.setVisible(true);
-        
+
 //        JFrame frame = new JFrame("Socios de flores de vida");
 //         frame.setContentPane(new SociosFVABM());
 //         frame.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
 //         frame.pack();
 //         frame.setLocationRelativeTo(null);
 //         frame.setVisible(true);
-         
+
     }//GEN-LAST:event_jMenuItem6ActionPerformed
 
     private void jMenuItem7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem7ActionPerformed
-        JInternalFrame internal =  new JInternalFrame("Eventos");
+        JInternalFrame internal = new JInternalFrame("Eventos");
         JPanel p = new EventosABM();
-        internal.add(p);          
+        internal.add(p);
         internal.pack();
-        internal.setResizable(true);        
-        internal.setClosable(true);    
+        internal.setResizable(true);
+        internal.setClosable(true);
         jDesktopPane.removeAll();
         jDesktopPane.add(internal);
         jDesktopPane.repaint();
         internal.setVisible(true);
-        
+
 //        JFrame frame = new JFrame("Eventos");
 //        frame.setContentPane(new EventosABM());
 //        frame.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
 //        frame.pack();
 //        frame.setLocationRelativeTo(null);
 //        frame.setVisible(true);
-       
+
     }//GEN-LAST:event_jMenuItem7ActionPerformed
 
     private void jMenuItem2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem2ActionPerformed
-       JDialog genc = new GenerarCuotas(this,true);
-       genc.setLocationRelativeTo(null);
-       genc.setVisible(true);
+        JDialog genc = new GenerarCuotas(this, true);
+        genc.setLocationRelativeTo(null);
+        genc.setVisible(true);
     }//GEN-LAST:event_jMenuItem2ActionPerformed
 
     private void jMenuItem8ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem8ActionPerformed
-        JInternalFrame internal =  new JInternalFrame("UsuarioABM");
+        JInternalFrame internal = new JInternalFrame("UsuarioABM");
         JPanel u = new UsuarioABM();
-        internal.add(u);          
+        internal.add(u);
         internal.pack();
-        internal.setResizable(true);        
-        internal.setClosable(true);    
+        internal.setResizable(true);
+        internal.setClosable(true);
         jDesktopPane.removeAll();
         jDesktopPane.add(internal);
         jDesktopPane.repaint();
@@ -428,20 +419,20 @@ public class MadreTeresaMain extends javax.swing.JFrame {
     }//GEN-LAST:event_jMenuItem8ActionPerformed
 
     private void jMenuItem9ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem9ActionPerformed
-       IngresoSistema i = new IngresoSistema();
-       i.setResizable(false);
-       i.setLocationRelativeTo(null);
-       i.setVisible(true);
-       this.dispose();
+        IngresoSistema i = new IngresoSistema();
+        i.setResizable(false);
+        i.setLocationRelativeTo(null);
+        i.setVisible(true);
+        this.dispose();
     }//GEN-LAST:event_jMenuItem9ActionPerformed
 
     private void jMenuItem11ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem11ActionPerformed
-        JInternalFrame internal =  new JInternalFrame("Tipos de Eventos");
+        JInternalFrame internal = new JInternalFrame("Tipos de Eventos");
         JPanel u = new TipoEventoABM();
-        internal.add(u);          
+        internal.add(u);
         internal.pack();
-        internal.setResizable(true);        
-        internal.setClosable(true);    
+        internal.setResizable(true);
+        internal.setClosable(true);
         jDesktopPane.removeAll();
         jDesktopPane.add(internal);
         jDesktopPane.repaint();
@@ -455,9 +446,9 @@ public class MadreTeresaMain extends javax.swing.JFrame {
         ing.setVisible(true);
 
     }//GEN-LAST:event_jMenuItem4ActionPerformed
-    public boolean generarCuotas(int mes, int anio){
-        boolean band=false;      
-        boolean flag=false;
+    public boolean generarCuotas(int mes, int anio) {
+        boolean band = false;
+        boolean flag = false;
         int cont;
         Calendar cf = Calendar.getInstance();
         SociosABM socios = new SociosABM();
@@ -465,87 +456,88 @@ public class MadreTeresaMain extends javax.swing.JFrame {
         CuotaSocialABM cs;
         Date f = new Date();
         //Date f2 = new Date();
-        Calendar f1 = GregorianCalendar.getInstance(); 
+        Calendar f1 = GregorianCalendar.getInstance();
         BigDecimal monto;
         TipoSocioABM ts = new TipoSocioABM();
-        CuotaSocial c1 = new CuotaSocial();       
-        
+        CuotaSocial c1 = new CuotaSocial();
+
         java.util.Collection listaSocios = socios.getListaSocios();
         java.util.Collection listaCuotas;
-    
-        for(Object socio:listaSocios){
-            s = (Socios)socio;
-            if(s.getFechaBaja() == null){            
-            CuotaSocial c = new CuotaSocial();
-            monto = ts.getMonto(ts.getTipoSoc(s.getIdTipoSocio()));                   
-            c.setMonto(monto);
-            c.setIdSocio(s.getIdSocio());
-            c.setCuota(String.valueOf(mes+1)+"/"+String.valueOf(anio));
-            cs = new CuotaSocialABM(s.getIdSocio());
-            cs.setQuery();
-            listaCuotas = cs.getListaCuotas();
-            if(listaCuotas.isEmpty()){
-                band=true;
-                f1.setTime(f);
-                f1.set(Calendar.DAY_OF_MONTH,1);
-                f1.set(Calendar.MONTH,mes);
-                f1.set(Calendar.YEAR, anio);
-                c.setFechaActivacion(f1.getTime());                 
-                entityManager.persist(c);               
-                //Guardamos la cuota
-                try {
-                    entityManager.getTransaction().commit();
-                    entityManager.getTransaction().begin();
-                } catch (RollbackException rex) {
-                    rex.printStackTrace();
-                    entityManager.getTransaction().begin();            
-                }
-                
-            }else{
-                flag=false;
-                cont=0;           
-                for(Object cuota:listaCuotas){
-                    c1 =(CuotaSocial)cuota;
-                    f = c1.getFechaActivacion();                   
-                    cf.setTime(f);                      
-                    cont++;                    
-                    if((mes==f.getMonth())&&(anio==cf.get(Calendar.YEAR))){
-                        flag=true;
-                        break;
+
+        for (Object socio : listaSocios) {
+            s = (Socios) socio;
+            if (s.getFechaBaja() == null) {
+                CuotaSocial c = new CuotaSocial();
+                monto = ts.getMonto(ts.getTipoSoc(s.getIdTipoSocio().getIdTipoSocio()));
+                c.setMonto(monto);
+                c.setIdSocio(s.getIdSocio());
+                c.setCuota(String.valueOf(mes + 1) + "/" + String.valueOf(anio));
+                cs = new CuotaSocialABM(s.getIdSocio());
+                cs.setQuery();
+                listaCuotas = cs.getListaCuotas();
+                if (listaCuotas.isEmpty()) {
+                    band = true;
+                    f1.setTime(f);
+                    f1.set(Calendar.DAY_OF_MONTH, 1);
+                    f1.set(Calendar.MONTH, mes);
+                    f1.set(Calendar.YEAR, anio);
+                    c.setFechaActivacion(f1.getTime());
+                    entityManager.persist(c);
+                    //Guardamos la cuota
+                    try {
+                        entityManager.getTransaction().commit();
+                        entityManager.getTransaction().begin();
+                    } catch (RollbackException rex) {
+                        rex.printStackTrace();
+                        entityManager.getTransaction().begin();
                     }
-                    if(cont>5){
-                        break;
-                    }                  
-                }
-                
-                  if((flag==false)&&((anio+1)>=cf.get(Calendar.YEAR))){                     
-                       band=true;                       
-                        f1.setTime(f);     
+
+                } else {
+                    flag = false;
+                    cont = 0;
+                    for (Object cuota : listaCuotas) {
+                        c1 = (CuotaSocial) cuota;
+                        f = c1.getFechaActivacion();
+                        cf.setTime(f);
+                        cont++;
+                        if ((mes == f.getMonth()) && (anio == cf.get(Calendar.YEAR))) {
+                            flag = true;
+                            break;
+                        }
+                        if (cont > 5) {
+                            break;
+                        }
+                    }
+
+                    if ((flag == false) && ((anio + 1) >= cf.get(Calendar.YEAR))) {
+                        band = true;
+                        f1.setTime(f);
 //                        f1.add(Calendar.MONTH, 1); 
-                        f1.set(Calendar.DAY_OF_MONTH,1);
-                        f1.set(Calendar.MONTH,mes);
-                        f1.set(Calendar.YEAR, anio);                         
-                        c.setFechaActivacion(f1.getTime());                         
+                        f1.set(Calendar.DAY_OF_MONTH, 1);
+                        f1.set(Calendar.MONTH, mes);
+                        f1.set(Calendar.YEAR, anio);
+                        c.setFechaActivacion(f1.getTime());
                         entityManager.persist(c);
-                
+
                         //Guardamos la cuota
                         try {
                             entityManager.getTransaction().commit();
                             entityManager.getTransaction().begin();
                         } catch (RollbackException rex) {
                             rex.printStackTrace();
-                            entityManager.getTransaction().begin();            
+                            entityManager.getTransaction().begin();
                         }
-                    }                             
-                
+                    }
+
+                }
+
             }
-            
-           }            
         }
         return band;
     }
-    public void setEntity(){
-        entityManager = java.beans.Beans.isDesignTime() ? null : javax.persistence.Persistence.createEntityManagerFactory("madreTeresaCRUDPU").createEntityManager();                 
+
+    public void setEntity() {
+        entityManager = java.beans.Beans.isDesignTime() ? null : javax.persistence.Persistence.createEntityManagerFactory("madreTeresaCRUDPU").createEntityManager();
         if (!Beans.isDesignTime()) {
             entityManager.getTransaction().begin();
         }
@@ -553,7 +545,7 @@ public class MadreTeresaMain extends javax.swing.JFrame {
     /**
      * @param args the command line arguments
      */
-    
+
     private javax.persistence.EntityManager entityManager;
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JDesktopPane jDesktopPane;
