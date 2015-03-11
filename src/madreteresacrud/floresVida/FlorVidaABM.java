@@ -43,6 +43,7 @@ public class FlorVidaABM extends JPanel {
 
     public FlorVidaABM(FlorVidaABM1 fv) {
         initComponents();
+        setComboLocalidades();
         masterTable.getColumnModel().getColumn(6).setMaxWidth(0);
         masterTable.getColumnModel().getColumn(6).setMinWidth(0);
         masterTable.getColumnModel().getColumn(6).setPreferredWidth(0);

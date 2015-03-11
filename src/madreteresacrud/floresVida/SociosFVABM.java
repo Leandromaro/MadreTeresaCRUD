@@ -19,6 +19,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 import utilidades.BuscarSocio;
+import utilidades.Localidades;
 
 /**
  *
@@ -74,15 +75,15 @@ public class SociosFVABM extends JPanel {
         cuilField = new javax.swing.JTextField();
         saveButton = new javax.swing.JButton();
         refreshButton = new javax.swing.JButton();
-        jCBLocalididad = new javax.swing.JComboBox();
-        localidadLabel1 = new javax.swing.JLabel();
-        telefonoLabel1 = new javax.swing.JLabel();
+        dniLabel = new javax.swing.JLabel();
+        celularLabel = new javax.swing.JLabel();
         celularField = new javax.swing.JTextField();
         dniField = new javax.swing.JTextField();
-        localidadLabel2 = new javax.swing.JLabel();
+        sexoLabel = new javax.swing.JLabel();
         jCBSexo = new javax.swing.JComboBox();
         emailLabel = new javax.swing.JLabel();
         emailField = new javax.swing.JTextField();
+        jCBLocalididad = new javax.swing.JComboBox();
         jPanelTabla = new javax.swing.JPanel();
         newButton = new javax.swing.JButton();
         deleteButton = new javax.swing.JButton();
@@ -154,19 +155,9 @@ public class SociosFVABM extends JPanel {
         refreshButton.setText("Cancelar");
         refreshButton.addActionListener(formListener);
 
-        jCBLocalididad.setEditable(true);
+        dniLabel.setText("DNI:");
 
-        binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, masterTable, org.jdesktop.beansbinding.ELProperty.create("${selectedElement.localidad}"), jCBLocalididad, org.jdesktop.beansbinding.BeanProperty.create("selectedItem"));
-        bindingGroup.addBinding(binding);
-
-        jCBLocalididad.addActionListener(formListener);
-        binding.setSourceUnreadableValue("null");
-        binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ, masterTable, org.jdesktop.beansbinding.ELProperty.create("${selectedElement != null}"), nombreField, org.jdesktop.beansbinding.BeanProperty.create("enabled"));
-        bindingGroup.addBinding(binding);
-
-        localidadLabel1.setText("DNI:");
-
-        telefonoLabel1.setText("Celular:");
+        celularLabel.setText("Celular:");
 
         binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, masterTable, org.jdesktop.beansbinding.ELProperty.create("${selectedElement.celular}"), celularField, org.jdesktop.beansbinding.BeanProperty.create("text"));
         bindingGroup.addBinding(binding);
@@ -181,7 +172,7 @@ public class SociosFVABM extends JPanel {
 
         dniField.addKeyListener(formListener);
 
-        localidadLabel2.setText("Sexo:");
+        sexoLabel.setText("Sexo:");
 
         jCBSexo.setAutoscrolls(true);
 
@@ -197,6 +188,9 @@ public class SociosFVABM extends JPanel {
 
         emailField.addFocusListener(formListener);
 
+        binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, masterTable, org.jdesktop.beansbinding.ELProperty.create("${selectedElement.localidad}"), jCBLocalididad, org.jdesktop.beansbinding.BeanProperty.create("selectedItem"));
+        bindingGroup.addBinding(binding);
+
         javax.swing.GroupLayout jPanelFormLayout = new javax.swing.GroupLayout(jPanelForm);
         jPanelForm.setLayout(jPanelFormLayout);
         jPanelFormLayout.setHorizontalGroup(
@@ -209,13 +203,12 @@ public class SociosFVABM extends JPanel {
                             .addComponent(apellidoLabel)
                             .addComponent(localidadLabel))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(jPanelFormLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                        .addGroup(jPanelFormLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(jPanelFormLayout.createSequentialGroup()
                                 .addComponent(refreshButton)
                                 .addGap(18, 18, 18)
                                 .addComponent(saveButton))
-                            .addComponent(apellidoField)
-                            .addComponent(jCBLocalididad, 0, 315, Short.MAX_VALUE)))
+                            .addComponent(apellidoField, javax.swing.GroupLayout.PREFERRED_SIZE, 315, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addGroup(jPanelFormLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                         .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanelFormLayout.createSequentialGroup()
                             .addComponent(cuilLabel)
@@ -224,11 +217,12 @@ public class SociosFVABM extends JPanel {
                         .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanelFormLayout.createSequentialGroup()
                             .addGroup(jPanelFormLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                 .addComponent(telefonoLabel)
-                                .addComponent(localidadLabel1))
+                                .addComponent(dniLabel))
                             .addGap(14, 14, 14)
                             .addGroup(jPanelFormLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                 .addComponent(telefonoField, javax.swing.GroupLayout.PREFERRED_SIZE, 181, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addComponent(dniField, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 181, javax.swing.GroupLayout.PREFERRED_SIZE)))))
+                                .addComponent(jCBLocalididad, javax.swing.GroupLayout.PREFERRED_SIZE, 319, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(dniField, javax.swing.GroupLayout.PREFERRED_SIZE, 181, javax.swing.GroupLayout.PREFERRED_SIZE)))))
                 .addGap(33, 33, 33)
                 .addGroup(jPanelFormLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addGroup(jPanelFormLayout.createSequentialGroup()
@@ -245,8 +239,8 @@ public class SociosFVABM extends JPanel {
                         .addComponent(emailField, javax.swing.GroupLayout.PREFERRED_SIZE, 321, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(jPanelFormLayout.createSequentialGroup()
                         .addGroup(jPanelFormLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(telefonoLabel1)
-                            .addComponent(localidadLabel2))
+                            .addComponent(celularLabel)
+                            .addComponent(sexoLabel))
                         .addGroup(jPanelFormLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(jPanelFormLayout.createSequentialGroup()
                                 .addGap(25, 25, 25)
@@ -270,7 +264,7 @@ public class SociosFVABM extends JPanel {
                             .addComponent(apellidoField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(5, 5, 5)
                         .addGroup(jPanelFormLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(localidadLabel1)
+                            .addComponent(dniLabel)
                             .addComponent(dniField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(jPanelFormLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -290,11 +284,11 @@ public class SociosFVABM extends JPanel {
                             .addComponent(nombreLabel))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(jPanelFormLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(localidadLabel2)
+                            .addComponent(sexoLabel)
                             .addComponent(jCBSexo, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(11, 11, 11)
                         .addGroup(jPanelFormLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(telefonoLabel1)
+                            .addComponent(celularLabel)
                             .addComponent(celularField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(1, 1, 1)
                         .addGroup(jPanelFormLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -339,40 +333,52 @@ public class SociosFVABM extends JPanel {
         jBVerCuotas.setEnabled(false);
         jBVerCuotas.addActionListener(formListener);
 
+        masterTable.setAutoCreateRowSorter(true);
+
         org.jdesktop.swingbinding.JTableBinding jTableBinding = org.jdesktop.swingbinding.SwingBindings.createJTableBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, list, masterTable);
         org.jdesktop.swingbinding.JTableBinding.ColumnBinding columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${apellido}"));
         columnBinding.setColumnName("Apellido");
         columnBinding.setColumnClass(String.class);
+        columnBinding.setEditable(false);
         columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${nombre}"));
         columnBinding.setColumnName("Nombre");
         columnBinding.setColumnClass(String.class);
+        columnBinding.setEditable(false);
         columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${dni}"));
         columnBinding.setColumnName("DNI");
         columnBinding.setColumnClass(Integer.class);
+        columnBinding.setEditable(false);
         columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${sexo}"));
         columnBinding.setColumnName("Sexo");
         columnBinding.setColumnClass(String.class);
+        columnBinding.setEditable(false);
         columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${cuil}"));
         columnBinding.setColumnName("Cuil");
         columnBinding.setColumnClass(String.class);
+        columnBinding.setEditable(false);
         columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${telefono}"));
         columnBinding.setColumnName("Telefono");
         columnBinding.setColumnClass(String.class);
+        columnBinding.setEditable(false);
         columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${idSocio}"));
         columnBinding.setColumnName("Id Socio");
         columnBinding.setColumnClass(Integer.class);
+        columnBinding.setEditable(false);
         columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${celular}"));
         columnBinding.setColumnName("Celular");
         columnBinding.setColumnClass(String.class);
+        columnBinding.setEditable(false);
         columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${localidad}"));
         columnBinding.setColumnName("Localidad");
-        columnBinding.setColumnClass(String.class);
+        columnBinding.setEditable(false);
         columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${direccion}"));
         columnBinding.setColumnName("Direccion");
         columnBinding.setColumnClass(String.class);
+        columnBinding.setEditable(false);
         columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${email}"));
         columnBinding.setColumnName("Email");
         columnBinding.setColumnClass(String.class);
+        columnBinding.setEditable(false);
         bindingGroup.addBinding(jTableBinding);
         jTableBinding.bind();
         masterTable.addMouseListener(formListener);
@@ -465,9 +471,6 @@ public class SociosFVABM extends JPanel {
             else if (evt.getSource() == refreshButton) {
                 SociosFVABM.this.refreshButtonActionPerformed(evt);
             }
-            else if (evt.getSource() == jCBLocalididad) {
-                SociosFVABM.this.jCBLocalididadActionPerformed(evt);
-            }
             else if (evt.getSource() == newButton) {
                 SociosFVABM.this.newButtonActionPerformed(evt);
             }
@@ -486,26 +489,26 @@ public class SociosFVABM extends JPanel {
         }
 
         public void focusGained(java.awt.event.FocusEvent evt) {
-            if (evt.getSource() == celularField) {
-                SociosFVABM.this.celularFieldFocusGained(evt);
-            }
-            else if (evt.getSource() == telefonoField) {
+            if (evt.getSource() == telefonoField) {
                 SociosFVABM.this.telefonoFieldFocusGained(evt);
             }
             else if (evt.getSource() == cuilField) {
                 SociosFVABM.this.cuilFieldFocusGained(evt);
             }
+            else if (evt.getSource() == celularField) {
+                SociosFVABM.this.celularFieldFocusGained(evt);
+            }
         }
 
         public void focusLost(java.awt.event.FocusEvent evt) {
-            if (evt.getSource() == emailField) {
-                SociosFVABM.this.emailFieldFocusLost(evt);
+            if (evt.getSource() == telefonoField) {
+                SociosFVABM.this.telefonoFieldFocusLost(evt);
             }
             else if (evt.getSource() == celularField) {
                 SociosFVABM.this.celularFieldFocusLost(evt);
             }
-            else if (evt.getSource() == telefonoField) {
-                SociosFVABM.this.telefonoFieldFocusLost(evt);
+            else if (evt.getSource() == emailField) {
+                SociosFVABM.this.emailFieldFocusLost(evt);
             }
         }
 
@@ -522,14 +525,14 @@ public class SociosFVABM extends JPanel {
             if (evt.getSource() == telefonoField) {
                 SociosFVABM.this.telefonoFieldKeyTyped(evt);
             }
+            else if (evt.getSource() == cuilField) {
+                SociosFVABM.this.cuilFieldKeyTyped(evt);
+            }
             else if (evt.getSource() == celularField) {
                 SociosFVABM.this.celularFieldKeyTyped(evt);
             }
             else if (evt.getSource() == dniField) {
                 SociosFVABM.this.dniFieldKeyTyped(evt);
-            }
-            else if (evt.getSource() == cuilField) {
-                SociosFVABM.this.cuilFieldKeyTyped(evt);
             }
         }
 
@@ -588,7 +591,7 @@ public class SociosFVABM extends JPanel {
         celularField.setEnabled(true);
         emailField.setEnabled(true);
         jCBLocalididad.setEnabled(true);
-        jCBLocalididad.setSelectedItem("RESISTENCIA - Chaco");
+        jCBLocalididad.setSelectedItem("RESISTENCIA - CHACO");
 
         int ax = JOptionPane.showConfirmDialog(this, "¿El adherente a ingresar es socio?", null, JOptionPane.OK_CANCEL_OPTION);
         if (ax == JOptionPane.YES_OPTION) {
@@ -672,10 +675,6 @@ public class SociosFVABM extends JPanel {
             }
         }
     }//GEN-LAST:event_emailFieldFocusLost
-
-    private void jCBLocalididadActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jCBLocalididadActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jCBLocalididadActionPerformed
 
     private void saveButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveButtonActionPerformed
         try {
@@ -818,24 +817,23 @@ public class SociosFVABM extends JPanel {
         return s;
     }
 
-    private List getLocalidades() {
+    private List<Localidades> getLocalidades() {
         javax.persistence.Query query1;
-        String sql = "SELECT l.localidad, p.provincia FROM Localidades l, Provincias p WHERE l.localidadesPK.codProv=p.codProv";
+        String sql = "SELECT l FROM Localidades l";
 
         query1 = java.beans.Beans.isDesignTime() ? null : entityManager.createQuery(sql);
-        List<Object[]> lista = query1.getResultList();
+        List<Localidades> lista = query1.getResultList();
         return lista;
 
     }
 
     private void setComboLocalidades() {
         //seteamos el combo de localidades con la lista de todas ellas
-        List<Object[]> localidades = getLocalidades();
-        for (Object[] objects : localidades) {
-            jCBLocalididad.addItem(objects[0] + " - " + objects[1]);
+        List<Localidades> localidades = getLocalidades();
+        for (Localidades objects : localidades) {
+            jCBLocalididad.addItem(objects);
         }
-
-        // jCBLocalididad.setName("jCBLocalididad");
+       
         AutoCompleteDecorator.decorate(this.jCBLocalididad);
 
     }
@@ -934,7 +932,7 @@ public class SociosFVABM extends JPanel {
         this.emailField.setText(emailField);
     }
 
-    public void setjCBLocalididad(String jCBLocalididad) {
+    public void setjCBLocalididad(Localidades jCBLocalididad) {
         this.jCBLocalididad.setSelectedItem(jCBLocalididad);
     }
 
@@ -963,12 +961,14 @@ public class SociosFVABM extends JPanel {
     private javax.swing.JTextField apellidoField;
     private javax.swing.JLabel apellidoLabel;
     private javax.swing.JTextField celularField;
+    private javax.swing.JLabel celularLabel;
     private javax.swing.JTextField cuilField;
     private javax.swing.JLabel cuilLabel;
     private javax.swing.JButton deleteButton;
     private javax.swing.JTextField direccionField;
     private javax.swing.JLabel direccionLabel;
     private javax.swing.JTextField dniField;
+    private javax.swing.JLabel dniLabel;
     private javax.swing.JTextField emailField;
     private javax.swing.JLabel emailLabel;
     private javax.persistence.EntityManager entityManager;
@@ -983,8 +983,6 @@ public class SociosFVABM extends JPanel {
     private javax.swing.JTextField jTFBusqueda;
     private java.util.List<madreteresacrud.floresVida.SociosFlorVida> list;
     private javax.swing.JLabel localidadLabel;
-    private javax.swing.JLabel localidadLabel1;
-    private javax.swing.JLabel localidadLabel2;
     private javax.swing.JScrollPane masterScrollPane;
     private javax.swing.JTable masterTable;
     private javax.swing.JButton newButton;
@@ -993,9 +991,9 @@ public class SociosFVABM extends JPanel {
     private javax.persistence.Query query;
     private javax.swing.JButton refreshButton;
     private javax.swing.JButton saveButton;
+    private javax.swing.JLabel sexoLabel;
     private javax.swing.JTextField telefonoField;
     private javax.swing.JLabel telefonoLabel;
-    private javax.swing.JLabel telefonoLabel1;
     private org.jdesktop.beansbinding.BindingGroup bindingGroup;
     // End of variables declaration//GEN-END:variables
 //    public static void main(String[] args) {

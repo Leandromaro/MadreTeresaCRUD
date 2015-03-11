@@ -13,10 +13,13 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 import javax.persistence.Transient;
+import utilidades.Localidades;
 
 /**
  *
@@ -34,6 +37,7 @@ import javax.persistence.Transient;
     @NamedQuery(name = "SociosFlorVida.findByTelefono", query = "SELECT s FROM SociosFlorVida s WHERE s.telefono = :telefono"),
     @NamedQuery(name = "SociosFlorVida.findByCuil", query = "SELECT s FROM SociosFlorVida s WHERE s.cuil = :cuil")})
 public class SociosFlorVida implements Serializable {
+
     @Column(name = "sexo")
     private String sexo;
     @Column(name = "email")
@@ -54,8 +58,11 @@ public class SociosFlorVida implements Serializable {
     private String apellido;
     @Column(name = "nombre")
     private String nombre;
-    @Column(name = "localidad")
-    private String localidad;
+
+    @JoinColumn(name = "localidad", referencedColumnName = "codLoc")
+    @ManyToOne(optional = false)
+    private Localidades localidad;
+
     @Column(name = "direccion")
     private String direccion;
     @Column(name = "telefono")
@@ -100,12 +107,12 @@ public class SociosFlorVida implements Serializable {
         changeSupport.firePropertyChange("nombre", oldNombre, nombre);
     }
 
-    public String getLocalidad() {
+    public Localidades getLocalidad() {
         return localidad;
     }
 
-    public void setLocalidad(String localidad) {
-        String oldLocalidad = this.localidad;
+    public void setLocalidad(Localidades localidad) {
+        Localidades oldLocalidad = this.localidad;
         this.localidad = localidad;
         changeSupport.firePropertyChange("localidad", oldLocalidad, localidad);
     }
@@ -204,5 +211,5 @@ public class SociosFlorVida implements Serializable {
     public void setDni(Integer dni) {
         this.dni = dni;
     }
-    
+
 }

@@ -1369,12 +1369,12 @@ public class SociosABM extends JPanel {
         return cuil;
     }
 
-    private List getLocalidades() {
+    private List<Localidades> getLocalidades() {
         javax.persistence.Query query1;
         String sql = "SELECT l FROM Localidades l";
 
         query1 = java.beans.Beans.isDesignTime() ? null : entityManager.createQuery(sql);
-        List<Object[]> lista = query1.getResultList();
+        List<Localidades> lista = query1.getResultList();
         return lista;
 
     }
@@ -1386,7 +1386,6 @@ public class SociosABM extends JPanel {
             jCBLocalididad.addItem(objects);
         }
 
-        // jCBLocalididad.setName("jCBLocalididad");
         AutoCompleteDecorator.decorate(this.jCBLocalididad);
 
     }
@@ -1396,12 +1395,12 @@ public class SociosABM extends JPanel {
         jCBSexo.addItem("F");
     }
 
-    private List getTipoSocios() {
+    private List<TipoSocio> getTipoSocios() {
         javax.persistence.Query query1;
         String sql = "SELECT t FROM TipoSocio t";
 
         query1 = java.beans.Beans.isDesignTime() ? null : entityManager.createQuery(sql);
-        List<Object[]> lista = query1.getResultList();
+        List<TipoSocio> lista = query1.getResultList();
         return lista;
 
     }
@@ -1412,7 +1411,6 @@ public class SociosABM extends JPanel {
         for (TipoSocio entity : lista) {
             jComboTipSoc.addItem(entity);
         }
-
     }
 
     public static Socios getSocio(int idSocio) {

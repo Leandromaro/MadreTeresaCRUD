@@ -35,7 +35,7 @@ public class CuotasFVABM extends JPanel {
         label = "<html>Flores de vida<P>"
                 + "<html>Correspondiente a:<P>";
         this.idSoc = idSoc;
-        java.util.Collection listaFV = getListaFV();
+        List<FlorVida> listaFV = getListaFV();
         if (listaFV.isEmpty()) {
             JOptionPane.showMessageDialog(null, "El socio no tiene asignado flores de vida, agreguelos con el boton 'Ver Flores de Vida'.");
             JFrame topFrame = (JFrame) SwingUtilities.getWindowAncestor(this);
@@ -45,7 +45,7 @@ public class CuotasFVABM extends JPanel {
             FlorVida fv = new FlorVida();
             boolean band = false;
             javax.swing.JComboBox jCB = new javax.swing.JComboBox();
-            for (Object fv1 : listaFV) {
+            for (FlorVida fv1 : listaFV) {
                 fv = (FlorVida) fv1;
                 if (band == false) {
                     this.idfv = fv.getIdFV();
@@ -53,7 +53,7 @@ public class CuotasFVABM extends JPanel {
                     jLidSoc.setText(Integer.toString(idSoc));
                     band = true;
                 }
-                jCBfv.addItem(fv.getApellido() + " " + fv.getNombre());
+                jCBfv.addItem(fv.getApellido() + ", " + fv.getNombre());
             }
 
             if (!Beans.isDesignTime()) {
@@ -349,7 +349,7 @@ public class CuotasFVABM extends JPanel {
 
     private void jCBfvActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jCBfvActionPerformed
         FlorVidaABM fvabm = new FlorVidaABM();
-        String[] fv = jCBfv.getSelectedItem().toString().split(" ");
+        String[] fv = jCBfv.getSelectedItem().toString().split(",");
         this.idfv = fvabm.getIdFV(fv[0], fv[1], this.idSoc);
         jLidFV.setText(Integer.toString(this.idfv));
 
@@ -388,7 +388,7 @@ public class CuotasFVABM extends JPanel {
         }
     }//GEN-LAST:event_montoFieldKeyTyped
 
-    public java.util.Collection getListaFV() {
+    public List<FlorVida> getListaFV() {
         entityManager = java.beans.Beans.isDesignTime() ? null : javax.persistence.Persistence.createEntityManagerFactory("madreTeresaCRUDPU").createEntityManager();
         query = java.beans.Beans.isDesignTime() ? null : entityManager.createQuery("SELECT f FROM FlorVida f,RelacSocDifuntos r "
                 + "WHERE f.idFV=r.idFV AND r.idSocioFV=" + this.idSoc);

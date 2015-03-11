@@ -90,23 +90,22 @@
               <Group type="102" attributes="0">
                   <EmptySpace max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="0" attributes="0">
-                      <Group type="102" alignment="0" attributes="0">
+                      <Group type="102" attributes="0">
                           <Group type="103" groupAlignment="0" attributes="0">
                               <Component id="apellidoLabel" min="-2" max="-2" attributes="0"/>
                               <Component id="localidadLabel" alignment="0" min="-2" max="-2" attributes="0"/>
                           </Group>
                           <EmptySpace max="-2" attributes="0"/>
-                          <Group type="103" groupAlignment="0" max="-2" attributes="0">
+                          <Group type="103" groupAlignment="0" attributes="0">
                               <Group type="102" attributes="0">
                                   <Component id="refreshButton" linkSize="1" min="-2" max="-2" attributes="0"/>
                                   <EmptySpace type="separate" max="-2" attributes="0"/>
                                   <Component id="saveButton" linkSize="1" min="-2" max="-2" attributes="0"/>
                               </Group>
-                              <Component id="apellidoField" alignment="0" max="32767" attributes="0"/>
-                              <Component id="jCBLocalididad" alignment="0" pref="315" max="32767" attributes="0"/>
+                              <Component id="apellidoField" alignment="0" min="-2" pref="315" max="-2" attributes="0"/>
                           </Group>
                       </Group>
-                      <Group type="103" alignment="0" groupAlignment="1" max="-2" attributes="0">
+                      <Group type="103" groupAlignment="1" max="-2" attributes="0">
                           <Group type="102" alignment="0" attributes="0">
                               <Component id="cuilLabel" min="-2" max="-2" attributes="0"/>
                               <EmptySpace type="separate" max="-2" attributes="0"/>
@@ -115,12 +114,13 @@
                           <Group type="102" alignment="0" attributes="0">
                               <Group type="103" groupAlignment="0" attributes="0">
                                   <Component id="telefonoLabel" alignment="0" min="-2" max="-2" attributes="0"/>
-                                  <Component id="localidadLabel1" alignment="0" min="-2" max="-2" attributes="0"/>
+                                  <Component id="dniLabel" alignment="0" min="-2" max="-2" attributes="0"/>
                               </Group>
-                              <EmptySpace min="-2" pref="14" max="-2" attributes="0"/>
+                              <EmptySpace min="14" pref="14" max="-2" attributes="0"/>
                               <Group type="103" groupAlignment="0" attributes="0">
                                   <Component id="telefonoField" min="-2" pref="181" max="-2" attributes="0"/>
-                                  <Component id="dniField" alignment="1" min="-2" pref="181" max="-2" attributes="0"/>
+                                  <Component id="jCBLocalididad" alignment="0" min="-2" pref="319" max="-2" attributes="0"/>
+                                  <Component id="dniField" alignment="0" min="-2" pref="181" max="-2" attributes="0"/>
                               </Group>
                           </Group>
                       </Group>
@@ -144,8 +144,8 @@
                       </Group>
                       <Group type="102" alignment="0" attributes="0">
                           <Group type="103" groupAlignment="0" attributes="0">
-                              <Component id="telefonoLabel1" alignment="0" min="-2" max="-2" attributes="0"/>
-                              <Component id="localidadLabel2" alignment="0" min="-2" max="-2" attributes="0"/>
+                              <Component id="celularLabel" alignment="0" min="-2" max="-2" attributes="0"/>
+                              <Component id="sexoLabel" alignment="0" min="-2" max="-2" attributes="0"/>
                           </Group>
                           <Group type="103" groupAlignment="0" attributes="0">
                               <Group type="102" attributes="0">
@@ -175,7 +175,7 @@
                           </Group>
                           <EmptySpace min="-2" pref="5" max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="3" attributes="0">
-                              <Component id="localidadLabel1" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="dniLabel" alignment="3" min="-2" max="-2" attributes="0"/>
                               <Component id="dniField" alignment="3" min="-2" max="-2" attributes="0"/>
                           </Group>
                           <EmptySpace max="-2" attributes="0"/>
@@ -201,12 +201,12 @@
                           </Group>
                           <EmptySpace max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="3" attributes="0">
-                              <Component id="localidadLabel2" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="sexoLabel" alignment="3" min="-2" max="-2" attributes="0"/>
                               <Component id="jCBSexo" alignment="3" min="-2" pref="26" max="-2" attributes="0"/>
                           </Group>
                           <EmptySpace min="-2" pref="11" max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="3" attributes="0">
-                              <Component id="telefonoLabel1" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="celularLabel" alignment="3" min="-2" max="-2" attributes="0"/>
                               <Component id="celularField" alignment="3" min="-2" max="-2" attributes="0"/>
                           </Group>
                           <EmptySpace min="-2" pref="1" max="-2" attributes="0"/>
@@ -338,29 +338,12 @@
             <AuxValue name="JavaCodeGenerator_VariableModifier" type="java.lang.Integer" value="2"/>
           </AuxValues>
         </Component>
-        <Component class="javax.swing.JComboBox" name="jCBLocalididad">
-          <Properties>
-            <Property name="editable" type="boolean" value="true"/>
-            <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
-              <StringArray count="0"/>
-            </Property>
-          </Properties>
-          <BindingProperties>
-            <BindingProperty name="selectedItem" source="masterTable" sourcePath="${selectedElement.localidad}" target="jCBLocalididad" targetPath="selectedItem" updateStrategy="0" immediately="false"/>
-          </BindingProperties>
-          <Events>
-            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jCBLocalididadActionPerformed"/>
-          </Events>
-          <AuxValues>
-            <AuxValue name="JavaCodeGenerator_ListenersCodePost" type="java.lang.String" value="binding.setSourceUnreadableValue(&quot;null&quot;);&#xa;binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ, masterTable, org.jdesktop.beansbinding.ELProperty.create(&quot;${selectedElement != null}&quot;), nombreField, org.jdesktop.beansbinding.BeanProperty.create(&quot;enabled&quot;));&#xa;bindingGroup.addBinding(binding);"/>
-          </AuxValues>
-        </Component>
-        <Component class="javax.swing.JLabel" name="localidadLabel1">
+        <Component class="javax.swing.JLabel" name="dniLabel">
           <Properties>
             <Property name="text" type="java.lang.String" value="DNI:"/>
           </Properties>
         </Component>
-        <Component class="javax.swing.JLabel" name="telefonoLabel1">
+        <Component class="javax.swing.JLabel" name="celularLabel">
           <Properties>
             <Property name="text" type="java.lang.String" value="Celular:"/>
           </Properties>
@@ -390,7 +373,7 @@
             <EventHandler event="keyTyped" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="dniFieldKeyTyped"/>
           </Events>
         </Component>
-        <Component class="javax.swing.JLabel" name="localidadLabel2">
+        <Component class="javax.swing.JLabel" name="sexoLabel">
           <Properties>
             <Property name="text" type="java.lang.String" value="Sexo:"/>
           </Properties>
@@ -423,6 +406,16 @@
           <Events>
             <EventHandler event="focusLost" listener="java.awt.event.FocusListener" parameters="java.awt.event.FocusEvent" handler="emailFieldFocusLost"/>
           </Events>
+        </Component>
+        <Component class="javax.swing.JComboBox" name="jCBLocalididad">
+          <Properties>
+            <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
+              <StringArray count="0"/>
+            </Property>
+          </Properties>
+          <BindingProperties>
+            <BindingProperty name="selectedItem" source="masterTable" sourcePath="${selectedElement.localidad}" target="jCBLocalididad" targetPath="selectedItem" updateStrategy="0" immediately="false"/>
+          </BindingProperties>
         </Component>
       </SubComponents>
     </Container>
@@ -577,6 +570,7 @@
           <SubComponents>
             <Component class="javax.swing.JTable" name="masterTable">
               <Properties>
+                <Property name="autoCreateRowSorter" type="boolean" value="true"/>
                 <Property name="columnModel" type="javax.swing.table.TableColumnModel" editor="org.netbeans.modules.form.editors2.TableColumnModelEditor">
                   <TableColumnModel selectionModel="0">
                     <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="true">
@@ -645,46 +639,56 @@
                   <Subbinding sourcePath="${apellido}">
                     <BindingParameter name="NAME" value="Apellido"/>
                     <BindingParameter name="javax.swing.binding.ParameterKeys.COLUMN_CLASS" value="String.class"/>
+                    <BindingParameter name="javax.swing.binding.ParameterKeys.EDITABLE" value="false"/>
                   </Subbinding>
                   <Subbinding sourcePath="${nombre}">
                     <BindingParameter name="NAME" value="Nombre"/>
                     <BindingParameter name="javax.swing.binding.ParameterKeys.COLUMN_CLASS" value="String.class"/>
+                    <BindingParameter name="javax.swing.binding.ParameterKeys.EDITABLE" value="false"/>
                   </Subbinding>
                   <Subbinding sourcePath="${dni}">
                     <BindingParameter name="NAME" value="DNI"/>
                     <BindingParameter name="javax.swing.binding.ParameterKeys.COLUMN_CLASS" value="Integer.class"/>
+                    <BindingParameter name="javax.swing.binding.ParameterKeys.EDITABLE" value="false"/>
                   </Subbinding>
                   <Subbinding sourcePath="${sexo}">
                     <BindingParameter name="NAME" value="Sexo"/>
                     <BindingParameter name="javax.swing.binding.ParameterKeys.COLUMN_CLASS" value="String.class"/>
+                    <BindingParameter name="javax.swing.binding.ParameterKeys.EDITABLE" value="false"/>
                   </Subbinding>
                   <Subbinding sourcePath="${cuil}">
                     <BindingParameter name="NAME" value="Cuil"/>
                     <BindingParameter name="javax.swing.binding.ParameterKeys.COLUMN_CLASS" value="String.class"/>
+                    <BindingParameter name="javax.swing.binding.ParameterKeys.EDITABLE" value="false"/>
                   </Subbinding>
                   <Subbinding sourcePath="${telefono}">
                     <BindingParameter name="NAME" value="Telefono"/>
                     <BindingParameter name="javax.swing.binding.ParameterKeys.COLUMN_CLASS" value="String.class"/>
+                    <BindingParameter name="javax.swing.binding.ParameterKeys.EDITABLE" value="false"/>
                   </Subbinding>
                   <Subbinding sourcePath="${idSocio}">
                     <BindingParameter name="NAME" value="Id Socio"/>
                     <BindingParameter name="javax.swing.binding.ParameterKeys.COLUMN_CLASS" value="Integer.class"/>
+                    <BindingParameter name="javax.swing.binding.ParameterKeys.EDITABLE" value="false"/>
                   </Subbinding>
                   <Subbinding sourcePath="${celular}">
                     <BindingParameter name="NAME" value="Celular"/>
                     <BindingParameter name="javax.swing.binding.ParameterKeys.COLUMN_CLASS" value="String.class"/>
+                    <BindingParameter name="javax.swing.binding.ParameterKeys.EDITABLE" value="false"/>
                   </Subbinding>
                   <Subbinding sourcePath="${localidad}">
                     <BindingParameter name="NAME" value="Localidad"/>
-                    <BindingParameter name="javax.swing.binding.ParameterKeys.COLUMN_CLASS" value="String.class"/>
+                    <BindingParameter name="javax.swing.binding.ParameterKeys.EDITABLE" value="false"/>
                   </Subbinding>
                   <Subbinding sourcePath="${direccion}">
                     <BindingParameter name="NAME" value="Direccion"/>
                     <BindingParameter name="javax.swing.binding.ParameterKeys.COLUMN_CLASS" value="String.class"/>
+                    <BindingParameter name="javax.swing.binding.ParameterKeys.EDITABLE" value="false"/>
                   </Subbinding>
                   <Subbinding sourcePath="${email}">
                     <BindingParameter name="NAME" value="Email"/>
                     <BindingParameter name="javax.swing.binding.ParameterKeys.COLUMN_CLASS" value="String.class"/>
+                    <BindingParameter name="javax.swing.binding.ParameterKeys.EDITABLE" value="false"/>
                   </Subbinding>
                 </BindingProperty>
               </BindingProperties>
