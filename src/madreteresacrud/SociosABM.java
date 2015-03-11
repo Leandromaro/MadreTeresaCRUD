@@ -163,6 +163,7 @@ public class SociosABM extends JPanel {
         FormListener formListener = new FormListener();
 
         jPanelForm.setBorder(javax.swing.BorderFactory.createEtchedBorder());
+        jPanelForm.setEnabled(false);
 
         apellidoLabel.setText("Apellido/s:");
 
@@ -273,9 +274,11 @@ public class SociosABM extends JPanel {
         jButtonFecha.addActionListener(formListener);
 
         refreshButton.setText("Cancelar");
+        refreshButton.setEnabled(false);
         refreshButton.addActionListener(formListener);
 
         saveButton.setText("Guardar");
+        saveButton.setEnabled(false);
         saveButton.addActionListener(formListener);
 
         jLEliminado.setFont(new java.awt.Font("Verdana", 0, 12)); // NOI18N
@@ -903,7 +906,10 @@ public class SociosABM extends JPanel {
     private void newButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_newButtonActionPerformed
 
         //JOptionPane.showMessageDialog(null, "Debe rellenar todos los campos");       
-
+        refreshButton.setEnabled(true);
+        saveButton.setEnabled(true);
+        newButton.setEnabled(false);
+        jPanelForm.setEnabled(true);
         madreteresacrud.Socios s = new madreteresacrud.Socios();
         entityManager.persist(s);
         list.add(s);
@@ -1036,38 +1042,53 @@ public class SociosABM extends JPanel {
     }//GEN-LAST:event_jBVerCuotasActionPerformed
 
     private void saveButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveButtonActionPerformed
-        try {
-            entityManager.getTransaction().commit();
+        if ((documentoField.getText().trim().isEmpty())||
+           (apellidoField.getText().trim().isEmpty()||
+           (nombreField.getText().trim().isEmpty()))){
+           JOptionPane.showMessageDialog(null, "No se puede crear usuarios con valores en blanco");
+        }
+        else{ 
+           try {
+                entityManager.getTransaction().commit();
+                entityManager.getTransaction().begin();
+            } catch (RollbackException rex) {
+                rex.printStackTrace();
+                entityManager.getTransaction().begin();
+                List<madreteresacrud.Socios> merged = new ArrayList<madreteresacrud.Socios>(list.size());
+                for (madreteresacrud.Socios s : list) {
+                    merged.add(entityManager.merge(s));
+                }
+                list.clear();
+                list.addAll(merged);
+            }
+        }
+            //Vuelve a cargar los socios en la tabla
+            entityManager.getTransaction().rollback();
             entityManager.getTransaction().begin();
-        } catch (RollbackException rex) {
-            rex.printStackTrace();
-            entityManager.getTransaction().begin();
-            List<madreteresacrud.Socios> merged = new ArrayList<madreteresacrud.Socios>(list.size());
-            for (madreteresacrud.Socios s : list) {
-                merged.add(entityManager.merge(s));
+            java.util.Collection data = query.getResultList();
+            for (Object entity : data) {
+                entityManager.refresh(entity);
             }
             list.clear();
-            list.addAll(merged);
-        }
-
-        jCBSexo.setEnabled(false);
-        cuilField.setEnabled(false);
-        celularField.setEnabled(false);
-        numSocField.setEnabled(false);
-        jComboTipSoc.setEnabled(false);
-        //Vuelve a cargar los socios en la tabla
-        entityManager.getTransaction().rollback();
-        entityManager.getTransaction().begin();
-        java.util.Collection data = query.getResultList();
-        for (Object entity : data) {
-            entityManager.refresh(entity);
-        }
-        list.clear();
-        list.addAll(data);
-        jBVerCuotas.setEnabled(false);
-        setBusqueda();
+            list.addAll(data);
+            jBVerCuotas.setEnabled(false);
+            setBusqueda();
+            this.desactivar();
+            
     }//GEN-LAST:event_saveButtonActionPerformed
 
+    private void desactivar(){
+        refreshButton.setEnabled(false);
+        saveButton.setEnabled(false);    
+        newButton.setEnabled(true);
+        cuilField.setEnabled(false);    
+        celularField.setEnabled(false); 
+        jComboTipSoc.setEnabled(false);
+        jCBSexo.setEnabled(false);
+        jCBLocalididad.setEnabled(false);
+        numSocField.setEnabled(false);
+    }
+      
     private void refreshButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_refreshButtonActionPerformed
         entityManager.getTransaction().rollback();
         entityManager.getTransaction().begin();
