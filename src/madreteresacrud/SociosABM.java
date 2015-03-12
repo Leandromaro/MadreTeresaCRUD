@@ -1041,10 +1041,20 @@ public class SociosABM extends JPanel {
 
     }//GEN-LAST:event_jBVerCuotasActionPerformed
 
-    private void saveButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveButtonActionPerformed
-        if ((documentoField.getText().trim().isEmpty())||
+    private Boolean blancos(){
+        if((documentoField.getText().trim().isEmpty())||
            (apellidoField.getText().trim().isEmpty()||
            (nombreField.getText().trim().isEmpty()))){
+            return true;
+        }else{
+            return false;
+        }
+    }
+    
+    
+    
+    private void saveButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveButtonActionPerformed
+        if (this.blancos()){
            JOptionPane.showMessageDialog(null, "No se puede crear usuarios con valores en blanco");
         }
         else{ 
@@ -1062,21 +1072,26 @@ public class SociosABM extends JPanel {
                 list.addAll(merged);
             }
         }
-            //Vuelve a cargar los socios en la tabla
-            entityManager.getTransaction().rollback();
-            entityManager.getTransaction().begin();
-            java.util.Collection data = query.getResultList();
-            for (Object entity : data) {
-                entityManager.refresh(entity);
-            }
-            list.clear();
-            list.addAll(data);
-            jBVerCuotas.setEnabled(false);
-            setBusqueda();
-            this.desactivar();
-            
+        //Vuelve a cargar los socios en la tabla
+        this.refrescarForm();
+          
     }//GEN-LAST:event_saveButtonActionPerformed
 
+    private void refrescarForm(){
+        entityManager.getTransaction().rollback();
+        entityManager.getTransaction().begin();
+        java.util.Collection data = query.getResultList();
+        for (Object entity : data) {
+            entityManager.refresh(entity);
+        }
+        list.clear();
+        list.addAll(data);
+        jBVerCuotas.setEnabled(false);
+        setBusqueda();
+        this.desactivar();
+    }
+    
+    
     private void desactivar(){
         refreshButton.setEnabled(false);
         saveButton.setEnabled(false);    

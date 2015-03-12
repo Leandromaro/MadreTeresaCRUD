@@ -73,6 +73,8 @@ public class DonacionesABM extends JPanel {
 
         FormListener formListener = new FormListener();
 
+        setEnabled(false);
+
         jPanelTabla.setBorder(javax.swing.BorderFactory.createEtchedBorder());
 
         org.jdesktop.swingbinding.JTableBinding jTableBinding = org.jdesktop.swingbinding.SwingBindings.createJTableBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, list, masterTable);
@@ -182,13 +184,16 @@ public class DonacionesABM extends JPanel {
         fechaDonacionField.addMouseListener(formListener);
 
         saveButton.setText("Guardar");
+        saveButton.setEnabled(false);
         saveButton.addActionListener(formListener);
 
         refreshButton.setText("Cancelar");
+        refreshButton.setEnabled(false);
         refreshButton.addActionListener(formListener);
 
         jButtonCalendar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/calendario.GIF"))); // NOI18N
         jButtonCalendar.setContentAreaFilled(false);
+        jButtonCalendar.setEnabled(false);
         jButtonCalendar.addActionListener(formListener);
 
         documentoField.setToolTipText("Solo números con longitud máxima de 8 dígitos. ");
@@ -203,6 +208,7 @@ public class DonacionesABM extends JPanel {
         jLabel1.setText("Dni/Cuil");
 
         jButtonBuscar.setText("Buscar");
+        jButtonBuscar.setEnabled(false);
         jButtonBuscar.addActionListener(formListener);
 
         jCheckBoxSoc.setText("Socio Actual");
@@ -254,7 +260,7 @@ public class DonacionesABM extends JPanel {
         jPanelFormLayout.setVerticalGroup(
             jPanelFormLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanelFormLayout.createSequentialGroup()
-                .addContainerGap(12, Short.MAX_VALUE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(jPanelFormLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel1, javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanelFormLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -388,47 +394,46 @@ public class DonacionesABM extends JPanel {
 
     @SuppressWarnings("unchecked")
     private void refreshButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_refreshButtonActionPerformed
-        documentoField.setEnabled(false);
-        documentoField.setText("null");
-        entityManager.getTransaction().rollback();
-        entityManager.getTransaction().begin();
-        java.util.Collection data = query.getResultList();
-        for (Object entity : data) {
-            entityManager.refresh(entity);
-        }
-        list.clear();
-        list.addAll(data);
+        this.refrescarForm();
     }//GEN-LAST:event_refreshButtonActionPerformed
 
    
     
     private void deleteButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteButtonActionPerformed
-        int reply = JOptionPane.showConfirmDialog(null, "¿Está seguro de eliminar el registro?", "Eliminacion de Registro", JOptionPane.YES_NO_OPTION);
-        if (reply == JOptionPane.YES_OPTION) {
-            JOptionPane.showMessageDialog(null, "Registro Eliminado");
-        int[] selected = masterTable.getSelectedRows();
-        List<madreteresacrud.Donaciones> toRemove = new ArrayList<madreteresacrud.Donaciones>(selected.length);
-        for (int idx = 0; idx < selected.length; idx++) {
-            madreteresacrud.Donaciones d = list.get(masterTable.convertRowIndexToModel(selected[idx]));
-            toRemove.add(d);
-            entityManager.remove(d);
-        }
-        try {
-                entityManager.getTransaction().commit();
-                entityManager.getTransaction().begin();
-            } catch (Exception e) {
+            int[] selected = masterTable.getSelectedRows();
+            List<madreteresacrud.Donaciones> toRemove = new ArrayList<madreteresacrud.Donaciones>(selected.length);
+            if(toRemove.size()==0){
+               JOptionPane.showMessageDialog(null, "No se pueden eliminar filas vacias");
+               this.refrescarForm();
+            }else{
+                int reply = JOptionPane.showConfirmDialog(null, "¿Está seguro de eliminar el registro?", "Eliminacion de Registro", JOptionPane.YES_NO_OPTION);
+                if (reply == JOptionPane.YES_OPTION) {
+        
+                    for (int idx = 0; idx < selected.length; idx++) {
+                        madreteresacrud.Donaciones d = list.get(masterTable.convertRowIndexToModel(selected[idx]));
+                        toRemove.add(d);
+                        entityManager.remove(d);
+                    }
+                    try {
+                            entityManager.getTransaction().commit();
+                            entityManager.getTransaction().begin();
+                            JOptionPane.showMessageDialog(null, "Registro Eliminado");
+                    } catch (Exception e) {
+                        System.out.println("Error");
+                    }
+                list.removeAll(toRemove);
             }
-        list.removeAll(toRemove);
         }
     }//GEN-LAST:event_deleteButtonActionPerformed
 
     private void newButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_newButtonActionPerformed
-        jButtonBuscar.setEnabled(false);
+        newButton.setEnabled(false);
+        this.setEnabledBotones(true);
         jCheckBoxSoc.setSelected(false);
         jCheckBoxSoc.setEnabled(true);
         documentoField.setText("");
         documentoField.setEnabled(true);
-        jButtonCalendar.enable(true);
+        jButtonCalendar.setEnabled(true);
         documentoField.setEnabled(true);
         madreteresacrud.Donaciones d = new madreteresacrud.Donaciones();
         entityManager.persist(d);
@@ -438,40 +443,78 @@ public class DonacionesABM extends JPanel {
         masterTable.scrollRectToVisible(masterTable.getCellRect(row, 0, true));
     }//GEN-LAST:event_newButtonActionPerformed
     
-    private void saveButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveButtonActionPerformed
-        try {
-            int doc = Integer.parseInt(documentoField.getText().trim());
-            if(doc!=0){
-                SociosABM s = new SociosABM();
-                Socios soc = s.ApeYNom(doc);
-                if(soc !=null){
-                    int dialogResult = JOptionPane.showConfirmDialog(null, "Es usted "+soc.getNombre()+" "+soc.getApellido()+"?", "Selección de Registro", JOptionPane.YES_NO_OPTION);
-                    if(JOptionPane.YES_OPTION == dialogResult){
-                        s.setDonanteByDNI(doc);
-                        apellidoField.setText(soc.getApellido());
-                        nombreField.setText(soc.getNombre());
-                        apellidoField.setEnabled(true);
-                        nombreField.setEnabled(true);
-                        montoField.setEnabled(true);
-                        fechaDonacionField.setEnabled(true);
-                        dialogResult=0;
-                    }
-                }                  
-            }
-            entityManager.getTransaction().commit();
-            entityManager.getTransaction().begin();
-            
-        } catch (RollbackException rex) {
-            rex.printStackTrace();
-            entityManager.getTransaction().begin();
-            List<madreteresacrud.Donaciones> merged = new ArrayList<madreteresacrud.Donaciones>(list.size());
-            for (madreteresacrud.Donaciones d : list) {
-                merged.add(entityManager.merge(d));
-            }
-            list.clear();
-            list.addAll(merged);
+    private void setEnabledBotones (boolean estado){
+        jButtonBuscar.setEnabled(estado);
+        refreshButton.setEnabled(estado);
+        saveButton.setEnabled(estado);
+        newButton.setEnabled(!estado);
+        jCheckBoxSoc.setEnabled(estado);
+        jButtonCalendar.setEnabled(estado);
+    }
+    
+    private void activarTextos (boolean estado){
+        documentoField.setEnabled(estado);                
+        nombreField.setEnabled(estado);
+        apellidoField.setEnabled(estado);
+        montoField.setEnabled(estado);
+        fechaDonacionField.setEnabled(estado);
+    }
+    
+    
+    private Boolean blancos (){
+        if((documentoField.getText().trim().isEmpty())||
+                (nombreField.getText().trim().isEmpty())||
+                (apellidoField.getText().trim().isEmpty())||
+                (montoField.getText().trim().isEmpty())||
+                (fechaDonacionField.getText().trim().isEmpty())){
+            return true;
+        }else{
+            return false;
         }
-        
+      }
+    
+    
+    private void saveButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveButtonActionPerformed
+        if(this.blancos()){
+            JOptionPane.showMessageDialog(null, "No se puede generar donaciones de usuarios con valores en blanco");
+        }else{
+                try {
+                    int doc = Integer.parseInt(documentoField.getText().trim());
+                    if(doc!=0){
+                        SociosABM s = new SociosABM();
+                        Socios soc = s.ApeYNom(doc);
+                        if(soc !=null){
+                            int dialogResult = JOptionPane.showConfirmDialog(null, "Es usted "+soc.getNombre()+" "+soc.getApellido()+"?", "Selección de Registro", JOptionPane.YES_NO_OPTION);
+                            if(JOptionPane.YES_OPTION == dialogResult){
+                                s.setDonanteByDNI(doc);
+                                apellidoField.setText(soc.getApellido());
+                                nombreField.setText(soc.getNombre());
+                                apellidoField.setEnabled(true);
+                                nombreField.setEnabled(true);
+                                montoField.setEnabled(true);
+                                fechaDonacionField.setEnabled(true);
+                                dialogResult=0;
+                            }
+                        }                  
+                    }
+                    entityManager.getTransaction().commit();
+                    entityManager.getTransaction().begin();
+
+                } catch (RollbackException rex) {
+                    rex.printStackTrace();
+                    entityManager.getTransaction().begin();
+                    List<madreteresacrud.Donaciones> merged = new ArrayList<madreteresacrud.Donaciones>(list.size());
+                    for (madreteresacrud.Donaciones d : list) {
+                        merged.add(entityManager.merge(d));
+                    }
+                    list.clear();
+                    list.addAll(merged);
+                }
+        }
+       this.refrescarForm();
+    }//GEN-LAST:event_saveButtonActionPerformed
+
+    private void refrescarForm(){
         entityManager.getTransaction().rollback();
         entityManager.getTransaction().begin();
         java.util.Collection data = query.getResultList();
@@ -480,8 +523,11 @@ public class DonacionesABM extends JPanel {
         }
         list.clear();
         list.addAll(data);
-    }//GEN-LAST:event_saveButtonActionPerformed
-
+        this.setEnabledBotones(false);
+        this.activarTextos(false);
+    }
+    
+    
     private void jButtonCalendarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonCalendarActionPerformed
         new Calendario((JFrame) SwingUtilities.getWindowAncestor(this),true,fechaDonacionField).setVisible(true);
     }//GEN-LAST:event_jButtonCalendarActionPerformed
@@ -499,27 +545,31 @@ public class DonacionesABM extends JPanel {
     }//GEN-LAST:event_documentoFieldActionPerformed
 
     private void jButtonBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonBuscarActionPerformed
-        saveButton.setEnabled(true);
-        int doc = Integer.parseInt(documentoField.getText().trim());
+        if(this.blancos()){
+            JOptionPane.showMessageDialog(null, "No se puede buscar socios con valores en blanco");
+            this.refrescarForm();
+        }else{    
+            saveButton.setEnabled(true);
+            int doc = Integer.parseInt(documentoField.getText().trim());
             if(doc!=0){
                 SociosABM s = new SociosABM();
                 Socios soc = s.ApeYNom(doc);
                 if(soc !=null){
-                    int dialogResult = JOptionPane.showConfirmDialog(null, "Es usted "+soc.getNombre()+" "+soc.getApellido()+"?", "Selección de Registro", JOptionPane.YES_NO_OPTION);
-                    if(JOptionPane.YES_OPTION == dialogResult){
-                        apellidoField.setText(soc.getApellido());
-                        nombreField.setText(soc.getNombre());
-                        apellidoField.setEnabled(true);
-                        nombreField.setEnabled(true);
-                        montoField.setEnabled(true);
-                        fechaDonacionField.setEnabled(true);
-                        dialogResult=0;       
-                    }
-                }else{
-                    JOptionPane.showMessageDialog(null, "No se encuentra Socio con ese DNI");
-                }                  
+                        int dialogResult = JOptionPane.showConfirmDialog(null, "Es usted "+soc.getNombre()+" "+soc.getApellido()+"?", "Selección de Registro", JOptionPane.YES_NO_OPTION);
+                        if(JOptionPane.YES_OPTION == dialogResult){
+                            apellidoField.setText(soc.getApellido());
+                            nombreField.setText(soc.getNombre());
+                            apellidoField.setEnabled(true);
+                            nombreField.setEnabled(true);
+                            montoField.setEnabled(true);
+                            fechaDonacionField.setEnabled(true);
+                            dialogResult=0;       
+                        }
+                 }else{
+                        JOptionPane.showMessageDialog(null, "No se encuentra Socio con ese DNI");
+                 }                  
             }
-         
+        } 
     }//GEN-LAST:event_jButtonBuscarActionPerformed
 
     private void jCheckBoxSocActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jCheckBoxSocActionPerformed
