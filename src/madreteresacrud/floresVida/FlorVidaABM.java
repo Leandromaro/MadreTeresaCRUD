@@ -502,7 +502,6 @@ public class FlorVidaABM extends JPanel {
 
     private void masterTableMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_masterTableMouseClicked
         setEnabledBotones(true);
-        newButton.setEnabled(false);
     }//GEN-LAST:event_masterTableMouseClicked
 
     
