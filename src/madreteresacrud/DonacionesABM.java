@@ -400,15 +400,12 @@ public class DonacionesABM extends JPanel {
    
     
     private void deleteButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteButtonActionPerformed
-            int[] selected = masterTable.getSelectedRows();
-            List<madreteresacrud.Donaciones> toRemove = new ArrayList<madreteresacrud.Donaciones>(selected.length);
-            if(toRemove.size()==0){
-               JOptionPane.showMessageDialog(null, "No se pueden eliminar filas vacias");
-               this.refrescarForm();
-            }else{
-                int reply = JOptionPane.showConfirmDialog(null, "¿Está seguro de eliminar el registro?", "Eliminacion de Registro", JOptionPane.YES_NO_OPTION);
+    int reply = JOptionPane.showConfirmDialog(null, "¿Está seguro de eliminar el registro?", "Eliminacion de Registro", JOptionPane.YES_NO_OPTION);
                 if (reply == JOptionPane.YES_OPTION) {
-        
+                    int[] selected = masterTable.getSelectedRows();
+                    List<madreteresacrud.Donaciones> toRemove = new ArrayList<madreteresacrud.Donaciones>(selected.length);
+
+                    
                     for (int idx = 0; idx < selected.length; idx++) {
                         madreteresacrud.Donaciones d = list.get(masterTable.convertRowIndexToModel(selected[idx]));
                         toRemove.add(d);
@@ -422,13 +419,16 @@ public class DonacionesABM extends JPanel {
                         System.out.println("Error");
                     }
                 list.removeAll(toRemove);
+                this.refrescarForm();
             }
-        }
+        
     }//GEN-LAST:event_deleteButtonActionPerformed
 
+    
+    
     private void newButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_newButtonActionPerformed
         newButton.setEnabled(false);
-        this.setEnabledBotones(true);
+        setEnabledBotones(true);
         jCheckBoxSoc.setSelected(false);
         jCheckBoxSoc.setEnabled(true);
         documentoField.setText("");
@@ -591,6 +591,7 @@ public class DonacionesABM extends JPanel {
     }//GEN-LAST:event_jCheckBoxSocActionPerformed
 
     private void masterTableMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_masterTableMouseClicked
+        setEnabledBotones(true);
         documentoField.setEnabled(true);
         jCheckBoxSoc.setEnabled(true);
     }//GEN-LAST:event_masterTableMouseClicked

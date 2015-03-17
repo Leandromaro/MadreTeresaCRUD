@@ -85,6 +85,8 @@ public class FlorVidaABM extends JPanel {
 
         FormListener formListener = new FormListener();
 
+        setEnabled(false);
+
         jPanelForm.setBorder(javax.swing.BorderFactory.createEtchedBorder());
 
         apellidoLabel.setText("Apellido:");
@@ -141,9 +143,11 @@ public class FlorVidaABM extends JPanel {
         bindingGroup.addBinding(binding);
 
         saveButton.setText("Guardar");
+        saveButton.setEnabled(false);
         saveButton.addActionListener(formListener);
 
         refreshButton.setText("Cancelar");
+        refreshButton.setEnabled(false);
         refreshButton.addActionListener(formListener);
 
         jButton1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/calendario.GIF"))); // NOI18N
@@ -257,6 +261,7 @@ public class FlorVidaABM extends JPanel {
         columnBinding.setColumnClass(Integer.class);
         bindingGroup.addBinding(jTableBinding);
         jTableBinding.bind();
+        masterTable.addMouseListener(formListener);
         masterScrollPane.setViewportView(masterTable);
 
         newButton.setText("Nueva Flor de Vida");
@@ -350,6 +355,9 @@ public class FlorVidaABM extends JPanel {
             if (evt.getSource() == fechaDefuncionField) {
                 FlorVidaABM.this.fechaDefuncionFieldMouseClicked(evt);
             }
+            else if (evt.getSource() == masterTable) {
+                FlorVidaABM.this.masterTableMouseClicked(evt);
+            }
         }
 
         public void mouseEntered(java.awt.event.MouseEvent evt) {
@@ -369,6 +377,11 @@ public class FlorVidaABM extends JPanel {
 
     @SuppressWarnings("unchecked")
     private void refreshButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_refreshButtonActionPerformed
+        this.refrescarForm();
+
+    }//GEN-LAST:event_refreshButtonActionPerformed
+    
+    private void refrescarForm(){
         entityManager.getTransaction().rollback();
         entityManager.getTransaction().begin();
         java.util.Collection data = query.getResultList();
@@ -377,29 +390,65 @@ public class FlorVidaABM extends JPanel {
         }
         list.clear();
         list.addAll(data);
-    }//GEN-LAST:event_refreshButtonActionPerformed
+        this.setEnabledBotones(false);
+        this.activarTextos(false);
+    }
+    
+    private void activarTextos (boolean estado){
+        direccionField.setEnabled(estado);                
+        nombreField.setEnabled(estado);
+        apellidoField.setEnabled(estado);
+        telefonoField.setEnabled(estado);
+        fechaDefuncionField.setEnabled(estado);
+        localidadField.setEnabled(estado);
+    }
+    
+    private Boolean blancos (){
+        if((localidadField.getText().trim().isEmpty())||
+                (nombreField.getText().trim().isEmpty())||
+                (apellidoField.getText().trim().isEmpty())||
+                (direccionField.getText().trim().isEmpty())||
+                (telefonoField.getText().trim().isEmpty())||
+                (fechaDefuncionField.getText().trim().isEmpty())){
+            return true;
+        }else{
+            return false;
+        }
+      }
     
     private void deleteButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteButtonActionPerformed
-     int reply = JOptionPane.showConfirmDialog(null, "¿Está seguro de eliminar el registro?", "Eliminacion de Registro", JOptionPane.YES_NO_OPTION);
-        if (reply == JOptionPane.YES_OPTION) {
-
-            int[] selected = masterTable.getSelectedRows();
-            List<madreteresacrud.floresVida.FlorVida> toRemove = new ArrayList<madreteresacrud.floresVida.FlorVida>(selected.length);
-            for (int idx = 0; idx < selected.length; idx++) {
-                madreteresacrud.floresVida.FlorVida f = list.get(masterTable.convertRowIndexToModel(selected[idx]));
-                toRemove.add(f);
-                entityManager.remove(f);
-            }
-            try {
-                    entityManager.getTransaction().commit();
-                    entityManager.getTransaction().begin();
-                } catch (Exception e) {
+        int reply = JOptionPane.showConfirmDialog(null, "¿Está seguro de eliminar el registro?", "Eliminacion de Registro", JOptionPane.YES_NO_OPTION);
+                if (reply == JOptionPane.YES_OPTION) {
+                    int[] selected = masterTable.getSelectedRows();
+                    List<madreteresacrud.floresVida.FlorVida> toRemove = new ArrayList<madreteresacrud.floresVida.FlorVida>(selected.length);            
+                    for (int idx = 0; idx < selected.length; idx++) {
+                        madreteresacrud.floresVida.FlorVida f = list.get(masterTable.convertRowIndexToModel(selected[idx]));
+                        toRemove.add(f);
+                        entityManager.remove(f);
+                    }
+                    try {
+                            entityManager.getTransaction().commit();
+                            entityManager.getTransaction().begin();
+                        } catch (Exception e) {
+                        }
+                    list.removeAll(toRemove);
+                    this.refrescarForm();
                 }
-            list.removeAll(toRemove);
-        }
+        
     }//GEN-LAST:event_deleteButtonActionPerformed
     
+    private void setEnabledBotones (boolean estado){
+        refreshButton.setEnabled(estado);
+        deleteButton.setEnabled(estado);
+        saveButton.setEnabled(estado);
+        newButton.setEnabled(!estado);
+        jButton1.setEnabled(estado);
+    }
+    
+    
     private void newButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_newButtonActionPerformed
+        setEnabledBotones(true);
+        masterTable.setEnabled(false);
         madreteresacrud.floresVida.FlorVida f = new madreteresacrud.floresVida.FlorVida();
         entityManager.persist(f);
         list.add(f);
@@ -409,33 +458,38 @@ public class FlorVidaABM extends JPanel {
     }//GEN-LAST:event_newButtonActionPerformed
     
     private void saveButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveButtonActionPerformed
-        try {
-            entityManager.getTransaction().commit();
-            entityManager.getTransaction().begin();
-        } catch (RollbackException rex) {
-            rex.printStackTrace();
-            entityManager.getTransaction().begin();
-            List<madreteresacrud.floresVida.FlorVida> merged = new ArrayList<madreteresacrud.floresVida.FlorVida>(list.size());
-            for (madreteresacrud.floresVida.FlorVida f : list) {
-                merged.add(entityManager.merge(f));
-            }
-            list.clear();
-            list.addAll(merged);
-        }
-        if(fv!=null){            
-        fv.setTabla();
-        JFrame topFrame = (JFrame) SwingUtilities.getWindowAncestor(this);
-        topFrame.hide(); 
-        }
-        
-        entityManager.getTransaction().rollback();
-        entityManager.getTransaction().begin();
-        java.util.Collection data = query.getResultList();
-        for (Object entity : data) {
-            entityManager.refresh(entity);
-        }
-        list.clear();
-        list.addAll(data);
+                if(this.blancos()){
+            JOptionPane.showMessageDialog(null, "No se puede generar flores de usuarios con valores en blanco");
+        }else{
+                try {
+                    entityManager.getTransaction().commit();
+                    entityManager.getTransaction().begin();
+                } catch (RollbackException rex) {
+                    rex.printStackTrace();
+                    entityManager.getTransaction().begin();
+                    List<madreteresacrud.floresVida.FlorVida> merged = new ArrayList<madreteresacrud.floresVida.FlorVida>(list.size());
+                    for (madreteresacrud.floresVida.FlorVida f : list) {
+                        merged.add(entityManager.merge(f));
+                    }
+                    list.clear();
+                    list.addAll(merged);
+                }
+                if(fv!=null){            
+                fv.setTabla();
+                JFrame topFrame = (JFrame) SwingUtilities.getWindowAncestor(this);
+                topFrame.hide(); 
+                }
+
+                entityManager.getTransaction().rollback();
+                entityManager.getTransaction().begin();
+                java.util.Collection data = query.getResultList();
+                for (Object entity : data) {
+                    entityManager.refresh(entity);
+                }
+                list.clear();
+                list.addAll(data);
+                }
+        this.refrescarForm();
     }//GEN-LAST:event_saveButtonActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
@@ -445,6 +499,11 @@ public class FlorVidaABM extends JPanel {
     private void fechaDefuncionFieldMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_fechaDefuncionFieldMouseClicked
        new Calendario((JFrame) SwingUtilities.getWindowAncestor(this),true,fechaDefuncionField).setVisible(true);
     }//GEN-LAST:event_fechaDefuncionFieldMouseClicked
+
+    private void masterTableMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_masterTableMouseClicked
+        setEnabledBotones(true);
+        newButton.setEnabled(false);
+    }//GEN-LAST:event_masterTableMouseClicked
 
     
     public int getIdFV(String ape, String nom, int idSoc){
