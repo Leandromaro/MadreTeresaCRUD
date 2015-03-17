@@ -476,7 +476,7 @@ public class DonacionesABM extends JPanel {
     
     private void saveButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveButtonActionPerformed
         if(this.blancos()){
-            JOptionPane.showMessageDialog(null, "No se puede generar donaciones de usuarios con valores en blanco");
+            JOptionPane.showMessageDialog(null, "No se puede almacenar registros con valores en blanco");
         }else{
                 try {
                     int doc = Integer.parseInt(documentoField.getText().trim());

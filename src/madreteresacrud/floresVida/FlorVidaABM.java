@@ -458,8 +458,8 @@ public class FlorVidaABM extends JPanel {
     }//GEN-LAST:event_newButtonActionPerformed
     
     private void saveButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveButtonActionPerformed
-                if(this.blancos()){
-            JOptionPane.showMessageDialog(null, "No se puede generar flores de usuarios con valores en blanco");
+        if(this.blancos()){
+            JOptionPane.showMessageDialog(null, "No se puede almacenar registros con valores en blanco");
         }else{
                 try {
                     entityManager.getTransaction().commit();
