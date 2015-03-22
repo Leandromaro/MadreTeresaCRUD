@@ -46,6 +46,7 @@ public class TipoEventoABM extends JPanel {
         saveButton = new javax.swing.JButton();
         newButton = new javax.swing.JButton();
         deleteButton = new javax.swing.JButton();
+        refreshButton = new javax.swing.JButton();
 
         FormListener formListener = new FormListener();
 
@@ -55,6 +56,7 @@ public class TipoEventoABM extends JPanel {
         columnBinding.setColumnClass(String.class);
         bindingGroup.addBinding(jTableBinding);
         jTableBinding.bind();
+        masterTable.addMouseListener(formListener);
         masterScrollPane.setViewportView(masterTable);
 
         descripcionLabel.setText("Tipo de Evento:");
@@ -66,6 +68,7 @@ public class TipoEventoABM extends JPanel {
         bindingGroup.addBinding(binding);
 
         saveButton.setText("Guardar");
+        saveButton.setEnabled(false);
         saveButton.addActionListener(formListener);
 
         newButton.setText("Nuevo");
@@ -78,6 +81,10 @@ public class TipoEventoABM extends JPanel {
 
         deleteButton.addActionListener(formListener);
 
+        refreshButton.setText("Cancelar");
+        refreshButton.setEnabled(false);
+        refreshButton.addActionListener(formListener);
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
@@ -87,6 +94,8 @@ public class TipoEventoABM extends JPanel {
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addGap(0, 0, Short.MAX_VALUE)
                         .addComponent(newButton)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(refreshButton)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(deleteButton)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -118,7 +127,8 @@ public class TipoEventoABM extends JPanel {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(saveButton)
                     .addComponent(deleteButton)
-                    .addComponent(newButton))
+                    .addComponent(newButton)
+                    .addComponent(refreshButton))
                 .addContainerGap())
         );
 
@@ -127,7 +137,7 @@ public class TipoEventoABM extends JPanel {
 
     // Code for dispatching events from components to event handlers.
 
-    private class FormListener implements java.awt.event.ActionListener {
+    private class FormListener implements java.awt.event.ActionListener, java.awt.event.MouseListener {
         FormListener() {}
         public void actionPerformed(java.awt.event.ActionEvent evt) {
             if (evt.getSource() == saveButton) {
@@ -139,31 +149,63 @@ public class TipoEventoABM extends JPanel {
             else if (evt.getSource() == deleteButton) {
                 TipoEventoABM.this.deleteButtonActionPerformed(evt);
             }
+            else if (evt.getSource() == refreshButton) {
+                TipoEventoABM.this.refreshButtonActionPerformed(evt);
+            }
+        }
+
+        public void mouseClicked(java.awt.event.MouseEvent evt) {
+            if (evt.getSource() == masterTable) {
+                TipoEventoABM.this.masterTableMouseClicked(evt);
+            }
+        }
+
+        public void mouseEntered(java.awt.event.MouseEvent evt) {
+        }
+
+        public void mouseExited(java.awt.event.MouseEvent evt) {
+        }
+
+        public void mousePressed(java.awt.event.MouseEvent evt) {
+        }
+
+        public void mouseReleased(java.awt.event.MouseEvent evt) {
         }
     }// </editor-fold>//GEN-END:initComponents
 
 
     private void deleteButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteButtonActionPerformed
-      
         int reply = JOptionPane.showConfirmDialog(null, "¿Está seguro de eliminar el registro?", "Eliminacion de Registro", JOptionPane.YES_NO_OPTION);
         if (reply == JOptionPane.YES_OPTION) {
-            int[] selected = masterTable.getSelectedRows();
-            List<madreteresacrud.TipoEvento> toRemove = new ArrayList<madreteresacrud.TipoEvento>(selected.length);
-            for (int idx = 0; idx < selected.length; idx++) {
-                madreteresacrud.TipoEvento d = list.get(masterTable.convertRowIndexToModel(selected[idx]));
-                toRemove.add(d);
-                entityManager.remove(d);
-            }
-            try {
-                entityManager.getTransaction().commit();
-                entityManager.getTransaction().begin();
-            } catch (Exception e) {
-            }
-            list.removeAll(toRemove);
+                int[] selected = masterTable.getSelectedRows();
+                List<madreteresacrud.TipoEvento> toRemove = new ArrayList<madreteresacrud.TipoEvento>(selected.length);
+                for (int idx = 0; idx < selected.length; idx++) {
+                    madreteresacrud.TipoEvento d = list.get(masterTable.convertRowIndexToModel(selected[idx]));
+                    toRemove.add(d);
+                    entityManager.remove(d);
+                }
+                try {
+                    entityManager.getTransaction().commit();
+                    entityManager.getTransaction().begin();
+                } catch (Exception e) {
+                }
+                list.removeAll(toRemove);
         }
+        refrescarForm();
     }//GEN-LAST:event_deleteButtonActionPerformed
 
+    private void setEnabledBotones (boolean estado){
+        refreshButton.setEnabled(estado);
+        deleteButton.setEnabled(estado);
+        saveButton.setEnabled(estado);
+        newButton.setEnabled(!estado);
+        }
+    
+    
+    
     private void newButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_newButtonActionPerformed
+        setEnabledBotones(true);
+        masterTable.setEnabled(false);
         madreteresacrud.TipoEvento t = new madreteresacrud.TipoEvento();
         entityManager.persist(t);
         list.add(t);
@@ -173,20 +215,39 @@ public class TipoEventoABM extends JPanel {
     }//GEN-LAST:event_newButtonActionPerformed
 
     private void saveButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveButtonActionPerformed
-        try {
-            entityManager.getTransaction().commit();
+        if(descripcionField.getText().isEmpty()){
+            JOptionPane.showMessageDialog(null, "No se puede almacenar registros con valores en blanco");
+        }else{
+            try {
+                entityManager.getTransaction().commit();
+                entityManager.getTransaction().begin();
+            } catch (RollbackException rex) {
+                rex.printStackTrace();
+                entityManager.getTransaction().begin();
+                List<madreteresacrud.TipoEvento> merged = new ArrayList<madreteresacrud.TipoEvento>(list.size());
+                for (madreteresacrud.TipoEvento t : list) {
+                    merged.add(entityManager.merge(t));
+                }
+                list.clear();
+                list.addAll(merged);
+            }
+            //Recargamos la tabla de nuevo
+            entityManager.getTransaction().rollback();
             entityManager.getTransaction().begin();
-        } catch (RollbackException rex) {
-            rex.printStackTrace();
-            entityManager.getTransaction().begin();
-            List<madreteresacrud.TipoEvento> merged = new ArrayList<madreteresacrud.TipoEvento>(list.size());
-            for (madreteresacrud.TipoEvento t : list) {
-                merged.add(entityManager.merge(t));
+            java.util.Collection data = query.getResultList();
+            for (Object entity : data) {
+                entityManager.refresh(entity);
             }
             list.clear();
-            list.addAll(merged);
+            list.addAll(data);
         }
-        //Recargamos la tabla de nuevo
+        refrescarForm();
+
+    }//GEN-LAST:event_saveButtonActionPerformed
+
+    
+    private void refrescarForm(){
+        masterTable.setEnabled(true);
         entityManager.getTransaction().rollback();
         entityManager.getTransaction().begin();
         java.util.Collection data = query.getResultList();
@@ -195,7 +256,23 @@ public class TipoEventoABM extends JPanel {
         }
         list.clear();
         list.addAll(data);
-    }//GEN-LAST:event_saveButtonActionPerformed
+        setEnabledBotones(false);
+        activarTextos(false);
+    }
+    
+    
+    private void activarTextos (boolean estado){
+        descripcionField.setEnabled(estado);                
+    }
+    
+    
+    private void refreshButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_refreshButtonActionPerformed
+        refrescarForm();
+    }//GEN-LAST:event_refreshButtonActionPerformed
+
+    private void masterTableMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_masterTableMouseClicked
+        setEnabledBotones(true);
+    }//GEN-LAST:event_masterTableMouseClicked
 
     public List<TipoEvento> getTipoEvento() {
         return query.getResultList();
@@ -212,6 +289,7 @@ public class TipoEventoABM extends JPanel {
     private javax.swing.JTable masterTable;
     private javax.swing.JButton newButton;
     private javax.persistence.Query query;
+    private javax.swing.JButton refreshButton;
     private javax.swing.JButton saveButton;
     private org.jdesktop.beansbinding.BindingGroup bindingGroup;
     // End of variables declaration//GEN-END:variables

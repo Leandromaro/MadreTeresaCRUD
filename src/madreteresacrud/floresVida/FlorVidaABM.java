@@ -381,7 +381,8 @@ public class FlorVidaABM extends JPanel {
 
     }//GEN-LAST:event_refreshButtonActionPerformed
     
-    private void refrescarForm(){
+     private void refrescarForm(){
+        masterTable.setEnabled(true);
         entityManager.getTransaction().rollback();
         entityManager.getTransaction().begin();
         java.util.Collection data = query.getResultList();
@@ -390,8 +391,8 @@ public class FlorVidaABM extends JPanel {
         }
         list.clear();
         list.addAll(data);
-        this.setEnabledBotones(false);
-        this.activarTextos(false);
+        setEnabledBotones(false);
+        activarTextos(false);
     }
     
     private void activarTextos (boolean estado){
@@ -432,7 +433,7 @@ public class FlorVidaABM extends JPanel {
                         } catch (Exception e) {
                         }
                     list.removeAll(toRemove);
-                    this.refrescarForm();
+                    refrescarForm();
                 }
         
     }//GEN-LAST:event_deleteButtonActionPerformed

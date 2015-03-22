@@ -286,9 +286,9 @@ public class DonacionesABM extends JPanel {
                     .addComponent(jButtonCalendar, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(jPanelFormLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(refreshButton)
                     .addComponent(saveButton)
-                    .addComponent(jButtonBuscar))
+                    .addComponent(jButtonBuscar)
+                    .addComponent(refreshButton))
                 .addGap(18, 18, 18))
         );
 
@@ -309,14 +309,14 @@ public class DonacionesABM extends JPanel {
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(361, Short.MAX_VALUE)
+                .addContainerGap(387, Short.MAX_VALUE)
                 .addComponent(jPanelForm, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                    .addContainerGap(49, Short.MAX_VALUE)
+                    .addContainerGap(77, Short.MAX_VALUE)
                     .addComponent(jPanelTabla, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addContainerGap(250, Short.MAX_VALUE)))
+                    .addContainerGap(278, Short.MAX_VALUE)))
         );
 
         bindingGroup.bind();
@@ -394,7 +394,7 @@ public class DonacionesABM extends JPanel {
 
     @SuppressWarnings("unchecked")
     private void refreshButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_refreshButtonActionPerformed
-        this.refrescarForm();
+        refrescarForm();
     }//GEN-LAST:event_refreshButtonActionPerformed
 
    
@@ -427,8 +427,8 @@ public class DonacionesABM extends JPanel {
     
     
     private void newButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_newButtonActionPerformed
-        newButton.setEnabled(false);
         setEnabledBotones(true);
+        masterTable.setEnabled(false);
         jCheckBoxSoc.setSelected(false);
         jCheckBoxSoc.setEnabled(true);
         documentoField.setText("");
@@ -475,7 +475,7 @@ public class DonacionesABM extends JPanel {
     
     
     private void saveButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveButtonActionPerformed
-        if(this.blancos()){
+        if(blancos()){
             JOptionPane.showMessageDialog(null, "No se puede almacenar registros con valores en blanco");
         }else{
                 try {
@@ -511,10 +511,11 @@ public class DonacionesABM extends JPanel {
                     list.addAll(merged);
                 }
         }
-       this.refrescarForm();
+       refrescarForm();
     }//GEN-LAST:event_saveButtonActionPerformed
 
     private void refrescarForm(){
+        masterTable.setEnabled(true);
         entityManager.getTransaction().rollback();
         entityManager.getTransaction().begin();
         java.util.Collection data = query.getResultList();
@@ -523,8 +524,8 @@ public class DonacionesABM extends JPanel {
         }
         list.clear();
         list.addAll(data);
-        this.setEnabledBotones(false);
-        this.activarTextos(false);
+        setEnabledBotones(false);
+        activarTextos(false);
     }
     
     
