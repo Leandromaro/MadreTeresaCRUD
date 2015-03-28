@@ -188,14 +188,14 @@ public class UsuarioABM extends JPanel {
     private void deleteButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteButtonActionPerformed
          if ((passwordField.getText().trim().isEmpty()||(nombreField.getText().trim().isEmpty()))){
            JOptionPane.showMessageDialog(null, "No se puede eliminar usuarios con valores en blanco");
-           this.clearForm();
+           this.refrescarForm();
         }else{
             int reply = JOptionPane.showConfirmDialog(null, "¿Está seguro de eliminar el registro?", "Eliminacion de Registro", JOptionPane.YES_NO_OPTION);
             if (reply == JOptionPane.YES_OPTION) {
                 javax.persistence.Query query = entityManager.createQuery("SELECT u FROM Usuario u");
                     if (query.getResultList().size()==1){
                         JOptionPane.showMessageDialog(null, "No se puede eliminar el único usuario del sistema!");
-                        this.clearForm();
+                        this.refrescarForm();
                     }else{    
                         int[] selected = masterTable.getSelectedRows();
                         if (selected.length>1){
@@ -267,9 +267,10 @@ public class UsuarioABM extends JPanel {
     }//GEN-LAST:event_deleteButtonActionPerformed
 
    //Metodo creado para limpiar el form 
-   private void clearForm(){
+   private void refrescarForm(){
        newButton.setEnabled(true);
        saveButton.setEnabled(false);
+       masterTable.setEnabled(true);
        entityManager.getTransaction().rollback();
        entityManager.getTransaction().begin();
        java.util.Collection data = query.getResultList();
@@ -278,10 +279,19 @@ public class UsuarioABM extends JPanel {
        }
        list.clear();
        list.addAll(data);
+       setEnabledBotones(false);
+       activarTextos(false);
    }
+   
+   private void activarTextos (boolean estado){
+        passwordField.setEnabled(estado);                
+        nombreField.setEnabled(estado);
+   }
+   
     
     private void newButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_newButtonActionPerformed
         newButton.setEnabled(false);
+        masterTable.setEnabled(false);
         saveButton.setEnabled(true);
         madreteresacrud.Usuario u = new madreteresacrud.Usuario();
         entityManager.persist(u);
@@ -309,13 +319,22 @@ public class UsuarioABM extends JPanel {
                 list.clear();
                 list.addAll(merged);
                 }
-           }    //Limpio el formulario
-                this.clearForm();           
+           }    
+        //Limpio el formulario
+        refrescarForm();           
     }//GEN-LAST:event_saveButtonActionPerformed
 
     private void masterTableMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_masterTableMouseClicked
-
+        setEnabledBotones(true);
     }//GEN-LAST:event_masterTableMouseClicked
+    
+    private void setEnabledBotones (boolean estado){
+        deleteButton.setEnabled(estado);
+        saveButton.setEnabled(estado);
+        newButton.setEnabled(!estado);
+    }
+    
+    
     public boolean Log(String usu, String pas) {
         String item;
         javax.persistence.Query query = entityManager.createQuery("SELECT DISTINCT u.nombre FROM Usuario u WHERE u.nombre='" + usu + "' AND u.password='" + pas + "'");

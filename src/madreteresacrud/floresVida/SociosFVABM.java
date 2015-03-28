@@ -591,13 +591,10 @@ public class SociosFVABM extends JPanel {
         celularField.setEnabled(true);
         emailField.setEnabled(true);
         jCBLocalididad.setEnabled(true);
-        jCBLocalididad.setSelectedItem("RESISTENCIA - CHACO");
-
-        int ax = JOptionPane.showConfirmDialog(this, "¿El adherente a ingresar es socio?", null, JOptionPane.OK_CANCEL_OPTION);
+        jCBLocalididad.setSelectedItem("RESISTENCIA - Chaco");
+        int ax = JOptionPane.showConfirmDialog(this, "¿El adherente a ingresar es socio?", null, JOptionPane.YES_NO_OPTION);
         if (ax == JOptionPane.YES_OPTION) {
-
             new BuscarSocio((JFrame) SwingUtilities.getWindowAncestor(this), true, this).setVisible(true);
-
         }
 
 
