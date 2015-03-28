@@ -11,8 +11,6 @@ import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
@@ -47,9 +45,9 @@ public class Localidades implements Serializable {
     @ManyToOne(optional = false)
     private Provincias provincias;
 
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "localidad")
-    private List<Socios> sociosList;
-    
+//    @OneToMany(cascade = CascadeType.ALL, mappedBy = "localidad")
+//    private List<Socios> sociosList;
+//    
 
     public Localidades() {
     }
@@ -78,14 +76,14 @@ public class Localidades implements Serializable {
         return provincias;
     }
 
-    @XmlTransient
-    public List<Socios> getSociosList() {
-        return sociosList;
-    }
-
-    public void setSociosList(List<Socios> sociosList) {
-        this.sociosList = sociosList;
-    }
+//    @XmlTransient
+//    public List<Socios> getSociosList() {
+//        return sociosList;
+//    }
+//
+//    public void setSociosList(List<Socios> sociosList) {
+//        this.sociosList = sociosList;
+//    }
 
     @Override
     public String toString() {

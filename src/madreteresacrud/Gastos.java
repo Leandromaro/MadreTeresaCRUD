@@ -67,7 +67,7 @@ public class Gastos implements Serializable {
         this.idgastos = idgastos;
         this.tipoGastoIdtipoGasto = tipoGastoIdtipoGasto;
     }
-
+    
     public Integer getIdgastos() {
         return idgastos;
     }
