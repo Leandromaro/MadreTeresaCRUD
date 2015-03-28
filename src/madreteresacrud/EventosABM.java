@@ -69,7 +69,7 @@ public class EventosABM extends JPanel {
         montoTarjetasField = new javax.swing.JTextField();
         saveButton = new javax.swing.JButton();
         refreshButton = new javax.swing.JButton();
-        jButton1 = new javax.swing.JButton();
+        jButtonCalendar = new javax.swing.JButton();
         jComboBoxEvento = new javax.swing.JComboBox();
         jPanelTabla = new javax.swing.JPanel();
         masterScrollPane = new javax.swing.JScrollPane();
@@ -133,14 +133,17 @@ public class EventosABM extends JPanel {
         montoTarjetasField.addKeyListener(formListener);
 
         saveButton.setText("Guardar");
+        saveButton.setEnabled(false);
         saveButton.addActionListener(formListener);
 
         refreshButton.setText("Cancelar");
+        refreshButton.setEnabled(false);
         refreshButton.addActionListener(formListener);
 
-        jButton1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/calendario.GIF"))); // NOI18N
-        jButton1.setContentAreaFilled(false);
-        jButton1.addActionListener(formListener);
+        jButtonCalendar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/calendario.GIF"))); // NOI18N
+        jButtonCalendar.setContentAreaFilled(false);
+        jButtonCalendar.setEnabled(false);
+        jButtonCalendar.addActionListener(formListener);
 
         jComboBoxEvento.setEnabled(false);
 
@@ -179,7 +182,7 @@ public class EventosABM extends JPanel {
                         .addComponent(montoPublicField, javax.swing.GroupLayout.Alignment.LEADING)
                         .addComponent(fechaField, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 123, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                    .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jButtonCalendar, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addContainerGap(331, Short.MAX_VALUE)))
         );
 
@@ -204,7 +207,7 @@ public class EventosABM extends JPanel {
                         .addGroup(jPanelFormLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(fechaLabel)
                             .addComponent(fechaField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(jButtonCalendar, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                     .addGroup(jPanelFormLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(montoPublicLabel)
@@ -337,8 +340,8 @@ public class EventosABM extends JPanel {
             else if (evt.getSource() == refreshButton) {
                 EventosABM.this.refreshButtonActionPerformed(evt);
             }
-            else if (evt.getSource() == jButton1) {
-                EventosABM.this.jButton1ActionPerformed(evt);
+            else if (evt.getSource() == jButtonCalendar) {
+                EventosABM.this.jButtonCalendarActionPerformed(evt);
             }
             else if (evt.getSource() == deleteButton) {
                 EventosABM.this.deleteButtonActionPerformed(evt);
@@ -390,15 +393,7 @@ public class EventosABM extends JPanel {
 
     @SuppressWarnings("unchecked")
     private void refreshButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_refreshButtonActionPerformed
-        entityManager.getTransaction().rollback();
-        entityManager.getTransaction().begin();
-        java.util.Collection data = query.getResultList();
-        for (Object entity : data) {
-            entityManager.refresh(entity);
-        }
-        list.clear();
-        list.addAll(data);
-        jComboBoxEvento.setEnabled(false);
+        refrescarForm();
     }//GEN-LAST:event_refreshButtonActionPerformed
 
     private void deleteButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteButtonActionPerformed
@@ -423,6 +418,8 @@ public class EventosABM extends JPanel {
 
     private void newButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_newButtonActionPerformed
         jComboBoxEvento.setEnabled(true);
+        setEnabledBotones(true);
+        masterTable.setEnabled(false);
         madreteresacrud.Eventos e = new madreteresacrud.Eventos();
         entityManager.persist(e);
         list.add(e);
@@ -431,8 +428,41 @@ public class EventosABM extends JPanel {
         masterTable.scrollRectToVisible(masterTable.getCellRect(row, 0, true));
     }//GEN-LAST:event_newButtonActionPerformed
 
+    private void setEnabledBotones (boolean estado){
+        refreshButton.setEnabled(estado);
+        saveButton.setEnabled(estado);
+        newButton.setEnabled(!estado);
+        jButtonCalendar.setEnabled(estado);
+    }
+    
+    
+    private void refrescarForm(){
+        masterTable.setEnabled(true);
+        entityManager.getTransaction().rollback();
+        entityManager.getTransaction().begin();
+        java.util.Collection data = query.getResultList();
+        for (Object entity : data) {
+            entityManager.refresh(entity);
+        }
+        list.clear();
+        list.addAll(data);
+        setEnabledBotones(false);
+        activarTextos(false);
+    }
+    
+    private void activarTextos (boolean estado){
+        fechaField.setEnabled(estado);                
+        montoPublicField.setEnabled(estado);
+        montoRifasField.setEnabled(estado);
+        montoTarjetasField.setEnabled(estado);
+        jComboBoxEvento.setEnabled(estado);
+    }
+    
+    
     private void saveButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveButtonActionPerformed
-        try {
+        if(blancos()){
+            JOptionPane.showMessageDialog(null, "No se puede almacenar registros con valores en blanco");
+        }else{try {
             entityManager.getTransaction().commit();
             entityManager.getTransaction().begin();
         } catch (RollbackException rex) {
@@ -445,20 +475,25 @@ public class EventosABM extends JPanel {
             list.clear();
             list.addAll(merged);
         }
-        jComboBoxEvento.setEnabled(false);
-        entityManager.getTransaction().rollback();
-        entityManager.getTransaction().begin();
-        java.util.Collection data = query.getResultList();
-        for (Object entity : data) {
-            entityManager.refresh(entity);
         }
-        list.clear();
-        list.addAll(data);
+        refrescarForm();
     }//GEN-LAST:event_saveButtonActionPerformed
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+    private Boolean blancos (){
+        if((fechaField.getText().trim().isEmpty())||
+                (montoPublicField.getText().trim().isEmpty())||
+                (montoRifasField.getText().trim().isEmpty())||
+                (montoTarjetasField.getText().trim().isEmpty())){
+            return true;
+        }else{
+            return false;
+        }
+      }
+    
+    
+    private void jButtonCalendarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonCalendarActionPerformed
         new Calendario((JFrame) SwingUtilities.getWindowAncestor(this), true, fechaField).setVisible(true);
-    }//GEN-LAST:event_jButton1ActionPerformed
+    }//GEN-LAST:event_jButtonCalendarActionPerformed
 
     private void montoPublicFieldKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_montoPublicFieldKeyTyped
         if (!Character.isDigit(evt.getKeyChar()) && !Character.isISOControl(evt.getKeyChar()) && evt.getKeyChar() != '.') {
@@ -483,6 +518,8 @@ public class EventosABM extends JPanel {
 
     private void masterTableMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_masterTableMouseClicked
         jComboBoxEvento.setEnabled(true);
+        setEnabledBotones(true);
+        activarTextos(true);
     }//GEN-LAST:event_masterTableMouseClicked
 
     private void fechaFieldMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_fechaFieldMouseClicked
@@ -511,7 +548,7 @@ public class EventosABM extends JPanel {
     private javax.persistence.EntityManager entityManager;
     private javax.swing.JTextField fechaField;
     private javax.swing.JLabel fechaLabel;
-    private javax.swing.JButton jButton1;
+    private javax.swing.JButton jButtonCalendar;
     private javax.swing.JComboBox jComboBoxEvento;
     private javax.swing.JPanel jPanelForm;
     private javax.swing.JPanel jPanelTabla;

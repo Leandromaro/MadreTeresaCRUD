@@ -158,6 +158,7 @@ public class GastosABM extends JPanel {
         );
 
         jPanelForm.setBorder(javax.swing.BorderFactory.createEtchedBorder());
+        jPanelForm.setEnabled(false);
 
         idgastosLabel.setText("Item:");
 
@@ -197,19 +198,25 @@ public class GastosABM extends JPanel {
         bindingGroup.addBinding(binding);
 
         saveButton.setText("Guardar");
+        saveButton.setEnabled(false);
         saveButton.addActionListener(formListener);
 
         refreshButton.setText("Cancelar");
+        refreshButton.setEnabled(false);
         refreshButton.addActionListener(formListener);
 
         jComboBoxTipoGasto.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Hogar", "Comisión" }));
+        jComboBoxTipoGasto.setEnabled(false);
         jComboBoxTipoGasto.addActionListener(formListener);
+
+        jComboBoxElemento.setEnabled(false);
 
         binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, masterTable, org.jdesktop.beansbinding.ELProperty.create("${selectedElement.tipoGastoIdtipoGasto}"), jLabelId, org.jdesktop.beansbinding.BeanProperty.create("text"), "");
         bindingGroup.addBinding(binding);
 
         jButton1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/calendario.GIF"))); // NOI18N
         jButton1.setContentAreaFilled(false);
+        jButton1.setEnabled(false);
         jButton1.addActionListener(formListener);
 
         javax.swing.GroupLayout jPanelFormLayout = new javax.swing.GroupLayout(jPanelForm);
@@ -376,14 +383,7 @@ public class GastosABM extends JPanel {
 
     @SuppressWarnings("unchecked")
     private void refreshButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_refreshButtonActionPerformed
-        entityManager.getTransaction().rollback();
-        entityManager.getTransaction().begin();
-        java.util.Collection data = query.getResultList();
-        for (Object entity : data) {
-            entityManager.refresh(entity);
-        }
-        list.clear();
-        list.addAll(data);
+        refrescarForm();
     }//GEN-LAST:event_refreshButtonActionPerformed
 
     private void deleteButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteButtonActionPerformed
@@ -407,9 +407,13 @@ public class GastosABM extends JPanel {
             jComboBoxElemento.setEnabled(false);
             jComboBoxTipoGasto.setEnabled(false);
         }
+      refrescarForm();
     }//GEN-LAST:event_deleteButtonActionPerformed
 
     private void newButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_newButtonActionPerformed
+        setEnabledBotones(true);
+        activarTextos(true);
+        masterTable.setEnabled(false);
         jComboBoxTipoGasto.setSelectedIndex(0);
         setComboItem(jComboBoxTipoGasto.getSelectedItem().toString().trim());
         jComboBoxElemento.setSelectedIndex(0);
@@ -426,30 +430,29 @@ public class GastosABM extends JPanel {
 
         jComboBoxElemento.setEnabled(true);
         jComboBoxTipoGasto.setEnabled(true);
-
+        
     }//GEN-LAST:event_newButtonActionPerformed
 
-    private void saveButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveButtonActionPerformed
-        int id = getIdTipoGasto(jComboBoxTipoGasto.getSelectedItem().toString().trim(), jComboBoxElemento.getSelectedItem().toString().trim());
-        jLabelId.setText(Integer.toString(id));
-
-        try {
-            entityManager.getTransaction().commit();
-            entityManager.getTransaction().begin();
-        } catch (RollbackException rex) {
-            rex.printStackTrace();
-            entityManager.getTransaction().begin();
-            List<madreteresacrud.Gastos> merged = new ArrayList<madreteresacrud.Gastos>(list.size());
-            for (madreteresacrud.Gastos g : list) {
-                merged.add(entityManager.merge(g));
-            }
-            list.clear();
-            list.addAll(merged);
-        }
-
-        jComboBoxElemento.setEnabled(false);
-        jComboBoxTipoGasto.setEnabled(false);
-
+    private void activarTextos (boolean estado){
+        fechaGastoField.setEnabled(estado);                
+        descripcionField.setEnabled(estado);
+        jComboBoxTipoGasto.setEnabled(estado);
+        montoField.setEnabled(estado);
+        jComboBoxElemento.setEnabled(estado);
+    }
+    
+    
+    private void setEnabledBotones (boolean estado){
+         
+        jButton1.setEnabled(estado);
+        deleteButton.setEnabled(estado);
+        refreshButton.setEnabled(estado);
+        saveButton.setEnabled(estado);
+        newButton.setEnabled(!estado);
+    }
+    
+    private void refrescarForm(){
+        masterTable.setEnabled(true);
         entityManager.getTransaction().rollback();
         entityManager.getTransaction().begin();
         java.util.Collection data = query.getResultList();
@@ -458,8 +461,52 @@ public class GastosABM extends JPanel {
         }
         list.clear();
         list.addAll(data);
+        setEnabledBotones(false);
+        activarTextos(false);
+    }
+    
+    
+    private void saveButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveButtonActionPerformed
+        if(this.blancos()){
+            JOptionPane.showMessageDialog(null, "No se puede almacenar registros con valores en blanco");
+        }else{
+        
+            int id = getIdTipoGasto(jComboBoxTipoGasto.getSelectedItem().toString().trim(), jComboBoxElemento.getSelectedItem().toString().trim());
+            jLabelId.setText(Integer.toString(id));
+
+            try {
+                entityManager.getTransaction().commit();
+                entityManager.getTransaction().begin();
+            } catch (RollbackException rex) {
+                rex.printStackTrace();
+                entityManager.getTransaction().begin();
+                List<madreteresacrud.Gastos> merged = new ArrayList<madreteresacrud.Gastos>(list.size());
+                for (madreteresacrud.Gastos g : list) {
+                    merged.add(entityManager.merge(g));
+                }
+                list.clear();
+                list.addAll(merged);
+            }
+
+            jComboBoxElemento.setEnabled(false);
+            jComboBoxTipoGasto.setEnabled(false);
+           }
+        this.refrescarForm();
+
     }//GEN-LAST:event_saveButtonActionPerformed
 
+    private Boolean blancos (){
+        if((fechaGastoField.getText().trim().isEmpty())||
+                (descripcionField.getText().trim().isEmpty())||
+                (montoField.getText().trim().isEmpty())){
+            return true;
+        }else{
+            return false;
+        }
+      }
+    
+    
+    
     private void jComboBoxTipoGastoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBoxTipoGastoActionPerformed
 
         String tipo = jComboBoxTipoGasto.getSelectedItem().toString().trim();
@@ -472,8 +519,8 @@ public class GastosABM extends JPanel {
     }//GEN-LAST:event_jComboBoxTipoGastoActionPerformed
 
     private void masterTableMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_masterTableMouseClicked
-        jComboBoxElemento.setEnabled(true);
-        jComboBoxTipoGasto.setEnabled(true);
+        setEnabledBotones(true);
+        activarTextos(true);
         int selected = masterTable.getSelectedRow();
         int id = (int) masterTable.getValueAt(selected, 4);
         setCombos(id);
@@ -523,6 +570,7 @@ public class GastosABM extends JPanel {
     }
 
     private TipoGasto getTipoGasto(int id) {
+         
         javax.persistence.Query queryGasto = java.beans.Beans.isDesignTime() ? null : entityManager.createQuery("SELECT DISTINCT t FROM TipoGasto t WHERE t.idtipoGasto=" + id);
         java.util.Collection data = queryGasto.getResultList();
         TipoGasto tg = null;
@@ -534,6 +582,8 @@ public class GastosABM extends JPanel {
     }
 
     private void setCombos(int id) {
+        Thread t = new Thread();
+        
         TipoGasto tg = getTipoGasto(id);
         jComboBoxTipoGasto.setSelectedItem(tg.getTipoGasto());
         String tipo = jComboBoxTipoGasto.getSelectedItem().toString().trim();
