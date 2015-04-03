@@ -32,11 +32,10 @@ public class IngresoSistema extends javax.swing.JFrame {
         this.setLocation(350, 300);
         txtusuario.requestFocus();
     }
+    
     void acceder(String usuario, String pass){
        UsuarioABM u = new UsuarioABM();
        if (u.Log(usuario, pass)){
-          //JOptionPane.showMessageDialog(null, "Bienvenido");
-           
           this.setVisible(false);
           MadreTeresaMain m = new MadreTeresaMain();
           m.setVisible(true);
@@ -44,7 +43,7 @@ public class IngresoSistema extends javax.swing.JFrame {
           JOptionPane.showMessageDialog(this, "Usuario o contraseña incorrecta"); 
        }
            
-        }
+    }
 
     /** This method is called from within the constructor to
      * initialize the form.
@@ -66,7 +65,7 @@ public class IngresoSistema extends javax.swing.JFrame {
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Acceso al Sistema");
 
-        jPanel1.setBackground(new java.awt.Color(163, 187, 114));
+        jPanel1.setBackground(new java.awt.Color(139, 167, 127));
         jPanel1.setForeground(java.awt.Color.white);
         jPanel1.setToolTipText("Log In");
         jPanel1.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
@@ -117,16 +116,15 @@ public class IngresoSistema extends javax.swing.JFrame {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel2)
                     .addComponent(jLabel1))
-                .addGap(29, 29, 29)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                        .addGroup(jPanel1Layout.createSequentialGroup()
-                            .addComponent(btnaceptar)
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                            .addComponent(btnsalir, javax.swing.GroupLayout.DEFAULT_SIZE, 50, Short.MAX_VALUE))
-                        .addComponent(txtcontra, javax.swing.GroupLayout.Alignment.TRAILING))
-                    .addComponent(txtusuario, javax.swing.GroupLayout.PREFERRED_SIZE, 128, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(194, Short.MAX_VALUE))
+                .addGap(45, 45, 45)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addComponent(btnaceptar, javax.swing.GroupLayout.PREFERRED_SIZE, 68, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(btnsalir, javax.swing.GroupLayout.DEFAULT_SIZE, 66, Short.MAX_VALUE))
+                    .addComponent(txtusuario)
+                    .addComponent(txtcontra))
+                .addContainerGap(166, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)

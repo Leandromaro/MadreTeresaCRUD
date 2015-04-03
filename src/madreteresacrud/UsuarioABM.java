@@ -358,7 +358,6 @@ public class UsuarioABM extends JPanel {
             return true;
         }
         return false;
-
     }
 
     private boolean esMismoUsuario(String usuario) {

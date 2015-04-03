@@ -413,6 +413,7 @@ public class EventosABM extends JPanel {
             } catch (Exception e) {
             }
             list.removeAll(toRemove);
+            refrescarForm();
         }
     }//GEN-LAST:event_deleteButtonActionPerformed
 
