@@ -39,12 +39,12 @@ public class SociosFVABM extends JPanel {
         setBusqueda();
         setComboSexo();
         setComboLocalidades();
-        dniField.setEnabled(false);
-        jCBSexo.setEnabled(false);
-        celularField.setEnabled(false);
-        emailField.setEnabled(false);
-        jCBLocalididad.setEnabled(false);
-        deleteButton.setEnabled(false);
+//        dniField.setEnabled(false);
+//        jCBSexo.setEnabled(false);
+//        celularField.setEnabled(false);
+//        emailField.setEnabled(false);
+//        jCBLocalididad.setEnabled(false);
+        
 //        refreshButton.setVisible(false);
     }
 
@@ -150,14 +150,18 @@ public class SociosFVABM extends JPanel {
         cuilField.addKeyListener(formListener);
 
         saveButton.setText("Guardar");
+        saveButton.setEnabled(false);
         saveButton.addActionListener(formListener);
 
         refreshButton.setText("Cancelar");
+        refreshButton.setEnabled(false);
         refreshButton.addActionListener(formListener);
 
         dniLabel.setText("DNI:");
 
         celularLabel.setText("Celular:");
+
+        celularField.setEnabled(false);
 
         binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, masterTable, org.jdesktop.beansbinding.ELProperty.create("${selectedElement.celular}"), celularField, org.jdesktop.beansbinding.BeanProperty.create("text"));
         bindingGroup.addBinding(binding);
@@ -166,6 +170,7 @@ public class SociosFVABM extends JPanel {
         celularField.addKeyListener(formListener);
 
         dniField.setToolTipText("Solo números con longitud máxima de 8 dígitos. ");
+        dniField.setEnabled(false);
 
         binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, masterTable, org.jdesktop.beansbinding.ELProperty.create("${selectedElement.dni}"), dniField, org.jdesktop.beansbinding.BeanProperty.create("text"));
         bindingGroup.addBinding(binding);
@@ -175,6 +180,7 @@ public class SociosFVABM extends JPanel {
         sexoLabel.setText("Sexo:");
 
         jCBSexo.setAutoscrolls(true);
+        jCBSexo.setEnabled(false);
 
         binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, masterTable, org.jdesktop.beansbinding.ELProperty.create("${selectedElement.sexo}"), jCBSexo, org.jdesktop.beansbinding.BeanProperty.create("selectedItem"));
         bindingGroup.addBinding(binding);
@@ -182,11 +188,14 @@ public class SociosFVABM extends JPanel {
         emailLabel.setText("Email:");
 
         emailField.setToolTipText("Debería ser de la forma \"nombre@dominio.com\"");
+        emailField.setEnabled(false);
 
         binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, masterTable, org.jdesktop.beansbinding.ELProperty.create("${selectedElement.email}"), emailField, org.jdesktop.beansbinding.BeanProperty.create("text"));
         bindingGroup.addBinding(binding);
 
         emailField.addFocusListener(formListener);
+
+        jCBLocalididad.setEnabled(false);
 
         binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, masterTable, org.jdesktop.beansbinding.ELProperty.create("${selectedElement.localidad}"), jCBLocalididad, org.jdesktop.beansbinding.BeanProperty.create("selectedItem"));
         bindingGroup.addBinding(binding);
@@ -573,6 +582,7 @@ public class SociosFVABM extends JPanel {
                 } catch (Exception e) {
                 }
             list.removeAll(toRemove);
+            refrescarForm();
         }
     }//GEN-LAST:event_deleteButtonActionPerformed
 
@@ -583,14 +593,8 @@ public class SociosFVABM extends JPanel {
         int row = list.size() - 1;
         masterTable.setRowSelectionInterval(row, row);
         masterTable.scrollRectToVisible(masterTable.getCellRect(row, 0, true));
-        jBFV.setEnabled(false);
-        jBVerCuotas.setEnabled(false);
-
-        dniField.setEnabled(true);
-        jCBSexo.setEnabled(true);
-        celularField.setEnabled(true);
-        emailField.setEnabled(true);
-        jCBLocalididad.setEnabled(true);
+        setEnabledBotones(true);
+        masterTable.setEnabled(false);
         jCBLocalididad.setSelectedItem("RESISTENCIA - Chaco");
         int ax = JOptionPane.showConfirmDialog(this, "¿El adherente a ingresar es socio?", null, JOptionPane.YES_NO_OPTION);
         if (ax == JOptionPane.YES_OPTION) {
@@ -600,6 +604,20 @@ public class SociosFVABM extends JPanel {
 
     }//GEN-LAST:event_newButtonActionPerformed
 
+    private void setEnabledBotones(boolean estado){
+        refreshButton.setEnabled(estado);
+        saveButton.setEnabled(estado);
+        newButton.setEnabled(!estado);
+        deleteButton.setEnabled(estado);
+        jBFV.setEnabled(!estado);
+        jBVerCuotas.setEnabled(!estado);
+        dniField.setEnabled(estado);
+        jCBSexo.setEnabled(estado);
+        celularField.setEnabled(estado);
+        emailField.setEnabled(estado);
+        jCBLocalididad.setEnabled(estado);
+    }
+    
     private void jBbuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBbuscarActionPerformed
         buscarSocio();
 
@@ -624,14 +642,7 @@ public class SociosFVABM extends JPanel {
     }//GEN-LAST:event_jBFVActionPerformed
 
     private void masterTableMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_masterTableMouseClicked
-        jBFV.setEnabled(true);
-        jBVerCuotas.setEnabled(true);
-        dniField.setEnabled(true);
-        jCBSexo.setEnabled(true);
-        celularField.setEnabled(true);
-        emailField.setEnabled(true);
-        jCBLocalididad.setEnabled(true);
-
+        setEnabledBotones(true);
     }//GEN-LAST:event_masterTableMouseClicked
 
     private void jBVerCuotasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBVerCuotasActionPerformed
@@ -674,40 +685,40 @@ public class SociosFVABM extends JPanel {
     }//GEN-LAST:event_emailFieldFocusLost
 
     private void saveButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveButtonActionPerformed
-        try {
-            entityManager.getTransaction().commit();
+        if(blancos()){
+            JOptionPane.showMessageDialog(null, "No se puede almacenar registros con valores en blanco");
+        }else{
+            try {
+                entityManager.getTransaction().commit();
+                entityManager.getTransaction().begin();
+            } catch (RollbackException rex) {
+                rex.printStackTrace();
+                entityManager.getTransaction().begin();
+                List<madreteresacrud.floresVida.SociosFlorVida> merged = new ArrayList<madreteresacrud.floresVida.SociosFlorVida>(list.size());
+                for (madreteresacrud.floresVida.SociosFlorVida s : list) {
+                    merged.add(entityManager.merge(s));
+                }
+                list.clear();
+                list.addAll(merged);
+
+            }
+
+            entityManager.getTransaction().rollback();
             entityManager.getTransaction().begin();
-        } catch (RollbackException rex) {
-            rex.printStackTrace();
-            entityManager.getTransaction().begin();
-            List<madreteresacrud.floresVida.SociosFlorVida> merged = new ArrayList<madreteresacrud.floresVida.SociosFlorVida>(list.size());
-            for (madreteresacrud.floresVida.SociosFlorVida s : list) {
-                merged.add(entityManager.merge(s));
+            java.util.Collection data = query.getResultList();
+            for (Object entity : data) {
+                entityManager.refresh(entity);
             }
             list.clear();
-            list.addAll(merged);
-
+            list.addAll(data);
+            setBusqueda();
         }
+    refrescarForm();
 
-        entityManager.getTransaction().rollback();
-        entityManager.getTransaction().begin();
-        java.util.Collection data = query.getResultList();
-        for (Object entity : data) {
-            entityManager.refresh(entity);
-        }
-        list.clear();
-        list.addAll(data);
-        setBusqueda();
-        jBVerCuotas.setEnabled(false);
-        jBFV.setEnabled(false);
-        dniField.setEnabled(false);
-        jCBSexo.setEnabled(false);
-        celularField.setEnabled(false);
-        emailField.setEnabled(false);
-        jCBLocalididad.setEnabled(false);
     }//GEN-LAST:event_saveButtonActionPerformed
 
-    private void refreshButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_refreshButtonActionPerformed
+    private void refrescarForm(){
+        masterTable.setEnabled(true);
         entityManager.getTransaction().rollback();
         entityManager.getTransaction().begin();
         java.util.Collection data = query.getResultList();
@@ -716,12 +727,39 @@ public class SociosFVABM extends JPanel {
         }
         list.clear();
         list.addAll(data);
-
-        dniField.setEnabled(false);
-        jCBSexo.setEnabled(false);
-        celularField.setEnabled(false);
-        emailField.setEnabled(false);
-        jCBLocalididad.setEnabled(false);
+        setEnabledBotones(false);
+        activarTextos(false);
+    }
+    
+    private void activarTextos(boolean estado){
+        jBVerCuotas.setEnabled(estado);
+        jBFV.setEnabled(estado);
+        dniField.setEnabled(estado);
+        jCBSexo.setEnabled(estado);
+        celularField.setEnabled(estado);
+        emailField.setEnabled(estado);
+        jCBLocalididad.setEnabled(estado);
+    }
+    
+    private Boolean blancos (){
+        if((dniField.getText().trim().isEmpty())||
+                (nombreField.getText().trim().isEmpty())||
+                (apellidoField.getText().trim().isEmpty())||
+                (celularField.getText().trim().isEmpty())||
+                (cuilField.getText().trim().isEmpty())||
+                (telefonoField.getText().trim().isEmpty())||
+                (emailField.getText().trim().isEmpty())||
+                (direccionField.getText().trim().isEmpty())||
+                (jCBSexo.getSelectedItem().toString().isEmpty())||
+                (jCBLocalididad.getSelectedItem().toString().isEmpty())){
+            return true;
+        }else{
+            return false;
+        }
+      }
+    
+    private void refreshButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_refreshButtonActionPerformed
+        refrescarForm();
     }//GEN-LAST:event_refreshButtonActionPerformed
 
     private void celularFieldFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_celularFieldFocusGained

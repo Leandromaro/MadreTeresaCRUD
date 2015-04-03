@@ -154,6 +154,8 @@ public class FlorVidaABM extends JPanel {
         jButton1.setContentAreaFilled(false);
         jButton1.addActionListener(formListener);
 
+        jCBLocalididad.setEnabled(false);
+
         binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, masterTable, org.jdesktop.beansbinding.ELProperty.create("${selectedElement.localidad}"), jCBLocalididad, org.jdesktop.beansbinding.BeanProperty.create("selectedItem"));
         bindingGroup.addBinding(binding);
 
@@ -446,6 +448,7 @@ public class FlorVidaABM extends JPanel {
         saveButton.setEnabled(estado);
         newButton.setEnabled(!estado);
         jButton1.setEnabled(estado);
+        jCBLocalididad.setEnabled(estado);
     }
 
     private void newButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_newButtonActionPerformed
@@ -457,8 +460,7 @@ public class FlorVidaABM extends JPanel {
         int row = list.size() - 1;
         masterTable.setRowSelectionInterval(row, row);
         masterTable.scrollRectToVisible(masterTable.getCellRect(row, 0, true));
-
-        jCBLocalididad.setEnabled(true);
+        
     }//GEN-LAST:event_newButtonActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
@@ -506,8 +508,7 @@ public class FlorVidaABM extends JPanel {
     }//GEN-LAST:event_fechaDefuncionFieldMouseClicked
 
     private void masterTableMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_masterTableMouseClicked
-
-        jCBLocalididad.setEnabled(true);
+        setEnabledBotones(true);
     }                                        
 
     public int getIdFV(String ape, String nom, int idSoc) {
