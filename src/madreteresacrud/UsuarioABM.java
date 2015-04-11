@@ -184,25 +184,49 @@ public class UsuarioABM extends JPanel {
         }
     }// </editor-fold>//GEN-END:initComponents
 
-
     private void deleteButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteButtonActionPerformed
-         if ((passwordField.getText().trim().isEmpty()||(nombreField.getText().trim().isEmpty()))){
-           JOptionPane.showMessageDialog(null, "No se puede eliminar usuarios con valores en blanco");
-           this.refrescarForm();
-        }else{
+        if ((passwordField.getText().trim().isEmpty() || (nombreField.getText().trim().isEmpty()))) {
+            JOptionPane.showMessageDialog(null, "No se puede eliminar usuarios con valores en blanco");
+            this.refrescarForm();
+        } else {
             int reply = JOptionPane.showConfirmDialog(null, "¿Está seguro de eliminar el registro?", "Eliminacion de Registro", JOptionPane.YES_NO_OPTION);
             if (reply == JOptionPane.YES_OPTION) {
                 javax.persistence.Query query = entityManager.createQuery("SELECT u FROM Usuario u");
-                    if (query.getResultList().size()==1){
-                        JOptionPane.showMessageDialog(null, "No se puede eliminar el único usuario del sistema!");
-                        this.refrescarForm();
-                    }else{    
-                        int[] selected = masterTable.getSelectedRows();
-                        if (selected.length>1){
-                            JOptionPane.showMessageDialog(null, "No se pueden eliminar usuarios multiples"); 
-                        }else{
-                            //Verifica que no sea el usuario que está seleccionado
-                            if(!esMismoUsuario(nombreField.getText().trim())){
+                if (query.getResultList().size() == 1) {
+                    JOptionPane.showMessageDialog(null, "No se puede eliminar el único usuario del sistema!");
+                    this.refrescarForm();
+                } else {
+                    int[] selected = masterTable.getSelectedRows();
+                    if (selected.length > 1) {
+                        JOptionPane.showMessageDialog(null, "No se pueden eliminar usuarios multiples");
+                    } else {
+                        //Verifica que no sea el usuario que está seleccionado
+                        if (!esMismoUsuario(nombreField.getText().trim())) {
+                            List<madreteresacrud.Usuario> toRemove = new ArrayList<madreteresacrud.Usuario>(selected.length);
+                            for (int idx = 0; idx < selected.length; idx++) {
+                                madreteresacrud.Usuario u = list.get(masterTable.convertRowIndexToModel(selected[idx]));
+                                toRemove.add(u);
+                                entityManager.remove(u);
+
+                            }
+                            list.removeAll(toRemove);
+                            try {
+                                entityManager.getTransaction().commit();
+                                entityManager.getTransaction().begin();
+                            } catch (RollbackException rex) {
+                                rex.printStackTrace();
+                                entityManager.getTransaction().begin();
+                                List<madreteresacrud.Usuario> merged = new ArrayList<madreteresacrud.Usuario>(list.size());
+                                for (madreteresacrud.Usuario u : list) {
+                                    merged.add(entityManager.merge(u));
+                                }
+                                list.clear();
+                                list.addAll(merged);
+                            }
+                        } else {
+                            //Si es el mismo usuario pregunto si desea borrarse
+                            int replyUsu = JOptionPane.showConfirmDialog(null, "¿Está seguro de eliminar su propio usuario?", "Eliminacion de Registro", JOptionPane.YES_NO_OPTION);
+                            if (replyUsu == JOptionPane.YES_OPTION) {
                                 List<madreteresacrud.Usuario> toRemove = new ArrayList<madreteresacrud.Usuario>(selected.length);
                                 for (int idx = 0; idx < selected.length; idx++) {
                                     madreteresacrud.Usuario u = list.get(masterTable.convertRowIndexToModel(selected[idx]));
@@ -224,71 +248,45 @@ public class UsuarioABM extends JPanel {
                                     list.clear();
                                     list.addAll(merged);
                                 }
-                            }else{
-                                    //Si es el mismo usuario pregunto si desea borrarse
-                                    int replyUsu = JOptionPane.showConfirmDialog(null, "¿Está seguro de eliminar su propio usuario?", "Eliminacion de Registro", JOptionPane.YES_NO_OPTION);
-                                    if (replyUsu == JOptionPane.YES_OPTION) {
-                                       List<madreteresacrud.Usuario> toRemove = new ArrayList<madreteresacrud.Usuario>(selected.length);
-                                    for (int idx = 0; idx < selected.length; idx++) {
-                                        madreteresacrud.Usuario u = list.get(masterTable.convertRowIndexToModel(selected[idx]));
-                                        toRemove.add(u);
-                                        entityManager.remove(u);
-
-                                    }
-                                    list.removeAll(toRemove);
-                                    try {
-                                        entityManager.getTransaction().commit();
-                                        entityManager.getTransaction().begin();
-                                    } catch (RollbackException rex) {
-                                        rex.printStackTrace();
-                                        entityManager.getTransaction().begin();
-                                        List<madreteresacrud.Usuario> merged = new ArrayList<madreteresacrud.Usuario>(list.size());
-                                        for (madreteresacrud.Usuario u : list) {
-                                            merged.add(entityManager.merge(u));
-                                        }
-                                        list.clear();
-                                        list.addAll(merged);
-                                    }         
-                                    /*
-                                    Acá deberia ir la cerrada de pantalla. 
-                                    Hacer que hace Gestionar Usuario
-                                    */
-                                    IngresoSistema i = new IngresoSistema();
-                                    i.setResizable(false);
-                                    i.setLocationRelativeTo(null);
-                                    i.setVisible(true);
-                                    this.setVisible(false);
-                                    }
+                                /*
+                                 Acá deberia ir la cerrada de pantalla. 
+                                 Hacer que hace Gestionar Usuario
+                                 */
+                                IngresoSistema i = new IngresoSistema();
+                                i.setResizable(false);
+                                i.setLocationRelativeTo(null);
+                                i.setVisible(true);
+                                this.setVisible(false);
                             }
                         }
                     }
+                }
             }
         }
     }//GEN-LAST:event_deleteButtonActionPerformed
 
-   //Metodo creado para limpiar el form 
-   private void refrescarForm(){
-       newButton.setEnabled(true);
-       saveButton.setEnabled(false);
-       masterTable.setEnabled(true);
-       entityManager.getTransaction().rollback();
-       entityManager.getTransaction().begin();
-       java.util.Collection data = query.getResultList();
-       for (Object entity : data) {
+    //Metodo creado para limpiar el form 
+    private void refrescarForm() {
+        newButton.setEnabled(true);
+        saveButton.setEnabled(false);
+        masterTable.setEnabled(true);
+        entityManager.getTransaction().rollback();
+        entityManager.getTransaction().begin();
+        java.util.Collection data = query.getResultList();
+        for (Object entity : data) {
             entityManager.refresh(entity);
-       }
-       list.clear();
-       list.addAll(data);
-       setEnabledBotones(false);
-       activarTextos(false);
-   }
-   
-   private void activarTextos (boolean estado){
-        passwordField.setEnabled(estado);                
+        }
+        list.clear();
+        list.addAll(data);
+        setEnabledBotones(false);
+        activarTextos(false);
+    }
+
+    private void activarTextos(boolean estado) {
+        passwordField.setEnabled(estado);
         nombreField.setEnabled(estado);
-   }
-   
-    
+    }
+
     private void newButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_newButtonActionPerformed
         newButton.setEnabled(false);
         masterTable.setEnabled(false);
@@ -302,14 +300,11 @@ public class UsuarioABM extends JPanel {
     }//GEN-LAST:event_newButtonActionPerformed
 
     private void saveButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveButtonActionPerformed
-        if ((passwordField.getText().trim().isEmpty()||(nombreField.getText().trim().isEmpty()))){
-           JOptionPane.showMessageDialog(null, "No se puede crear usuarios con valores en blanco");
-        }
-        else{        
-           try {
+        if (!blancos()) {
+            try {
                 entityManager.getTransaction().commit();
                 entityManager.getTransaction().begin();
-           } catch (RollbackException rex) {
+            } catch (RollbackException rex) {
                 rex.printStackTrace();
                 entityManager.getTransaction().begin();
                 List<madreteresacrud.Usuario> merged = new ArrayList<madreteresacrud.Usuario>(list.size());
@@ -318,25 +313,33 @@ public class UsuarioABM extends JPanel {
                 }
                 list.clear();
                 list.addAll(merged);
-                }
-           }    
-        //Limpio el formulario
-        refrescarForm();           
+            }
+            //Limpio el formulario
+            refrescarForm();
+        }
     }//GEN-LAST:event_saveButtonActionPerformed
+
+    private boolean blancos() {
+        if ((passwordField.getText().trim().isEmpty()
+                || (nombreField.getText().trim().isEmpty()))) {
+            mensaje();
+            return true;
+        } else {
+            return false;
+        }
+    }
 
     private void masterTableMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_masterTableMouseClicked
         setEnabledBotones(true);
     }//GEN-LAST:event_masterTableMouseClicked
-    
-    private void setEnabledBotones (boolean estado){
+
+    private void setEnabledBotones(boolean estado) {
         deleteButton.setEnabled(estado);
         saveButton.setEnabled(estado);
         newButton.setEnabled(!estado);
     }
-    
-    
+
     public boolean Log(String usu, String pas) {
-        String item;
         javax.persistence.Query query = entityManager.createQuery("SELECT DISTINCT u.nombre FROM Usuario u WHERE u.nombre='" + usu + "' AND u.password='" + pas + "'");
         if (!query.getResultList().isEmpty()) {
             try {
@@ -350,7 +353,6 @@ public class UsuarioABM extends JPanel {
                 log.setNombreUsuario(usu);
                 entityManager.persist(log);
                 entityManager.getTransaction().commit();
-
             } catch (RollbackException rex) {
                 System.out.println(rex);
             }
@@ -369,8 +371,6 @@ public class UsuarioABM extends JPanel {
             return false;
         }
     }
-
-
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton deleteButton;
     private javax.persistence.EntityManager entityManager;
@@ -387,4 +387,14 @@ public class UsuarioABM extends JPanel {
     private org.jdesktop.beansbinding.BindingGroup bindingGroup;
     // End of variables declaration//GEN-END:variables
 
+    private void mensaje() {
+        String respuesta = "";
+        if (passwordField.getText().trim().isEmpty()) {
+            respuesta = respuesta + " " + "Password," + " ";
+        }
+        if (nombreField.getText().trim().isEmpty()) {
+            respuesta = respuesta + " " + "Nombre";
+        }
+        JOptionPane.showMessageDialog(null, "Los campos" + respuesta + "no deberian estar vacios!");
+    }
 }

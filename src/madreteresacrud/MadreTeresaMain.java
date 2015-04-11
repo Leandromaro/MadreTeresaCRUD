@@ -34,23 +34,23 @@ public class MadreTeresaMain extends javax.swing.JFrame {
         super("Sistema Madre Teresa de Calcuta");
         initComponents();
 
-        JInternalFrame internal = new JInternalFrame("Socios");
-        JPanel p = new SociosABM();
-        internal.add(p);
-        internal.pack();
-        internal.setResizable(true);
-        internal.setClosable(true);
+//        JInternalFrame internal = new JInternalFrame("Socios");
+//        JPanel p = new SociosABM();
+//        internal.add(p);
+//        internal.pack();
+//        internal.setResizable(true);
+//        internal.setClosable(true);
 
-        jDesktopPane.add(internal);
-        //this.setExtendedState(JFrame.MAXIMIZED_BOTH);
-        this.getContentPane().add(jDesktopPane);
-        internal.setVisible(true);
+//        jDesktopPane.add(internal);
+//        //this.setExtendedState(JFrame.MAXIMIZED_BOTH);
+//        this.getContentPane().add(jDesktopPane);
+//        internal.setVisible(true);
 
         this.setLocationRelativeTo(null);
         this.setVisible(true);
-
-        jDesktopPane.setSize(this.getSize().width, this.getSize().height);
-        jDesktopPane.repaint();
+////
+////        jDesktopPane.setSize(this.getSize().width, this.getSize().height);
+////        jDesktopPane.repaint();
 
     }
 
