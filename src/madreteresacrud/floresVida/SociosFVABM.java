@@ -44,7 +44,7 @@ public class SociosFVABM extends JPanel {
 //        celularField.setEnabled(false);
 //        emailField.setEnabled(false);
 //        jCBLocalididad.setEnabled(false);
-        
+
 //        refreshButton.setVisible(false);
     }
 
@@ -566,7 +566,7 @@ public class SociosFVABM extends JPanel {
 
 
     private void deleteButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteButtonActionPerformed
-     int reply = JOptionPane.showConfirmDialog(null, "¿Está seguro de eliminar el registro?", "Eliminacion de Registro", JOptionPane.YES_NO_OPTION);
+        int reply = JOptionPane.showConfirmDialog(null, "¿Está seguro de eliminar el registro?", "Eliminacion de Registro", JOptionPane.YES_NO_OPTION);
         if (reply == JOptionPane.YES_OPTION) {
 
             int[] selected = masterTable.getSelectedRows();
@@ -577,10 +577,10 @@ public class SociosFVABM extends JPanel {
                 entityManager.remove(s);
             }
             try {
-                    entityManager.getTransaction().commit();
-                    entityManager.getTransaction().begin();
-                } catch (Exception e) {
-                }
+                entityManager.getTransaction().commit();
+                entityManager.getTransaction().begin();
+            } catch (Exception e) {
+            }
             list.removeAll(toRemove);
             refrescarForm();
         }
@@ -596,6 +596,7 @@ public class SociosFVABM extends JPanel {
         setEnabledBotones(true);
         masterTable.setEnabled(false);
         jCBLocalididad.setSelectedItem("RESISTENCIA - Chaco");
+        jCBSexo.setSelectedIndex(0);
         int ax = JOptionPane.showConfirmDialog(this, "¿El adherente a ingresar es socio?", null, JOptionPane.YES_NO_OPTION);
         if (ax == JOptionPane.YES_OPTION) {
             new BuscarSocio((JFrame) SwingUtilities.getWindowAncestor(this), true, this).setVisible(true);
@@ -604,12 +605,14 @@ public class SociosFVABM extends JPanel {
 
     }//GEN-LAST:event_newButtonActionPerformed
 
-    private void setEnabledBotones(boolean estado){
+    private void setEnabledBotones(boolean estado) {
         refreshButton.setEnabled(estado);
         saveButton.setEnabled(estado);
+        deleteButton.setEnabled(estado);
         newButton.setEnabled(!estado);
         deleteButton.setEnabled(estado);
         jBFV.setEnabled(!estado);
+        jBbuscar.setEnabled(!estado);
         jBVerCuotas.setEnabled(!estado);
         dniField.setEnabled(estado);
         jCBSexo.setEnabled(estado);
@@ -617,10 +620,9 @@ public class SociosFVABM extends JPanel {
         emailField.setEnabled(estado);
         jCBLocalididad.setEnabled(estado);
     }
-    
+
     private void jBbuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBbuscarActionPerformed
         buscarSocio();
-
     }//GEN-LAST:event_jBbuscarActionPerformed
 
     private void jBFVActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBFVActionPerformed
@@ -685,9 +687,7 @@ public class SociosFVABM extends JPanel {
     }//GEN-LAST:event_emailFieldFocusLost
 
     private void saveButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveButtonActionPerformed
-        if(blancos()){
-            JOptionPane.showMessageDialog(null, "No se puede almacenar registros con valores en blanco");
-        }else{
+        if (!blancos()) {
             try {
                 entityManager.getTransaction().commit();
                 entityManager.getTransaction().begin();
@@ -702,22 +702,12 @@ public class SociosFVABM extends JPanel {
                 list.addAll(merged);
 
             }
-
-            entityManager.getTransaction().rollback();
-            entityManager.getTransaction().begin();
-            java.util.Collection data = query.getResultList();
-            for (Object entity : data) {
-                entityManager.refresh(entity);
-            }
-            list.clear();
-            list.addAll(data);
+            refrescarForm();
             setBusqueda();
         }
-    refrescarForm();
-
     }//GEN-LAST:event_saveButtonActionPerformed
 
-    private void refrescarForm(){
+    private void refrescarForm() {
         masterTable.setEnabled(true);
         entityManager.getTransaction().rollback();
         entityManager.getTransaction().begin();
@@ -730,8 +720,8 @@ public class SociosFVABM extends JPanel {
         setEnabledBotones(false);
         activarTextos(false);
     }
-    
-    private void activarTextos(boolean estado){
+
+    private void activarTextos(boolean estado) {
         jBVerCuotas.setEnabled(estado);
         jBFV.setEnabled(estado);
         dniField.setEnabled(estado);
@@ -740,24 +730,32 @@ public class SociosFVABM extends JPanel {
         emailField.setEnabled(estado);
         jCBLocalididad.setEnabled(estado);
     }
-    
-    private Boolean blancos (){
-        if((dniField.getText().trim().isEmpty())||
-                (nombreField.getText().trim().isEmpty())||
-                (apellidoField.getText().trim().isEmpty())||
-                (celularField.getText().trim().isEmpty())||
-                (cuilField.getText().trim().isEmpty())||
-                (telefonoField.getText().trim().isEmpty())||
-                (emailField.getText().trim().isEmpty())||
-                (direccionField.getText().trim().isEmpty())||
-                (jCBSexo.getSelectedItem().toString().isEmpty())||
-                (jCBLocalididad.getSelectedItem().toString().isEmpty())){
+
+    private Boolean blancos() {
+        if ((nombreField.getText().trim().isEmpty())
+                || (apellidoField.getText().trim().isEmpty())
+                || (direccionField.getText().trim().isEmpty())) {
+            mensaje();
             return true;
-        }else{
+        } else {
             return false;
         }
-      }
-    
+    }
+
+    private void mensaje() {
+        String respuesta = "";
+        if (apellidoField.getText().trim().isEmpty()) {
+            respuesta = respuesta + " " + "Apellido," + " ";
+        }
+        if (nombreField.getText().trim().isEmpty()) {
+            respuesta = respuesta + " " + "Nombre," + " ";
+        }
+        if (direccionField.getText().trim().isEmpty()) {
+            respuesta = respuesta + " " + "Direccion," + " ";
+        }
+        JOptionPane.showMessageDialog(null, "Los campos" + respuesta + "no deberian estar vacios!");
+    }
+
     private void refreshButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_refreshButtonActionPerformed
         refrescarForm();
     }//GEN-LAST:event_refreshButtonActionPerformed
@@ -868,7 +866,7 @@ public class SociosFVABM extends JPanel {
         for (Localidades objects : localidades) {
             jCBLocalididad.addItem(objects);
         }
-       
+
         AutoCompleteDecorator.decorate(this.jCBLocalididad);
 
     }
@@ -877,6 +875,7 @@ public class SociosFVABM extends JPanel {
         String ele = jTFBusqueda.getText();
         String[] apeYnom = ele.split(", ");
         String ele1;
+        boolean flag=false;
         for (int i = 0; i < masterTable.getRowCount(); i++) {
             ele = masterTable.getValueAt(i, 0).toString().trim();
             ele1 = masterTable.getValueAt(i, 1).toString().trim();
@@ -890,9 +889,13 @@ public class SociosFVABM extends JPanel {
                 celularField.setEnabled(true);
                 emailField.setEnabled(true);
                 jCBLocalididad.setEnabled(true);
+                flag=true;
                 break;
-
             }
+        }
+        if(!flag){
+            JOptionPane.showMessageDialog(null, "El socio ingresado no es válido!");
+            jTFBusqueda.setText("");
         }
     }
 

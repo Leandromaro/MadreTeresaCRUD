@@ -1305,6 +1305,7 @@ public class SociosABM extends JPanel {
         String ele = jCBBusqueda.getSelectedItem().toString();
         String[] apeYnom = ele.split(", ");
         String ele1;
+        boolean flag=false;
         for (int i = 0; i < masterTable.getRowCount(); i++) {
             ele = masterTable.getValueAt(i, 1).toString().trim();
             ele1 = masterTable.getValueAt(i, 2).toString().trim();
@@ -1356,6 +1357,9 @@ public class SociosABM extends JPanel {
                 break;
 
             }
+        }
+        if(!flag){
+            JOptionPane.showMessageDialog(null, "El socio ingresado no es válido!");
         }
     }
 
