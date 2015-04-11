@@ -28,8 +28,8 @@ import utilidades.RendererTablaEventos;
 public class EventosABM extends JPanel {
 
     public EventosABM() {
-       
-        initComponents();                
+
+        initComponents();
         TipoEventoABM t = new TipoEventoABM();
         TipoEvento te = new TipoEvento();
         for (int i = 0; i < t.getTipoEvento().size(); i++) {
@@ -429,15 +429,14 @@ public class EventosABM extends JPanel {
         masterTable.scrollRectToVisible(masterTable.getCellRect(row, 0, true));
     }//GEN-LAST:event_newButtonActionPerformed
 
-    private void setEnabledBotones (boolean estado){
+    private void setEnabledBotones(boolean estado) {
         refreshButton.setEnabled(estado);
         saveButton.setEnabled(estado);
         newButton.setEnabled(!estado);
         jButtonCalendar.setEnabled(estado);
     }
-    
-    
-    private void refrescarForm(){
+
+    private void refrescarForm() {
         masterTable.setEnabled(true);
         entityManager.getTransaction().rollback();
         entityManager.getTransaction().begin();
@@ -450,48 +449,67 @@ public class EventosABM extends JPanel {
         setEnabledBotones(false);
         activarTextos(false);
     }
-    
-    private void activarTextos (boolean estado){
-        fechaField.setEnabled(estado);                
+
+    private void activarTextos(boolean estado) {
+        fechaField.setEnabled(estado);
         montoPublicField.setEnabled(estado);
         montoRifasField.setEnabled(estado);
         montoTarjetasField.setEnabled(estado);
         jComboBoxEvento.setEnabled(estado);
     }
-    
-    
+
+
     private void saveButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveButtonActionPerformed
-        if(blancos()){
-            JOptionPane.showMessageDialog(null, "No se puede almacenar registros con valores en blanco");
-        }else{try {
-            entityManager.getTransaction().commit();
-            entityManager.getTransaction().begin();
-        } catch (RollbackException rex) {
-            rex.printStackTrace();
-            entityManager.getTransaction().begin();
-            List<madreteresacrud.Eventos> merged = new ArrayList<madreteresacrud.Eventos>(list.size());
-            for (madreteresacrud.Eventos e : list) {
-                merged.add(entityManager.merge(e));
+        if (!blancos()) {
+            try {
+                entityManager.getTransaction().commit();
+                entityManager.getTransaction().begin();
+            } catch (RollbackException rex) {
+                rex.printStackTrace();
+                entityManager.getTransaction().begin();
+                List<madreteresacrud.Eventos> merged = new ArrayList<madreteresacrud.Eventos>(list.size());
+                for (madreteresacrud.Eventos e : list) {
+                    merged.add(entityManager.merge(e));
+                }
+                list.clear();
+                list.addAll(merged);
             }
-            list.clear();
-            list.addAll(merged);
+            refrescarForm();
         }
-        }
-        refrescarForm();
+
     }//GEN-LAST:event_saveButtonActionPerformed
 
-    private Boolean blancos (){
-        if((fechaField.getText().trim().isEmpty())||
-                (montoPublicField.getText().trim().isEmpty())||
-                (montoRifasField.getText().trim().isEmpty())||
-                (montoTarjetasField.getText().trim().isEmpty())){
+    private Boolean blancos() {
+        if (fechaField.getText().trim().isEmpty()
+                || (jComboBoxEvento.getSelectedItem() == null)
+                || (montoPublicField.getText().trim().isEmpty()
+                && montoRifasField.getText().trim().isEmpty()
+                && montoTarjetasField.getText().trim().isEmpty())) {
+            mensaje();
             return true;
-        }else{
+        } else {
             return false;
         }
-      }
-    
-    
+    }
+
+    private void mensaje() {
+        String respuesta = "";
+        if (fechaField.getText().trim().isEmpty()) {
+            respuesta = respuesta + " " + "Fecha," + " ";
+        }
+        if (jComboBoxEvento.getSelectedItem() == null) {
+            respuesta = respuesta + " " + "Motivo," + " ";
+        }
+        if (montoPublicField.getText().trim().isEmpty()
+                && montoRifasField.getText().trim().isEmpty()
+                && montoTarjetasField.getText().trim().isEmpty()) {
+            respuesta = respuesta + " " + "Montos en su totalidad," + " ";
+        }
+
+        JOptionPane.showMessageDialog(null, "Los campos" + respuesta + "no deberian estar vacios!");
+    }
+
+
     private void jButtonCalendarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonCalendarActionPerformed
         new Calendario((JFrame) SwingUtilities.getWindowAncestor(this), true, fechaField).setVisible(true);
     }//GEN-LAST:event_jButtonCalendarActionPerformed
