@@ -8,11 +8,21 @@
     <class>madreteresacrud.Socios</class>
     <class>madreteresacrud.TipoGasto</class>
     <class>madreteresacrud.TipoSocio</class>
+    <class>madreteresacrud.Eventos</class>
+    <class>madreteresacrud.LogUsuario</class>
+    <class>madreteresacrud.TipoEvento</class>
+    <class>madreteresacrud.Usuario</class>
+    <class>madreteresacrud.floresVida.CuotaFlorDeVida</class>
+    <class>madreteresacrud.floresVida.FlorVida</class>
+    <class>madreteresacrud.floresVida.RelacSocDifuntos</class>
+    <class>madreteresacrud.floresVida.SociosFlorVida</class>
+    <class>utilidades.Localidades</class>
+    <class>utilidades.Provincias</class>
     <properties>
-      <property name="javax.persistence.jdbc.url" value="jdbc:mysql://www.db4free.net:3306/sistcalcuta?zeroDateTimeBehavior=convertToNull"/>
-      <property name="javax.persistence.jdbc.password" value="sistCalcuta"/>
+      <property name="javax.persistence.jdbc.url" value="jdbc:mysql://174.136.57.250:3306/circuloo_francisco?zeroDateTimeBehavior=convertToNull"/>
+      <property name="javax.persistence.jdbc.password" value="1234franci1234"/>
       <property name="javax.persistence.jdbc.driver" value="com.mysql.jdbc.Driver"/>
-      <property name="javax.persistence.jdbc.user" value="admincalcuta"/>
+      <property name="javax.persistence.jdbc.user" value="circuloo_franci"/>
     </properties>
   </persistence-unit>
 </persistence>

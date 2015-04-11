@@ -396,8 +396,7 @@ public class DonacionesABM extends JPanel {
     private void refreshButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_refreshButtonActionPerformed
         refrescarForm();
     }//GEN-LAST:event_refreshButtonActionPerformed
-
-   
+  
     
     private void deleteButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteButtonActionPerformed
     int reply = JOptionPane.showConfirmDialog(null, "¿Está seguro de eliminar el registro?", "Eliminacion de Registro", JOptionPane.YES_NO_OPTION);
@@ -549,7 +548,10 @@ public class DonacionesABM extends JPanel {
         if(this.blancos()){
             JOptionPane.showMessageDialog(null, "No se puede buscar socios con valores en blanco");
             refrescarForm();
-        }else{    
+        }else{
+            if(documentoField.getText().isEmpty()){
+                JOptionPane.showMessageDialog(null, "El campo DNI se encuentra vacio");
+            }else{
             saveButton.setEnabled(true);
             int doc = Integer.parseInt(documentoField.getText().trim());
             if(doc!=0){
@@ -566,7 +568,8 @@ public class DonacionesABM extends JPanel {
                             fechaDonacionField.setEnabled(true);
                             dialogResult=0;       
                         }
-                 }else{
+                 }
+            }else{
                         JOptionPane.showMessageDialog(null, "No se encuentra Socio con ese DNI");
                  }                  
             }

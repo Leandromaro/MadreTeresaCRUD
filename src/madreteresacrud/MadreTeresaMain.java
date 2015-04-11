@@ -42,7 +42,7 @@ public class MadreTeresaMain extends javax.swing.JFrame {
         internal.setClosable(true);
 
         jDesktopPane.add(internal);
-        this.setExtendedState(JFrame.MAXIMIZED_BOTH);
+        //this.setExtendedState(JFrame.MAXIMIZED_BOTH);
         this.getContentPane().add(jDesktopPane);
         internal.setVisible(true);
 

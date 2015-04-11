@@ -801,7 +801,7 @@ public class SociosABM extends JPanel {
             }
             //Preguntamos si adeuda cuotas
             if (idCuota != 0) {
-                int ax = JOptionPane.showConfirmDialog(null, "El socio seleccionado adeuda cuotas, desea darlo de baja de todas formas?");
+                int ax = JOptionPane.showConfirmDialog(null, "El socio seleccionado adeuda cuotas, desea darlo de baja de todas formas?", "Eliminacion de Registro", JOptionPane.YES_NO_OPTION);
                 if (ax == JOptionPane.YES_OPTION) {
                     String patron = "dd/MM/yyyy";
                     SimpleDateFormat formato = new SimpleDateFormat(patron);
@@ -833,7 +833,7 @@ public class SociosABM extends JPanel {
                     jComboTipSoc.setEnabled(false);
                 }
             } else {
-                int ax = JOptionPane.showConfirmDialog(null, "Dar de baja el socio seleccionado?");
+                int ax = JOptionPane.showConfirmDialog(null, "Dar de baja el socio seleccionado?", "Eliminacion de Registro", JOptionPane.YES_NO_OPTION);
                 if (ax == JOptionPane.YES_OPTION) {
                     String patron = "dd/MM/yyyy";
                     SimpleDateFormat formato = new SimpleDateFormat(patron);
@@ -855,18 +855,11 @@ public class SociosABM extends JPanel {
                     }
 
                     //Volvemos a cargar la tabla
-                    entityManager.getTransaction().rollback();
-                    entityManager.getTransaction().begin();
-                    java.util.Collection data = query.getResultList();
-                    for (Object entity : data) {
-                        entityManager.refresh(entity);
-                    }
-                    list.clear();
-                    list.addAll(data);
-                    jComboTipSoc.setEnabled(false);
-                    jCBSexo.setEnabled(false);
-                    cuilField.setEnabled(false);
-                    numSocField.setEnabled(false);
+                    refrescarForm();
+//                    jComboTipSoc.setEnabled(false);
+//                    jCBSexo.setEnabled(false);
+//                    cuilField.setEnabled(false);
+//                    numSocField.setEnabled(false);
                 }
             }
         }
@@ -913,12 +906,12 @@ public class SociosABM extends JPanel {
 
 
     private void newButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_newButtonActionPerformed
-        
-        //JOptionPane.showMessageDialog(null, "Debe rellenar todos los campos");       
 
+        //JOptionPane.showMessageDialog(null, "Debe rellenar todos los campos");       
         refreshButton.setEnabled(true);
         saveButton.setEnabled(true);
         newButton.setEnabled(false);
+        jButtonBuscar.setEnabled(false);
         jPanelForm.setEnabled(true);
         masterTable.setEnabled(false);
 
@@ -963,13 +956,15 @@ public class SociosABM extends JPanel {
             new BuscarAdherente((JFrame) SwingUtilities.getWindowAncestor(this), true, this).setVisible(true);
 
         }
-        jCBLocalididad.setSelectedItem("RESISTENCIA - CHACO");
 
+        jCBLocalididad.setSelectedItem("RESISTENCIA - CHACO");
+        jCBSexo.setSelectedItem("M");
+        jComboTipSoc.setSelectedIndex(0);
     }//GEN-LAST:event_newButtonActionPerformed
 
     private void masterTableMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_masterTableMouseClicked
         newButton.setEnabled(false);
-        
+
         int selected = masterTable.getSelectedRow();
         if (masterTable.getValueAt(selected, 13) != null) {
             refreshButton.setEnabled(false);
@@ -993,11 +988,11 @@ public class SociosABM extends JPanel {
             jButtonFecha.setEnabled(false);
             deleteButton.setEnabled(false);
         } else {
-            jButtonFecha.setEnabled(true);            
+            jButtonFecha.setEnabled(true);
             numSocField.setEnabled(true);
             numSocField.requestFocusInWindow();
             refreshButton.setEnabled(true);
-            saveButton.setEnabled(true);            
+            saveButton.setEnabled(true);
             apellidoField.setEnabled(true);
             nombreField.setEnabled(true);
             jComboTipSoc.setEnabled(true);
@@ -1046,24 +1041,40 @@ public class SociosABM extends JPanel {
 
     }//GEN-LAST:event_jBVerCuotasActionPerformed
 
-    private Boolean blancos(){
-        if((documentoField.getText().trim().isEmpty())||
-           (apellidoField.getText().trim().isEmpty()||
-           (nombreField.getText().trim().isEmpty()))){
+    private Boolean blancos() {
+        if ((documentoField.getText().trim().isEmpty())
+                || (apellidoField.getText().trim().isEmpty()
+                || (nombreField.getText().trim().isEmpty()))
+                || (direccionField.getText().trim().isEmpty())
+                || (jCBLocalididad.getItemCount() == 0)) {
+            mensaje();
             return true;
-        }else{
+        } else {
             return false;
         }
     }
-    
-    
-    
-    private void saveButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveButtonActionPerformed
-        if (this.blancos()){
-           JOptionPane.showMessageDialog(null, "No se puede crear usuarios con valores en blanco");
+
+    private void mensaje() {
+        String respuesta = "";
+        if (documentoField.getText().trim().isEmpty()) {
+            respuesta = respuesta + " " + "Documento," + " ";
         }
-        else{ 
-           try {
+        if (apellidoField.getText().trim().isEmpty()) {
+            respuesta = respuesta + " " + "Apellido," + " ";
+        }
+        if (nombreField.getText().trim().isEmpty()) {
+            respuesta = respuesta + " " + "Nombre," + " ";
+        }
+        if (direccionField.getText().trim().isEmpty()) {
+            respuesta = respuesta + " " + "Direccion," + " ";
+        }
+        JOptionPane.showMessageDialog(null, "Los campos" + respuesta + "no deberian estar vacios!");
+    }
+
+
+    private void saveButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveButtonActionPerformed
+        if (!blancos()) {
+            try {
                 entityManager.getTransaction().commit();
                 entityManager.getTransaction().begin();
             } catch (RollbackException rex) {
@@ -1076,13 +1087,12 @@ public class SociosABM extends JPanel {
                 list.clear();
                 list.addAll(merged);
             }
+            refrescarForm();
         }
-        //Vuelve a cargar los socios en la tabla
-        refrescarForm();
-          
+
     }//GEN-LAST:event_saveButtonActionPerformed
 
-    private void refrescarForm(){
+    private void refrescarForm() {
         entityManager.getTransaction().rollback();
         entityManager.getTransaction().begin();
         java.util.Collection data = query.getResultList();
@@ -1091,31 +1101,32 @@ public class SociosABM extends JPanel {
         }
         list.clear();
         list.addAll(data);
-        jBVerCuotas.setEnabled(false);
         setBusqueda();
         desactivar(false);
         masterTable.setEnabled(true);
     }
-    
-    
-    private void desactivar(boolean estado){
-        newButton.setEnabled(!estado);        
+
+    private void desactivar(boolean estado) {
+        newButton.setEnabled(!estado);
+        jBVerCuotas.setEnabled(estado);
+        jButtonBuscar.setEnabled(!estado);
         refreshButton.setEnabled(estado);
-        saveButton.setEnabled(estado);   
-        cuilField.setEnabled(estado);    
-        celularField.setEnabled(estado);    
-        jComboTipSoc.setEnabled(estado);    
-        jCBSexo.setEnabled(estado);    
-        jCBLocalididad.setEnabled(estado);    
-        numSocField.setEnabled(estado);    
-        jButtonFecha.setEnabled(estado);    
-        jBVerCuotas.setEnabled(estado);    
-        jLEliminado.setEnabled(estado);    
-        jLabelBaja.setEnabled(estado);    
+        saveButton.setEnabled(estado);
+        cuilField.setEnabled(estado);
+        celularField.setEnabled(estado);
+        jComboTipSoc.setEnabled(estado);
+        jCBSexo.setEnabled(estado);
+        jCBLocalididad.setEnabled(estado);
+        numSocField.setEnabled(estado);
+        jButtonFecha.setEnabled(!estado);
+        jBVerCuotas.setEnabled(estado);
+        jLEliminado.setEnabled(estado);
+        jLabelBaja.setEnabled(estado);
+
     }
-     
+
     private void refreshButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_refreshButtonActionPerformed
-        refrescarForm();  
+        refrescarForm();
     }//GEN-LAST:event_refreshButtonActionPerformed
 
     private void jButtonFechaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonFechaActionPerformed
@@ -1182,9 +1193,8 @@ public class SociosABM extends JPanel {
     }//GEN-LAST:event_celularFieldKeyTyped
 
     private void jButtonAltaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonAltaActionPerformed
-        int ax = JOptionPane.showConfirmDialog(null, "Dar de alta el socio seleccionado?");
+        int ax = JOptionPane.showConfirmDialog(null, "Dar de alta el socio seleccionado?", "Alta de Registro", JOptionPane.YES_NO_OPTION);
         if (ax == JOptionPane.YES_OPTION) {
-
             jLEliminado.setText(null);
             try {
                 entityManager.getTransaction().commit();
@@ -1199,17 +1209,9 @@ public class SociosABM extends JPanel {
                 list.clear();
                 list.addAll(merged);
             }
-
-            //Volvemos a cargar la tabla
-            entityManager.getTransaction().rollback();
-            entityManager.getTransaction().begin();
-            java.util.Collection data = query.getResultList();
-            for (Object entity : data) {
-                entityManager.refresh(entity);
-            }
-            list.clear();
-            list.addAll(data);
         }
+        //Volvemos a cargar la tabla
+        refrescarForm();
     }//GEN-LAST:event_jButtonAltaActionPerformed
 
     private void numSocFieldKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_numSocFieldKeyTyped
@@ -1433,6 +1435,7 @@ public class SociosABM extends JPanel {
     private void setComboSexo() {
         jCBSexo.addItem("M");
         jCBSexo.addItem("F");
+
     }
 
     private List<TipoSocio> getTipoSocios() {
