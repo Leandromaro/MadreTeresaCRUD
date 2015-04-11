@@ -146,6 +146,8 @@ public class TipoGastoABM extends JPanel {
 
         jPanelTabla.setBorder(javax.swing.BorderFactory.createEtchedBorder());
 
+        masterTable.setAutoCreateRowSorter(true);
+
         org.jdesktop.swingbinding.JTableBinding jTableBinding = org.jdesktop.swingbinding.SwingBindings.createJTableBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, list, masterTable);
         org.jdesktop.swingbinding.JTableBinding.ColumnBinding columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${tipoGasto}"));
         columnBinding.setColumnName("Tipo Gasto");
@@ -190,7 +192,7 @@ public class TipoGastoABM extends JPanel {
         jPanelTablaLayout.setVerticalGroup(
             jPanelTablaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanelTablaLayout.createSequentialGroup()
-                .addContainerGap(272, Short.MAX_VALUE)
+                .addContainerGap(277, Short.MAX_VALUE)
                 .addGroup(jPanelTablaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(newButton)
                     .addComponent(deleteButton))
@@ -225,7 +227,7 @@ public class TipoGastoABM extends JPanel {
                 .addGroup(layout.createSequentialGroup()
                     .addContainerGap()
                     .addComponent(jPanelTabla, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addContainerGap(157, Short.MAX_VALUE)))
+                    .addContainerGap(168, Short.MAX_VALUE)))
         );
 
         bindingGroup.bind();

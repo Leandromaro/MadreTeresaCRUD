@@ -11,6 +11,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import javax.persistence.RollbackException;
+import javax.swing.JDialog;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
@@ -252,11 +253,7 @@ public class UsuarioABM extends JPanel {
                                  Acá deberia ir la cerrada de pantalla. 
                                  Hacer que hace Gestionar Usuario
                                  */
-                                IngresoSistema i = new IngresoSistema();
-                                i.setResizable(false);
-                                i.setLocationRelativeTo(null);
-                                i.setVisible(true);
-                                this.setVisible(false);
+                                System.exit(0);
                             }
                         }
                     }
@@ -344,7 +341,6 @@ public class UsuarioABM extends JPanel {
         if (!query.getResultList().isEmpty()) {
             try {
                 String sql = "UPDATE LogUsuario l SET l.activo= " + 0 + " WHERE l.activo= " + 1;
-                System.out.println(sql);
                 entityManager.createQuery(sql).executeUpdate();
                 LogUsuario log = new LogUsuario();
                 java.util.Date fecha = new Date();
