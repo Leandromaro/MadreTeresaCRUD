@@ -5,6 +5,7 @@
 package reportes;
 
 import java.io.File;
+import java.math.BigDecimal;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -43,12 +44,13 @@ public class IngresosEgresos extends javax.swing.JFrame {
      * Creates new form Ingresos
      */
     public List lista = new ArrayList();
-    public ConexionBD cc= new ConexionBD();
+    public ConexionBD cc = new ConexionBD();
     public Connection cn;
+
     public IngresosEgresos() {
         super("Generación de Informes");
         initComponents();
-        
+
         //Seteamos los campos de fechas a las de hoy por defecto...
         SimpleDateFormat formatoDelTexto = new SimpleDateFormat("dd/MM/yyyy");
         Date hoy = new Date();
@@ -336,98 +338,98 @@ public class IngresosEgresos extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jBHastaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBHastaActionPerformed
-        new Calendario((JFrame) SwingUtilities.getWindowAncestor(this),true,jTFHasta).setVisible(true);
+        new Calendario((JFrame) SwingUtilities.getWindowAncestor(this), true, jTFHasta).setVisible(true);
     }//GEN-LAST:event_jBHastaActionPerformed
 
     private void jBDesdeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBDesdeActionPerformed
-        new Calendario((JFrame) SwingUtilities.getWindowAncestor(this),true,jTFDesde).setVisible(true);
+        new Calendario((JFrame) SwingUtilities.getWindowAncestor(this), true, jTFDesde).setVisible(true);
     }//GEN-LAST:event_jBDesdeActionPerformed
 
     private void jBGenReportIngresosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBGenReportIngresosActionPerformed
-       
+
         SimpleDateFormat formatoDelTexto = new SimpleDateFormat("dd/MM/yyyy");
         Date fechaD = null;
-        Date fechaH=null;
+        Date fechaH = null;
         try {
             fechaD = formatoDelTexto.parse(jTFDesde.getText());
             fechaH = formatoDelTexto.parse(jTFHasta.getText());
 
         } catch (ParseException ex) {
 
-             ex.printStackTrace();
+            ex.printStackTrace();
 
         }
         //Comprueba que la fecha desde sea menor o igual a la de hasta
-        if(fechaD.before(fechaH)  || fechaD.equals(fechaH)){     
+        if (fechaD.before(fechaH) || fechaD.equals(fechaH)) {
             lista.removeAll(lista);
-            String [] fd = jTFDesde.getText().split("/");
-            String [] fh = jTFHasta.getText().split("/");
-            Double totCuota =0.0;
-            Double totDonac =0.0;
-            Double totfv =0.0;
-            Double totPublic =0.0;
-            Double totTarj =0.0;
-            Double totRif =0.0;
+            String[] fd = jTFDesde.getText().split("/");
+            String[] fh = jTFHasta.getText().split("/");
+            Double totCuota = 0.0;
+            Double totDonac = 0.0;
+            Double totfv = 0.0;
+            Double totPublic = 0.0;
+            Double totTarj = 0.0;
+            Double totRif = 0.0;
             ListaIngresos list;
-            DecimalFormat df = new DecimalFormat("0.00##");        
-            String sql = "SELECT YEAR(fechaPago) anio,MONTH(fechaPago) mes,SUM(monto) monto FROM cuotaSocial WHERE fechaPago BETWEEN '"+fd[2]+"-"+fd[1]+"-"+fd[0]+"' AND '"+
-                    fh[2]+"-"+fh[1]+"-"+fh[0]+"' AND fechaPago IS NOT NULL GROUP BY YEAR(fechaPago),MONTH(fechaPago)";
+            DecimalFormat df = new DecimalFormat("0.00##");
+            String sql = "SELECT YEAR(fechaPago) anio,MONTH(fechaPago) mes,SUM(monto) monto FROM cuotaSocial WHERE fechaPago BETWEEN '" + fd[2] + "-" + fd[1] + "-" + fd[0] + "' AND '"
+                    + fh[2] + "-" + fh[1] + "-" + fh[0] + "' AND fechaPago IS NOT NULL GROUP BY YEAR(fechaPago),MONTH(fechaPago)";
 
-             //Cuotas Sociales
+            //Cuotas Sociales
             try {
-                 cn = cc.conexion();
-                 Statement st = cn.createStatement();
-                 ResultSet rs = st.executeQuery(sql);             
-                 while(rs.next()){
-                     totCuota=totCuota+rs.getDouble("monto");
-                     ListaIngresos ingresos= new ListaIngresos(rs.getString("mes").toString(),rs.getString("anio").toString(),"$"+rs.getString("monto").toString(),"---","---","---","---","---");
-                     lista.add(ingresos);                
-                 }
-                 cn.close();
+                cn = cc.conexion();
+                Statement st = cn.createStatement();
+                ResultSet rs = st.executeQuery(sql);
+                while (rs.next()) {
+                    totCuota = totCuota + rs.getDouble("monto");
+                    ListaIngresos ingresos = new ListaIngresos(rs.getString("mes").toString(), rs.getString("anio").toString(), "$" + rs.getString("monto").toString(), "---", "---", "---", "---", "---");
+                    lista.add(ingresos);
+                }
+                cn.close();
 
             } catch (SQLException ex) {
                 Logger.getLogger(IngresosEgresos.class.getName()).log(Level.SEVERE, null, ex);
             }
 
             //Donaciones
-            sql = "SELECT YEAR(fechaDonacion) anio,MONTH(fechaDonacion) mes,SUM(monto) monto FROM donaciones WHERE fechaDonacion BETWEEN '"+fd[2]+"-"+fd[1]+"-"+fd[0]+"' AND '"+
-                    fh[2]+"-"+fh[1]+"-"+fh[0]+"' GROUP BY YEAR(fechaDonacion),MONTH(fechaDonacion)";
-            totDonac=getConsulta(sql,"donac");      
+            sql = "SELECT YEAR(fechaDonacion) anio,MONTH(fechaDonacion) mes,SUM(monto) monto FROM donaciones WHERE fechaDonacion BETWEEN '" + fd[2] + "-" + fd[1] + "-" + fd[0] + "' AND '"
+                    + fh[2] + "-" + fh[1] + "-" + fh[0] + "' GROUP BY YEAR(fechaDonacion),MONTH(fechaDonacion)";
+            totDonac = getConsulta(sql, "donac");
 
-             //Flores de vida
-            sql = "SELECT YEAR(fechaPago) anio,MONTH(fechaPago) mes,SUM(monto) monto FROM cuotaFlorDeVida WHERE fechaPago BETWEEN '"+fd[2]+"-"+fd[1]+"-"+fd[0]+"' AND '"+
-                    fh[2]+"-"+fh[1]+"-"+fh[0]+"' GROUP BY YEAR(fechaPago),MONTH(fechaPago)";
-            totfv=getConsulta(sql, "flores");
+            //Flores de vida
+            sql = "SELECT YEAR(fechaPago) anio,MONTH(fechaPago) mes,SUM(monto) monto FROM cuotaFlorDeVida WHERE fechaPago BETWEEN '" + fd[2] + "-" + fd[1] + "-" + fd[0] + "' AND '"
+                    + fh[2] + "-" + fh[1] + "-" + fh[0] + "' GROUP BY YEAR(fechaPago),MONTH(fechaPago)";
+            totfv = getConsulta(sql, "flores");
 
             //Publicidades
-            sql = "SELECT YEAR(fecha) anio,MONTH(fecha) mes,SUM(montoPublic) monto FROM eventos WHERE fecha BETWEEN '"+fd[2]+"-"+fd[1]+"-"+fd[0]+"' AND '"+
-                    fh[2]+"-"+fh[1]+"-"+fh[0]+"' AND montoPublic IS NOT NULL GROUP BY YEAR(fecha),MONTH(fecha)";
-            totPublic=getConsulta(sql, "public");
+            sql = "SELECT YEAR(fecha) anio,MONTH(fecha) mes,SUM(montoPublic) monto FROM eventos WHERE fecha BETWEEN '" + fd[2] + "-" + fd[1] + "-" + fd[0] + "' AND '"
+                    + fh[2] + "-" + fh[1] + "-" + fh[0] + "' AND montoPublic IS NOT NULL GROUP BY YEAR(fecha),MONTH(fecha)";
+            totPublic = getConsulta(sql, "public");
 
             //Rifas
-            sql = "SELECT YEAR(fecha) anio,MONTH(fecha) mes,SUM(montoRifas) monto FROM eventos WHERE fecha BETWEEN '"+fd[2]+"-"+fd[1]+"-"+fd[0]+"' AND '"+
-                    fh[2]+"-"+fh[1]+"-"+fh[0]+"' AND montoRifas IS NOT NULL GROUP BY YEAR(fecha),MONTH(fecha)";
-            totRif=getConsulta(sql, "rifas");
+            sql = "SELECT YEAR(fecha) anio,MONTH(fecha) mes,SUM(montoRifas) monto FROM eventos WHERE fecha BETWEEN '" + fd[2] + "-" + fd[1] + "-" + fd[0] + "' AND '"
+                    + fh[2] + "-" + fh[1] + "-" + fh[0] + "' AND montoRifas IS NOT NULL GROUP BY YEAR(fecha),MONTH(fecha)";
+            totRif = getConsulta(sql, "rifas");
 
             //Tarjetas
-            sql = "SELECT YEAR(fecha) anio,MONTH(fecha) mes,SUM(montoTarjetas) monto FROM eventos WHERE fecha BETWEEN '"+fd[2]+"-"+fd[1]+"-"+fd[0]+"' AND '"+
-                    fh[2]+"-"+fh[1]+"-"+fh[0]+"' AND montoTarjetas IS NOT NULL GROUP BY YEAR(fecha),MONTH(fecha)";
-            totTarj=getConsulta(sql, "tarj");
+            sql = "SELECT YEAR(fecha) anio,MONTH(fecha) mes,SUM(montoTarjetas) monto FROM eventos WHERE fecha BETWEEN '" + fd[2] + "-" + fd[1] + "-" + fd[0] + "' AND '"
+                    + fh[2] + "-" + fh[1] + "-" + fh[0] + "' AND montoTarjetas IS NOT NULL GROUP BY YEAR(fecha),MONTH(fecha)";
+            totTarj = getConsulta(sql, "tarj");
 
             //Ordenamos la lista         
             Collections.sort(lista, new Comparator<ListaIngresos>() {
                 @Override
                 public int compare(ListaIngresos l1, ListaIngresos l2) {
-                        return new Integer(Integer.parseInt(l1.getMes())).compareTo(new Integer(Integer.parseInt(l2.getMes())));
-                }          
-             });
-            
+                    return new Integer(Integer.parseInt(l1.getMes())).compareTo(new Integer(Integer.parseInt(l2.getMes())));
+                }
+            });
+
             Collections.sort(lista, new Comparator<ListaIngresos>() {
                 @Override
                 public int compare(ListaIngresos l1, ListaIngresos l2) {
-                        return new Integer(Integer.parseInt(l1.getAnio())).compareTo(new Integer(Integer.parseInt(l2.getAnio())));
-                }          
-             });
+                    return new Integer(Integer.parseInt(l1.getAnio())).compareTo(new Integer(Integer.parseInt(l2.getAnio())));
+                }
+            });
 
 //            for(int i=0;i<lista.size();i++){
 //                list = (ListaIngresos)lista.get(i);
@@ -435,78 +437,79 @@ public class IngresosEgresos extends javax.swing.JFrame {
 //
 //            }
             //Creamos el informe
-            try {            
-                File fichero = new File("Ingresos.jasper");            
-                JasperReport reporte= (JasperReport) JRLoader.loadObject(fichero);
+            try {
+                File fichero = new File("Ingresos.jasper");
+                JasperReport reporte = (JasperReport) JRLoader.loadObject(fichero);
 
                 Map parametro = new HashMap();
                 parametro.put("fechaDesde", jTFDesde.getText());
                 parametro.put("fechaHasta", jTFHasta.getText());
-                parametro.put("totDonac", "$"+df.format(totDonac));
-                parametro.put("totCuota", "$"+df.format(totCuota));
-                parametro.put("totFV", "$"+df.format(totfv));
-                parametro.put("totPublic", "$"+df.format(totPublic));
-                parametro.put("totRifas", "$"+df.format(totRif));
-                parametro.put("totTar", "$"+df.format(totTarj));
-                parametro.put("total", "$"+df.format(totCuota+totDonac+totfv+totPublic+totRif+totTarj));
-                JasperPrint jprint= JasperFillManager.fillReport(reporte, parametro,new JRBeanCollectionDataSource(lista));
+                parametro.put("totDonac", "$" + df.format(totDonac));
+                parametro.put("totCuota", "$" + df.format(totCuota));
+                parametro.put("totFV", "$" + df.format(totfv));
+                parametro.put("totPublic", "$" + df.format(totPublic));
+                parametro.put("totRifas", "$" + df.format(totRif));
+                parametro.put("totTar", "$" + df.format(totTarj));
+                parametro.put("total", "$" + df.format(totCuota + totDonac + totfv + totPublic + totRif + totTarj));
+                JasperPrint jprint = JasperFillManager.fillReport(reporte, parametro, new JRBeanCollectionDataSource(lista));
 
-                JasperViewer.viewReport(jprint,false);
+                JasperViewer.viewReport(jprint, false);
             } catch (JRException ex) {
                 Logger.getLogger(IngresosEgresos.class.getName()).log(Level.SEVERE, null, ex);
-            } 
-       } else
+            }
+        } else {
             JOptionPane.showMessageDialog(null, "El periodo de fecha ingresado no es válido");
+        }
     }//GEN-LAST:event_jBGenReportIngresosActionPerformed
 
     private void jBDesde1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBDesde1ActionPerformed
-        new Calendario((JFrame) SwingUtilities.getWindowAncestor(this),true,jTFDesde1).setVisible(true);
+        new Calendario((JFrame) SwingUtilities.getWindowAncestor(this), true, jTFDesde1).setVisible(true);
     }//GEN-LAST:event_jBDesde1ActionPerformed
 
     private void jBHasta1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBHasta1ActionPerformed
-        new Calendario((JFrame) SwingUtilities.getWindowAncestor(this),true,jTFHasta1).setVisible(true);
+        new Calendario((JFrame) SwingUtilities.getWindowAncestor(this), true, jTFHasta1).setVisible(true);
     }//GEN-LAST:event_jBHasta1ActionPerformed
 
     private void jBGenReportEgresosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBGenReportEgresosActionPerformed
         SimpleDateFormat formatoDelTexto = new SimpleDateFormat("dd/MM/yyyy");
         Date fechaD = null;
-        Date fechaH=null;
+        Date fechaH = null;
         try {
             fechaD = formatoDelTexto.parse(jTFDesde1.getText());
             fechaH = formatoDelTexto.parse(jTFHasta1.getText());
 
         } catch (ParseException ex) {
 
-             ex.printStackTrace();
+            ex.printStackTrace();
 
-        }     
-        if(fechaD.before(fechaH)  || fechaD.equals(fechaH)){         
-        String [] fd = jTFDesde1.getText().split("/");
-        String [] fh = jTFHasta1.getText().split("/");
-        String fechaDesde = fd[2]+"-"+fd[1]+"-"+fd[0];
-        String fechaHasta = fh[2]+"-"+fh[1]+"-"+fh[0];
-        String tipoGasto =  jComboBoxTipoGasto.getSelectedItem().toString().trim(); 
-        Double tot =0.0;
-        
-        List listaE = new ArrayList();   
-        ListaEgresos list;
-        DecimalFormat df = new DecimalFormat("0.00##");        
-        String sql = "SELECT tg.Elemento item, YEAR(g.fechaGasto) anio,MONTH(g.fechaGasto) mes,SUM(monto) monto FROM tipoGasto tg, gastos g WHERE g.fechaGasto BETWEEN '"+fd[2]+"-"+fd[1]+"-"+fd[0]+"' AND '"+
-                fh[2]+"-"+fh[1]+"-"+fh[0]+"' AND tg.idtipo_gasto=g.tipo_gasto_idtipo_gasto AND tg.TipoGasto='"+jComboBoxTipoGasto.getSelectedItem().toString().trim() +"' GROUP BY  item, anio, mes ";
-        try {
-             cn = cc.conexion();
-             Statement st = cn.createStatement();
-             ResultSet rs = st.executeQuery(sql);             
-             while(rs.next()){
-                 tot=tot+rs.getDouble("monto");
-                 ListaEgresos egresos= new ListaEgresos(rs.getString("mes").toString(),rs.getString("anio"),rs.getString("item").toString(),"$"+rs.getString("monto").toString());
-                 listaE.add(egresos);                
-             } 
-             cn.close();
-        } catch (SQLException ex) {
-            Logger.getLogger(IngresosEgresos.class.getName()).log(Level.SEVERE, null, ex);
         }
-        
+        if (fechaD.before(fechaH) || fechaD.equals(fechaH)) {
+            String[] fd = jTFDesde1.getText().split("/");
+            String[] fh = jTFHasta1.getText().split("/");
+            String fechaDesde = fd[2] + "-" + fd[1] + "-" + fd[0];
+            String fechaHasta = fh[2] + "-" + fh[1] + "-" + fh[0];
+            String tipoGasto = jComboBoxTipoGasto.getSelectedItem().toString().trim();
+            Double tot = 0.0;
+
+            List<ListaEgresos> listaE = new ArrayList();
+            DecimalFormat df = new DecimalFormat("0.00##");
+            String sql = "SELECT tg.Elemento item, YEAR(g.fechaGasto) anio,MONTH(g.fechaGasto) mes,SUM(monto) monto "
+                    + "FROM tipoGasto tg, gastos g WHERE g.fechaGasto BETWEEN '" + fd[2] + "-" + fd[1] + "-" + fd[0] + "' AND '"
+                    + fh[2] + "-" + fh[1] + "-" + fh[0] + "' AND tg.idtipo_gasto=g.tipo_gasto_idtipo_gasto AND tg.TipoGasto='" + jComboBoxTipoGasto.getSelectedItem().toString().trim() + "' GROUP BY  item, anio, mes ";
+            try {
+                cn = cc.conexion();
+                Statement st = cn.createStatement();
+                ResultSet rs = st.executeQuery(sql);
+                while (rs.next()) {
+                    tot = tot + rs.getDouble("monto");
+                    ListaEgresos egresos = new ListaEgresos(rs.getInt("mes"), rs.getInt("anio"), rs.getString("item"), rs.getBigDecimal("monto"));
+                    listaE.add(egresos);
+                }
+                cn.close();
+            } catch (SQLException ex) {
+                Logger.getLogger(IngresosEgresos.class.getName()).log(Level.SEVERE, null, ex);
+            }
+
         //Ordenamos la lista         
 //        Collections.sort(listaE, new Comparator<ListaEgresos>() {
 //            @Override
@@ -520,109 +523,128 @@ public class IngresosEgresos extends javax.swing.JFrame {
 //                    return new Integer(Integer.parseInt(l1.getAnio())).compareTo(new Integer(Integer.parseInt(l2.getAnio())));
 //            }          
 //         });
-        
 //         for(int i=0;i<listaE.size();i++){
 //            list = (ListaEgresos)listaE.get(i);
 //            list.setMes(retornaMes(Integer.parseInt(list.getMes())));
 //                    
 //         }
-         
-         //Creamos el informe
-        try {            
-            File fichero = new File("Egresos1.jasper");            
-            JasperReport reporte= (JasperReport) JRLoader.loadObject(fichero);//(JasperReport) JRLoader.loadObject("Ingresos.jasper");
-            String tipo=jComboBoxTipoGasto.getSelectedItem().toString().trim();
-            if("Hogar".equals(tipo)){
-                tipo= "del "+tipo;
-            }else{
-                tipo="de la "+tipo;
-            }
-            Map parametro = new HashMap();
-            parametro.put("fechaDesde", jTFDesde1.getText());
-            parametro.put("fechaHasta", jTFHasta1.getText());  
-            parametro.put("leyenda", tipo);
-            parametro.put("total", "$"+df.format(tot));
-            parametro.put("fdSQL",fechaDesde);
-            parametro.put("fhSQL",fechaHasta);
-            parametro.put("tipoGasto",tipoGasto);
+      
+            //Creamos el informe
+            try {
+                File fichero = new File("Egresos1.jasper");
+                JasperReport reporte = (JasperReport) JRLoader.loadObject(fichero);//(JasperReport) JRLoader.loadObject("Ingresos.jasper");
+                String tipo = jComboBoxTipoGasto.getSelectedItem().toString().trim();
+                if ("Hogar".equals(tipo)) {
+                    tipo = "del " + tipo;
+                } else {
+                    tipo = "de la " + tipo;
+                }
+                Map parametro = new HashMap();
+                parametro.put("fechaDesde", jTFDesde1.getText());
+                parametro.put("fechaHasta", jTFHasta1.getText());
+                parametro.put("leyenda", tipo);
+                parametro.put("total", "$" + df.format(tot));
+                parametro.put("fdSQL", fechaDesde);
+                parametro.put("fhSQL", fechaHasta);
+                parametro.put("tipoGasto", tipoGasto);
             //parametro.put("REPORT_CONNECTION",cc.conexion());
-            //JasperPrint jprint= JasperFillManager.fillReport(reporte, parametro,cc.conexion());
-            JasperPrint jprint= JasperFillManager.fillReport(reporte, parametro,new JRBeanCollectionDataSource(listaE));
-            
-            JasperViewer.viewReport(jprint,false);
-        } catch (JRException ex) {
-            Logger.getLogger(IngresosEgresos.class.getName()).log(Level.SEVERE, null, ex);
-        }      
-       } else
+                //JasperPrint jprint= JasperFillManager.fillReport(reporte, parametro,cc.conexion());           
+                JasperPrint jprint = JasperFillManager.fillReport(reporte, parametro, new JRBeanCollectionDataSource(listaE));
+
+                JasperViewer.viewReport(jprint, false);
+            } catch (JRException ex) {
+                Logger.getLogger(IngresosEgresos.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        } else {
             JOptionPane.showMessageDialog(null, "El periodo de fecha ingresado no es válido");
+        }
     }//GEN-LAST:event_jBGenReportEgresosActionPerformed
 
     private void jTFDesdeMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTFDesdeMouseClicked
-        new Calendario((JFrame) SwingUtilities.getWindowAncestor(this),true,jTFDesde).setVisible(true);
+        new Calendario((JFrame) SwingUtilities.getWindowAncestor(this), true, jTFDesde).setVisible(true);
     }//GEN-LAST:event_jTFDesdeMouseClicked
 
     private void jTFHastaMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTFHastaMouseClicked
-        new Calendario((JFrame) SwingUtilities.getWindowAncestor(this),true,jTFHasta).setVisible(true);
+        new Calendario((JFrame) SwingUtilities.getWindowAncestor(this), true, jTFHasta).setVisible(true);
     }//GEN-LAST:event_jTFHastaMouseClicked
 
     private void jTFDesde1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTFDesde1MouseClicked
-        new Calendario((JFrame) SwingUtilities.getWindowAncestor(this),true,jTFDesde1).setVisible(true);
+        new Calendario((JFrame) SwingUtilities.getWindowAncestor(this), true, jTFDesde1).setVisible(true);
     }//GEN-LAST:event_jTFDesde1MouseClicked
 
     private void jTFHasta1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTFHasta1MouseClicked
-        new Calendario((JFrame) SwingUtilities.getWindowAncestor(this),true,jTFHasta1).setVisible(true);
+        new Calendario((JFrame) SwingUtilities.getWindowAncestor(this), true, jTFHasta1).setVisible(true);
     }//GEN-LAST:event_jTFHasta1MouseClicked
-    
-    private String retornaMes(int mes){
-        String [] meses = {"Enero","Febrero","Marzo","Abril","Mayo","Junio","Julio","Agosto","Septimbre","Octubre","Noviembre","Diciembre"};
-        String retorna = meses[mes-1];
+
+    private String retornaMes(int mes) {
+        String[] meses = {"Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septimbre", "Octubre", "Noviembre", "Diciembre"};
+        String retorna = meses[mes - 1];
         return retorna;
     }
-    private Double getConsulta(String sql, String tipoList){
-        ListaIngresos list;       
-        Double tot=0.0;
-       
+
+    private Double getConsulta(String sql, String tipoList) {
+        ListaIngresos list;
+        Double tot = 0.0;
+
         boolean band;
-        try {  
-             cn = cc.conexion();
-             Statement st = cn.createStatement();
-             ResultSet rs = st.executeQuery(sql);
-             
-             while(rs.next()){
-                 tot=tot+rs.getDouble("monto");
-                 band = false;
-                 for(int i=0;i<lista.size();i++){
-                     list = (ListaIngresos)lista.get(i); 
-                     //acá ingresa cuando existe en la lista un mes y año igual al registro actual
-                      if(rs.getString("mes").equals(list.getMes())&& rs.getString("anio").equals(list.getAnio())){
-                         band=true;  
-                         switch(tipoList){
-                            case "donac": list.setDonacion("$"+rs.getString("monto"));break;
-                            case "flores": list.setFloresVida("$"+rs.getString("monto"));break;
-                            case "public": list.setPublicidad("$"+rs.getString("monto"));break;
-                            case "rifas": list.setRifas("$"+rs.getString("monto"));break;
-                            case "tarj": list.setTarjetas("$"+rs.getString("monto"));                          
+        try {
+            cn = cc.conexion();
+            Statement st = cn.createStatement();
+            ResultSet rs = st.executeQuery(sql);
+
+            while (rs.next()) {
+                tot = tot + rs.getDouble("monto");
+                band = false;
+                for (int i = 0; i < lista.size(); i++) {
+                    list = (ListaIngresos) lista.get(i);
+                    //acá ingresa cuando existe en la lista un mes y año igual al registro actual
+                    if (rs.getString("mes").equals(list.getMes()) && rs.getString("anio").equals(list.getAnio())) {
+                        band = true;
+                        switch (tipoList) {
+                            case "donac":
+                                list.setDonacion("$" + rs.getString("monto"));
+                                break;
+                            case "flores":
+                                list.setFloresVida("$" + rs.getString("monto"));
+                                break;
+                            case "public":
+                                list.setPublicidad("$" + rs.getString("monto"));
+                                break;
+                            case "rifas":
+                                list.setRifas("$" + rs.getString("monto"));
+                                break;
+                            case "tarj":
+                                list.setTarjetas("$" + rs.getString("monto"));
                         }
-                        
-                     }
-                 }
+
+                    }
+                }
                  //acá ingresa  cuando no existe en la lista
-                 //ningún valor con el mes y año del registro actual
-                 if(band==false){                      
-                     ListaIngresos ingresos=null;
-                      switch(tipoList){
-                            case "donac": ingresos= new ListaIngresos(rs.getString("mes").toString(),rs.getString("anio").toString(),"---","$"+rs.getString("monto").toString(),"---","---","---","---");break;
-                            case "flores": ingresos= new ListaIngresos(rs.getString("mes").toString(),rs.getString("anio").toString(),"---","---","$"+rs.getString("monto").toString(),"---","---","---");break;
-                            case "public": ingresos= new ListaIngresos(rs.getString("mes").toString(),rs.getString("anio").toString(),"---","---","---","$"+rs.getString("monto").toString(),"---","---");break;    
-                            case "rifas": ingresos= new ListaIngresos(rs.getString("mes").toString(),rs.getString("anio").toString(),"---","---","---","---","$"+rs.getString("monto").toString(),"---");break;        
-                            case "tarj": ingresos= new ListaIngresos(rs.getString("mes").toString(),rs.getString("anio").toString(),"---","---","---","---","-","$"+rs.getString("monto").toString());            
-                            
-                      }
-                     
-                     lista.add(ingresos);                     
-                 }                
-             }     
-             cn.close();
+                //ningún valor con el mes y año del registro actual
+                if (band == false) {
+                    ListaIngresos ingresos = null;
+                    switch (tipoList) {
+                        case "donac":
+                            ingresos = new ListaIngresos(rs.getString("mes").toString(), rs.getString("anio").toString(), "---", "$" + rs.getString("monto").toString(), "---", "---", "---", "---");
+                            break;
+                        case "flores":
+                            ingresos = new ListaIngresos(rs.getString("mes").toString(), rs.getString("anio").toString(), "---", "---", "$" + rs.getString("monto").toString(), "---", "---", "---");
+                            break;
+                        case "public":
+                            ingresos = new ListaIngresos(rs.getString("mes").toString(), rs.getString("anio").toString(), "---", "---", "---", "$" + rs.getString("monto").toString(), "---", "---");
+                            break;
+                        case "rifas":
+                            ingresos = new ListaIngresos(rs.getString("mes").toString(), rs.getString("anio").toString(), "---", "---", "---", "---", "$" + rs.getString("monto").toString(), "---");
+                            break;
+                        case "tarj":
+                            ingresos = new ListaIngresos(rs.getString("mes").toString(), rs.getString("anio").toString(), "---", "---", "---", "---", "-", "$" + rs.getString("monto").toString());
+
+                    }
+
+                    lista.add(ingresos);
+                }
+            }
+            cn.close();
         } catch (SQLException ex) {
             Logger.getLogger(IngresosEgresos.class.getName()).log(Level.SEVERE, null, ex);
         }

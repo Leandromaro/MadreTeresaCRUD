@@ -13,17 +13,18 @@ import javax.swing.JOptionPane;
  * @author francis
  */
 public class ConexionBD {
+
     Connection conect = null;
-   public Connection conexion()
-    {
-      try {             
-           //Cargamos el Driver MySQL
-           Class.forName("com.mysql.jdbc.Driver");
-           conect = DriverManager.getConnection("jdbc:mysql://localhost/circuloo_francisco","root","root");  //"jdbc:mysql://174.136.57.250/circuloo_francisco","circuloo_franci","1234franci1234"        "jdbc:mysql://www.db4free.net:3306/sistcalcuta","admincalcuta","sistCalcuta"
+
+    public Connection conexion() {
+        try {
+            //Cargamos el Driver MySQL
+            Class.forName("com.mysql.jdbc.Driver");
+            conect = DriverManager.getConnection("jdbc:mysql://174.136.57.250/circuloo_francisco", "circuloo_franci", "1234franci1234");  //"jdbc:mysql://174.136.57.250/circuloo_francisco","circuloo_franci","1234franci1234"        "jdbc:mysql://localhost/circuloo_francisco","root","root"
         } catch (Exception e) {
-            JOptionPane.showMessageDialog(null,"Error "+e);
+            JOptionPane.showMessageDialog(null, "Error " + e);
         }
         return conect;
-     
+
     }
 }

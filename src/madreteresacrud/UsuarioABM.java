@@ -5,16 +5,13 @@
  */
 package madreteresacrud;
 
-import java.awt.Window;
 import java.beans.Beans;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import javax.persistence.RollbackException;
-import javax.swing.JDialog;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-import javax.swing.SwingUtilities;
 
 /**
  *

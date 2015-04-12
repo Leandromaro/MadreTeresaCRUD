@@ -4,47 +4,50 @@
  */
 package reportes;
 
+import java.math.BigDecimal;
+
 /**
  *
  * @author francis
  */
 public class ListaEgresos {
-    private String monto;
-    private String mes;
-    private String anio;
+    private BigDecimal monto;
+    private String item;
+    private Integer mes;
+    private Integer anio;
 
-    public String getAnio() {
-        return anio;
-    }
-
-    public void setAnio(String anio) {
+    public ListaEgresos(Integer mes, Integer anio,String item,BigDecimal monto) {
+        this.monto = monto;
+        this.item = item;
+        this.mes = mes;
         this.anio = anio;
     }
-    private String item;
 
-    public ListaEgresos(String mes, String anio, String item, String monto) {        
-        this.mes = mes;
-        this.anio=anio;
-        this.item = item;
-        this.monto = monto;
-    }
-
-    public String getMonto() {
+    public BigDecimal getMonto() {
         return monto;
     }
 
-    public void setMonto(String monto) {
+    public void setMonto(BigDecimal monto) {
         this.monto = monto;
     }
 
-    public String getMes() {
+    public Integer getMes() {
         return mes;
     }
 
-    public void setMes(String mes) {
+    public void setMes(Integer mes) {
         this.mes = mes;
     }
 
+    public Integer getAnio() {
+        return anio;
+    }
+
+    public void setAnio(Integer anio) {
+        this.anio = anio;
+    }
+
+   
     public String getItem() {
         return item;
     }
