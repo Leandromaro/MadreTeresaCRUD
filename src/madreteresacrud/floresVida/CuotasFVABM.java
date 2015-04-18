@@ -8,6 +8,7 @@ import java.awt.Toolkit;
 import java.beans.Beans;
 import java.text.DateFormat;
 import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
@@ -377,12 +378,11 @@ public class CuotasFVABM extends JPanel {
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void fechaPagoFieldMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_fechaPagoFieldMouseClicked
-      new CalendarioDialog((JDialog) SwingUtilities.getWindowAncestor(this), true, fechaPagoField).setVisible(true);          
+        new CalendarioDialog((JDialog) SwingUtilities.getWindowAncestor(this), true, fechaPagoField).setVisible(true);
     }//GEN-LAST:event_fechaPagoFieldMouseClicked
 
     private void montoFieldKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_montoFieldKeyTyped
-       if (!Character.isDigit(evt.getKeyChar()) && !Character.isISOControl(evt.getKeyChar()) && evt.getKeyChar() != '.')
-        {
+        if (!Character.isDigit(evt.getKeyChar()) && !Character.isISOControl(evt.getKeyChar()) && evt.getKeyChar() != '.') {
             Toolkit.getDefaultToolkit().beep();
             evt.consume();
         }
@@ -399,16 +399,18 @@ public class CuotasFVABM extends JPanel {
     Converter dateConverter = new Converter<java.util.Date, String>() {
         @Override
         public String convertForward(java.util.Date value) {
-            DateFormat df = DateFormat.getDateInstance();
-            return df.format(value);
+            String patron = "dd/MM/yyyy";
+            SimpleDateFormat formato = new SimpleDateFormat(patron);
+            return formato.format(value);
         }
 
         @Override
         public java.util.Date convertReverse(String value) {
             try {
-                DateFormat df = DateFormat.getDateInstance();
+                DateFormat df = new SimpleDateFormat("dd/MM/yyyy");
                 return df.parse(value);
             } catch (ParseException e) {
+                System.err.println("Error de dateConverter: " + e.getMessage());
                 return Calendar.getInstance().getTime();
             }
         }

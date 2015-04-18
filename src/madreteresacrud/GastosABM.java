@@ -8,6 +8,7 @@ import java.awt.Toolkit;
 import java.beans.Beans;
 import java.text.DateFormat;
 import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
@@ -602,16 +603,18 @@ public class GastosABM extends JPanel {
     Converter dateConverter = new Converter<java.util.Date, String>() {
         @Override
         public String convertForward(java.util.Date value) {
-            DateFormat df = DateFormat.getDateInstance();
-            return df.format(value);
+            String patron = "dd/MM/yyyy";
+            SimpleDateFormat formato = new SimpleDateFormat(patron);
+            return formato.format(value);
         }
 
         @Override
         public java.util.Date convertReverse(String value) {
             try {
-                DateFormat df = DateFormat.getDateInstance();
+                DateFormat df = new SimpleDateFormat("dd/MM/yyyy");
                 return df.parse(value);
             } catch (ParseException e) {
+                System.err.println("Error de dateConverter: " + e.getMessage());
                 return Calendar.getInstance().getTime();
             }
         }

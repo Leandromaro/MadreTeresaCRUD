@@ -476,16 +476,18 @@ public class CuotaSocialABM extends JPanel {
     Converter dateConverter = new Converter<java.util.Date, String>() {
         @Override
         public String convertForward(java.util.Date value) {
-            DateFormat df = DateFormat.getDateInstance();
-            return df.format(value);
+            String patron = "dd/MM/yyyy";
+            SimpleDateFormat formato = new SimpleDateFormat(patron);
+            return formato.format(value);
         }
 
         @Override
         public java.util.Date convertReverse(String value) {
             try {
-                DateFormat df = DateFormat.getDateInstance();
+                DateFormat df = new SimpleDateFormat("dd/MM/yyyy");
                 return df.parse(value);
             } catch (ParseException e) {
+                System.err.println("Error de dateConverter: "+e.getMessage());
                 return Calendar.getInstance().getTime();
             }
         }

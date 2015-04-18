@@ -74,7 +74,7 @@ public class SociosABM extends JPanel {
         masterTable.getColumnModel().getColumn(12).setMaxWidth(0);
         masterTable.getColumnModel().getColumn(12).setMinWidth(0);
         masterTable.getColumnModel().getColumn(12).setPreferredWidth(0);
-        
+
         masterTable.getColumnModel().getColumn(13).setMaxWidth(0);
         masterTable.getColumnModel().getColumn(13).setMinWidth(0);
         masterTable.getColumnModel().getColumn(13).setPreferredWidth(0);
@@ -1290,16 +1290,18 @@ public class SociosABM extends JPanel {
     Converter dateConverter = new Converter<java.util.Date, String>() {
         @Override
         public String convertForward(java.util.Date value) {
-            DateFormat df = DateFormat.getDateInstance();
-            return df.format(value);
+            String patron = "dd/MM/yyyy";
+            SimpleDateFormat formato = new SimpleDateFormat(patron);
+            return formato.format(value);
         }
 
         @Override
         public java.util.Date convertReverse(String value) {
             try {
-                DateFormat df = DateFormat.getDateInstance();
+                DateFormat df = new SimpleDateFormat("dd/MM/yyyy");
                 return df.parse(value);
             } catch (ParseException e) {
+                System.err.println("Error de dateConverter: " + e.getMessage());
                 return Calendar.getInstance().getTime();
             }
         }
@@ -1524,7 +1526,7 @@ public class SociosABM extends JPanel {
     public void setTelefonoField(String telefonoField) {
         this.telefonoField.setText(telefonoField);
     }
-    
+
     Converter localidadConverter = new Converter<Integer, Localidades>() {
 
         @Override

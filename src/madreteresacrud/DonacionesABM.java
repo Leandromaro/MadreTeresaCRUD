@@ -9,6 +9,7 @@ import java.awt.Toolkit;
 import java.beans.Beans;
 import java.text.DateFormat;
 import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
@@ -129,7 +130,7 @@ public class DonacionesABM extends JPanel {
         jPanelTablaLayout.setVerticalGroup(
             jPanelTablaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanelTablaLayout.createSequentialGroup()
-                .addContainerGap(304, Short.MAX_VALUE)
+                .addContainerGap(308, Short.MAX_VALUE)
                 .addGroup(jPanelTablaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(deleteButton)
                     .addComponent(newButton))
@@ -260,7 +261,7 @@ public class DonacionesABM extends JPanel {
         jPanelFormLayout.setVerticalGroup(
             jPanelFormLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanelFormLayout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap(12, Short.MAX_VALUE)
                 .addGroup(jPanelFormLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel1, javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanelFormLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -339,14 +340,14 @@ public class DonacionesABM extends JPanel {
             else if (evt.getSource() == refreshButton) {
                 DonacionesABM.this.refreshButtonActionPerformed(evt);
             }
-            else if (evt.getSource() == jButtonCalendar) {
-                DonacionesABM.this.jButtonCalendarActionPerformed(evt);
-            }
             else if (evt.getSource() == jButtonBuscar) {
                 DonacionesABM.this.jButtonBuscarActionPerformed(evt);
             }
             else if (evt.getSource() == jCheckBoxSoc) {
                 DonacionesABM.this.jCheckBoxSocActionPerformed(evt);
+            }
+            else if (evt.getSource() == jButtonCalendar) {
+                DonacionesABM.this.jButtonCalendarActionPerformed(evt);
             }
         }
 
@@ -476,7 +477,11 @@ public class DonacionesABM extends JPanel {
     private void saveButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveButtonActionPerformed
         if (!blancos()) {
             try {
-                int doc = Integer.parseInt(documentoField.getText().trim());
+                int doc = 0;
+                if (!documentoField.getText().isEmpty()) {
+                    doc = Integer.parseInt(documentoField.getText().trim());
+                }
+
                 if (doc != 0) {
                     SociosABM s = new SociosABM();
                     Socios soc = s.ApeYNom(doc);
@@ -526,10 +531,6 @@ public class DonacionesABM extends JPanel {
         activarTextos(false);
     }
 
-
-    private void jButtonCalendarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonCalendarActionPerformed
-        new Calendario((JFrame) SwingUtilities.getWindowAncestor(this), true, fechaDonacionField).setVisible(true);
-    }//GEN-LAST:event_jButtonCalendarActionPerformed
 
     private void documentoFieldKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_documentoFieldKeyTyped
         if ((!Character.isDigit(evt.getKeyChar()) && !Character.isISOControl(evt.getKeyChar())) || (documentoField.getText().trim().length() >= 8))//para permitir el punto && evt.getKeyChar()!='.')
@@ -597,6 +598,10 @@ public class DonacionesABM extends JPanel {
         }
     }//GEN-LAST:event_montoFieldKeyTyped
 
+    private void jButtonCalendarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonCalendarActionPerformed
+        new Calendario((JFrame) SwingUtilities.getWindowAncestor(this), true, fechaDonacionField).setVisible(true);
+    }//GEN-LAST:event_jButtonCalendarActionPerformed
+
     private void fechaDonacionFieldMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_fechaDonacionFieldMouseClicked
         new Calendario((JFrame) SwingUtilities.getWindowAncestor(this), true, fechaDonacionField).setVisible(true);
     }//GEN-LAST:event_fechaDonacionFieldMouseClicked
@@ -605,16 +610,18 @@ public class DonacionesABM extends JPanel {
     Converter dateConverter = new Converter<java.util.Date, String>() {
         @Override
         public String convertForward(java.util.Date value) {
-            DateFormat df = DateFormat.getDateInstance();
-            return df.format(value);
+            String patron = "dd/MM/yyyy";
+            SimpleDateFormat formato = new SimpleDateFormat(patron);
+            return formato.format(value);
         }
 
         @Override
         public java.util.Date convertReverse(String value) {
             try {
-                DateFormat df = DateFormat.getDateInstance();
+                DateFormat df = new SimpleDateFormat("dd/MM/yyyy");
                 return df.parse(value);
             } catch (ParseException e) {
+                System.err.println("Error de dateConverter: "+e.getMessage());
                 return Calendar.getInstance().getTime();
             }
         }

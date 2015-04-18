@@ -7,6 +7,7 @@ package madreteresacrud.floresVida;
 import java.beans.Beans;
 import java.text.DateFormat;
 import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
@@ -469,7 +470,7 @@ public class FlorVidaABM extends JPanel {
         int row = list.size() - 1;
         masterTable.setRowSelectionInterval(row, row);
         masterTable.scrollRectToVisible(masterTable.getCellRect(row, 0, true));
-        
+
     }//GEN-LAST:event_newButtonActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
@@ -481,7 +482,7 @@ public class FlorVidaABM extends JPanel {
         if (this.blancos()) {
             JOptionPane.showMessageDialog(null, "No se puede almacenar registros con valores en blanco");
         } else {
-            try {               
+            try {
                 entityManager.getTransaction().commit();
                 entityManager.getTransaction().begin();
             } catch (RollbackException rex) {
@@ -518,7 +519,7 @@ public class FlorVidaABM extends JPanel {
 
     private void masterTableMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_masterTableMouseClicked
         setEnabledBotones(true);
-    }                                        
+    }
 
     public int getIdFV(String ape, String nom, int idSoc) {
         query = java.beans.Beans.isDesignTime() ? null : entityManager.createQuery("SELECT f FROM FlorVida f,RelacSocDifuntos r "
@@ -536,22 +537,24 @@ public class FlorVidaABM extends JPanel {
     Converter dateConverter = new Converter<java.util.Date, String>() {
         @Override
         public String convertForward(java.util.Date value) {
-            DateFormat df = DateFormat.getDateInstance();
-            return df.format(value);
+            String patron = "dd/MM/yyyy";
+            SimpleDateFormat formato = new SimpleDateFormat(patron);
+            return formato.format(value);
         }
 
         @Override
         public java.util.Date convertReverse(String value) {
             try {
-                DateFormat df = DateFormat.getDateInstance();
+                DateFormat df = new SimpleDateFormat("dd/MM/yyyy");
                 return df.parse(value);
             } catch (ParseException e) {
+                System.err.println("Error de dateConverter: " + e.getMessage());
                 return Calendar.getInstance().getTime();
             }
         }
     };
 
-    Converter localidadConverter = new Converter<Integer,Localidades>() {
+    Converter localidadConverter = new Converter<Integer, Localidades>() {
 
         @Override
         public Integer convertReverse(Localidades value) {
@@ -566,10 +569,10 @@ public class FlorVidaABM extends JPanel {
                 System.err.println(e);
                 return null;
             }
-            
+
         }
     };
-            
+
     private List<Localidades> getLocalidades() {
         javax.persistence.Query query1;
         String sql = "SELECT l FROM Localidades l";
@@ -589,7 +592,7 @@ public class FlorVidaABM extends JPanel {
 
         AutoCompleteDecorator.decorate(jCBLocalididad);
 
-    }    
+    }
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTextField apellidoField;
     private javax.swing.JLabel apellidoLabel;
