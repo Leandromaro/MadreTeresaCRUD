@@ -33,6 +33,11 @@ public class FlorVidaABM extends JPanel {
         initComponents();
         setComboLocalidades();
         jCBLocalididad.setEnabled(false);
+        //ocultamos la localidad
+        masterTable.getColumnModel().getColumn(2).setMaxWidth(0);
+        masterTable.getColumnModel().getColumn(2).setMinWidth(0);
+        masterTable.getColumnModel().getColumn(2).setPreferredWidth(0);
+        //Ocultamos el idFlorvida
         masterTable.getColumnModel().getColumn(6).setMaxWidth(0);
         masterTable.getColumnModel().getColumn(6).setMinWidth(0);
         masterTable.getColumnModel().getColumn(6).setPreferredWidth(0);
