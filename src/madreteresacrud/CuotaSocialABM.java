@@ -400,7 +400,7 @@ public class CuotaSocialABM extends JPanel {
 
         //Seteamos el monto
         TipoSocioABM ts = new TipoSocioABM();
-        String tipo = ts.getTipoSoc(s.getIdTipoSocio().getIdTipoSocio());
+        String tipo = ts.getTipoSoc(s.getIdTipoSocio());
         cs.setMonto(ts.getMonto(tipo));
 
         entityManager.persist(cs);

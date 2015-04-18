@@ -468,7 +468,7 @@ public class MadreTeresaMain extends javax.swing.JFrame {
             s = (Socios) socio;
             if (s.getFechaBaja() == null) {
                 CuotaSocial c = new CuotaSocial();
-                monto = ts.getMonto(ts.getTipoSoc(s.getIdTipoSocio().getIdTipoSocio()));
+                monto = ts.getMonto(ts.getTipoSoc(s.getIdTipoSocio()));
                 c.setMonto(monto);
                 c.setIdSocio(s.getIdSocio());
                 c.setCuota(String.valueOf(mes + 1) + "/" + String.valueOf(anio));

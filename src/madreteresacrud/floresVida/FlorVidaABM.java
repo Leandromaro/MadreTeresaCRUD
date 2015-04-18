@@ -17,6 +17,7 @@ import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 import org.jdesktop.beansbinding.Converter;
 import org.jdesktop.swingx.autocomplete.AutoCompleteDecorator;
+import utilidades.Busquedas;
 import utilidades.Calendario;
 import utilidades.Localidades;
 
@@ -157,6 +158,8 @@ public class FlorVidaABM extends JPanel {
         jCBLocalididad.setEnabled(false);
 
         binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, masterTable, org.jdesktop.beansbinding.ELProperty.create("${selectedElement.localidad}"), jCBLocalididad, org.jdesktop.beansbinding.BeanProperty.create("selectedItem"));
+        binding.setSourceUnreadableValue(null);
+        binding.setConverter(localidadConverter);
         bindingGroup.addBinding(binding);
 
         javax.swing.GroupLayout jPanelFormLayout = new javax.swing.GroupLayout(jPanelForm);
@@ -253,6 +256,7 @@ public class FlorVidaABM extends JPanel {
         columnBinding.setColumnClass(String.class);
         columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${localidad}"));
         columnBinding.setColumnName("Localidad");
+        columnBinding.setColumnClass(Integer.class);
         columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${direccion}"));
         columnBinding.setColumnName("Direccion");
         columnBinding.setColumnClass(String.class);
@@ -472,7 +476,7 @@ public class FlorVidaABM extends JPanel {
         if (this.blancos()) {
             JOptionPane.showMessageDialog(null, "No se puede almacenar registros con valores en blanco");
         } else {
-            try {
+            try {               
                 entityManager.getTransaction().commit();
                 entityManager.getTransaction().begin();
             } catch (RollbackException rex) {
@@ -542,12 +546,31 @@ public class FlorVidaABM extends JPanel {
         }
     };
 
-    private List getLocalidades() {
+    Converter localidadConverter = new Converter<Integer,Localidades>() {
+
+        @Override
+        public Integer convertReverse(Localidades value) {
+            return value.getIdLocalidad();
+        }
+
+        @Override
+        public Localidades convertForward(Integer value) {
+            try {
+                return Busquedas.findLocalidad(value);
+            } catch (Exception e) {
+                System.err.println(e);
+                return null;
+            }
+            
+        }
+    };
+            
+    private List<Localidades> getLocalidades() {
         javax.persistence.Query query1;
         String sql = "SELECT l FROM Localidades l";
 
         query1 = java.beans.Beans.isDesignTime() ? null : entityManager.createQuery(sql);
-        List<Object[]> lista = query1.getResultList();
+        List<Localidades> lista = query1.getResultList();
         return lista;
 
     }
@@ -559,9 +582,9 @@ public class FlorVidaABM extends JPanel {
             jCBLocalididad.addItem(objects);
         }
 
-        AutoCompleteDecorator.decorate(this.jCBLocalididad);
+        AutoCompleteDecorator.decorate(jCBLocalididad);
 
-    }
+    }    
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTextField apellidoField;
     private javax.swing.JLabel apellidoLabel;
@@ -589,39 +612,5 @@ public class FlorVidaABM extends JPanel {
     private javax.swing.JLabel telefonoLabel;
     private org.jdesktop.beansbinding.BindingGroup bindingGroup;
     // End of variables declaration//GEN-END:variables
-//    public static void main(String[] args) {
-//        /* Set the Nimbus look and feel */
-//        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-//        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-//         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-//         */
-//        try {
-//            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-//                if ("Nimbus".equals(info.getName())) {
-//                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-//                    break;
-//                }
-//            }
-//        } catch (ClassNotFoundException ex) {
-//            java.util.logging.Logger.getLogger(FlorVidaABM.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-//        } catch (InstantiationException ex) {
-//            java.util.logging.Logger.getLogger(FlorVidaABM.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-//        } catch (IllegalAccessException ex) {
-//            java.util.logging.Logger.getLogger(FlorVidaABM.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-//        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-//            java.util.logging.Logger.getLogger(FlorVidaABM.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-//        }
-//        //</editor-fold>
-//
-//        /* Create and display the form */
-//        EventQueue.invokeLater(new Runnable() {
-//            public void run() {
-//                JFrame frame = new JFrame();
-//                frame.setContentPane(new FlorVidaABM());
-//                frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-//                frame.pack();
-//                frame.setVisible(true);
-//            }
-//        });
-//    }
+
 }

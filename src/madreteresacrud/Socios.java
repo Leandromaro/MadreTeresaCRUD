@@ -37,11 +37,8 @@ public class Socios implements Serializable {
     @Basic(optional = false)
     @Column(name = "idSocio")
     private Integer idSocio;
-
-    @JoinColumn(name = "idTipoSocio", referencedColumnName = "idTipoSocio")
-    @ManyToOne(optional = false)
-    private TipoSocio idTipoSocio;
-
+    @Column(name = "idTipoSocio")    
+    private Integer idTipoSocio;
     @Basic(optional = false)
     @Column(name = "documento")
     private int documento;
@@ -82,9 +79,8 @@ public class Socios implements Serializable {
     @Basic(optional = false)
     @Column(name = "donante")
     private boolean donante;
-    @JoinColumn(name = "localidad", referencedColumnName = "codLoc")
-    @ManyToOne(optional = false)
-    private Localidades localidad;
+    @Column(name = "localidad")   
+    private Integer localidad;
 
     public Socios() {
     }
@@ -93,7 +89,7 @@ public class Socios implements Serializable {
         this.idSocio = idSocio;
     }
 
-    public Socios(Integer idSocio, TipoSocio idTipoSocio, int documento, String sexo, String nombre, String apellido, String direccion, boolean socio, boolean adherente, boolean donante) {
+    public Socios(Integer idSocio, Integer idTipoSocio, int documento, String sexo, String nombre, String apellido, String direccion, boolean socio, boolean adherente, boolean donante) {
         this.idSocio = idSocio;
         this.idTipoSocio = idTipoSocio;
         this.documento = documento;
@@ -114,12 +110,12 @@ public class Socios implements Serializable {
         this.idSocio = idSocio;
     }
 
-    public TipoSocio getIdTipoSocio() {
+    public Integer getIdTipoSocio() {
         return idTipoSocio;
     }
 
-    public void setIdTipoSocio(TipoSocio idTipoSocio) {
-       TipoSocio oldIdTipoSocio = this.idTipoSocio;
+    public void setIdTipoSocio(Integer idTipoSocio) {
+       Integer oldIdTipoSocio = this.idTipoSocio;
        this.idTipoSocio = idTipoSocio;
         changeSupport.firePropertyChange("idTipoSocio", oldIdTipoSocio, idTipoSocio);
         
@@ -245,12 +241,12 @@ public class Socios implements Serializable {
         this.donante = donante;
     }
 
-    public Localidades getLocalidad() {
+    public Integer getLocalidad() {
         return localidad;
     }
 
-    public void setLocalidad(Localidades localidad) {
-        Localidades oldLocalidad = this.localidad;
+    public void setLocalidad(Integer localidad) {
+        Integer oldLocalidad = this.localidad;
         this.localidad = localidad;
         changeSupport.firePropertyChange("localidad", oldLocalidad, localidad);
     }

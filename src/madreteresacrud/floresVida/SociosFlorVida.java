@@ -58,11 +58,8 @@ public class SociosFlorVida implements Serializable {
     private String apellido;
     @Column(name = "nombre")
     private String nombre;
-
-    @JoinColumn(name = "localidad", referencedColumnName = "codLoc")
-    @ManyToOne(optional = false)
-    private Localidades localidad;
-
+    @Column(name = "localidad")    
+    private Integer localidad;
     @Column(name = "direccion")
     private String direccion;
     @Column(name = "telefono")
@@ -107,12 +104,12 @@ public class SociosFlorVida implements Serializable {
         changeSupport.firePropertyChange("nombre", oldNombre, nombre);
     }
 
-    public Localidades getLocalidad() {
+    public Integer getLocalidad() {
         return localidad;
     }
 
-    public void setLocalidad(Localidades localidad) {
-        Localidades oldLocalidad = this.localidad;
+    public void setLocalidad(Integer localidad) {
+        Integer oldLocalidad = this.localidad;
         this.localidad = localidad;
         changeSupport.firePropertyChange("localidad", oldLocalidad, localidad);
     }

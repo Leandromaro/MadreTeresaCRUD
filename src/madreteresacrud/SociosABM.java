@@ -34,6 +34,7 @@ import org.jdesktop.beansbinding.Converter;
 import org.jdesktop.swingx.autocomplete.AutoCompleteDecorator;
 import reportes.ConexionBD;
 import utilidades.BuscarAdherente;
+import utilidades.Busquedas;
 import utilidades.Calendario;
 import utilidades.Localidades;
 import utilidades.UtilGraficos;
@@ -65,10 +66,15 @@ public class SociosABM extends JPanel {
         masterTable.getColumnModel().getColumn(9).setMaxWidth(0);
         masterTable.getColumnModel().getColumn(9).setMinWidth(0);
         masterTable.getColumnModel().getColumn(9).setPreferredWidth(0);
-
-//        masterTable.getColumnModel().getColumn(12).setMaxWidth(0);
-//        masterTable.getColumnModel().getColumn(12).setMinWidth(0);
-//        masterTable.getColumnModel().getColumn(12).setPreferredWidth(0);
+        //Ocultamos la localidad
+        masterTable.getColumnModel().getColumn(10).setMaxWidth(0);
+        masterTable.getColumnModel().getColumn(10).setMinWidth(0);
+        masterTable.getColumnModel().getColumn(10).setPreferredWidth(0);
+        //Ocultamos el tipo de socio
+        masterTable.getColumnModel().getColumn(12).setMaxWidth(0);
+        masterTable.getColumnModel().getColumn(12).setMinWidth(0);
+        masterTable.getColumnModel().getColumn(12).setPreferredWidth(0);
+        
         masterTable.getColumnModel().getColumn(13).setMaxWidth(0);
         masterTable.getColumnModel().getColumn(13).setMinWidth(0);
         masterTable.getColumnModel().getColumn(13).setPreferredWidth(0);
@@ -269,6 +275,8 @@ public class SociosABM extends JPanel {
         jComboTipSoc.setEnabled(false);
 
         binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, masterTable, org.jdesktop.beansbinding.ELProperty.create("${selectedElement.idTipoSocio}"), jComboTipSoc, org.jdesktop.beansbinding.BeanProperty.create("selectedItem"));
+        binding.setSourceUnreadableValue(null);
+        binding.setConverter(tipoSocioConverter);
         bindingGroup.addBinding(binding);
 
         jCBSexo.setMaximumRowCount(2);
@@ -331,6 +339,8 @@ public class SociosABM extends JPanel {
         jCBLocalididad.setEnabled(false);
 
         binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, masterTable, org.jdesktop.beansbinding.ELProperty.create("${selectedElement.localidad}"), jCBLocalididad, org.jdesktop.beansbinding.BeanProperty.create("selectedItem"));
+        binding.setSourceUnreadableValue(null);
+        binding.setConverter(localidadConverter);
         bindingGroup.addBinding(binding);
 
         javax.swing.GroupLayout jPanelFormLayout = new javax.swing.GroupLayout(jPanelForm);
@@ -1305,7 +1315,7 @@ public class SociosABM extends JPanel {
         String ele = jCBBusqueda.getSelectedItem().toString();
         String[] apeYnom = ele.split(", ");
         String ele1;
-        boolean flag=false;
+        boolean flag = false;
         for (int i = 0; i < masterTable.getRowCount(); i++) {
             ele = masterTable.getValueAt(i, 1).toString().trim();
             ele1 = masterTable.getValueAt(i, 2).toString().trim();
@@ -1358,7 +1368,7 @@ public class SociosABM extends JPanel {
 
             }
         }
-        if(!flag){
+        if (!flag) {
             JOptionPane.showMessageDialog(null, "El socio ingresado no es válido!");
         }
     }
@@ -1499,7 +1509,7 @@ public class SociosABM extends JPanel {
         this.emailField.setText(emailField);
     }
 
-    public void setjCBLocalididad(String jCBLocalididad) {
+    public void setjCBLocalididad(Localidades jCBLocalididad) {
         this.jCBLocalididad.setSelectedItem(jCBLocalididad);
     }
 
@@ -1514,8 +1524,44 @@ public class SociosABM extends JPanel {
     public void setTelefonoField(String telefonoField) {
         this.telefonoField.setText(telefonoField);
     }
+    
+    Converter localidadConverter = new Converter<Integer, Localidades>() {
 
+        @Override
+        public Integer convertReverse(Localidades value) {
+            return value.getIdLocalidad();
+        }
 
+        @Override
+        public Localidades convertForward(Integer value) {
+            try {
+                return Busquedas.findLocalidad(value);
+            } catch (Exception e) {
+                System.err.println(e);
+                return null;
+            }
+
+        }
+    };
+
+    Converter tipoSocioConverter = new Converter<Integer, TipoSocio>() {
+
+        @Override
+        public Integer convertReverse(TipoSocio value) {
+            return value.getIdTipoSocio();
+        }
+
+        @Override
+        public TipoSocio convertForward(Integer value) {
+            try {
+                return Busquedas.findTipoSocio(value);
+            } catch (Exception e) {
+                System.err.println(e);
+                return null;
+            }
+
+        }
+    };
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTextField apellidoField;
     private javax.swing.JLabel apellidoLabel;
@@ -1566,46 +1612,4 @@ public class SociosABM extends JPanel {
     private javax.swing.JLabel tipoSocioLabel;
     private org.jdesktop.beansbinding.BindingGroup bindingGroup;
     // End of variables declaration//GEN-END:variables
-//    public static void main(String[] args) {
-//        /*
-//         * Set the Nimbus look and feel
-//         */
-//        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-//        /*
-//         * If Nimbus (introduced in Java SE 6) is not available, stay with the
-//         * default look and feel. For details see
-//         * http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html
-//         */
-//        try {
-//            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-//                if ("Nimbus".equals(info.getName())) {
-//                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-//                    break;
-//                }
-//            }
-//        } catch (ClassNotFoundException ex) {
-//            java.util.logging.Logger.getLogger(SociosABM.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-//        } catch (InstantiationException ex) {
-//            java.util.logging.Logger.getLogger(SociosABM.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-//        } catch (IllegalAccessException ex) {
-//            java.util.logging.Logger.getLogger(SociosABM.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-//        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-//            java.util.logging.Logger.getLogger(SociosABM.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-//        }
-//        //</editor-fold>
-//
-//        /*
-//         * Create and display the form
-//         */
-//        EventQueue.invokeLater(new Runnable() {
-//
-//            public void run() {
-//                JFrame frame = new JFrame();
-//                frame.setContentPane(new SociosABM());
-//                frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-//                frame.pack();
-//                frame.setVisible(true);
-//            }
-//        });
-//    }
 }

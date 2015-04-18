@@ -130,7 +130,7 @@ public class BuscarSocio extends javax.swing.JDialog {
          this.s.setDniField(String.valueOf(s.getDocumento()));
          this.s.setCuilField(s.getCuil());
          this.s.setjCBSexo(s.getSexo());
-         this.s.setjCBLocalididad(s.getLocalidad());
+         this.s.setjCBLocalididad(Busquedas.findLocalidad(s.getLocalidad()));
          this.s.setDireccionField(s.getDireccion());
          this.s.setEmailField(s.getEmail());
          this.s.setTelefonoField(s.getTelefono());

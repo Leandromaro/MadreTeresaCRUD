@@ -130,7 +130,7 @@ public class BuscarAdherente extends javax.swing.JDialog {
          this.s.setDocumentoField(String.valueOf(s.getDni()));
          this.s.setCuilField(s.getCuil());
          this.s.setjCBSexo(s.getSexo());
-         this.s.setjCBLocalididad(s.getLocalidad().toString());
+         this.s.setjCBLocalididad(Busquedas.findLocalidad(s.getLocalidad()));
          this.s.setDireccionField(s.getDireccion());
          this.s.setEmailField(s.getEmail());
          this.s.setTelefonoField(s.getTelefono());

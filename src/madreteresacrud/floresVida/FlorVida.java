@@ -47,9 +47,11 @@ public class FlorVida implements Serializable {
     private String apellido;
     @Column(name = "nombre")
     private String nombre;
-    @JoinColumn(name = "localidad", referencedColumnName = "codLoc")
-    @ManyToOne(optional = false)
-    private Localidades localidad;
+//    @JoinColumn(name = "localidad", referencedColumnName = "codLoc")
+//    @ManyToOne(optional = false)
+    
+    @Column(name = "localidad")
+    private int localidad;
     @Column(name = "direccion")
     private String direccion;
     @Column(name = "fechaDefuncion")
@@ -69,13 +71,7 @@ public class FlorVida implements Serializable {
 
     public FlorVida(Integer idFV) {
         this.idFV = idFV;
-    }
-
-    public FlorVida(Integer idFV, Localidades localidad, String telefono) {
-        this.idFV = idFV;
-        this.localidad = localidad;
-        this.telefono = telefono;
-    }
+    }    
 
     public String getApellido() {
         return apellido;
@@ -97,12 +93,12 @@ public class FlorVida implements Serializable {
         changeSupport.firePropertyChange("nombre", oldNombre, nombre);
     }
 
-    public Localidades getLocalidad() {
+    public int getLocalidad() {
         return localidad;
     }
 
-    public void setLocalidad(Localidades localidad) {
-        Localidades oldLocalidad = this.localidad;
+    public void setLocalidad(int localidad) {
+        int oldLocalidad = this.localidad;
         this.localidad = localidad;
         changeSupport.firePropertyChange("localidad", oldLocalidad, localidad);
     }

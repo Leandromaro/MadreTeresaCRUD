@@ -447,7 +447,12 @@
             <Property name="enabled" type="boolean" value="false"/>
           </Properties>
           <BindingProperties>
-            <BindingProperty name="selectedItem" source="masterTable" sourcePath="${selectedElement.idTipoSocio}" target="jComboTipSoc" targetPath="selectedItem" updateStrategy="0" immediately="false"/>
+            <BindingProperty name="selectedItem" source="masterTable" sourcePath="${selectedElement.idTipoSocio}" target="jComboTipSoc" targetPath="selectedItem" updateStrategy="0" immediately="false">
+              <Property name="incompletePathValue" type="java.lang.Object" value="null"/>
+              <Property name="converter" type="org.jdesktop.beansbinding.Converter" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+                <Connection code="tipoSocioConverter" type="code"/>
+              </Property>
+            </BindingProperty>
           </BindingProperties>
         </Component>
         <Component class="javax.swing.JComboBox" name="jCBSexo">
@@ -577,7 +582,12 @@
             <Property name="enabled" type="boolean" value="false"/>
           </Properties>
           <BindingProperties>
-            <BindingProperty name="selectedItem" source="masterTable" sourcePath="${selectedElement.localidad}" target="jCBLocalididad" targetPath="selectedItem" updateStrategy="0" immediately="false"/>
+            <BindingProperty name="selectedItem" source="masterTable" sourcePath="${selectedElement.localidad}" target="jCBLocalididad" targetPath="selectedItem" updateStrategy="0" immediately="false">
+              <Property name="incompletePathValue" type="java.lang.Object" value="null"/>
+              <Property name="converter" type="org.jdesktop.beansbinding.Converter" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+                <Connection code="localidadConverter" type="code"/>
+              </Property>
+            </BindingProperty>
           </BindingProperties>
         </Component>
       </SubComponents>
