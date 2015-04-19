@@ -620,14 +620,15 @@ public class SociosFVABM extends JPanel {
         deleteButton.setEnabled(estado);
         newButton.setEnabled(!estado);
         deleteButton.setEnabled(estado);
-        jBFV.setEnabled(!estado);
+        jBFV.setEnabled(estado);
         jBbuscar.setEnabled(!estado);
-        jBVerCuotas.setEnabled(!estado);
+        jBVerCuotas.setEnabled(estado);
         dniField.setEnabled(estado);
         jCBSexo.setEnabled(estado);
         celularField.setEnabled(estado);
         emailField.setEnabled(estado);
         jCBLocalididad.setEnabled(estado);
+        jTFBusqueda.setEnabled(!estado);        
     }
 
     private void jBbuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBbuscarActionPerformed

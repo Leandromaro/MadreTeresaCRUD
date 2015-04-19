@@ -974,7 +974,6 @@ public class SociosABM extends JPanel {
 
     private void masterTableMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_masterTableMouseClicked
         newButton.setEnabled(false);
-
         int selected = masterTable.getSelectedRow();
         if (masterTable.getValueAt(selected, 13) != null) {
             refreshButton.setEnabled(false);
@@ -1322,7 +1321,6 @@ public class SociosABM extends JPanel {
             ele = masterTable.getValueAt(i, 1).toString().trim();
             ele1 = masterTable.getValueAt(i, 2).toString().trim();
             if (ele.equals(apeYnom[0].trim()) && ele1.equals(apeYnom[1].trim())) {
-
                 masterTable.changeSelection(i, 0, false, false);
                 jBVerCuotas.setEnabled(true);
                 int selected = masterTable.getSelectedRow();
@@ -1365,12 +1363,12 @@ public class SociosABM extends JPanel {
                     jLabelBaja.setVisible(false);
                     jButtonAlta.setEnabled(false);
                     deleteButton.setEnabled(true);
+                    flag=true;
                 }
                 break;
-
             }
         }
-        if (!flag) {
+        if (flag) {
             JOptionPane.showMessageDialog(null, "El socio ingresado no es válido!");
         }
     }
