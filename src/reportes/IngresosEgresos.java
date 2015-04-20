@@ -531,7 +531,7 @@ public class IngresosEgresos extends javax.swing.JFrame {
       
             //Creamos el informe
             try {
-                File fichero = new File("Egresos1.jasper");
+                File fichero = new File("Egresos.jasper");
                 JasperReport reporte = (JasperReport) JRLoader.loadObject(fichero);//(JasperReport) JRLoader.loadObject("Ingresos.jasper");
                 String tipo = jComboBoxTipoGasto.getSelectedItem().toString().trim();
                 if ("Hogar".equals(tipo)) {
