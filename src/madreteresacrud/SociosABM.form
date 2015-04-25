@@ -284,13 +284,14 @@
         <Component class="javax.swing.JTextField" name="apellidoField">
           <BindingProperties>
             <BindingProperty name="text" source="masterTable" sourcePath="${selectedElement.apellido}" target="apellidoField" targetPath="text" updateStrategy="0" immediately="false">
+              <BindingParameter name="javax.swing.binding.ParameterKeys.TEXT_CHANGE_STRATEGY" value="javax.swing.binding.TextChangeStrategy.ON_TYPE"/>
               <Property name="incompletePathValue" type="java.lang.String" value="null"/>
+              <Property name="converter" type="org.jdesktop.beansbinding.Converter" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+                <Connection code="Busquedas.converterMayuscula()" type="code"/>
+              </Property>
             </BindingProperty>
             <BindingProperty name="enabled" source="masterTable" sourcePath="${selectedElement != null}" target="apellidoField" targetPath="enabled" updateStrategy="1" immediately="false"/>
           </BindingProperties>
-          <Events>
-            <EventHandler event="keyTyped" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="apellidoFieldKeyTyped"/>
-          </Events>
         </Component>
         <Component class="javax.swing.JLabel" name="nombreLabel">
           <Properties>
@@ -300,7 +301,11 @@
         <Component class="javax.swing.JTextField" name="nombreField">
           <BindingProperties>
             <BindingProperty name="text" source="masterTable" sourcePath="${selectedElement.nombre}" target="nombreField" targetPath="text" updateStrategy="0" immediately="false">
+              <BindingParameter name="javax.swing.binding.ParameterKeys.TEXT_CHANGE_STRATEGY" value="javax.swing.binding.TextChangeStrategy.ON_TYPE"/>
               <Property name="incompletePathValue" type="java.lang.String" value="null"/>
+              <Property name="converter" type="org.jdesktop.beansbinding.Converter" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+                <Connection code="Busquedas.converterMayuscula()" type="code"/>
+              </Property>
             </BindingProperty>
             <BindingProperty name="enabled" source="masterTable" sourcePath="${selectedElement != null}" target="nombreField" targetPath="enabled" updateStrategy="1" immediately="false"/>
           </BindingProperties>
@@ -348,7 +353,11 @@
           </Properties>
           <BindingProperties>
             <BindingProperty name="text" source="masterTable" sourcePath="${selectedElement.email}" target="emailField" targetPath="text" updateStrategy="0" immediately="false">
+              <BindingParameter name="javax.swing.binding.ParameterKeys.TEXT_CHANGE_STRATEGY" value="javax.swing.binding.TextChangeStrategy.ON_TYPE"/>
               <Property name="incompletePathValue" type="java.lang.String" value="null"/>
+              <Property name="converter" type="org.jdesktop.beansbinding.Converter" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+                <Connection code="Busquedas.converterMayuscula()" type="code"/>
+              </Property>
             </BindingProperty>
             <BindingProperty name="enabled" source="masterTable" sourcePath="${selectedElement != null}" target="emailField" targetPath="enabled" updateStrategy="1" immediately="false"/>
           </BindingProperties>
@@ -393,7 +402,11 @@
         <Component class="javax.swing.JTextField" name="direccionField">
           <BindingProperties>
             <BindingProperty name="text" source="masterTable" sourcePath="${selectedElement.direccion}" target="direccionField" targetPath="text" updateStrategy="0" immediately="false">
+              <BindingParameter name="javax.swing.binding.ParameterKeys.TEXT_CHANGE_STRATEGY" value="javax.swing.binding.TextChangeStrategy.ON_TYPE"/>
               <Property name="incompletePathValue" type="java.lang.String" value="null"/>
+              <Property name="converter" type="org.jdesktop.beansbinding.Converter" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+                <Connection code="Busquedas.converterMayuscula()" type="code"/>
+              </Property>
             </BindingProperty>
             <BindingProperty name="enabled" source="masterTable" sourcePath="${selectedElement != null}" target="direccionField" targetPath="enabled" updateStrategy="1" immediately="false"/>
           </BindingProperties>
@@ -528,6 +541,7 @@
           </Properties>
           <BindingProperties>
             <BindingProperty name="text" source="masterTable" sourcePath="${selectedElement.documento}" target="documentoField" targetPath="text" updateStrategy="0" immediately="false">
+              <BindingParameter name="javax.swing.binding.ParameterKeys.TEXT_CHANGE_STRATEGY" value="javax.swing.binding.TextChangeStrategy.ON_TYPE"/>
               <Property name="incompletePathValue" type="java.lang.String" value="null"/>
             </BindingProperty>
             <BindingProperty name="enabled" source="masterTable" sourcePath="${selectedElement != null}" target="documentoField" targetPath="enabled" updateStrategy="1" immediately="false"/>

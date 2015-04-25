@@ -19,6 +19,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 import org.jdesktop.beansbinding.Converter;
+import utilidades.Busquedas;
 import utilidades.Calendario;
 
 /**
@@ -154,12 +155,14 @@ public class DonacionesABM extends JPanel {
 
         binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, masterTable, org.jdesktop.beansbinding.ELProperty.create("${selectedElement.nombre}"), nombreField, org.jdesktop.beansbinding.BeanProperty.create("text"));
         binding.setSourceUnreadableValue("null");
+        binding.setConverter(Busquedas.converterMayuscula());
         bindingGroup.addBinding(binding);
         binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ, masterTable, org.jdesktop.beansbinding.ELProperty.create("${selectedElement != null}"), nombreField, org.jdesktop.beansbinding.BeanProperty.create("enabled"));
         bindingGroup.addBinding(binding);
 
         binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, masterTable, org.jdesktop.beansbinding.ELProperty.create("${selectedElement.apellido}"), apellidoField, org.jdesktop.beansbinding.BeanProperty.create("text"));
         binding.setSourceUnreadableValue("null");
+        binding.setConverter(Busquedas.converterMayuscula());
         bindingGroup.addBinding(binding);
         binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ, masterTable, org.jdesktop.beansbinding.ELProperty.create("${selectedElement != null}"), apellidoField, org.jdesktop.beansbinding.BeanProperty.create("enabled"));
         bindingGroup.addBinding(binding);
@@ -340,14 +343,14 @@ public class DonacionesABM extends JPanel {
             else if (evt.getSource() == refreshButton) {
                 DonacionesABM.this.refreshButtonActionPerformed(evt);
             }
+            else if (evt.getSource() == jButtonCalendar) {
+                DonacionesABM.this.jButtonCalendarActionPerformed(evt);
+            }
             else if (evt.getSource() == jButtonBuscar) {
                 DonacionesABM.this.jButtonBuscarActionPerformed(evt);
             }
             else if (evt.getSource() == jCheckBoxSoc) {
                 DonacionesABM.this.jCheckBoxSocActionPerformed(evt);
-            }
-            else if (evt.getSource() == jButtonCalendar) {
-                DonacionesABM.this.jButtonCalendarActionPerformed(evt);
             }
         }
 

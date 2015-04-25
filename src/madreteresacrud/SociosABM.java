@@ -182,16 +182,16 @@ public class SociosABM extends JPanel {
 
         org.jdesktop.beansbinding.Binding binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, masterTable, org.jdesktop.beansbinding.ELProperty.create("${selectedElement.apellido}"), apellidoField, org.jdesktop.beansbinding.BeanProperty.create("text"));
         binding.setSourceUnreadableValue("null");
+        binding.setConverter(Busquedas.converterMayuscula());
         bindingGroup.addBinding(binding);
         binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ, masterTable, org.jdesktop.beansbinding.ELProperty.create("${selectedElement != null}"), apellidoField, org.jdesktop.beansbinding.BeanProperty.create("enabled"));
         bindingGroup.addBinding(binding);
-
-        apellidoField.addKeyListener(formListener);
 
         nombreLabel.setText("Nombre/s:");
 
         binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, masterTable, org.jdesktop.beansbinding.ELProperty.create("${selectedElement.nombre}"), nombreField, org.jdesktop.beansbinding.BeanProperty.create("text"));
         binding.setSourceUnreadableValue("null");
+        binding.setConverter(Busquedas.converterMayuscula());
         bindingGroup.addBinding(binding);
         binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ, masterTable, org.jdesktop.beansbinding.ELProperty.create("${selectedElement != null}"), nombreField, org.jdesktop.beansbinding.BeanProperty.create("enabled"));
         bindingGroup.addBinding(binding);
@@ -215,6 +215,7 @@ public class SociosABM extends JPanel {
 
         binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, masterTable, org.jdesktop.beansbinding.ELProperty.create("${selectedElement.email}"), emailField, org.jdesktop.beansbinding.BeanProperty.create("text"));
         binding.setSourceUnreadableValue("null");
+        binding.setConverter(Busquedas.converterMayuscula());
         bindingGroup.addBinding(binding);
         binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ, masterTable, org.jdesktop.beansbinding.ELProperty.create("${selectedElement != null}"), emailField, org.jdesktop.beansbinding.BeanProperty.create("enabled"));
         bindingGroup.addBinding(binding);
@@ -245,6 +246,7 @@ public class SociosABM extends JPanel {
 
         binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, masterTable, org.jdesktop.beansbinding.ELProperty.create("${selectedElement.direccion}"), direccionField, org.jdesktop.beansbinding.BeanProperty.create("text"));
         binding.setSourceUnreadableValue("null");
+        binding.setConverter(Busquedas.converterMayuscula());
         bindingGroup.addBinding(binding);
         binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ, masterTable, org.jdesktop.beansbinding.ELProperty.create("${selectedElement != null}"), direccionField, org.jdesktop.beansbinding.BeanProperty.create("enabled"));
         bindingGroup.addBinding(binding);
@@ -741,10 +743,7 @@ public class SociosABM extends JPanel {
         }
 
         public void keyTyped(java.awt.event.KeyEvent evt) {
-            if (evt.getSource() == apellidoField) {
-                SociosABM.this.apellidoFieldKeyTyped(evt);
-            }
-            else if (evt.getSource() == telefonoField) {
+            if (evt.getSource() == telefonoField) {
                 SociosABM.this.telefonoFieldKeyTyped(evt);
             }
             else if (evt.getSource() == cuilField) {
@@ -1281,10 +1280,6 @@ public class SociosABM extends JPanel {
         new Calendario((JFrame) SwingUtilities.getWindowAncestor(this), true, fechaNacimientoField).setVisible(true);
     }//GEN-LAST:event_fechaNacimientoFieldMouseClicked
 
-    private void apellidoFieldKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_apellidoFieldKeyTyped
-        convertirMayuscula(apellidoField);
-    }//GEN-LAST:event_apellidoFieldKeyTyped
-
     //OBJETO PARA PODER ENLAZAR LA FECHA DESDE LA BD EN EL TEXTFIELD fechaNacimiento
     Converter dateConverter = new Converter<java.util.Date, String>() {
         @Override
@@ -1363,7 +1358,7 @@ public class SociosABM extends JPanel {
                     jLabelBaja.setVisible(false);
                     jButtonAlta.setEnabled(false);
                     deleteButton.setEnabled(true);
-                    flag=true;
+                    flag = true;
                 }
                 break;
             }
@@ -1480,11 +1475,7 @@ public class SociosABM extends JPanel {
         return s;
 
     }
-
-    private void convertirMayuscula(JTextField textField) {
-        textField.setText(textField.getText().toUpperCase());
-    }
-
+  
     public void setApellidoField(String apellidoField) {
         this.apellidoField.setText(apellidoField);
     }
@@ -1562,6 +1553,8 @@ public class SociosABM extends JPanel {
 
         }
     };
+
+    
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTextField apellidoField;
     private javax.swing.JLabel apellidoLabel;

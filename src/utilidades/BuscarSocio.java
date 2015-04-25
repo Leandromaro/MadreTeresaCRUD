@@ -112,16 +112,15 @@ public class BuscarSocio extends javax.swing.JDialog {
         Socios soc;
         for (Object socio : listaSocios) {            
             soc = (Socios) socio;
-            jCBBusqueda.addItem(soc.getApellido().trim()+" "+soc.getNombre().trim()+" -> N° Socio = "+soc.getNumSoc());
+            jCBBusqueda.addItem(soc.getApellido().trim()+" "+soc.getNombre().trim()+" -> N° Socio = "+soc.getIdSocio());
         }
         AutoCompleteDecorator.decorate(this.jCBBusqueda); 
     }
      
-     private Socios getSocio(int nroSocio){
-         SociosABM socios = new SociosABM();
-         Socios soc=socios.getSocio(nroSocio);
+     private Socios getSocio(int idSocio){
+         SociosABM socios = new SociosABM();        
          
-         return soc;
+         return socios.getSocio(idSocio);
      }
      
      private void set(Socios s){

@@ -41,7 +41,7 @@ public class Socios implements Serializable {
     private Integer idTipoSocio;
     @Basic(optional = false)
     @Column(name = "documento")
-    private int documento;
+    private Integer documento;
     @Basic(optional = false)
     @Column(name = "sexo")
     private String sexo;
@@ -89,7 +89,7 @@ public class Socios implements Serializable {
         this.idSocio = idSocio;
     }
 
-    public Socios(Integer idSocio, Integer idTipoSocio, int documento, String sexo, String nombre, String apellido, String direccion, boolean socio, boolean adherente, boolean donante) {
+    public Socios(Integer idSocio, Integer idTipoSocio, Integer documento, String sexo, String nombre, String apellido, String direccion, boolean socio, boolean adherente, boolean donante) {
         this.idSocio = idSocio;
         this.idTipoSocio = idTipoSocio;
         this.documento = documento;
@@ -121,11 +121,11 @@ public class Socios implements Serializable {
         
     }
 
-    public int getDocumento() {
+    public Integer getDocumento() {
         return documento;
     }
 
-    public void setDocumento(int documento) {
+    public void setDocumento(Integer documento) {
         this.documento = documento;
     }
 
