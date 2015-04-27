@@ -46,7 +46,8 @@ import utilidades.UtilGraficos;
 public class SociosABM extends JPanel {
 
     private static EntityManager em;
-
+    private static boolean activo;
+    
     public SociosABM() {
         initComponents();
 //        refreshButton.setVisible(false);
@@ -973,8 +974,10 @@ public class SociosABM extends JPanel {
 
     private void masterTableMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_masterTableMouseClicked
         newButton.setEnabled(false);
+        activo = false;
         int selected = masterTable.getSelectedRow();
         if (masterTable.getValueAt(selected, 13) != null) {
+            //Socios Dados de Baja
             refreshButton.setEnabled(false);
             saveButton.setEnabled(false);
             numSocField.setEnabled(false);
@@ -996,6 +999,8 @@ public class SociosABM extends JPanel {
             jButtonFecha.setEnabled(false);
             deleteButton.setEnabled(false);
         } else {
+            //Socios Activos
+            activo = true;
             jButtonFecha.setEnabled(true);
             numSocField.setEnabled(true);
             numSocField.requestFocusInWindow();
@@ -1033,12 +1038,17 @@ public class SociosABM extends JPanel {
         if (csabm.getListaCuotasDeudas().isEmpty()) {
             JOptionPane.showMessageDialog(null, masterTable.getValueAt(selected, 1).toString() + " " + masterTable.getValueAt(selected, 2).toString() + " no adeuda cuotas.");
         }
+        if(activo){
         JDialog c = new JDialog((Frame) SwingUtilities.getWindowAncestor(this), true);
         c.setTitle("Cuotas de " + masterTable.getValueAt(selected, 1).toString() + " " + masterTable.getValueAt(selected, 2).toString());
         c.setContentPane(csabm);
         c.pack();
         c.setLocationRelativeTo(null);
         c.setVisible(true);
+        }
+        else{
+            JOptionPane.showMessageDialog(null, "No se puede generar cuotas a usuarios inactivos");
+        }
 //         JFrame frame = new JFrame("Cuotas de "+masterTable.getValueAt(selected, 0).toString()+" "+masterTable.getValueAt(selected, 1).toString());
 //
 //        frame.setContentPane(csabm);

@@ -84,6 +84,7 @@ public class MadreTeresaMain extends javax.swing.JFrame {
         jMenu2 = new javax.swing.JMenu();
         jMenuItem8 = new javax.swing.JMenuItem();
         jMenuItem9 = new javax.swing.JMenuItem();
+        jMenuItem10 = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -205,13 +206,21 @@ public class MadreTeresaMain extends javax.swing.JFrame {
         });
         jMenu2.add(jMenuItem8);
 
-        jMenuItem9.setText("Cambiar Usuario");
+        jMenuItem9.setText("Cerrar Sesion");
         jMenuItem9.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jMenuItem9ActionPerformed(evt);
             }
         });
         jMenu2.add(jMenuItem9);
+
+        jMenuItem10.setText("Cerrar Sistema");
+        jMenuItem10.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem10ActionPerformed(evt);
+            }
+        });
+        jMenu2.add(jMenuItem10);
 
         jMenuBar1.add(jMenu2);
 
@@ -446,6 +455,10 @@ public class MadreTeresaMain extends javax.swing.JFrame {
         ing.setVisible(true);
 
     }//GEN-LAST:event_jMenuItem4ActionPerformed
+
+    private void jMenuItem10ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem10ActionPerformed
+        System.exit(0);
+    }//GEN-LAST:event_jMenuItem10ActionPerformed
     public boolean generarCuotas(int mes, int anio) {
         boolean band = false;
         boolean flag = false;
@@ -559,6 +572,7 @@ public class MadreTeresaMain extends javax.swing.JFrame {
     private javax.swing.JMenuItem jMenuDonaciones;
     private javax.swing.JMenuItem jMenuGastos;
     private javax.swing.JMenuItem jMenuItem1;
+    private javax.swing.JMenuItem jMenuItem10;
     private javax.swing.JMenuItem jMenuItem11;
     private javax.swing.JMenuItem jMenuItem2;
     private javax.swing.JMenuItem jMenuItem3;
