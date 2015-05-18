@@ -265,6 +265,7 @@ public class SociosABM extends JPanel {
 
         numSocLabel.setText("N° Socio:");
 
+        numSocField.setEditable(false);
         numSocField.setToolTipText("Solo números.");
         numSocField.setEnabled(false);
 

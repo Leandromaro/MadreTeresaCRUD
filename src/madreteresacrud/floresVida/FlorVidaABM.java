@@ -4,6 +4,7 @@
  */
 package madreteresacrud.floresVida;
 
+import java.awt.Toolkit;
 import java.beans.Beans;
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -146,11 +147,16 @@ public class FlorVidaABM extends JPanel {
 
         fechaDefuncionField.addMouseListener(formListener);
 
+        telefonoField.setToolTipText("Solo números.");
+
         binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, masterTable, org.jdesktop.beansbinding.ELProperty.create("${selectedElement.telefono}"), telefonoField, org.jdesktop.beansbinding.BeanProperty.create("text"));
         binding.setSourceUnreadableValue("null");
         bindingGroup.addBinding(binding);
         binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ, masterTable, org.jdesktop.beansbinding.ELProperty.create("${selectedElement != null}"), telefonoField, org.jdesktop.beansbinding.BeanProperty.create("enabled"));
         bindingGroup.addBinding(binding);
+
+        telefonoField.addFocusListener(formListener);
+        telefonoField.addKeyListener(formListener);
 
         saveButton.setText("Guardar");
         saveButton.setEnabled(false);
@@ -350,7 +356,7 @@ public class FlorVidaABM extends JPanel {
 
     // Code for dispatching events from components to event handlers.
 
-    private class FormListener implements java.awt.event.ActionListener, java.awt.event.MouseListener {
+    private class FormListener implements java.awt.event.ActionListener, java.awt.event.FocusListener, java.awt.event.KeyListener, java.awt.event.MouseListener {
         FormListener() {}
         public void actionPerformed(java.awt.event.ActionEvent evt) {
             if (evt.getSource() == saveButton) {
@@ -367,6 +373,30 @@ public class FlorVidaABM extends JPanel {
             }
             else if (evt.getSource() == deleteButton) {
                 FlorVidaABM.this.deleteButtonActionPerformed(evt);
+            }
+        }
+
+        public void focusGained(java.awt.event.FocusEvent evt) {
+            if (evt.getSource() == telefonoField) {
+                FlorVidaABM.this.telefonoFieldFocusGained(evt);
+            }
+        }
+
+        public void focusLost(java.awt.event.FocusEvent evt) {
+            if (evt.getSource() == telefonoField) {
+                FlorVidaABM.this.telefonoFieldFocusLost(evt);
+            }
+        }
+
+        public void keyPressed(java.awt.event.KeyEvent evt) {
+        }
+
+        public void keyReleased(java.awt.event.KeyEvent evt) {
+        }
+
+        public void keyTyped(java.awt.event.KeyEvent evt) {
+            if (evt.getSource() == telefonoField) {
+                FlorVidaABM.this.telefonoFieldKeyTyped(evt);
             }
         }
 
@@ -536,6 +566,25 @@ public class FlorVidaABM extends JPanel {
         setEnabledBotones(true);
         return fv.getIdFV();
     }//GEN-LAST:event_masterTableMouseClicked
+
+    private void telefonoFieldKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_telefonoFieldKeyTyped
+        if ((!Character.isDigit(evt.getKeyChar()) && !Character.isISOControl(evt.getKeyChar())) || (telefonoField.getText().trim().length() >= 11)) {
+            Toolkit.getDefaultToolkit().beep();
+            evt.consume();
+        }
+    }//GEN-LAST:event_telefonoFieldKeyTyped
+
+    private void telefonoFieldFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_telefonoFieldFocusGained
+        if (telefonoField.getText().trim().isEmpty()) {
+            telefonoField.setText("03624");
+        }
+    }//GEN-LAST:event_telefonoFieldFocusGained
+
+    private void telefonoFieldFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_telefonoFieldFocusLost
+        if (telefonoField.getText().trim().length() < 7) {
+            telefonoField.setText("");
+        }
+    }//GEN-LAST:event_telefonoFieldFocusLost
 
     Converter dateConverter = new Converter<java.util.Date, String>() {
         @Override

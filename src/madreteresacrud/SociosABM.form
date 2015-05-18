@@ -438,6 +438,7 @@
         </Component>
         <Component class="javax.swing.JTextField" name="numSocField">
           <Properties>
+            <Property name="editable" type="boolean" value="false"/>
             <Property name="toolTipText" type="java.lang.String" value="Solo n&#xfa;meros."/>
             <Property name="enabled" type="boolean" value="false"/>
           </Properties>
