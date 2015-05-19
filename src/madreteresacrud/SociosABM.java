@@ -28,7 +28,6 @@ import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-import javax.swing.JTextField;
 import javax.swing.SwingUtilities;
 import org.jdesktop.beansbinding.Converter;
 import org.jdesktop.swingx.autocomplete.AutoCompleteDecorator;
@@ -47,7 +46,7 @@ public class SociosABM extends JPanel {
 
     private static EntityManager em;
     private static boolean activo;
-    
+
     public SociosABM() {
         initComponents();
 //        refreshButton.setVisible(false);
@@ -1039,15 +1038,14 @@ public class SociosABM extends JPanel {
         if (csabm.getListaCuotasDeudas().isEmpty()) {
             JOptionPane.showMessageDialog(null, masterTable.getValueAt(selected, 1).toString() + " " + masterTable.getValueAt(selected, 2).toString() + " no adeuda cuotas.");
         }
-        if(activo){
-        JDialog c = new JDialog((Frame) SwingUtilities.getWindowAncestor(this), true);
-        c.setTitle("Cuotas de " + masterTable.getValueAt(selected, 1).toString() + " " + masterTable.getValueAt(selected, 2).toString());
-        c.setContentPane(csabm);
-        c.pack();
-        c.setLocationRelativeTo(null);
-        c.setVisible(true);
-        }
-        else{
+        if (activo) {
+            JDialog c = new JDialog((Frame) SwingUtilities.getWindowAncestor(this), true);
+            c.setTitle("Cuotas de " + masterTable.getValueAt(selected, 1).toString() + " " + masterTable.getValueAt(selected, 2).toString());
+            c.setContentPane(csabm);
+            c.pack();
+            c.setLocationRelativeTo(null);
+            c.setVisible(true);
+        } else {
             JOptionPane.showMessageDialog(null, "No se puede generar cuotas a usuarios inactivos");
         }
 //         JFrame frame = new JFrame("Cuotas de "+masterTable.getValueAt(selected, 0).toString()+" "+masterTable.getValueAt(selected, 1).toString());
@@ -1486,7 +1484,7 @@ public class SociosABM extends JPanel {
         return s;
 
     }
-  
+
     public void setApellidoField(String apellidoField) {
         this.apellidoField.setText(apellidoField);
     }
@@ -1565,7 +1563,7 @@ public class SociosABM extends JPanel {
         }
     };
 
-    
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTextField apellidoField;
     private javax.swing.JLabel apellidoLabel;

@@ -86,7 +86,7 @@ public class TipoGastoABM extends JPanel {
         refreshButton.setEnabled(false);
         refreshButton.addActionListener(formListener);
 
-        jComboBoxTipoGasto.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Hogar", "Comisión" }));
+        jComboBoxTipoGasto.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "HOGAR", "COMISIÓN" }));
         jComboBoxTipoGasto.setEnabled(false);
 
         binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, masterTable, org.jdesktop.beansbinding.ELProperty.create("${selectedElement.tipoGasto}"), jComboBoxTipoGasto, org.jdesktop.beansbinding.BeanProperty.create("selectedItem"), "");

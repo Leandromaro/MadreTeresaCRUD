@@ -210,7 +210,7 @@ public class GastosABM extends JPanel {
         refreshButton.setEnabled(false);
         refreshButton.addActionListener(formListener);
 
-        jComboBoxTipoGasto.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Hogar", "Comisión" }));
+        jComboBoxTipoGasto.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "HOGAR", "COMISIÓN" }));
         jComboBoxTipoGasto.setEnabled(false);
         jComboBoxTipoGasto.addActionListener(formListener);
 
