@@ -169,6 +169,9 @@
               </Properties>
               <BindingProperties>
                 <BindingProperty name="elements" source="list" target="masterTable" targetPath="elements" updateStrategy="0" immediately="true">
+                  <Subbinding sourcePath="${tipoGastoIdtipoGasto}">
+                    <BindingParameter name="NAME" value="Item"/>
+                  </Subbinding>
                   <Subbinding sourcePath="${fechaGasto}">
                     <BindingParameter name="NAME" value="Fecha del Gasto"/>
                     <BindingParameter name="javax.swing.binding.ParameterKeys.COLUMN_CLASS" value="java.util.Date.class"/>
@@ -184,10 +187,6 @@
                   </Subbinding>
                   <Subbinding sourcePath="${idgastos}">
                     <BindingParameter name="NAME" value="Idgastos"/>
-                    <BindingParameter name="javax.swing.binding.ParameterKeys.COLUMN_CLASS" value="Integer.class"/>
-                  </Subbinding>
-                  <Subbinding sourcePath="${tipoGastoIdtipoGasto}">
-                    <BindingParameter name="NAME" value="Tipo Gasto Idtipo Gasto"/>
                     <BindingParameter name="javax.swing.binding.ParameterKeys.COLUMN_CLASS" value="Integer.class"/>
                   </Subbinding>
                 </BindingProperty>
@@ -274,7 +273,7 @@
                               <Group type="103" groupAlignment="0" attributes="0">
                                   <Group type="102" alignment="0" attributes="0">
                                       <EmptySpace min="-2" pref="81" max="-2" attributes="0"/>
-                                      <Component id="jLabelId" min="-2" max="-2" attributes="0"/>
+                                      <Component id="IdTipoGLabel" min="-2" max="-2" attributes="0"/>
                                   </Group>
                                   <Group type="102" alignment="0" attributes="0">
                                       <EmptySpace max="-2" attributes="0"/>
@@ -316,7 +315,7 @@
                               <EmptySpace min="-2" max="-2" attributes="0"/>
                           </Group>
                           <Group type="102" alignment="1" attributes="0">
-                              <Component id="jLabelId" min="-2" max="-2" attributes="0"/>
+                              <Component id="IdTipoGLabel" min="-2" max="-2" attributes="0"/>
                               <EmptySpace min="-2" pref="20" max="-2" attributes="0"/>
                           </Group>
                       </Group>
@@ -463,10 +462,12 @@
             <Property name="enabled" type="boolean" value="false"/>
           </Properties>
         </Component>
-        <Component class="javax.swing.JLabel" name="jLabelId">
+        <Component class="javax.swing.JLabel" name="IdTipoGLabel">
           <BindingProperties>
-            <BindingProperty name="text" source="masterTable" sourcePath="${selectedElement.tipoGastoIdtipoGasto}" target="jLabelId" targetPath="text" updateStrategy="0" immediately="false">
-              <Property name="name" type="java.lang.String" value=""/>
+            <BindingProperty name="text" source="masterTable" sourcePath="${selectedElement.tipoGastoIdtipoGasto}" target="IdTipoGLabel" targetPath="text" updateStrategy="0" immediately="false">
+              <Property name="converter" type="org.jdesktop.beansbinding.Converter" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+                <Connection code="tipoGastoConverter" type="code"/>
+              </Property>
             </BindingProperty>
           </BindingProperties>
         </Component>

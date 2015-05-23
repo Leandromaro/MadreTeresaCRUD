@@ -5,6 +5,7 @@
  */
 package utilidades;
 
+import madreteresacrud.TipoGasto;
 import madreteresacrud.TipoSocio;
 import org.jdesktop.beansbinding.Converter;
 
@@ -31,6 +32,11 @@ public class Busquedas {
         return (TipoSocio) query1.getResultList().get(0);
     }
 
+    public static TipoGasto findTipoGasto(Integer idTipo){
+        String sql = "SELECT t FROM TipoGasto t WHERE t.idtipoGasto=" + idTipo;
+        query1 = java.beans.Beans.isDesignTime() ? null : entityManager.createQuery(sql);
+        return (TipoGasto) query1.getResultList().get(0);
+    }
     public static Converter converterMayuscula() {
         Converter stringConverter = new Converter<String, Object>() {
 

@@ -15,6 +15,8 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
@@ -52,9 +54,11 @@ public class Gastos implements Serializable {
     private Date fechaGasto;
     @Column(name = "descripcion")
     private String descripcion;
-    @Basic(optional = false)
-    @Column(name = "tipo_gasto_idtipo_gasto")
-    private int tipoGastoIdtipoGasto;
+//    @Basic(optional = false)
+//    @Column(name = "tipo_gasto_idtipo_gasto")
+    @ManyToOne(optional = false)
+    @JoinColumn(name = "tipo_gasto_idtipo_gasto", referencedColumnName = "idtipo_gasto" )
+    private TipoGasto tipoGastoIdtipoGasto;
 
     public Gastos() {
     }
@@ -63,7 +67,7 @@ public class Gastos implements Serializable {
         this.idgastos = idgastos;
     }
 
-    public Gastos(Integer idgastos, int tipoGastoIdtipoGasto) {
+    public Gastos(Integer idgastos, TipoGasto tipoGastoIdtipoGasto) {
         this.idgastos = idgastos;
         this.tipoGastoIdtipoGasto = tipoGastoIdtipoGasto;
     }
@@ -108,12 +112,12 @@ public class Gastos implements Serializable {
         changeSupport.firePropertyChange("descripcion", oldDescripcion, descripcion);
     }
 
-    public int getTipoGastoIdtipoGasto() {
+    public TipoGasto getTipoGastoIdtipoGasto() {
         return tipoGastoIdtipoGasto;
     }
 
-    public void setTipoGastoIdtipoGasto(int tipoGastoIdtipoGasto) {
-        int oldTipoGastoIdtipoGasto = this.tipoGastoIdtipoGasto;
+    public void setTipoGastoIdtipoGasto(TipoGasto tipoGastoIdtipoGasto) {
+        TipoGasto oldTipoGastoIdtipoGasto = this.tipoGastoIdtipoGasto;
         this.tipoGastoIdtipoGasto = tipoGastoIdtipoGasto;
         changeSupport.firePropertyChange("tipoGastoIdtipoGasto", oldTipoGastoIdtipoGasto, tipoGastoIdtipoGasto);
     }

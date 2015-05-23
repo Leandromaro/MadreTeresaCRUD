@@ -125,7 +125,7 @@ public class TipoGasto implements Serializable {
 
     @Override
     public String toString() {
-        return "madreteresacrud.TipoGasto[ idtipoGasto=" + idtipoGasto + " ]";
+        return elemento;
     }
 
     public void addPropertyChangeListener(PropertyChangeListener listener) {
