@@ -74,10 +74,10 @@ public class SociosABM extends JPanel {
         masterTable.getColumnModel().getColumn(12).setMaxWidth(0);
         masterTable.getColumnModel().getColumn(12).setMinWidth(0);
         masterTable.getColumnModel().getColumn(12).setPreferredWidth(0);
-
-        masterTable.getColumnModel().getColumn(13).setMaxWidth(0);
-        masterTable.getColumnModel().getColumn(13).setMinWidth(0);
-        masterTable.getColumnModel().getColumn(13).setPreferredWidth(0);
+        //Ocultamos la fecha de baja
+//        masterTable.getColumnModel().getColumn(13).setMaxWidth(0);
+//        masterTable.getColumnModel().getColumn(13).setMinWidth(0);
+//        masterTable.getColumnModel().getColumn(13).setPreferredWidth(0);
         //ocultamos el id de socio
         masterTable.getColumnModel().getColumn(14).setMaxWidth(0);
         masterTable.getColumnModel().getColumn(14).setMinWidth(0);
@@ -546,7 +546,7 @@ public class SociosABM extends JPanel {
         columnBinding.setColumnName("Tipo de Socio");
         columnBinding.setEditable(false);
         columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${fechaBaja}"));
-        columnBinding.setColumnName("fechaBaja");
+        columnBinding.setColumnName("Fecha de Baja");
         columnBinding.setColumnClass(java.util.Date.class);
         columnBinding.setEditable(false);
         columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${idSocio}"));
@@ -1118,7 +1118,7 @@ public class SociosABM extends JPanel {
         }
         list.clear();
         list.addAll(data);
-        setBusqueda();
+//        setBusqueda();
         desactivar(false);
         masterTable.setEnabled(true);
     }
@@ -1310,7 +1310,7 @@ public class SociosABM extends JPanel {
         }
     };
 
-    public java.util.Collection getListaSocios() {
+    public java.util.List<Socios> getListaSocios() {
 
         return query.getResultList();
 
@@ -1320,12 +1320,12 @@ public class SociosABM extends JPanel {
         String ele = jCBBusqueda.getSelectedItem().toString();
         String[] apeYnom = ele.split(", ");
         String ele1;
-        boolean flag = false;
+        boolean flag=false;
         for (int i = 0; i < masterTable.getRowCount(); i++) {
             ele = masterTable.getValueAt(i, 1).toString().trim();
-            ele1 = masterTable.getValueAt(i, 2).toString().trim();
+            ele1 = masterTable.getValueAt(i, 2).toString().trim();            
             if (ele.equals(apeYnom[0].trim()) && ele1.equals(apeYnom[1].trim())) {
-                masterTable.changeSelection(i, 0, false, false);
+                masterTable.changeSelection(i, 1, false, false);
                 jBVerCuotas.setEnabled(true);
                 int selected = masterTable.getSelectedRow();
                 if (masterTable.getValueAt(selected, 13) != null) {
@@ -1366,13 +1366,13 @@ public class SociosABM extends JPanel {
                     jLEliminado.setVisible(false);
                     jLabelBaja.setVisible(false);
                     jButtonAlta.setEnabled(false);
-                    deleteButton.setEnabled(true);
-                    flag = true;
+                    deleteButton.setEnabled(true);                    
                 }
+                flag = true;
                 break;
             }
         }
-        if (flag) {
+        if (!flag) {
             JOptionPane.showMessageDialog(null, "El socio ingresado no es válido!");
         }
     }
@@ -1381,11 +1381,9 @@ public class SociosABM extends JPanel {
 //        TextAutoCompleter textAutoCompleter = new TextAutoCompleter(jTFBusqueda);
 //        textAutoCompleter.setMode(0);
         //SociosABM socios = new SociosABM();
-        java.util.Collection listaSocios = this.getListaSocios();
-        Socios soc = new Socios();
-        for (Object socio : listaSocios) {
-            soc = (Socios) socio;
-            jCBBusqueda.addItem(soc.getApellido().trim() + ", " + soc.getNombre().trim());
+        java.util.List<Socios> listaSocios = this.getListaSocios();        
+        for (Socios socio : listaSocios) {           
+            jCBBusqueda.addItem(socio.getApellido().trim() + ", " + socio.getNombre().trim());
 //            textAutoCompleter.addItem(soc.getApellido().trim() + ", " + soc.getNombre().trim());
 
         }
