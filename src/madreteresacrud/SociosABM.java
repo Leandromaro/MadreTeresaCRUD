@@ -963,14 +963,12 @@ public class SociosABM extends JPanel {
 
         int ax = JOptionPane.showConfirmDialog(this, "¿El socio a ingresar es adherente?", null, JOptionPane.YES_NO_OPTION);
         if (ax == JOptionPane.YES_OPTION) {
-
             new BuscarAdherente((JFrame) SwingUtilities.getWindowAncestor(this), true, this).setVisible(true);
-
+        }else{
+            jCBLocalididad.setSelectedItem("RESISTENCIA - CHACO");
+            jCBSexo.setSelectedItem("M");
+            jComboTipSoc.setSelectedIndex(0);
         }
-
-        jCBLocalididad.setSelectedItem("RESISTENCIA - CHACO");
-        jCBSexo.setSelectedItem("M");
-        jComboTipSoc.setSelectedIndex(0);
     }//GEN-LAST:event_newButtonActionPerformed
 
     private void masterTableMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_masterTableMouseClicked
