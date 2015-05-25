@@ -27,6 +27,7 @@ import utilidades.Calendario;
  * @author leandro
  */
 public class DonacionesABM extends JPanel {
+    private boolean flagBusqueda = false;
 
     public DonacionesABM() {
         initComponents();
@@ -489,10 +490,10 @@ public class DonacionesABM extends JPanel {
                 if (doc != 0) {
                     SociosABM s = new SociosABM();
                     Socios soc = s.ApeYNom(doc);
-                    if (soc != null) {
+                    if (soc != null && !flagBusqueda && !documentoField.getText().isEmpty()) {
                         int dialogResult = JOptionPane.showConfirmDialog(null, "Es usted " + soc.getNombre() + " " + soc.getApellido() + "?", "Selección de Registro", JOptionPane.YES_NO_OPTION);
                         if (JOptionPane.YES_OPTION == dialogResult) {
-                            s.setDonanteByDNI(doc);
+                            s.setDonanteByDNI(doc,soc.getNombre(),soc.getApellido());
                             apellidoField.setText(soc.getApellido());
                             nombreField.setText(soc.getNombre());
                             apellidoField.setEnabled(true);
@@ -502,10 +503,10 @@ public class DonacionesABM extends JPanel {
                             dialogResult = 0;
                         }
                     }
-                }
+                flagBusqueda=false;
                 entityManager.getTransaction().commit();
                 entityManager.getTransaction().begin();
-
+                }
             } catch (RollbackException rex) {
                 rex.printStackTrace();
                 entityManager.getTransaction().begin();
@@ -531,6 +532,7 @@ public class DonacionesABM extends JPanel {
         }
         list.clear();
         list.addAll(data);
+        limpiarTextos();
         setEnabledBotones(false);
         activarTextos(false);
     }
@@ -554,16 +556,13 @@ public class DonacionesABM extends JPanel {
                 SociosABM s = new SociosABM();
                 Socios soc = s.ApeYNom(doc);
                 if (soc != null) {
-                    int dialogResult = JOptionPane.showConfirmDialog(null, "Es usted " + soc.getNombre() + " " + soc.getApellido() + "?", "Selección de Registro", JOptionPane.YES_NO_OPTION);
-                    if (JOptionPane.YES_OPTION == dialogResult) {
                         apellidoField.setText(soc.getApellido());
                         nombreField.setText(soc.getNombre());
                         apellidoField.setEnabled(true);
                         nombreField.setEnabled(true);
                         montoField.setEnabled(true);
                         fechaDonacionField.setEnabled(true);
-                        dialogResult = 0;
-                    }
+                        flagBusqueda=true;
                 }
             } else {
                 JOptionPane.showMessageDialog(null, "No se encuentra Socio con ese DNI");
@@ -660,5 +659,13 @@ public class DonacionesABM extends JPanel {
     private javax.swing.JButton saveButton;
     private org.jdesktop.beansbinding.BindingGroup bindingGroup;
     // End of variables declaration//GEN-END:variables
+
+    private void limpiarTextos() {
+        documentoField.setText("");
+        nombreField.setText("");
+        apellidoField.setText("");
+        montoField.setText("");
+        fechaDonacionField.setText("");
+    }
 
 }

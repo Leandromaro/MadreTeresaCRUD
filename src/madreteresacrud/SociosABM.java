@@ -885,23 +885,15 @@ public class SociosABM extends JPanel {
         }
     }
 
-    public void setDonanteByDNI(int numDoc) {
+    public void setDonanteByDNI(int numDoc, String nombre, String apellido) {
         if (findByDNI(numDoc)) {
             boolean t = true;
-//            this.ApeYNom(numDoc).setDonante(t);
-//            this.ApeYNom(numDoc).setAdherente(t);
-            String sql = "UPDATE Socios s SET s.donante = true WHERE s.documento =" + numDoc;
-            System.out.println(sql);
-            ConexionBD cc = new ConexionBD();
-            Connection cn = cc.conexion();
-            try {
-                Statement st = cn.createStatement();
-                st.executeUpdate(sql);
-                cn.close();
-                JOptionPane.showMessageDialog(null, "Se pudo actualizar el registro");
-            } catch (SQLException ex) {
-                JOptionPane.showMessageDialog(null, "No se pudo actualizar el registro");
-            }
+            String sql = "UPDATE Socios s SET s.donante = "+ 1 + " WHERE s.documento = " + numDoc;
+            entityManager.createQuery(sql).executeUpdate();
+            entityManager.getTransaction().commit();
+            JOptionPane.showMessageDialog(null, "El socio "+ nombre + apellido + " ha sido registrado como donante");
+        }else{
+            JOptionPane.showMessageDialog(null, "No se pudo actualizar el registro");
         }
     }
 
