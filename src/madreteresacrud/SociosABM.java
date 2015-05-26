@@ -33,7 +33,7 @@ import org.jdesktop.beansbinding.Converter;
 import org.jdesktop.swingx.autocomplete.AutoCompleteDecorator;
 import reportes.ConexionBD;
 import utilidades.BuscarAdherente;
-import utilidades.Busquedas;
+import utilidades.UtilsStatics;
 import utilidades.Calendario;
 import utilidades.Localidades;
 import utilidades.UtilGraficos;
@@ -182,7 +182,7 @@ public class SociosABM extends JPanel {
 
         org.jdesktop.beansbinding.Binding binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, masterTable, org.jdesktop.beansbinding.ELProperty.create("${selectedElement.apellido}"), apellidoField, org.jdesktop.beansbinding.BeanProperty.create("text"));
         binding.setSourceUnreadableValue("null");
-        binding.setConverter(Busquedas.converterMayuscula());
+        binding.setConverter(UtilsStatics.converterMayuscula());
         bindingGroup.addBinding(binding);
         binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ, masterTable, org.jdesktop.beansbinding.ELProperty.create("${selectedElement != null}"), apellidoField, org.jdesktop.beansbinding.BeanProperty.create("enabled"));
         bindingGroup.addBinding(binding);
@@ -191,7 +191,7 @@ public class SociosABM extends JPanel {
 
         binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, masterTable, org.jdesktop.beansbinding.ELProperty.create("${selectedElement.nombre}"), nombreField, org.jdesktop.beansbinding.BeanProperty.create("text"));
         binding.setSourceUnreadableValue("null");
-        binding.setConverter(Busquedas.converterMayuscula());
+        binding.setConverter(UtilsStatics.converterMayuscula());
         bindingGroup.addBinding(binding);
         binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ, masterTable, org.jdesktop.beansbinding.ELProperty.create("${selectedElement != null}"), nombreField, org.jdesktop.beansbinding.BeanProperty.create("enabled"));
         bindingGroup.addBinding(binding);
@@ -215,7 +215,7 @@ public class SociosABM extends JPanel {
 
         binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, masterTable, org.jdesktop.beansbinding.ELProperty.create("${selectedElement.email}"), emailField, org.jdesktop.beansbinding.BeanProperty.create("text"));
         binding.setSourceUnreadableValue("null");
-        binding.setConverter(Busquedas.converterMayuscula());
+        binding.setConverter(UtilsStatics.converterMayuscula());
         bindingGroup.addBinding(binding);
         binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ, masterTable, org.jdesktop.beansbinding.ELProperty.create("${selectedElement != null}"), emailField, org.jdesktop.beansbinding.BeanProperty.create("enabled"));
         bindingGroup.addBinding(binding);
@@ -246,7 +246,7 @@ public class SociosABM extends JPanel {
 
         binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, masterTable, org.jdesktop.beansbinding.ELProperty.create("${selectedElement.direccion}"), direccionField, org.jdesktop.beansbinding.BeanProperty.create("text"));
         binding.setSourceUnreadableValue("null");
-        binding.setConverter(Busquedas.converterMayuscula());
+        binding.setConverter(UtilsStatics.converterMayuscula());
         bindingGroup.addBinding(binding);
         binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ, masterTable, org.jdesktop.beansbinding.ELProperty.create("${selectedElement != null}"), direccionField, org.jdesktop.beansbinding.BeanProperty.create("enabled"));
         bindingGroup.addBinding(binding);
@@ -1522,7 +1522,7 @@ public class SociosABM extends JPanel {
         @Override
         public Localidades convertForward(Integer value) {
             try {
-                return Busquedas.findLocalidad(value);
+                return UtilsStatics.findLocalidad(value);
             } catch (Exception e) {
                 System.err.println(e);
                 return null;
@@ -1541,7 +1541,7 @@ public class SociosABM extends JPanel {
         @Override
         public TipoSocio convertForward(Integer value) {
             try {
-                return Busquedas.findTipoSocio(value);
+                return UtilsStatics.findTipoSocio(value);
             } catch (Exception e) {
                 System.err.println(e);
                 return null;

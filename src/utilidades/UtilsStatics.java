@@ -13,7 +13,7 @@ import org.jdesktop.beansbinding.Converter;
  *
  * @author Francisco M. Viola <francimviola@gmail.com>
  */
-public class Busquedas {
+public class UtilsStatics {
 
     private static final javax.persistence.EntityManager entityManager = java.beans.Beans.isDesignTime() ? null : javax.persistence.Persistence.createEntityManagerFactory("madreTeresaCRUDPU").createEntityManager();
     private static javax.persistence.Query query1;
@@ -32,11 +32,12 @@ public class Busquedas {
         return (TipoSocio) query1.getResultList().get(0);
     }
 
-    public static TipoGasto findTipoGasto(Integer idTipo){
+    public static TipoGasto findTipoGasto(Integer idTipo) {
         String sql = "SELECT t FROM TipoGasto t WHERE t.idtipoGasto=" + idTipo;
         query1 = java.beans.Beans.isDesignTime() ? null : entityManager.createQuery(sql);
         return (TipoGasto) query1.getResultList().get(0);
     }
+
     public static Converter converterMayuscula() {
         Converter stringConverter = new Converter<String, Object>() {
 
@@ -63,6 +64,26 @@ public class Busquedas {
         };
 
         return stringConverter;
+    }
+
+    /**
+     * Valida la selección de fila en la tabla al insertar un nuevo registro.
+     *
+     * @param tabla
+     * @param row
+     * @param column
+     */
+    public static void validarSeleccion(javax.swing.JTable tabla, int row, int column) {
+        if (tabla.getValueAt(row, column) == null) {
+            tabla.setRowSelectionInterval(row, row);
+        } else {
+            for (int i = 0; i < row; i++) {
+                if (tabla.getValueAt(i, column) == null) {
+                    tabla.setRowSelectionInterval(i, i);
+                    break;
+                }
+            }
+        }
     }
 
 }

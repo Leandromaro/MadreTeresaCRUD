@@ -19,7 +19,7 @@ import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 import org.jdesktop.beansbinding.Converter;
 import org.jdesktop.swingx.autocomplete.AutoCompleteDecorator;
-import utilidades.Busquedas;
+import utilidades.UtilsStatics;
 import utilidades.Calendario;
 import utilidades.Localidades;
 
@@ -28,9 +28,9 @@ import utilidades.Localidades;
  * @author francis
  */
 public class FlorVidaABM extends JPanel {
-
+    
     private FlorVidaABM1 fv = null;
-
+    
     public FlorVidaABM() {
         initComponents();
         setComboLocalidades();
@@ -48,7 +48,7 @@ public class FlorVidaABM extends JPanel {
             entityManager.getTransaction().begin();
         }
     }
-
+    
     public FlorVidaABM(FlorVidaABM1 fv) {
         initComponents();
         setComboLocalidades();
@@ -117,21 +117,21 @@ public class FlorVidaABM extends JPanel {
 
         org.jdesktop.beansbinding.Binding binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, masterTable, org.jdesktop.beansbinding.ELProperty.create("${selectedElement.apellido}"), apellidoField, org.jdesktop.beansbinding.BeanProperty.create("text"));
         binding.setSourceUnreadableValue("null");
-        binding.setConverter(Busquedas.converterMayuscula());
+        binding.setConverter(UtilsStatics.converterMayuscula());
         bindingGroup.addBinding(binding);
         binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ, masterTable, org.jdesktop.beansbinding.ELProperty.create("${selectedElement != null}"), apellidoField, org.jdesktop.beansbinding.BeanProperty.create("enabled"));
         bindingGroup.addBinding(binding);
 
         binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, masterTable, org.jdesktop.beansbinding.ELProperty.create("${selectedElement.nombre}"), nombreField, org.jdesktop.beansbinding.BeanProperty.create("text"));
         binding.setSourceUnreadableValue("null");
-        binding.setConverter(Busquedas.converterMayuscula());
+        binding.setConverter(UtilsStatics.converterMayuscula());
         bindingGroup.addBinding(binding);
         binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ, masterTable, org.jdesktop.beansbinding.ELProperty.create("${selectedElement != null}"), nombreField, org.jdesktop.beansbinding.BeanProperty.create("enabled"));
         bindingGroup.addBinding(binding);
 
         binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, masterTable, org.jdesktop.beansbinding.ELProperty.create("${selectedElement.direccion}"), direccionField, org.jdesktop.beansbinding.BeanProperty.create("text"));
         binding.setSourceUnreadableValue("null");
-        binding.setConverter(Busquedas.converterMayuscula());
+        binding.setConverter(UtilsStatics.converterMayuscula());
         bindingGroup.addBinding(binding);
         binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ, masterTable, org.jdesktop.beansbinding.ELProperty.create("${selectedElement != null}"), direccionField, org.jdesktop.beansbinding.BeanProperty.create("enabled"));
         bindingGroup.addBinding(binding);
@@ -427,7 +427,7 @@ public class FlorVidaABM extends JPanel {
         this.refrescarForm();
 
     }//GEN-LAST:event_refreshButtonActionPerformed
-
+    
     private void refrescarForm() {
         masterTable.setEnabled(true);
         entityManager.getTransaction().rollback();
@@ -441,7 +441,7 @@ public class FlorVidaABM extends JPanel {
         setEnabledBotones(false);
         activarTextos(false);
     }
-
+    
     private void activarTextos(boolean estado) {
         direccionField.setEnabled(estado);
         nombreField.setEnabled(estado);
@@ -450,7 +450,7 @@ public class FlorVidaABM extends JPanel {
         fechaDefuncionField.setEnabled(estado);
         jCBLocalididad.setEnabled(estado);
     }
-
+    
     private Boolean blancos() {
         if ((nombreField.getText().trim().isEmpty())
                 || (apellidoField.getText().trim().isEmpty())
@@ -461,11 +461,11 @@ public class FlorVidaABM extends JPanel {
             return false;
         }
     }
-
+    
 
     private void deleteButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteButtonActionPerformed
         int reply = JOptionPane.showConfirmDialog(null, "¿Está seguro de eliminar el registro?", "Eliminacion de Registro", JOptionPane.YES_NO_OPTION);
-
+        
         if (reply == JOptionPane.YES_OPTION) {
             int[] selected = masterTable.getSelectedRows();
             List<madreteresacrud.floresVida.FlorVida> toRemove = new ArrayList<madreteresacrud.floresVida.FlorVida>(selected.length);
@@ -483,7 +483,7 @@ public class FlorVidaABM extends JPanel {
             refrescarForm();
         }
     }//GEN-LAST:event_deleteButtonActionPerformed
-
+    
     private void setEnabledBotones(boolean estado) {
         refreshButton.setEnabled(estado);
         deleteButton.setEnabled(estado);
@@ -499,8 +499,10 @@ public class FlorVidaABM extends JPanel {
         madreteresacrud.floresVida.FlorVida f = new madreteresacrud.floresVida.FlorVida();
         entityManager.persist(f);
         list.add(f);
-        int row = list.size() - 1;
-        masterTable.setRowSelectionInterval(row, row);
+        int row = list.size() - 1;        
+//        masterTable.setRowSelectionInterval(row, row);
+        //Valida la selección de fila en la tabla
+        UtilsStatics.validarSeleccion(masterTable, row, 1);
         masterTable.scrollRectToVisible(masterTable.getCellRect(row, 0, true));
 
     }//GEN-LAST:event_newButtonActionPerformed
@@ -508,8 +510,7 @@ public class FlorVidaABM extends JPanel {
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         new Calendario((JFrame) SwingUtilities.getWindowAncestor(this), true, fechaDefuncionField).setVisible(true);
     }//GEN-LAST:event_jButton1ActionPerformed
-
-
+      
     private void saveButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveButtonActionPerformed
         if (this.blancos()) {
             JOptionPane.showMessageDialog(null, "No se puede almacenar registros con valores en blanco");
@@ -532,7 +533,7 @@ public class FlorVidaABM extends JPanel {
                 JFrame topFrame = (JFrame) SwingUtilities.getWindowAncestor(this);
                 topFrame.hide();
             }
-
+            
             entityManager.getTransaction().rollback();
             entityManager.getTransaction().begin();
             java.util.Collection data = query.getResultList();
@@ -552,11 +553,11 @@ public class FlorVidaABM extends JPanel {
     private void masterTableMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_masterTableMouseClicked
         setEnabledBotones(true);
     }
-
+    
     public int getIdFV(String ape, String nom, int idSoc) {
         query = java.beans.Beans.isDesignTime() ? null : entityManager.createQuery("SELECT f FROM FlorVida f,RelacSocDifuntos r "
                 + "WHERE f.idFV=r.idFV AND r.idSocioFV=" + idSoc + " AND f.apellido LIKE '%" + ape.trim() + "%' AND f.nombre LIKE '%" + nom.trim() + "%'");
-
+        
         FlorVida fv = new FlorVida();
         java.util.Collection listafv = query.getResultList();
         for (Object fv1 : listafv) {
@@ -584,7 +585,7 @@ public class FlorVidaABM extends JPanel {
             telefonoField.setText("");
         }
     }//GEN-LAST:event_telefonoFieldFocusLost
-
+    
     Converter dateConverter = new Converter<java.util.Date, String>() {
         @Override
         public String convertForward(java.util.Date value) {
@@ -592,7 +593,7 @@ public class FlorVidaABM extends JPanel {
             SimpleDateFormat formato = new SimpleDateFormat(patron);
             return formato.format(value);
         }
-
+        
         @Override
         public java.util.Date convertReverse(String value) {
             try {
@@ -604,45 +605,45 @@ public class FlorVidaABM extends JPanel {
             }
         }
     };
-
+    
     Converter localidadConverter = new Converter<Integer, Localidades>() {
-
+        
         @Override
         public Integer convertReverse(Localidades value) {
             return value.getIdLocalidad();
         }
-
+        
         @Override
         public Localidades convertForward(Integer value) {
             try {
-                return Busquedas.findLocalidad(value);
+                return UtilsStatics.findLocalidad(value);
             } catch (Exception e) {
                 System.err.println(e);
                 return null;
             }
-
+            
         }
     };
-
+    
     private List<Localidades> getLocalidades() {
         javax.persistence.Query query1;
         String sql = "SELECT l FROM Localidades l";
-
+        
         query1 = java.beans.Beans.isDesignTime() ? null : entityManager.createQuery(sql);
         List<Localidades> lista = query1.getResultList();
         return lista;
-
+        
     }
-
+    
     private void setComboLocalidades() {
         //seteamos el combo de localidades con la lista de todas ellas
         List<Localidades> localidades = getLocalidades();
         for (Localidades objects : localidades) {
             jCBLocalididad.addItem(objects);
         }
-
+        
         AutoCompleteDecorator.decorate(jCBLocalididad);
-
+        
     }
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTextField apellidoField;
