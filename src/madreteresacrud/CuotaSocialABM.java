@@ -189,8 +189,6 @@ public class CuotaSocialABM extends JPanel {
         genCuota.setText("Generar cuota adelantada");
         genCuota.addActionListener(formListener);
 
-        masterTable.setAutoCreateRowSorter(true);
-
         org.jdesktop.swingbinding.JTableBinding jTableBinding = org.jdesktop.swingbinding.SwingBindings.createJTableBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, list, masterTable);
         org.jdesktop.swingbinding.JTableBinding.ColumnBinding columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${cuota}"));
         columnBinding.setColumnName("Cuota");

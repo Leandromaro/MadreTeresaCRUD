@@ -241,7 +241,6 @@ public class FlorVidaABM1 extends JPanel {
     }//GEN-LAST:event_crearFVActionPerformed
 
     private void aceptarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_aceptarActionPerformed
-
         entityManager1 = java.beans.Beans.isDesignTime() ? null : javax.persistence.Persistence.createEntityManagerFactory("madreTeresaCRUDPU").createEntityManager();
         query1 = java.beans.Beans.isDesignTime() ? null : entityManager1.createQuery("SELECT r FROM RelacSocDifuntos r");
         list1 = java.beans.Beans.isDesignTime() ? java.util.Collections.emptyList() : org.jdesktop.observablecollections.ObservableCollections.observableList(query1.getResultList());
@@ -249,7 +248,6 @@ public class FlorVidaABM1 extends JPanel {
         int selected = masterTable.getSelectedRow();
         int idFV = Integer.parseInt(masterTable.getValueAt(selected, 5).toString());
         madreteresacrud.floresVida.RelacSocDifuntos f = new madreteresacrud.floresVida.RelacSocDifuntos(this.idSoc, idFV);
-
         entityManager1.persist(f);
         try {
             entityManager1.getTransaction().commit();

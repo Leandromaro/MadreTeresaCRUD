@@ -493,8 +493,6 @@ public class SociosABM extends JPanel {
 
         jPanelTabla.setBorder(javax.swing.BorderFactory.createEtchedBorder());
 
-        masterTable.setAutoCreateRowSorter(true);
-
         org.jdesktop.swingbinding.JTableBinding jTableBinding = org.jdesktop.swingbinding.SwingBindings.createJTableBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, list, masterTable);
         org.jdesktop.swingbinding.JTableBinding.ColumnBinding columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${numSoc}"));
         columnBinding.setColumnName("N° Socio");
@@ -891,7 +889,7 @@ public class SociosABM extends JPanel {
             String sql = "UPDATE Socios s SET s.donante = "+ 1 + " WHERE s.documento = " + numDoc;
             entityManager.createQuery(sql).executeUpdate();
             entityManager.getTransaction().commit();
-            JOptionPane.showMessageDialog(null, "El socio "+ nombre + apellido + " ha sido registrado como donante");
+            JOptionPane.showMessageDialog(null, "El socio "+ nombre + " " +apellido + " ha sido registrado como donante");
         }else{
             JOptionPane.showMessageDialog(null, "No se pudo actualizar el registro");
         }

@@ -455,7 +455,6 @@ public class FlorVidaABM extends JPanel {
         if ((nombreField.getText().trim().isEmpty())
                 || (apellidoField.getText().trim().isEmpty())
                 || (direccionField.getText().trim().isEmpty())
-                || (telefonoField.getText().trim().isEmpty())
                 || (fechaDefuncionField.getText().trim().isEmpty())) {
             return true;
         } else {
