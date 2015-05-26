@@ -115,7 +115,7 @@ public class BuscarAdherente extends javax.swing.JDialog {
             soc = (SociosFlorVida) socio;
             jCBBusqueda.addItem(soc.getApellido().trim() + " " + soc.getNombre().trim() + " -> N° Adherente=" + soc.getIdSocio());
         }
-        AutoCompleteDecorator.decorate(this.jCBBusqueda);
+        AutoCompleteDecorator.decorate(jCBBusqueda);
     }
 
     private SociosFlorVida getSocio(int nroSocio) {
