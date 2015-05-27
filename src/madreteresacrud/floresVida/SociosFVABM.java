@@ -714,6 +714,8 @@ public class SociosFVABM extends JPanel {
             }
             refrescarForm();
             setBusqueda();
+        }else{
+            JOptionPane.showMessageDialog(null, "No se puede almacenar registros con valores en blanco");
         }
     }//GEN-LAST:event_saveButtonActionPerformed
 

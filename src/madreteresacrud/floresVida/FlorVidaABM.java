@@ -511,9 +511,7 @@ public class FlorVidaABM extends JPanel {
     }//GEN-LAST:event_jButton1ActionPerformed
       
     private void saveButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveButtonActionPerformed
-        if (this.blancos()) {
-            JOptionPane.showMessageDialog(null, "No se puede almacenar registros con valores en blanco");
-        } else {
+        if (!blancos()) {
             try {
                 entityManager.getTransaction().commit();
                 entityManager.getTransaction().begin();
@@ -541,8 +539,11 @@ public class FlorVidaABM extends JPanel {
             }
             list.clear();
             list.addAll(data);
+        
+        refrescarForm();
+        }else{
+            JOptionPane.showMessageDialog(null, "No se puede almacenar registros con valores en blanco");
         }
-        this.refrescarForm();
     }//GEN-LAST:event_saveButtonActionPerformed
 
     private void fechaDefuncionFieldMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_fechaDefuncionFieldMouseClicked

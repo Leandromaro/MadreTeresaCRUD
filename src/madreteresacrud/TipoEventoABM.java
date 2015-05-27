@@ -242,9 +242,9 @@ public class TipoEventoABM extends JPanel {
             }
             list.clear();
             list.addAll(data);
-        }
+        
         refrescarForm();
-
+        }    
     }//GEN-LAST:event_saveButtonActionPerformed
 
     

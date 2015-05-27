@@ -518,6 +518,8 @@ public class DonacionesABM extends JPanel {
                 list.addAll(merged);
             }
             refrescarForm();
+        }else{
+            JOptionPane.showMessageDialog(null, "No se puede almacenar registros con valores en blanco");
         }
 
     }//GEN-LAST:event_saveButtonActionPerformed

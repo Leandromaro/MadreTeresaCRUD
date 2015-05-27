@@ -323,29 +323,33 @@ public class CuotasFVABM extends JPanel {
     }//GEN-LAST:event_newButtonActionPerformed
 
     private void saveButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveButtonActionPerformed
-        try {
-            entityManager.getTransaction().commit();
+        if(!montoField.getText().isEmpty()){
+            try {
+                entityManager.getTransaction().commit();
+                entityManager.getTransaction().begin();
+            } catch (RollbackException rex) {
+                rex.printStackTrace();
+                entityManager.getTransaction().begin();
+                List<madreteresacrud.floresVida.CuotaFlorDeVida> merged = new ArrayList<madreteresacrud.floresVida.CuotaFlorDeVida>(list.size());
+                for (madreteresacrud.floresVida.CuotaFlorDeVida c : list) {
+                    merged.add(entityManager.merge(c));
+                }
+                list.clear();
+                list.addAll(merged);
+            }
+            //Recargamos de nuevo la tabla 
+            entityManager.getTransaction().rollback();
             entityManager.getTransaction().begin();
-        } catch (RollbackException rex) {
-            rex.printStackTrace();
-            entityManager.getTransaction().begin();
-            List<madreteresacrud.floresVida.CuotaFlorDeVida> merged = new ArrayList<madreteresacrud.floresVida.CuotaFlorDeVida>(list.size());
-            for (madreteresacrud.floresVida.CuotaFlorDeVida c : list) {
-                merged.add(entityManager.merge(c));
+            query = java.beans.Beans.isDesignTime() ? null : entityManager.createQuery("SELECT c FROM CuotaFlorDeVida c WHERE c.idSocioFV=" + this.idSoc + " AND c.idFV=" + this.idfv);
+            java.util.Collection data = query.getResultList();
+            for (Object entity : data) {
+                entityManager.refresh(entity);
             }
             list.clear();
-            list.addAll(merged);
+            list.addAll(data);
+        }else{
+            JOptionPane.showMessageDialog(null, "No se puede almacenar registros con valores en blanco");
         }
-        //Recargamos de nuevo la tabla 
-        entityManager.getTransaction().rollback();
-        entityManager.getTransaction().begin();
-        query = java.beans.Beans.isDesignTime() ? null : entityManager.createQuery("SELECT c FROM CuotaFlorDeVida c WHERE c.idSocioFV=" + this.idSoc + " AND c.idFV=" + this.idfv);
-        java.util.Collection data = query.getResultList();
-        for (Object entity : data) {
-            entityManager.refresh(entity);
-        }
-        list.clear();
-        list.addAll(data);
     }//GEN-LAST:event_saveButtonActionPerformed
 
     private void jCBfvActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jCBfvActionPerformed

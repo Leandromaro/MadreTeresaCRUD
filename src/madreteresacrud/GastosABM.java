@@ -478,6 +478,8 @@ public class GastosABM extends JPanel {
             jComboBoxElemento.setEnabled(false);
             jComboBoxTipoGasto.setEnabled(false);
             refrescarForm();
+        }else{
+            JOptionPane.showMessageDialog(null, "No se puede almacenar registros con valores en blanco");
         }
 
     }//GEN-LAST:event_saveButtonActionPerformed

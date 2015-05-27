@@ -472,6 +472,8 @@ public class EventosABM extends JPanel {
                 list.addAll(merged);
             }
             refrescarForm();
+        }else{
+            JOptionPane.showMessageDialog(null, "No se puede almacenar registros con valores en blanco");
         }
 
     }//GEN-LAST:event_saveButtonActionPerformed
@@ -503,7 +505,7 @@ public class EventosABM extends JPanel {
             respuesta = respuesta + " " + "Montos en su totalidad," + " ";
         }
 
-        JOptionPane.showMessageDialog(null, "Los campos" + respuesta + "no deberian estar vacios!");
+        JOptionPane.showMessageDialog(null, "Los campos " + respuesta + "no deberian estar vacios!");
     }
 
 

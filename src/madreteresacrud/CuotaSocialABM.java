@@ -152,7 +152,7 @@ public class CuotaSocialABM extends JPanel {
                                 .addGap(18, 18, 18)
                                 .addComponent(jButtonSalir, javax.swing.GroupLayout.PREFERRED_SIZE, 62, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addGroup(jPanelFormLayout.createSequentialGroup()
-                                .addGap(41, 41, 41)
+                                .addGap(46, 46, 46)
                                 .addComponent(montoField, javax.swing.GroupLayout.PREFERRED_SIZE, 132, javax.swing.GroupLayout.PREFERRED_SIZE)))
                         .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanelFormLayout.createSequentialGroup()
@@ -173,7 +173,7 @@ public class CuotaSocialABM extends JPanel {
                         .addComponent(fechaPagoField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addComponent(fechaPagoLabel)))
                 .addGap(18, 18, 18)
-                .addGroup(jPanelFormLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                .addGroup(jPanelFormLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(montoLabel)
                     .addComponent(montoField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(29, 29, 29)
@@ -333,32 +333,36 @@ public class CuotaSocialABM extends JPanel {
     }//GEN-LAST:event_cancelarActionPerformed
 
     private void saveButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveButtonActionPerformed
-        try {
-            entityManager.getTransaction().commit();
+        if(!montoField.getText().isEmpty()){
+            try {
+                entityManager.getTransaction().commit();
+                entityManager.getTransaction().begin();
+            } catch (RollbackException rex) {
+                rex.printStackTrace();
+                entityManager.getTransaction().begin();
+                List<madreteresacrud.CuotaSocial> merged = new ArrayList<madreteresacrud.CuotaSocial>(list.size());
+                for (madreteresacrud.CuotaSocial c : list) {
+                    merged.add(entityManager.merge(c));
+                }
+                list.clear();
+                list.addAll(merged);
+            }
+
+            query = java.beans.Beans.isDesignTime() ? null : entityManager.createQuery("SELECT c FROM CuotaSocial c WHERE c.idSocio=" 
+                    + this.s.getIdSocio() + " ORDER BY c.fechaActivacion DESC");
+            entityManager.getTransaction().rollback();
             entityManager.getTransaction().begin();
-        } catch (RollbackException rex) {
-            rex.printStackTrace();
-            entityManager.getTransaction().begin();
-            List<madreteresacrud.CuotaSocial> merged = new ArrayList<madreteresacrud.CuotaSocial>(list.size());
-            for (madreteresacrud.CuotaSocial c : list) {
-                merged.add(entityManager.merge(c));
+            java.util.Collection data = query.getResultList();
+            for (Object entity : data) {
+                entityManager.refresh(entity);
             }
             list.clear();
-            list.addAll(merged);
+            list.addAll(data);
+            JOptionPane.showMessageDialog(null, "Cuota/s registrada/s exitosamente!");
+            saveButton.setEnabled(false);
+        }else{
+            JOptionPane.showMessageDialog(null, "No se puede almacenar registros con valores en blanco");
         }
-
-        query = java.beans.Beans.isDesignTime() ? null : entityManager.createQuery("SELECT c FROM CuotaSocial c WHERE c.idSocio=" 
-                + this.s.getIdSocio() + " ORDER BY c.fechaActivacion DESC");
-        entityManager.getTransaction().rollback();
-        entityManager.getTransaction().begin();
-        java.util.Collection data = query.getResultList();
-        for (Object entity : data) {
-            entityManager.refresh(entity);
-        }
-        list.clear();
-        list.addAll(data);
-        JOptionPane.showMessageDialog(null, "Cuota/s registrada/s exitosamente!");
-        saveButton.setEnabled(false);
     }//GEN-LAST:event_saveButtonActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed

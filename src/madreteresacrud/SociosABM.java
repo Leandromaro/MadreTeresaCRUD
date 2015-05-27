@@ -1096,6 +1096,8 @@ public class SociosABM extends JPanel {
             }
             resetComboBusqueda();
             refrescarForm();
+        }else{
+            JOptionPane.showMessageDialog(null, "No se puede almacenar registros con valores en blanco");
         }
 
     }//GEN-LAST:event_saveButtonActionPerformed
