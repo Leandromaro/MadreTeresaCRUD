@@ -566,7 +566,16 @@ public class SociosFVABM extends JPanel {
 
 
     private void deleteButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteButtonActionPerformed
-        int reply = JOptionPane.showConfirmDialog(null, "¿Está seguro de eliminar el registro?", "Eliminacion de Registro", JOptionPane.YES_NO_OPTION);
+        List<FlorVida> floresVida = getFloresVidaByAdherente(Integer.valueOf(masterTable.getValueAt(masterTable.getSelectedRow(), 6).toString()));
+        String fv="";
+        if(floresVida.size()>0){
+            fv="\nTiene asignado las siguientes flores de vida:\n";
+            for (FlorVida florVida : floresVida) {
+                fv+="*"+florVida.getApellido()+", "+florVida.getNombre()+"\n";
+            }            
+        }
+        
+        int reply = JOptionPane.showConfirmDialog(null, "¿Está seguro de eliminar el Adherente?"+fv, "Eliminación de Registro.", JOptionPane.YES_NO_OPTION);
         if (reply == JOptionPane.YES_OPTION) {
 
             int[] selected = masterTable.getSelectedRows();
@@ -619,7 +628,7 @@ public class SociosFVABM extends JPanel {
         celularField.setEnabled(estado);
         emailField.setEnabled(estado);
         jCBLocalididad.setEnabled(estado);
-        jTFBusqueda.setEnabled(!estado);        
+        jTFBusqueda.setEnabled(!estado);
     }
 
     private void jBbuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBbuscarActionPerformed
@@ -712,8 +721,8 @@ public class SociosFVABM extends JPanel {
         masterTable.setEnabled(true);
         entityManager.getTransaction().rollback();
         entityManager.getTransaction().begin();
-        java.util.Collection data = query.getResultList();
-        for (Object entity : data) {
+        java.util.List<SociosFlorVida> data = query.getResultList();
+        for (SociosFlorVida entity : data) {
             entityManager.refresh(entity);
         }
         list.clear();
@@ -832,9 +841,7 @@ public class SociosFVABM extends JPanel {
     }//GEN-LAST:event_cuilFieldFocusGained
 
     public java.util.Collection getListaSocios() {
-
         return query.getResultList();
-
     }
 
     public SociosFlorVida getSocio(int id) {
@@ -881,7 +888,6 @@ public class SociosFVABM extends JPanel {
             ele = masterTable.getValueAt(i, 0).toString().trim();
             ele1 = masterTable.getValueAt(i, 1).toString().trim();
             if (ele.equals(apeYnom[0].trim()) && ele1.equals(apeYnom[1].trim())) {
-
                 masterTable.changeSelection(i, 3, false, false);
                 jBFV.setEnabled(true);
                 jBVerCuotas.setEnabled(true);
@@ -898,6 +904,12 @@ public class SociosFVABM extends JPanel {
             JOptionPane.showMessageDialog(null, "El socio ingresado no es válido!");
             jTFBusqueda.setText("");
         }
+    }
+
+    private List<FlorVida> getFloresVidaByAdherente(int idAdherente) {
+        query = entityManager.createQuery("SELECT fv FROM FlorVida fv, RelacSocDifuntos rsd WHERE fv.idFV=rsd.idFV AND rsd.idSocioFV= :idSocio");
+        query.setParameter("idSocio", idAdherente);
+        return query.getResultList();
     }
 
     private void setComboSexo() {
