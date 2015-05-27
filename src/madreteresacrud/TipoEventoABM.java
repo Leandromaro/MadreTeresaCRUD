@@ -217,9 +217,7 @@ public class TipoEventoABM extends JPanel {
     }//GEN-LAST:event_newButtonActionPerformed
 
     private void saveButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveButtonActionPerformed
-        if(descripcionField.getText().isEmpty()){
-            JOptionPane.showMessageDialog(null, "No se puede almacenar registros con valores en blanco");
-        }else{
+        if(!descripcionField.getText().isEmpty()){
             try {
                 entityManager.getTransaction().commit();
                 entityManager.getTransaction().begin();
@@ -244,7 +242,10 @@ public class TipoEventoABM extends JPanel {
             list.addAll(data);
         
         refrescarForm();
-        }    
+        }else{
+            JOptionPane.showMessageDialog(null, "No se puede almacenar registros con valores en blanco");
+        }
+            
     }//GEN-LAST:event_saveButtonActionPerformed
 
     
