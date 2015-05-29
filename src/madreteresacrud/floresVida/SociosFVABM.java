@@ -32,9 +32,9 @@ public class SociosFVABM extends JPanel {
     public SociosFVABM() {
         initComponents();
         //Ocultamos el id de socio
-        masterTable.getColumnModel().getColumn(6).setMaxWidth(0);
-        masterTable.getColumnModel().getColumn(6).setMinWidth(0);
-        masterTable.getColumnModel().getColumn(6).setPreferredWidth(0);
+//        masterTable.getColumnModel().getColumn(6).setMaxWidth(0);
+//        masterTable.getColumnModel().getColumn(6).setMinWidth(0);
+//        masterTable.getColumnModel().getColumn(6).setPreferredWidth(0);
         //ocultamos la localidad
         masterTable.getColumnModel().getColumn(8).setMaxWidth(0);
         masterTable.getColumnModel().getColumn(8).setMinWidth(0);
@@ -567,15 +567,15 @@ public class SociosFVABM extends JPanel {
 
     private void deleteButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteButtonActionPerformed
         List<FlorVida> floresVida = getFloresVidaByAdherente(Integer.valueOf(masterTable.getValueAt(masterTable.getSelectedRow(), 6).toString()));
-        String fv="";
-        if(floresVida.size()>0){
-            fv="\nTiene asignado las siguientes flores de vida:\n";
+        String fv = "";
+        if (floresVida.size() > 0) {
+            fv = "\nTiene asignado las siguientes flores de vida:\n";
             for (FlorVida florVida : floresVida) {
-                fv+="*"+florVida.getApellido()+", "+florVida.getNombre()+"\n";
-            }            
+                fv += "*" + florVida.getApellido() + ", " + florVida.getNombre() + "\n";
+            }
         }
-        
-        int reply = JOptionPane.showConfirmDialog(null, "¿Está seguro de eliminar el Adherente?"+fv, "Eliminación de Registro.", JOptionPane.YES_NO_OPTION);
+
+        int reply = JOptionPane.showConfirmDialog(null, "¿Está seguro de eliminar el Adherente?" + fv, "Eliminación de Registro.", JOptionPane.YES_NO_OPTION);
         if (reply == JOptionPane.YES_OPTION) {
 
             int[] selected = masterTable.getSelectedRows();
@@ -721,8 +721,8 @@ public class SociosFVABM extends JPanel {
         masterTable.setEnabled(true);
         entityManager.getTransaction().rollback();
         entityManager.getTransaction().begin();
-        java.util.List<SociosFlorVida> data = query.getResultList();
-        for (SociosFlorVida entity : data) {
+        java.util.Collection data = query.getResultList();
+        for (Object entity : data) {
             entityManager.refresh(entity);
         }
         list.clear();
@@ -846,8 +846,8 @@ public class SociosFVABM extends JPanel {
 
     public SociosFlorVida getSocio(int id) {
         String sql = "SELECT s FROM SociosFlorVida s WHERE s.idSocio=" + id;
-        query = java.beans.Beans.isDesignTime() ? null : entityManager.createQuery(sql);
-        java.util.Collection lista = query.getResultList();
+        javax.persistence.Query query1 = java.beans.Beans.isDesignTime() ? null : entityManager.createQuery(sql);
+        java.util.Collection lista = query1.getResultList();
 
         SociosFlorVida s = new SociosFlorVida();
 
@@ -907,9 +907,9 @@ public class SociosFVABM extends JPanel {
     }
 
     private List<FlorVida> getFloresVidaByAdherente(int idAdherente) {
-        query = entityManager.createQuery("SELECT fv FROM FlorVida fv, RelacSocDifuntos rsd WHERE fv.idFV=rsd.idFV AND rsd.idSocioFV= :idSocio");
-        query.setParameter("idSocio", idAdherente);
-        return query.getResultList();
+        javax.persistence.Query query1 = entityManager.createQuery("SELECT fv FROM FlorVida fv, RelacSocDifuntos rsd WHERE fv.idFV=rsd.idFV AND rsd.idSocioFV= :idSocio");
+        query1.setParameter("idSocio", idAdherente);
+        return query1.getResultList();
     }
 
     private void setComboSexo() {
