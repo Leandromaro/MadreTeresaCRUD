@@ -11,6 +11,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 import javax.persistence.RollbackException;
 import javax.swing.JFrame;
@@ -39,6 +40,10 @@ public class EventosABM extends JPanel {
         if (!Beans.isDesignTime()) {
             entityManager.getTransaction().begin();
         }
+
+        Date hoy = new Date();
+        fechaDesde.setDate(hoy);
+        fechaHasta.setDate(hoy);
         //masterTable.setDefaultRenderer(Object.class, new RendererTablaEventos(4));
     }
 
@@ -75,6 +80,12 @@ public class EventosABM extends JPanel {
         masterTable = new javax.swing.JTable();
         deleteButton = new javax.swing.JButton();
         newButton = new javax.swing.JButton();
+        fechaDesde = new com.toedter.calendar.JDateChooser();
+        jLabel1 = new javax.swing.JLabel();
+        jLabel2 = new javax.swing.JLabel();
+        fechaHasta = new com.toedter.calendar.JDateChooser();
+        Buscar = new javax.swing.JButton();
+        BuscarTodos = new javax.swing.JButton();
 
         FormListener formListener = new FormListener();
 
@@ -189,7 +200,7 @@ public class EventosABM extends JPanel {
         jPanelFormLayout.setVerticalGroup(
             jPanelFormLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanelFormLayout.createSequentialGroup()
-                .addContainerGap(20, Short.MAX_VALUE)
+                .addContainerGap(26, Short.MAX_VALUE)
                 .addGroup(jPanelFormLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanelFormLayout.createSequentialGroup()
                         .addGroup(jPanelFormLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -271,35 +282,72 @@ public class EventosABM extends JPanel {
         newButton.setText("Nuevo Evento");
         newButton.addActionListener(formListener);
 
+        fechaDesde.setDateFormatString("dd-MM-yyyy");
+
+        jLabel1.setText("Fecha Desde:");
+
+        jLabel2.setText("Hasta:");
+
+        fechaHasta.setDateFormatString("dd-MM-yyyy");
+
+        Buscar.setText("Buscar");
+        Buscar.addActionListener(formListener);
+
+        BuscarTodos.setText("Buscar Todos");
+        BuscarTodos.addActionListener(formListener);
+
         javax.swing.GroupLayout jPanelTablaLayout = new javax.swing.GroupLayout(jPanelTabla);
         jPanelTabla.setLayout(jPanelTablaLayout);
         jPanelTablaLayout.setHorizontalGroup(
             jPanelTablaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanelTablaLayout.createSequentialGroup()
-                .addGap(160, 160, 160)
-                .addComponent(newButton)
+                .addGroup(jPanelTablaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanelTablaLayout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(masterScrollPane, javax.swing.GroupLayout.DEFAULT_SIZE, 838, Short.MAX_VALUE))
+                    .addGroup(jPanelTablaLayout.createSequentialGroup()
+                        .addGap(160, 160, 160)
+                        .addComponent(newButton)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(deleteButton)
+                        .addGap(0, 0, Short.MAX_VALUE)))
+                .addContainerGap())
+            .addGroup(jPanelTablaLayout.createSequentialGroup()
+                .addGap(20, 20, 20)
+                .addComponent(jLabel1)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(deleteButton)
-                .addContainerGap(476, Short.MAX_VALUE))
-            .addGroup(jPanelTablaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(jPanelTablaLayout.createSequentialGroup()
-                    .addContainerGap()
-                    .addComponent(masterScrollPane, javax.swing.GroupLayout.DEFAULT_SIZE, 597, Short.MAX_VALUE)
-                    .addContainerGap()))
+                .addComponent(fechaDesde, javax.swing.GroupLayout.PREFERRED_SIZE, 166, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(51, 51, 51)
+                .addComponent(jLabel2)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(fechaHasta, javax.swing.GroupLayout.PREFERRED_SIZE, 166, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(Buscar)
+                .addGap(18, 18, 18)
+                .addComponent(BuscarTodos)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanelTablaLayout.setVerticalGroup(
             jPanelTablaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanelTablaLayout.createSequentialGroup()
-                .addContainerGap(218, Short.MAX_VALUE)
+                .addContainerGap()
+                .addGroup(jPanelTablaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(jPanelTablaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(Buscar)
+                        .addComponent(BuscarTodos))
+                    .addGroup(jPanelTablaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                        .addComponent(jLabel1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(fechaDesde, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addGroup(jPanelTablaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                        .addComponent(jLabel2, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(fechaHasta, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                .addGap(18, 18, 18)
+                .addComponent(masterScrollPane, javax.swing.GroupLayout.DEFAULT_SIZE, 236, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanelTablaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(deleteButton)
                     .addComponent(newButton))
                 .addContainerGap())
-            .addGroup(jPanelTablaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(jPanelTablaLayout.createSequentialGroup()
-                    .addContainerGap()
-                    .addComponent(masterScrollPane, javax.swing.GroupLayout.PREFERRED_SIZE, 198, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addContainerGap(43, Short.MAX_VALUE)))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
@@ -318,7 +366,7 @@ public class EventosABM extends JPanel {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jPanelTabla, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGap(18, 18, 18)
                 .addComponent(jPanelForm, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGap(16, 16, 16))
         );
@@ -345,6 +393,12 @@ public class EventosABM extends JPanel {
             }
             else if (evt.getSource() == newButton) {
                 EventosABM.this.newButtonActionPerformed(evt);
+            }
+            else if (evt.getSource() == Buscar) {
+                EventosABM.this.BuscarActionPerformed(evt);
+            }
+            else if (evt.getSource() == BuscarTodos) {
+                EventosABM.this.BuscarTodosActionPerformed(evt);
             }
         }
 
@@ -542,6 +596,38 @@ public class EventosABM extends JPanel {
         new Calendario((JFrame) SwingUtilities.getWindowAncestor(this), true, fechaField).setVisible(true);
     }//GEN-LAST:event_fechaFieldMouseClicked
 
+    private void BuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BuscarActionPerformed
+        if (fechaDesde.getDate().before(fechaHasta.getDate()) || fechaDesde.getDate().equals(fechaHasta.getDate())) {
+            SimpleDateFormat formatoDelTexto = new SimpleDateFormat(fechaDesde.getDateFormatString());
+            String fDesde = formatoDelTexto.format(fechaDesde.getDate());
+            String fHasta = formatoDelTexto.format(fechaHasta.getDate());
+            String[] fd = fDesde.split("-");
+            String[] fh = fHasta.split("-");
+            javax.persistence.Query query1 = java.beans.Beans.isDesignTime() ? null : entityManager.createQuery("SELECT e FROM Eventos e WHERE e.fecha BETWEEN '"
+                    + fd[2] + "-" + fd[1] + "-" + fd[0] + "' AND '"
+                    + fh[2] + "-" + fh[1] + "-" + fh[0]+"' ORDER BY e.fecha DESC" );
+            java.util.Collection data = query1.getResultList();
+            for (Object entity : data) {
+                entityManager.refresh(entity);
+            }
+            list.clear();
+            list.addAll(data);
+
+        } else {
+            JOptionPane.showMessageDialog(null, "El periodo de fecha ingresado no es válido.");
+        }
+
+    }//GEN-LAST:event_BuscarActionPerformed
+
+    private void BuscarTodosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BuscarTodosActionPerformed
+        java.util.Collection data = query.getResultList();
+        for (Object entity : data) {
+            entityManager.refresh(entity);
+        }
+        list.clear();
+        list.addAll(data);
+    }//GEN-LAST:event_BuscarTodosActionPerformed
+
     Converter dateConverter = new Converter<java.util.Date, String>() {
         @Override
         public String convertForward(java.util.Date value) {
@@ -562,12 +648,18 @@ public class EventosABM extends JPanel {
         }
     };
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton Buscar;
+    private javax.swing.JButton BuscarTodos;
     private javax.swing.JButton deleteButton;
     private javax.persistence.EntityManager entityManager;
+    private com.toedter.calendar.JDateChooser fechaDesde;
     private javax.swing.JTextField fechaField;
+    private com.toedter.calendar.JDateChooser fechaHasta;
     private javax.swing.JLabel fechaLabel;
     private javax.swing.JButton jButtonCalendar;
     private javax.swing.JComboBox jComboBoxEvento;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
     private javax.swing.JPanel jPanelForm;
     private javax.swing.JPanel jPanelTabla;
     private java.util.List<madreteresacrud.Eventos> list;

@@ -32,9 +32,9 @@ public class SociosFVABM extends JPanel {
     public SociosFVABM() {
         initComponents();
         //Ocultamos el id de socio
-//        masterTable.getColumnModel().getColumn(6).setMaxWidth(0);
-//        masterTable.getColumnModel().getColumn(6).setMinWidth(0);
-//        masterTable.getColumnModel().getColumn(6).setPreferredWidth(0);
+        masterTable.getColumnModel().getColumn(6).setMaxWidth(0);
+        masterTable.getColumnModel().getColumn(6).setMinWidth(0);
+        masterTable.getColumnModel().getColumn(6).setPreferredWidth(0);
         //ocultamos la localidad
         masterTable.getColumnModel().getColumn(8).setMaxWidth(0);
         masterTable.getColumnModel().getColumn(8).setMinWidth(0);

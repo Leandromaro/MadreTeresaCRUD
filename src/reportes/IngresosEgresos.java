@@ -458,7 +458,7 @@ public class IngresosEgresos extends javax.swing.JFrame {
                 Logger.getLogger(IngresosEgresos.class.getName()).log(Level.SEVERE, null, ex);
             }
         } else {
-            JOptionPane.showMessageDialog(null, "El periodo de fecha ingresado no es válido");
+            JOptionPane.showMessageDialog(null, "El periodo de fecha ingresado no es válido.");
         }
     }//GEN-LAST:event_jBGenReportIngresosActionPerformed
 
