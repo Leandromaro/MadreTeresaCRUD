@@ -500,6 +500,7 @@ public class FlorVidaABM extends JPanel {
         list.add(f);
         int row = list.size() - 1;        
 //        masterTable.setRowSelectionInterval(row, row);
+        //comentar la linea y agregar una columna que no este en blanco
         //Valida la selección de fila en la tabla
         UtilsStatics.validarSeleccion(masterTable, row, 1);
         masterTable.scrollRectToVisible(masterTable.getCellRect(row, 0, true));

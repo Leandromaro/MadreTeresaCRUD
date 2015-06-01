@@ -28,6 +28,7 @@ import utilidades.Localidades;
  * @author francis
  */
 public class SociosFVABM extends JPanel {
+    private boolean banderaNoSocio = false;
 
     public SociosFVABM() {
         initComponents();
@@ -46,13 +47,6 @@ public class SociosFVABM extends JPanel {
         setBusqueda();
         setComboSexo();
         setComboLocalidades();
-//        dniField.setEnabled(false);
-//        jCBSexo.setEnabled(false);
-//        celularField.setEnabled(false);
-//        emailField.setEnabled(false);
-//        jCBLocalididad.setEnabled(false);
-
-//        refreshButton.setVisible(false);
     }
 
     /**
@@ -566,33 +560,36 @@ public class SociosFVABM extends JPanel {
 
 
     private void deleteButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteButtonActionPerformed
-        List<FlorVida> floresVida = getFloresVidaByAdherente(Integer.valueOf(masterTable.getValueAt(masterTable.getSelectedRow(), 6).toString()));
-        String fv = "";
-        if (floresVida.size() > 0) {
-            fv = "\nTiene asignado las siguientes flores de vida:\n";
-            for (FlorVida florVida : floresVida) {
-                fv += "*" + florVida.getApellido() + ", " + florVida.getNombre() + "\n";
+        if(!banderaNoSocio && masterTable.getValueAt(masterTable.getSelectedRow(),6).toString().isEmpty()){
+            List<FlorVida> floresVida = getFloresVidaByAdherente(Integer.valueOf(masterTable.getValueAt(masterTable.getSelectedRow(), 6).toString()));
+            String fv = "";
+            if (floresVida.size() > 0) {
+                fv = "\nTiene asignado las siguientes flores de vida:\n";
+                for (FlorVida florVida : floresVida) {
+                    fv += "*" + florVida.getApellido() + ", " + florVida.getNombre() + "\n";
+                }
+            }
+
+            int reply = JOptionPane.showConfirmDialog(null, "¿Está seguro de eliminar el Adherente?" + fv, "Eliminación de Registro.", JOptionPane.YES_NO_OPTION);
+            if (reply == JOptionPane.YES_OPTION) {
+
+                int[] selected = masterTable.getSelectedRows();
+                List<madreteresacrud.floresVida.SociosFlorVida> toRemove = new ArrayList<madreteresacrud.floresVida.SociosFlorVida>(selected.length);
+                for (int idx = 0; idx < selected.length; idx++) {
+                    madreteresacrud.floresVida.SociosFlorVida sociosToRemove = list.get(masterTable.convertRowIndexToModel(selected[idx]));
+                    toRemove.add(sociosToRemove);
+                    entityManager.remove(sociosToRemove);
+                }
+                try {
+                    entityManager.getTransaction().commit();
+                    entityManager.getTransaction().begin();
+                } catch (Exception e) {
+                }
+                list.removeAll(toRemove);
+
             }
         }
-
-        int reply = JOptionPane.showConfirmDialog(null, "¿Está seguro de eliminar el Adherente?" + fv, "Eliminación de Registro.", JOptionPane.YES_NO_OPTION);
-        if (reply == JOptionPane.YES_OPTION) {
-
-            int[] selected = masterTable.getSelectedRows();
-            List<madreteresacrud.floresVida.SociosFlorVida> toRemove = new ArrayList<madreteresacrud.floresVida.SociosFlorVida>(selected.length);
-            for (int idx = 0; idx < selected.length; idx++) {
-                madreteresacrud.floresVida.SociosFlorVida s = list.get(masterTable.convertRowIndexToModel(selected[idx]));
-                toRemove.add(s);
-                entityManager.remove(s);
-            }
-            try {
-                entityManager.getTransaction().commit();
-                entityManager.getTransaction().begin();
-            } catch (Exception e) {
-            }
-            list.removeAll(toRemove);
-            refrescarForm();
-        }
+        refrescarForm();
     }//GEN-LAST:event_deleteButtonActionPerformed
 
     private void newButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_newButtonActionPerformed
@@ -609,8 +606,11 @@ public class SociosFVABM extends JPanel {
         int ax = JOptionPane.showConfirmDialog(this, "¿El adherente a ingresar es socio?", null, JOptionPane.YES_NO_OPTION);
         if (ax == JOptionPane.YES_OPTION) {
             new BuscarSocio((JFrame) SwingUtilities.getWindowAncestor(this), true, this).setVisible(true);
+            banderaNoSocio=false;
         }
-
+        else{
+            banderaNoSocio = true;
+        }
 
     }//GEN-LAST:event_newButtonActionPerformed
 
@@ -619,7 +619,7 @@ public class SociosFVABM extends JPanel {
         saveButton.setEnabled(estado);
         deleteButton.setEnabled(estado);
         newButton.setEnabled(!estado);
-        deleteButton.setEnabled(estado);
+        deleteButton.setEnabled(!estado);
         jBFV.setEnabled(estado);
         jBbuscar.setEnabled(!estado);
         jBVerCuotas.setEnabled(estado);
@@ -637,20 +637,19 @@ public class SociosFVABM extends JPanel {
 
     private void jBFVActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBFVActionPerformed
         int selected = masterTable.getSelectedRow();
-        int id = Integer.parseInt(masterTable.getValueAt(selected, 6).toString());
-        FlorVidaSocio fv = new FlorVidaSocio(id);
-        JDialog florv = new JDialog((JFrame) SwingUtilities.getWindowAncestor(this), true);
-        florv.setTitle("Flores de vida del adherente " + masterTable.getValueAt(selected, 0).toString() + " " + masterTable.getValueAt(selected, 1).toString());
-        florv.setContentPane(fv);
-        florv.pack();
-        florv.setLocationRelativeTo(null);
-        florv.setVisible(true);
-//        JFrame frame = new JFrame("Flores de vida del socio "+masterTable.getValueAt(selected, 0).toString()+" "+masterTable.getValueAt(selected, 1).toString());
-//        frame.setContentPane(fv);
-//        frame.pack();
-//        frame.setVisible(true);
-//        frame.setLocationRelativeTo(null);
-
+        if(banderaNoSocio){
+            JOptionPane.showMessageDialog(null, "El adherente es nuevo y no tiene flores de vida asociadas");
+        }else{
+            Integer.parseInt(masterTable.getValueAt(selected, 6).toString());
+            int id = Integer.parseInt(masterTable.getValueAt(selected, 6).toString());
+            FlorVidaSocio fv = new FlorVidaSocio(id);
+            JDialog florv = new JDialog((JFrame) SwingUtilities.getWindowAncestor(this), true);
+            florv.setTitle("Flores de vida del adherente " + masterTable.getValueAt(selected, 0).toString() + " " + masterTable.getValueAt(selected, 1).toString());
+            florv.setContentPane(fv);
+            florv.pack();
+            florv.setLocationRelativeTo(null);
+            florv.setVisible(true);
+        }
     }//GEN-LAST:event_jBFVActionPerformed
 
     private void masterTableMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_masterTableMouseClicked
@@ -668,12 +667,6 @@ public class SociosFVABM extends JPanel {
         cuotas.pack();
         cuotas.setLocationRelativeTo(null);
         cuotas.setVisible(true);
-
-//        frame.setContentPane(csabm);
-//        frame.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
-//        frame.pack();
-//        frame.setVisible(true);
-//        frame.setLocationRelativeTo(null);
 
     }//GEN-LAST:event_jBVerCuotasActionPerformed
 
@@ -713,6 +706,7 @@ public class SociosFVABM extends JPanel {
 
             }
             refrescarForm();
+            deleteButton.setEnabled(false);
             setBusqueda();
         }
     }//GEN-LAST:event_saveButtonActionPerformed
