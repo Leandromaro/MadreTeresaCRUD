@@ -560,6 +560,7 @@ public class EventosABM extends JPanel {
         jComboBoxEvento.setEnabled(true);
         setEnabledBotones(true);
         activarTextos(true);
+        setFields();
     }//GEN-LAST:event_masterTableMouseClicked
 
     private void fechaFieldMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_fechaFieldMouseClicked
@@ -638,6 +639,20 @@ public class EventosABM extends JPanel {
             registros[6] = e.getIdEvento().toString();
             model.addRow(registros);
         }
+    }
+
+    private void setFields() {
+        int filaMod = masterTable.getSelectedRow();
+        if (filaMod == -1) {
+            JOptionPane.showMessageDialog(null, "Seleccione alguna fila.");
+        } else {
+            fechaField.setText(masterTable.getValueAt(filaMod, 0).toString());
+            montoPublicField.setText(masterTable.getValueAt(filaMod, 1).toString());
+            montoRifasField.setText(masterTable.getValueAt(filaMod, 2).toString());
+            montoTarjetasField.setText(masterTable.getValueAt(filaMod, 3).toString());
+            jComboBoxEvento.setSelectedItem(masterTable.getValueAt(filaMod, 5));
+        }
+
     }
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton Buscar;
