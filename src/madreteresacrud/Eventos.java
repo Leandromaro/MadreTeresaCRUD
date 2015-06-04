@@ -15,6 +15,8 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
@@ -37,6 +39,7 @@ import javax.persistence.Transient;
     @NamedQuery(name = "Eventos.findByMontoRifas", query = "SELECT e FROM Eventos e WHERE e.montoRifas = :montoRifas"),
     @NamedQuery(name = "Eventos.findByMontoTarjetas", query = "SELECT e FROM Eventos e WHERE e.montoTarjetas = :montoTarjetas")})
 public class Eventos implements Serializable {
+
     @Transient
     private PropertyChangeSupport changeSupport = new PropertyChangeSupport(this);
     private static final long serialVersionUID = 1L;
@@ -45,8 +48,10 @@ public class Eventos implements Serializable {
     @Basic(optional = false)
     @Column(name = "idEvento")
     private Integer idEvento;
-    @Column(name = "motivo")
-    private String motivo;
+//    @Column(name = "motivo")
+    @ManyToOne(optional = false)
+    @JoinColumn(name = "motivo", referencedColumnName = "idTipoEvento")
+    private TipoEvento motivo;
     @Basic(optional = false)
     @Column(name = "fecha")
     @Temporal(TemporalType.DATE)
@@ -81,12 +86,12 @@ public class Eventos implements Serializable {
         changeSupport.firePropertyChange("idEvento", oldIdEvento, idEvento);
     }
 
-    public String getMotivo() {
+    public TipoEvento getMotivo() {
         return motivo;
     }
 
-    public void setMotivo(String motivo) {
-        String oldMotivo = this.motivo;
+    public void setMotivo(TipoEvento motivo) {
+        TipoEvento oldMotivo = this.motivo;
         this.motivo = motivo;
         changeSupport.firePropertyChange("motivo", oldMotivo, motivo);
     }
@@ -163,5 +168,5 @@ public class Eventos implements Serializable {
     public void removePropertyChangeListener(PropertyChangeListener listener) {
         changeSupport.removePropertyChangeListener(listener);
     }
-    
+
 }

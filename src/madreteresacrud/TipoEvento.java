@@ -24,15 +24,15 @@ import javax.xml.bind.annotation.XmlRootElement;
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "TipoEvento.findAll", query = "SELECT t FROM TipoEvento t"),
-    @NamedQuery(name = "TipoEvento.findByIdtipoEvento", query = "SELECT t FROM TipoEvento t WHERE t.idtipoEvento = :idtipoEvento"),
+    @NamedQuery(name = "TipoEvento.findByIdtipoEvento", query = "SELECT t FROM TipoEvento t WHERE t.idTipoEvento = :idTipoEvento"),
     @NamedQuery(name = "TipoEvento.findByDescripcion", query = "SELECT t FROM TipoEvento t WHERE t.descripcion = :descripcion")})
 public class TipoEvento implements Serializable {
 
     private static final long serialVersionUID = 1L;
     @Id
     @Basic(optional = false)
-    @Column(name = "idtipoEvento")
-    private Integer idtipoEvento;
+    @Column(name = "idTipoEvento")
+    private Integer idTipoEvento;
     @Column(name = "descripcion")
     private String descripcion;
 
@@ -40,15 +40,15 @@ public class TipoEvento implements Serializable {
     }
 
     public TipoEvento(Integer idtipoEvento) {
-        this.idtipoEvento = idtipoEvento;
+        this.idTipoEvento = idtipoEvento;
     }
 
     public Integer getIdtipoEvento() {
-        return idtipoEvento;
+        return idTipoEvento;
     }
 
     public void setIdtipoEvento(Integer idtipoEvento) {
-        this.idtipoEvento = idtipoEvento;
+        this.idTipoEvento = idtipoEvento;
     }
 
     public String getDescripcion() {
@@ -62,7 +62,7 @@ public class TipoEvento implements Serializable {
     @Override
     public int hashCode() {
         int hash = 0;
-        hash += (idtipoEvento != null ? idtipoEvento.hashCode() : 0);
+        hash += (idTipoEvento != null ? idTipoEvento.hashCode() : 0);
         return hash;
     }
 
@@ -73,7 +73,7 @@ public class TipoEvento implements Serializable {
             return false;
         }
         TipoEvento other = (TipoEvento) object;
-        if ((this.idtipoEvento == null && other.idtipoEvento != null) || (this.idtipoEvento != null && !this.idtipoEvento.equals(other.idtipoEvento))) {
+        if ((this.idTipoEvento == null && other.idTipoEvento != null) || (this.idTipoEvento != null && !this.idTipoEvento.equals(other.idTipoEvento))) {
             return false;
         }
         return true;
@@ -81,7 +81,7 @@ public class TipoEvento implements Serializable {
 
     @Override
     public String toString() {
-        return "madreteresacrud.TipoEvento[ idtipoEvento=" + idtipoEvento + " ]";
+        return descripcion;
     }
 
 }
