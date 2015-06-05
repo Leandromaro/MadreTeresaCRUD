@@ -6,6 +6,7 @@ package madreteresacrud;
 
 import eao.EventosJpaController;
 import eao.TipoEventoJpaController;
+import eao.exceptions.NonexistentEntityException;
 import java.awt.Toolkit;
 import java.beans.Beans;
 import java.math.BigDecimal;
@@ -418,20 +419,26 @@ public class EventosABM extends JPanel {
     private void deleteButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteButtonActionPerformed
         int reply = JOptionPane.showConfirmDialog(null, "¿Está seguro de eliminar el registro?", "Eliminacion de Registro", JOptionPane.YES_NO_OPTION);
         if (reply == JOptionPane.YES_OPTION) {
-            int[] selected = masterTable.getSelectedRows();
-            List<madreteresacrud.Eventos> toRemove = new ArrayList<madreteresacrud.Eventos>(selected.length);
-            for (int idx = 0; idx < selected.length; idx++) {
-                madreteresacrud.Eventos e = list.get(masterTable.convertRowIndexToModel(selected[idx]));
-                toRemove.add(e);
-                entityManager.remove(e);
-            }
+//            int[] selected = masterTable.getSelectedRows();
+//            List<madreteresacrud.Eventos> toRemove = new ArrayList<madreteresacrud.Eventos>(selected.length);
+//            for (int idx = 0; idx < selected.length; idx++) {
+//                madreteresacrud.Eventos e = list.get(masterTable.convertRowIndexToModel(selected[idx]));
+//                toRemove.add(e);
+//                entityManager.remove(e);
+//            }
+//            try {
+//                entityManager.getTransaction().commit();
+//                entityManager.getTransaction().begin();
+//                JOptionPane.showMessageDialog(null, "Registro Eliminado");
+//            } catch (Exception e) {
+//            }
+//            list.removeAll(toRemove);
+            int fila = masterTable.getSelectedRow();
             try {
-                entityManager.getTransaction().commit();
-                entityManager.getTransaction().begin();
-                JOptionPane.showMessageDialog(null, "Registro Eliminado");
-            } catch (Exception e) {
+                eventosJpa.destroy(Integer.valueOf(masterTable.getValueAt(fila, 6).toString()));
+            } catch (NonexistentEntityException ex) {
+                Logger.getLogger(EventosABM.class.getName()).log(Level.SEVERE, null, ex);
             }
-            list.removeAll(toRemove);
             refrescarForm();
         }
     }//GEN-LAST:event_deleteButtonActionPerformed
@@ -495,11 +502,11 @@ public class EventosABM extends JPanel {
 //                list.clear();
 //                list.addAll(merged);
 //            }
-            int filaMod = masterTable.getSelectedRow();
+            int fila = masterTable.getSelectedRow();
             DateFormat df = new SimpleDateFormat("dd/MM/yyyy");
-            if (filaMod != -1) {
+            if (fila != -1) {
 
-                Eventos e = new Eventos(Integer.valueOf(masterTable.getValueAt(filaMod, 6).toString()));
+                Eventos e = new Eventos(Integer.valueOf(masterTable.getValueAt(fila, 6).toString()));
                 try {
                     e.setFecha(df.parse(fechaField.getText()));
                 } catch (ParseException ex) {
