@@ -29,10 +29,12 @@ import javax.xml.bind.annotation.XmlRootElement;
 public class TipoEvento implements Serializable {
 
     private static final long serialVersionUID = 1L;
+
     @Id
     @Basic(optional = false)
-    @Column(name = "idTipoEvento")
+    @Column(name = "idtipoEvento")
     private Integer idTipoEvento;
+
     @Column(name = "descripcion")
     private String descripcion;
 
@@ -43,11 +45,11 @@ public class TipoEvento implements Serializable {
         this.idTipoEvento = idtipoEvento;
     }
 
-    public Integer getIdtipoEvento() {
+    public Integer getIdTipoEvento() {
         return idTipoEvento;
     }
 
-    public void setIdtipoEvento(Integer idtipoEvento) {
+    public void setIdTipoEvento(Integer idtipoEvento) {
         this.idTipoEvento = idtipoEvento;
     }
 
