@@ -44,7 +44,7 @@ public class EventosABM extends JPanel {
         createModel();
         eventosJpa = new EventosJpaController(createEntityManagerFactory("madreTeresaCRUDPU"));
         tipoEventoJpa = new TipoEventoJpaController(createEntityManagerFactory("madreTeresaCRUDPU"));
-        setModel();
+        setModel(eventosJpa.findEventosEntities());
         initComponents();
         TipoEventoABM t = new TipoEventoABM();
         List<TipoEvento> tipoEvento = t.getTipoEvento();
@@ -474,7 +474,7 @@ public class EventosABM extends JPanel {
 //        }
 //        list.clear();
 //        list.addAll(data);
-        setModel();
+        setModel(eventosJpa.findEventosEntities());
         setEnabledBotones(false);
         activarTextos(false);
     }
@@ -536,7 +536,7 @@ public class EventosABM extends JPanel {
 
                 eventosJpa.create(e);
             }
-            setModel();
+            setModel(eventosJpa.findEventosEntities());
             refrescarForm();
         }
 
@@ -615,16 +615,17 @@ public class EventosABM extends JPanel {
             String fHasta = formatoDelTexto.format(fechaHasta.getDate());
             String[] fd = fDesde.split("-");
             String[] fh = fHasta.split("-");
-            javax.persistence.Query query1 = java.beans.Beans.isDesignTime() ? null : entityManager.createQuery("SELECT e FROM Eventos e WHERE e.fecha BETWEEN '"
-                    + fd[2] + "-" + fd[1] + "-" + fd[0] + "' AND '"
-                    + fh[2] + "-" + fh[1] + "-" + fh[0] + "' ORDER BY e.fecha DESC");
-            java.util.Collection data = query1.getResultList();
-            for (Object entity : data) {
-                entityManager.refresh(entity);
-            }
-            list.clear();
-            list.addAll(data);
-
+            setModel(eventosJpa.findByRangeDate( fd[2] + "-" + fd[1] + "-" + fd[0], fh[2] + "-" + fh[1] + "-" + fh[0]));
+//            javax.persistence.Query query1 = java.beans.Beans.isDesignTime() ? null : entityManager.createQuery("SELECT e FROM Eventos e WHERE e.fecha BETWEEN '"
+//                    + fd[2] + "-" + fd[1] + "-" + fd[0] + "' AND '"
+//                    + fh[2] + "-" + fh[1] + "-" + fh[0] + "' ORDER BY e.fecha DESC");
+//            java.util.Collection data = query1.getResultList();
+//            for (Object entity : data) {
+//                entityManager.refresh(entity);
+//            }
+//            list.clear();
+//            list.addAll(data);
+            activarTextos(false);
         } else {
             JOptionPane.showMessageDialog(null, "El periodo de fecha ingresado no es válido.");
         }
@@ -632,12 +633,15 @@ public class EventosABM extends JPanel {
     }//GEN-LAST:event_BuscarActionPerformed
 
     private void BuscarTodosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BuscarTodosActionPerformed
-        java.util.Collection data = query.getResultList();
-        for (Object entity : data) {
-            entityManager.refresh(entity);
-        }
-        list.clear();
-        list.addAll(data);
+//        java.util.Collection data = query.getResultList();
+//        for (Object entity : data) {
+//            entityManager.refresh(entity);
+//        }
+//        list.clear();
+//        list.addAll(data);
+        setModel(eventosJpa.findEventosEntities());
+        activarTextos(false);
+        
     }//GEN-LAST:event_BuscarTodosActionPerformed
 
     Converter dateConverter = new Converter<java.util.Date, String>() {
@@ -665,10 +669,9 @@ public class EventosABM extends JPanel {
         model = new DefaultTableModel(null, titulos);
     }
 
-    private void setModel() {
+    private void setModel(List<Eventos> eventos) {
         model.getDataVector().removeAllElements();
-        SimpleDateFormat formatofecha = new SimpleDateFormat("dd/MM/YYYY");
-        List<Eventos> eventos = eventosJpa.findEventosEntities();
+        SimpleDateFormat formatofecha = new SimpleDateFormat("dd/MM/YYYY");        
         String[] registros = new String[7];
         for (Eventos e : eventos) {
             registros[0] = formatofecha.format(e.getFecha());

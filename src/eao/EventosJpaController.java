@@ -127,5 +127,14 @@ public class EventosJpaController implements Serializable {
             em.close();
         }
     }
-
+    
+    public List<Eventos> findByRangeDate(String fDesde, String fHasta){
+         EntityManager em = getEntityManager();
+        try {
+            Query q = em.createQuery("select object(o) from Eventos as o WHERE o.fecha BETWEEN '"+fDesde+"' AND '"+fHasta+"' order by o.fecha DESC");            
+            return q.getResultList();
+        } finally {
+            em.close();
+        }
+    }
 }
