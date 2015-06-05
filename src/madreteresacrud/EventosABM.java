@@ -27,6 +27,7 @@ import javax.swing.SwingUtilities;
 import javax.swing.table.DefaultTableModel;
 import org.jdesktop.beansbinding.Converter;
 import utilidades.Calendario;
+import utilidades.UtilsStatics;
 
 /**
  *
@@ -117,20 +118,13 @@ public class EventosABM extends JPanel {
 
         fechaField.setEditable(false);
 
-        org.jdesktop.beansbinding.Binding binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, masterTable, org.jdesktop.beansbinding.ELProperty.create("${selectedElement.fecha}"), fechaField, org.jdesktop.beansbinding.BeanProperty.create("text"));
-        binding.setSourceUnreadableValue("null");
-        binding.setConverter(dateConverter);
-        bindingGroup.addBinding(binding);
-        binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ, masterTable, org.jdesktop.beansbinding.ELProperty.create("${selectedElement != null}"), fechaField, org.jdesktop.beansbinding.BeanProperty.create("enabled"));
+        org.jdesktop.beansbinding.Binding binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ, masterTable, org.jdesktop.beansbinding.ELProperty.create("${selectedElement != null}"), fechaField, org.jdesktop.beansbinding.BeanProperty.create("enabled"));
         bindingGroup.addBinding(binding);
 
         fechaField.addMouseListener(formListener);
 
         montoPublicField.setToolTipText("Solo números y coma.");
 
-        binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, masterTable, org.jdesktop.beansbinding.ELProperty.create("${selectedElement.montoPublic}"), montoPublicField, org.jdesktop.beansbinding.BeanProperty.create("text"));
-        binding.setSourceUnreadableValue("null");
-        bindingGroup.addBinding(binding);
         binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ, masterTable, org.jdesktop.beansbinding.ELProperty.create("${selectedElement != null}"), montoPublicField, org.jdesktop.beansbinding.BeanProperty.create("enabled"));
         bindingGroup.addBinding(binding);
 
@@ -138,9 +132,6 @@ public class EventosABM extends JPanel {
 
         montoRifasField.setToolTipText("Solo números y coma.");
 
-        binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, masterTable, org.jdesktop.beansbinding.ELProperty.create("${selectedElement.montoRifas}"), montoRifasField, org.jdesktop.beansbinding.BeanProperty.create("text"));
-        binding.setSourceUnreadableValue("null");
-        bindingGroup.addBinding(binding);
         binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ, masterTable, org.jdesktop.beansbinding.ELProperty.create("${selectedElement != null}"), montoRifasField, org.jdesktop.beansbinding.BeanProperty.create("enabled"));
         bindingGroup.addBinding(binding);
 
@@ -148,9 +139,6 @@ public class EventosABM extends JPanel {
 
         montoTarjetasField.setToolTipText("Solo números y coma.");
 
-        binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, masterTable, org.jdesktop.beansbinding.ELProperty.create("${selectedElement.montoTarjetas}"), montoTarjetasField, org.jdesktop.beansbinding.BeanProperty.create("text"));
-        binding.setSourceUnreadableValue("null");
-        bindingGroup.addBinding(binding);
         binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ, masterTable, org.jdesktop.beansbinding.ELProperty.create("${selectedElement != null}"), montoTarjetasField, org.jdesktop.beansbinding.BeanProperty.create("enabled"));
         bindingGroup.addBinding(binding);
 
@@ -449,15 +437,17 @@ public class EventosABM extends JPanel {
     }//GEN-LAST:event_deleteButtonActionPerformed
 
     private void newButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_newButtonActionPerformed
-        jComboBoxEvento.setEnabled(true);
+        activarTextos(true);
         setEnabledBotones(true);
         masterTable.setEnabled(false);
-        madreteresacrud.Eventos e = new madreteresacrud.Eventos();
-        entityManager.persist(e);
-        list.add(e);
-        int row = list.size() - 1;
-        masterTable.setRowSelectionInterval(row, row);
-        masterTable.scrollRectToVisible(masterTable.getCellRect(row, 0, true));
+        cleanFields();
+//        madreteresacrud.Eventos e = new madreteresacrud.Eventos();
+//        entityManager.persist(e);
+//        list.add(e);
+//        int row = masterTable.getRowCount()-1;
+//        masterTable.setRowSelectionInterval(row, row);
+//        UtilsStatics.validarSeleccion(masterTable, row, 1);
+//        masterTable.scrollRectToVisible(masterTable.getCellRect(row, 0, true));
     }//GEN-LAST:event_newButtonActionPerformed
 
     private void setEnabledBotones(boolean estado) {
@@ -469,14 +459,15 @@ public class EventosABM extends JPanel {
 
     private void refrescarForm() {
         masterTable.setEnabled(true);
-        entityManager.getTransaction().rollback();
-        entityManager.getTransaction().begin();
-        java.util.Collection data = query.getResultList();
-        for (Object entity : data) {
-            entityManager.refresh(entity);
-        }
-        list.clear();
-        list.addAll(data);
+//        entityManager.getTransaction().rollback();
+//        entityManager.getTransaction().begin();
+//        java.util.Collection data = query.getResultList();
+//        for (Object entity : data) {
+//            entityManager.refresh(entity);
+//        }
+//        list.clear();
+//        list.addAll(data);
+        setModel();
         setEnabledBotones(false);
         activarTextos(false);
     }
@@ -505,8 +496,8 @@ public class EventosABM extends JPanel {
 //                list.addAll(merged);
 //            }
             int filaMod = masterTable.getSelectedRow();
-            if (masterTable.getValueAt(filaMod, 6) != null) {
-                DateFormat df = new SimpleDateFormat("dd/MM/yyyy");
+            DateFormat df = new SimpleDateFormat("dd/MM/yyyy");
+            if (filaMod != -1) {
 
                 Eventos e = new Eventos(Integer.valueOf(masterTable.getValueAt(filaMod, 6).toString()));
                 try {
@@ -524,6 +515,19 @@ public class EventosABM extends JPanel {
                     Logger.getLogger(EventosABM.class.getName()).log(Level.SEVERE, null, ex);
                 }
 
+            } else {
+                Eventos e = new Eventos();
+                try {
+                    e.setFecha(df.parse(fechaField.getText()));
+                } catch (ParseException ex) {
+                    Logger.getLogger(EventosABM.class.getName()).log(Level.SEVERE, null, ex);
+                }
+                e.setMontoPublic(BigDecimal.valueOf(Double.valueOf(montoPublicField.getText())));
+                e.setMontoRifas(BigDecimal.valueOf(Double.valueOf(montoRifasField.getText())));
+                e.setMontoTarjetas(BigDecimal.valueOf(Double.valueOf(montoTarjetasField.getText())));
+                e.setMotivo(tipoEventoJpa.findEventoByDescripcion(jComboBoxEvento.getSelectedItem().toString()));
+
+                eventosJpa.create(e);
             }
             setModel();
             refrescarForm();
@@ -655,7 +659,7 @@ public class EventosABM extends JPanel {
     }
 
     private void setModel() {
-       model.getDataVector().removeAllElements();
+        model.getDataVector().removeAllElements();
         SimpleDateFormat formatofecha = new SimpleDateFormat("dd/MM/YYYY");
         List<Eventos> eventos = eventosJpa.findEventosEntities();
         String[] registros = new String[7];
@@ -683,6 +687,14 @@ public class EventosABM extends JPanel {
             jComboBoxEvento.setSelectedItem(masterTable.getValueAt(filaMod, 5));
         }
 
+    }
+
+    private void cleanFields() {
+        fechaField.setText("");
+        montoPublicField.setText("");
+        montoRifasField.setText("");
+        montoTarjetasField.setText("");
+        jComboBoxEvento.setSelectedItem("");
     }
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton Buscar;
