@@ -150,7 +150,7 @@ public class GastosABM extends JPanel {
 
         fechaGastoLabel.setText("Fecha del Gasto:");
 
-        descripcionLabel.setText("Descripcion:");
+        descripcionLabel.setText("Descripción:");
 
         tipoGastoIdtipoGastoLabel.setText("Tipo de Gasto:");
 
