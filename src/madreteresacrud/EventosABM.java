@@ -8,12 +8,10 @@ import eao.EventosJpaController;
 import eao.TipoEventoJpaController;
 import eao.exceptions.NonexistentEntityException;
 import java.awt.Toolkit;
-import java.beans.Beans;
 import java.math.BigDecimal;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.logging.Level;
@@ -24,7 +22,6 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 import javax.swing.table.DefaultTableModel;
-import org.jdesktop.beansbinding.Converter;
 import utilidades.Calendario;
 
 /**
@@ -32,11 +29,11 @@ import utilidades.Calendario;
  * @author francis
  */
 public class EventosABM extends JPanel {
-    
+
     private DefaultTableModel model;
     private final EventosJpaController eventosJpa;
     private final TipoEventoJpaController tipoEventoJpa;
-    
+
     public EventosABM() {
         createModel();
         eventosJpa = new EventosJpaController(createEntityManagerFactory("madreTeresaCRUDPU"));
@@ -48,16 +45,13 @@ public class EventosABM extends JPanel {
         for (TipoEvento te : tipoEvento) {
             jComboBoxEvento.addItem(te.getDescripcion());
         }
+        masterTable.getColumnModel().getColumn(6).setMaxWidth(0);
+        masterTable.getColumnModel().getColumn(6).setMinWidth(0);
+        masterTable.getColumnModel().getColumn(6).setPreferredWidth(0);
 
-//        refreshButton.setVisible(false);
-        if (!Beans.isDesignTime()) {
-            entityManager.getTransaction().begin();
-        }
-        
         Date hoy = new Date();
         fechaDesde.setDate(hoy);
         fechaHasta.setDate(hoy);
-        //masterTable.setDefaultRenderer(Object.class, new RendererTablaEventos(4));
     }
 
     /**
@@ -416,20 +410,6 @@ public class EventosABM extends JPanel {
     private void deleteButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteButtonActionPerformed
         int reply = JOptionPane.showConfirmDialog(null, "¿Está seguro de eliminar el registro?", "Eliminacion de Registro", JOptionPane.YES_NO_OPTION);
         if (reply == JOptionPane.YES_OPTION) {
-//            int[] selected = masterTable.getSelectedRows();
-//            List<madreteresacrud.Eventos> toRemove = new ArrayList<madreteresacrud.Eventos>(selected.length);
-//            for (int idx = 0; idx < selected.length; idx++) {
-//                madreteresacrud.Eventos e = list.get(masterTable.convertRowIndexToModel(selected[idx]));
-//                toRemove.add(e);
-//                entityManager.remove(e);
-//            }
-//            try {
-//                entityManager.getTransaction().commit();
-//                entityManager.getTransaction().begin();
-//                JOptionPane.showMessageDialog(null, "Registro Eliminado");
-//            } catch (Exception e) {
-//            }
-//            list.removeAll(toRemove);
             int fila = masterTable.getSelectedRow();
             try {
                 eventosJpa.destroy(Integer.valueOf(masterTable.getValueAt(fila, 6).toString()));
@@ -445,37 +425,22 @@ public class EventosABM extends JPanel {
         setEnabledBotones(true);
         masterTable.setEnabled(false);
         cleanFields();
-//        madreteresacrud.Eventos e = new madreteresacrud.Eventos();
-//        entityManager.persist(e);
-//        list.add(e);
-//        int row = masterTable.getRowCount()-1;
-//        masterTable.setRowSelectionInterval(row, row);
-//        UtilsStatics.validarSeleccion(masterTable, row, 1);
-//        masterTable.scrollRectToVisible(masterTable.getCellRect(row, 0, true));
     }//GEN-LAST:event_newButtonActionPerformed
-    
+
     private void setEnabledBotones(boolean estado) {
         refreshButton.setEnabled(estado);
         saveButton.setEnabled(estado);
         newButton.setEnabled(!estado);
         jButtonCalendar.setEnabled(estado);
     }
-    
+
     private void refrescarForm() {
         masterTable.setEnabled(true);
-//        entityManager.getTransaction().rollback();
-//        entityManager.getTransaction().begin();
-//        java.util.Collection data = query.getResultList();
-//        for (Object entity : data) {
-//            entityManager.refresh(entity);
-//        }
-//        list.clear();
-//        list.addAll(data);
         setModel(eventosJpa.findEventosEntities());
         setEnabledBotones(false);
         activarTextos(false);
     }
-    
+
     private void activarTextos(boolean estado) {
         fechaField.setEnabled(estado);
         montoPublicField.setEnabled(estado);
@@ -486,23 +451,9 @@ public class EventosABM extends JPanel {
 
     private void saveButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveButtonActionPerformed
         if (!blancos()) {
-//            try {
-//                entityManager.getTransaction().commit();
-//                entityManager.getTransaction().begin();
-//            } catch (RollbackException rex) {
-//                rex.printStackTrace();
-//                entityManager.getTransaction().begin();
-//                List<madreteresacrud.Eventos> merged = new ArrayList<madreteresacrud.Eventos>(list.size());
-//                for (madreteresacrud.Eventos e : list) {
-//                    merged.add(entityManager.merge(e));
-//                }
-//                list.clear();
-//                list.addAll(merged);
-//            }
             int fila = masterTable.getSelectedRow();
             DateFormat df = new SimpleDateFormat("dd/MM/yyyy");
             if (fila != -1) {
-                
                 Eventos e = new Eventos(Integer.valueOf(masterTable.getValueAt(fila, 6).toString()));
                 try {
                     e.setFecha(df.parse(fechaField.getText()));
@@ -518,7 +469,6 @@ public class EventosABM extends JPanel {
                 } catch (Exception ex) {
                     Logger.getLogger(EventosABM.class.getName()).log(Level.SEVERE, null, ex);
                 }
-                
             } else {
                 Eventos e = new Eventos();
                 try {
@@ -530,7 +480,7 @@ public class EventosABM extends JPanel {
                 e.setMontoRifas(BigDecimal.valueOf(Double.valueOf(montoRifasField.getText())));
                 e.setMontoTarjetas(BigDecimal.valueOf(Double.valueOf(montoTarjetasField.getText())));
                 e.setMotivo(tipoEventoJpa.findEventoByDescripcion(jComboBoxEvento.getSelectedItem().toString()));
-                
+
                 eventosJpa.create(e);
             }
             setModel(eventosJpa.findEventosEntities());
@@ -538,7 +488,7 @@ public class EventosABM extends JPanel {
         }
 
     }//GEN-LAST:event_saveButtonActionPerformed
-    
+
     private Boolean blancos() {
         if (fechaField.getText().trim().isEmpty()
                 || (jComboBoxEvento.getSelectedItem() == null)
@@ -551,7 +501,7 @@ public class EventosABM extends JPanel {
             return false;
         }
     }
-    
+
     private void mensaje() {
         String respuesta = "";
         if (fechaField.getText().trim().isEmpty()) {
@@ -565,7 +515,7 @@ public class EventosABM extends JPanel {
                 && montoTarjetasField.getText().trim().isEmpty()) {
             respuesta = respuesta + " " + "Montos en su totalidad," + " ";
         }
-        
+
         JOptionPane.showMessageDialog(null, "Los campos " + respuesta + "no deberian estar vacios!");
     }
 
@@ -595,10 +545,12 @@ public class EventosABM extends JPanel {
     }//GEN-LAST:event_montoTarjetasFieldKeyTyped
 
     private void masterTableMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_masterTableMouseClicked
-        jComboBoxEvento.setEnabled(true);
-        setEnabledBotones(true);
-        activarTextos(true);
-        setFields();
+        if (masterTable.isEnabled()) {
+            jComboBoxEvento.setEnabled(true);
+            setEnabledBotones(true);
+            activarTextos(true);
+            setFields();
+        }
     }//GEN-LAST:event_masterTableMouseClicked
 
     private void fechaFieldMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_fechaFieldMouseClicked
@@ -613,15 +565,6 @@ public class EventosABM extends JPanel {
             String[] fd = fDesde.split("-");
             String[] fh = fHasta.split("-");
             setModel(eventosJpa.findByRangeDate(fd[2] + "-" + fd[1] + "-" + fd[0], fh[2] + "-" + fh[1] + "-" + fh[0]));
-//            javax.persistence.Query query1 = java.beans.Beans.isDesignTime() ? null : entityManager.createQuery("SELECT e FROM Eventos e WHERE e.fecha BETWEEN '"
-//                    + fd[2] + "-" + fd[1] + "-" + fd[0] + "' AND '"
-//                    + fh[2] + "-" + fh[1] + "-" + fh[0] + "' ORDER BY e.fecha DESC");
-//            java.util.Collection data = query1.getResultList();
-//            for (Object entity : data) {
-//                entityManager.refresh(entity);
-//            }
-//            list.clear();
-//            list.addAll(data);
             activarTextos(false);
         } else {
             JOptionPane.showMessageDialog(null, "El periodo de fecha ingresado no es válido.");
@@ -630,45 +573,39 @@ public class EventosABM extends JPanel {
     }//GEN-LAST:event_BuscarActionPerformed
 
     private void BuscarTodosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BuscarTodosActionPerformed
-//        java.util.Collection data = query.getResultList();
-//        for (Object entity : data) {
-//            entityManager.refresh(entity);
-//        }
-//        list.clear();
-//        list.addAll(data);
         setModel(eventosJpa.findEventosEntities());
         activarTextos(false);
-        
+
     }//GEN-LAST:event_BuscarTodosActionPerformed
-    
-    Converter dateConverter = new Converter<java.util.Date, String>() {
-        @Override
-        public String convertForward(java.util.Date value) {
-            String patron = "dd/MM/yyyy";
-            SimpleDateFormat formato = new SimpleDateFormat(patron);
-            return formato.format(value);
-        }
-        
-        @Override
-        public java.util.Date convertReverse(String value) {
-            try {
-                DateFormat df = new SimpleDateFormat("dd/MM/yyyy");
-                return df.parse(value);
-            } catch (ParseException e) {
-                System.err.println("Error de dateConverter: " + e.getMessage());
-                return Calendar.getInstance().getTime();
-            }
-        }
-    };
-    
+
+//    Converter dateConverter = new Converter<java.util.Date, String>() {
+//        @Override
+//        public String convertForward(java.util.Date value) {
+//            String patron = "dd/MM/yyyy";
+//            SimpleDateFormat formato = new SimpleDateFormat(patron);
+//            return formato.format(value);
+//        }
+//
+//        @Override
+//        public java.util.Date convertReverse(String value) {
+//            try {
+//                DateFormat df = new SimpleDateFormat("dd/MM/yyyy");
+//                return df.parse(value);
+//            } catch (ParseException e) {
+//                System.err.println("Error de dateConverter: " + e.getMessage());
+//                return Calendar.getInstance().getTime();
+//            }
+//        }
+//    };
+
     private void createModel() {
         String[] titulos = {"Fecha del Evento", "Publicidad ($)", "Rifas ($)", "Tarjetas ($)", "Recaudación Total ($)", "Motivo Del Evento", "idEvento"};
         model = new DefaultTableModel(null, titulos);
     }
-    
+
     private void setModel(List<Eventos> eventos) {
         model.setRowCount(0);
-        SimpleDateFormat formatofecha = new SimpleDateFormat("dd/MM/YYYY");        
+        SimpleDateFormat formatofecha = new SimpleDateFormat("dd/MM/YYYY");
         String[] registros = new String[7];
         for (Eventos e : eventos) {
             registros[0] = formatofecha.format(e.getFecha());
@@ -681,7 +618,7 @@ public class EventosABM extends JPanel {
             model.addRow(registros);
         }
     }
-    
+
     private void setFields() {
         int filaMod = masterTable.getSelectedRow();
         if (filaMod == -1) {
@@ -693,15 +630,14 @@ public class EventosABM extends JPanel {
             montoTarjetasField.setText(masterTable.getValueAt(filaMod, 3).toString());
             jComboBoxEvento.setSelectedItem(masterTable.getValueAt(filaMod, 5));
         }
-        
     }
-    
+
     private void cleanFields() {
         fechaField.setText("");
         montoPublicField.setText("");
         montoRifasField.setText("");
         montoTarjetasField.setText("");
-        jComboBoxEvento.setSelectedItem("");
+        jComboBoxEvento.setSelectedIndex(0);
     }
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton Buscar;

@@ -4,21 +4,24 @@
  */
 package madreteresacrud;
 
+import eao.GastosJpaController;
+import eao.TipoGastoJpaController;
+import eao.exceptions.NonexistentEntityException;
 import java.awt.Toolkit;
 import java.beans.Beans;
+import java.math.BigDecimal;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.List;
-import javax.persistence.RollbackException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import static javax.persistence.Persistence.createEntityManagerFactory;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
-import org.jdesktop.beansbinding.Converter;
-import utilidades.UtilsStatics;
+import javax.swing.table.DefaultTableModel;
 import utilidades.Calendario;
 
 /**
@@ -27,16 +30,26 @@ import utilidades.Calendario;
  */
 public class GastosABM extends JPanel {
 
+    private DefaultTableModel model;
+    private final GastosJpaController gastosJpa;
+    private final TipoGastoJpaController tipoGJpa;
+
     public GastosABM() {
+        createModel();
+        gastosJpa = new GastosJpaController(createEntityManagerFactory("madreTeresaCRUDPU"));
+        tipoGJpa = new TipoGastoJpaController(createEntityManagerFactory("madreTeresaCRUDPU"));
+        setModel(gastosJpa.findGastosEntities());
         initComponents();
-        
+
         masterTable.getColumnModel().getColumn(4).setMaxWidth(0);
         masterTable.getColumnModel().getColumn(4).setMinWidth(0);
         masterTable.getColumnModel().getColumn(4).setPreferredWidth(0);
+        masterTable.getColumnModel().getColumn(5).setMaxWidth(0);
+        masterTable.getColumnModel().getColumn(5).setMinWidth(0);
+        masterTable.getColumnModel().getColumn(5).setPreferredWidth(0);
         jComboBoxElemento.setEnabled(false);
         jComboBoxTipoGasto.setEnabled(false);
 
-        IdTipoGLabel.setVisible(false);
         if (!Beans.isDesignTime()) {
             entityManager.getTransaction().begin();
         }
@@ -73,7 +86,6 @@ public class GastosABM extends JPanel {
         refreshButton = new javax.swing.JButton();
         jComboBoxTipoGasto = new javax.swing.JComboBox();
         jComboBoxElemento = new javax.swing.JComboBox();
-        IdTipoGLabel = new javax.swing.JLabel();
         jButton1 = new javax.swing.JButton();
 
         FormListener formListener = new FormListener();
@@ -81,25 +93,7 @@ public class GastosABM extends JPanel {
         jPanelTabla.setBorder(javax.swing.BorderFactory.createEtchedBorder());
 
         masterTable.setAutoCreateRowSorter(true);
-
-        org.jdesktop.swingbinding.JTableBinding jTableBinding = org.jdesktop.swingbinding.SwingBindings.createJTableBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, list, masterTable);
-        org.jdesktop.swingbinding.JTableBinding.ColumnBinding columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${tipoGastoIdtipoGasto}"));
-        columnBinding.setColumnName("Item");
-        columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${fechaGasto}"));
-        columnBinding.setColumnName("Fecha del Gasto");
-        columnBinding.setColumnClass(java.util.Date.class);
-        columnBinding.setEditable(false);
-        columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${monto}"));
-        columnBinding.setColumnName("Monto ($)");
-        columnBinding.setColumnClass(java.math.BigDecimal.class);
-        columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${descripcion}"));
-        columnBinding.setColumnName("Descripcion");
-        columnBinding.setColumnClass(String.class);
-        columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${idgastos}"));
-        columnBinding.setColumnName("Idgastos");
-        columnBinding.setColumnClass(Integer.class);
-        bindingGroup.addBinding(jTableBinding);
-        jTableBinding.bind();
+        masterTable.setModel(model    );
         masterTable.addMouseListener(formListener);
         masterScrollPane.setViewportView(masterTable);
 
@@ -162,9 +156,6 @@ public class GastosABM extends JPanel {
 
         montoField.setToolTipText("Solo números y coma.");
 
-        binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, masterTable, org.jdesktop.beansbinding.ELProperty.create("${selectedElement.monto}"), montoField, org.jdesktop.beansbinding.BeanProperty.create("text"));
-        binding.setSourceUnreadableValue("null");
-        bindingGroup.addBinding(binding);
         binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ, masterTable, org.jdesktop.beansbinding.ELProperty.create("${selectedElement != null}"), montoField, org.jdesktop.beansbinding.BeanProperty.create("enabled"));
         bindingGroup.addBinding(binding);
 
@@ -172,19 +163,11 @@ public class GastosABM extends JPanel {
 
         fechaGastoField.setEditable(false);
 
-        binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, masterTable, org.jdesktop.beansbinding.ELProperty.create("${selectedElement.fechaGasto}"), fechaGastoField, org.jdesktop.beansbinding.BeanProperty.create("text"));
-        binding.setSourceUnreadableValue("null");
-        binding.setConverter(dateConverter);
-        bindingGroup.addBinding(binding);
         binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ, masterTable, org.jdesktop.beansbinding.ELProperty.create("${selectedElement != null}"), fechaGastoField, org.jdesktop.beansbinding.BeanProperty.create("enabled"));
         bindingGroup.addBinding(binding);
 
         fechaGastoField.addMouseListener(formListener);
 
-        binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, masterTable, org.jdesktop.beansbinding.ELProperty.create("${selectedElement.descripcion}"), descripcionField, org.jdesktop.beansbinding.BeanProperty.create("text"));
-        binding.setSourceUnreadableValue("null");
-        binding.setConverter(UtilsStatics.converterMayuscula());
-        bindingGroup.addBinding(binding);
         binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ, masterTable, org.jdesktop.beansbinding.ELProperty.create("${selectedElement != null}"), descripcionField, org.jdesktop.beansbinding.BeanProperty.create("enabled"));
         bindingGroup.addBinding(binding);
 
@@ -202,10 +185,6 @@ public class GastosABM extends JPanel {
 
         jComboBoxElemento.setEnabled(false);
 
-        binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, masterTable, org.jdesktop.beansbinding.ELProperty.create("${selectedElement.tipoGastoIdtipoGasto}"), IdTipoGLabel, org.jdesktop.beansbinding.BeanProperty.create("text"));
-        binding.setConverter(tipoGastoConverter);
-        bindingGroup.addBinding(binding);
-
         jButton1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/calendario.GIF"))); // NOI18N
         jButton1.setContentAreaFilled(false);
         jButton1.setEnabled(false);
@@ -220,7 +199,7 @@ public class GastosABM extends JPanel {
                 .addComponent(refreshButton)
                 .addGap(31, 31, 31)
                 .addComponent(saveButton)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(345, Short.MAX_VALUE))
             .addGroup(jPanelFormLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(jPanelFormLayout.createSequentialGroup()
                     .addContainerGap()
@@ -239,14 +218,9 @@ public class GastosABM extends JPanel {
                                 .addComponent(montoField, javax.swing.GroupLayout.Alignment.LEADING)
                                 .addComponent(jComboBoxTipoGasto, javax.swing.GroupLayout.Alignment.LEADING, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                 .addComponent(jComboBoxElemento, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 158, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(jPanelFormLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                .addGroup(jPanelFormLayout.createSequentialGroup()
-                                    .addGap(81, 81, 81)
-                                    .addComponent(IdTipoGLabel))
-                                .addGroup(jPanelFormLayout.createSequentialGroup()
-                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                    .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                            .addGap(0, 0, Short.MAX_VALUE)))
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                            .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGap(0, 40, Short.MAX_VALUE)))
                     .addContainerGap()))
         );
         jPanelFormLayout.setVerticalGroup(
@@ -260,19 +234,14 @@ public class GastosABM extends JPanel {
             .addGroup(jPanelFormLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(jPanelFormLayout.createSequentialGroup()
                     .addContainerGap()
-                    .addGroup(jPanelFormLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addGroup(jPanelFormLayout.createSequentialGroup()
-                            .addGroup(jPanelFormLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                .addComponent(tipoGastoIdtipoGastoLabel)
-                                .addComponent(jComboBoxTipoGasto, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                            .addGroup(jPanelFormLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                .addComponent(idgastosLabel)
-                                .addComponent(jComboBoxElemento, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED))
-                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanelFormLayout.createSequentialGroup()
-                            .addComponent(IdTipoGLabel)
-                            .addGap(20, 20, 20)))
+                    .addGroup(jPanelFormLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(tipoGastoIdtipoGastoLabel)
+                        .addComponent(jComboBoxTipoGasto, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                    .addGroup(jPanelFormLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(idgastosLabel)
+                        .addComponent(jComboBoxElemento, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                     .addGroup(jPanelFormLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                         .addGroup(jPanelFormLayout.createSequentialGroup()
                             .addGroup(jPanelFormLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -352,11 +321,11 @@ public class GastosABM extends JPanel {
         }
 
         public void mouseClicked(java.awt.event.MouseEvent evt) {
-            if (evt.getSource() == fechaGastoField) {
-                GastosABM.this.fechaGastoFieldMouseClicked(evt);
-            }
-            else if (evt.getSource() == masterTable) {
+            if (evt.getSource() == masterTable) {
                 GastosABM.this.masterTableMouseClicked(evt);
+            }
+            else if (evt.getSource() == fechaGastoField) {
+                GastosABM.this.fechaGastoFieldMouseClicked(evt);
             }
         }
 
@@ -382,22 +351,12 @@ public class GastosABM extends JPanel {
         int reply = JOptionPane.showConfirmDialog(null, "¿Está seguro de eliminar el registro?", "Eliminacion de Registro", JOptionPane.YES_NO_OPTION);
         if (reply == JOptionPane.YES_OPTION) {
             JOptionPane.showMessageDialog(null, "Registro Eliminado");
-            int[] selected = masterTable.getSelectedRows();
-            List<madreteresacrud.Gastos> toRemove = new ArrayList<madreteresacrud.Gastos>(selected.length);
-            for (int idx = 0; idx < selected.length; idx++) {
-                madreteresacrud.Gastos g = list.get(masterTable.convertRowIndexToModel(selected[idx]));
-                toRemove.add(g);
-                entityManager.remove(g);
-            }
+            int fila = masterTable.getSelectedRow();
             try {
-                entityManager.getTransaction().commit();
-                entityManager.getTransaction().begin();
-            } catch (Exception e) {
+                gastosJpa.destroy(Integer.valueOf(masterTable.getValueAt(fila, 4).toString()));
+            } catch (NonexistentEntityException ex) {
+                Logger.getLogger(GastosABM.class.getName()).log(Level.SEVERE, null, ex);
             }
-            list.removeAll(toRemove);
-
-            jComboBoxElemento.setEnabled(false);
-            jComboBoxTipoGasto.setEnabled(false);
         }
         refrescarForm();
     }//GEN-LAST:event_deleteButtonActionPerformed
@@ -406,23 +365,7 @@ public class GastosABM extends JPanel {
         setEnabledBotones(true);
         activarTextos(true);
         masterTable.setEnabled(false);
-        jComboBoxTipoGasto.setSelectedIndex(0);
-        setComboItem(jComboBoxTipoGasto.getSelectedItem().toString().trim());
-        jComboBoxElemento.setSelectedIndex(0);
-        TipoGasto tipoG = getIdTipoGasto(jComboBoxTipoGasto.getSelectedItem().toString().trim(), jComboBoxElemento.getSelectedItem().toString().trim());
-//        jLabelId.setText(Integer.toString(id));
-
-        madreteresacrud.Gastos g = new madreteresacrud.Gastos();
-        g.setTipoGastoIdtipoGasto(tipoG);
-        entityManager.persist(g);
-        list.add(g);
-        int row = list.size() - 1;
-        masterTable.setRowSelectionInterval(row, row);
-        masterTable.scrollRectToVisible(masterTable.getCellRect(row, 0, true));
-
-        jComboBoxElemento.setEnabled(true);
-        jComboBoxTipoGasto.setEnabled(true);
-
+        cleanFields();
     }//GEN-LAST:event_newButtonActionPerformed
 
     private void activarTextos(boolean estado) {
@@ -443,14 +386,7 @@ public class GastosABM extends JPanel {
 
     private void refrescarForm() {
         masterTable.setEnabled(true);
-        entityManager.getTransaction().rollback();
-        entityManager.getTransaction().begin();
-        java.util.Collection data = query.getResultList();
-        for (Object entity : data) {
-            entityManager.refresh(entity);
-        }
-        list.clear();
-        list.addAll(data);
+        setModel(gastosJpa.findGastosEntities());
         setEnabledBotones(false);
         activarTextos(false);
     }
@@ -458,25 +394,36 @@ public class GastosABM extends JPanel {
 
     private void saveButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveButtonActionPerformed
         if (!blancos()) {
-            TipoGasto id = getIdTipoGasto(jComboBoxTipoGasto.getSelectedItem().toString().trim(), jComboBoxElemento.getSelectedItem().toString().trim());
-            IdTipoGLabel.setText(Integer.toString(id.getIdtipoGasto()));
-
-            try {
-                entityManager.getTransaction().commit();
-                entityManager.getTransaction().begin();
-            } catch (RollbackException rex) {
-                rex.printStackTrace();
-                entityManager.getTransaction().begin();
-                List<madreteresacrud.Gastos> merged = new ArrayList<madreteresacrud.Gastos>(list.size());
-                for (madreteresacrud.Gastos g : list) {
-                    merged.add(entityManager.merge(g));
+            int fila = masterTable.getSelectedRow();
+            DateFormat df = new SimpleDateFormat("dd/MM/yyyy");
+            if (fila != -1) {
+                Gastos g = new Gastos(Integer.valueOf(masterTable.getValueAt(fila, 4).toString()));
+                try {
+                    g.setFechaGasto(df.parse(fechaGastoField.getText()));
+                } catch (ParseException ex) {
+                    Logger.getLogger(GastosABM.class.getName()).log(Level.SEVERE, null, ex);
                 }
-                list.clear();
-                list.addAll(merged);
+                g.setMonto(BigDecimal.valueOf(Double.valueOf(montoField.getText())));
+                g.setDescripcion(descripcionField.getText());
+                g.setTipoGastoIdtipoGasto(getTipoGasto(jComboBoxTipoGasto.getSelectedItem().toString(), jComboBoxElemento.getSelectedItem().toString()));
+                try {
+                    gastosJpa.edit(g);
+                } catch (Exception ex) {
+                    Logger.getLogger(GastosABM.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            } else {
+                Gastos g = new Gastos();
+                try {
+                    g.setFechaGasto(df.parse(fechaGastoField.getText()));
+                } catch (ParseException ex) {
+                    Logger.getLogger(GastosABM.class.getName()).log(Level.SEVERE, null, ex);
+                }
+                g.setMonto(BigDecimal.valueOf(Double.valueOf(montoField.getText())));
+                g.setDescripcion(descripcionField.getText());
+                g.setTipoGastoIdtipoGasto(getTipoGasto(jComboBoxTipoGasto.getSelectedItem().toString(), jComboBoxElemento.getSelectedItem().toString()));
+                gastosJpa.create(g);
             }
-
-            jComboBoxElemento.setEnabled(false);
-            jComboBoxTipoGasto.setEnabled(false);
+            setModel(gastosJpa.findGastosEntities());
             refrescarForm();
         }
     }//GEN-LAST:event_saveButtonActionPerformed
@@ -507,11 +454,6 @@ public class GastosABM extends JPanel {
 
         String tipo = jComboBoxTipoGasto.getSelectedItem().toString().trim();
         setComboItem(tipo);
-//        jComboBoxElemento.setSelectedIndex(0);
-//        int id = getIdTipoGasto(jComboBoxTipoGasto.getSelectedItem().toString().trim(), jComboBoxElemento.getSelectedItem().toString().trim());
-//        jLabelId.setText(Integer.toString(id));
-
-
     }//GEN-LAST:event_jComboBoxTipoGastoActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
@@ -530,95 +472,121 @@ public class GastosABM extends JPanel {
     }//GEN-LAST:event_fechaGastoFieldMouseClicked
 
     private void masterTableMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_masterTableMouseClicked
-        setEnabledBotones(true);
-        activarTextos(true);
-        int selected = masterTable.getSelectedRow();
-        TipoGasto tipoG = (TipoGasto) masterTable.getValueAt(selected, 0);
-        setCombos(tipoG);
+        if (masterTable.isEnabled()) {
+            setEnabledBotones(true);
+            activarTextos(true);
+            setFields();
+        }
     }//GEN-LAST:event_masterTableMouseClicked
 
     private void setComboItem(String tipoGasto) {
         jComboBoxElemento.removeAllItems();
         javax.persistence.Query queryGasto = java.beans.Beans.isDesignTime() ? null : entityManager.createQuery("SELECT DISTINCT t.elemento FROM TipoGasto t WHERE t.tipoGasto='" + tipoGasto + "'");
-        String item;
         java.util.List<String> data = queryGasto.getResultList();
-        for (String ite : data) {            
+        for (String ite : data) {
             jComboBoxElemento.addItem(ite);
         }
         jComboBoxElemento.setSelectedIndex(0);
 
     }
 
-    private TipoGasto getIdTipoGasto(String tipo, String item) {
+    private TipoGasto getTipoGasto(String tipo, String item) {
 
         javax.persistence.Query queryGasto = java.beans.Beans.isDesignTime() ? null : entityManager.createQuery("SELECT DISTINCT t FROM TipoGasto t WHERE t.tipoGasto='" + tipo + "' AND t.elemento='" + item + "'");
         java.util.List<TipoGasto> data = queryGasto.getResultList();
-        TipoGasto tipoG=null;
+        TipoGasto tipoG = null;
         for (TipoGasto ite : data) {
-            tipoG =  ite;
+            tipoG = ite;
 
         }
 
         return tipoG;
     }
 
-    private TipoGasto getTipoGasto(int id) {
-
-        javax.persistence.Query queryGasto = java.beans.Beans.isDesignTime() ? null : entityManager.createQuery("SELECT DISTINCT t FROM TipoGasto t WHERE t.idtipoGasto=" + id);
-        java.util.Collection data = queryGasto.getResultList();
-        TipoGasto tg = null;
-        for (Object g : data) {
-            tg = (TipoGasto) g;
-
-        }
-        return tg;
-    }
-
-    private void setCombos(TipoGasto tipoG) {        
-        jComboBoxTipoGasto.setSelectedItem(tipoG.getTipoGasto());        
+    private void setCombos(TipoGasto tipoG) {
+        jComboBoxTipoGasto.setSelectedItem(tipoG.getTipoGasto());
         jComboBoxElemento.setSelectedItem(tipoG.getElemento());
 
     }
 
-    Converter dateConverter = new Converter<java.util.Date, String>() {
-        @Override
-        public String convertForward(java.util.Date value) {
-            String patron = "dd/MM/yyyy";
-            SimpleDateFormat formato = new SimpleDateFormat(patron);
-            return formato.format(value);
-        }
+//    Converter dateConverter = new Converter<java.util.Date, String>() {
+//        @Override
+//        public String convertForward(java.util.Date value) {
+//            String patron = "dd/MM/yyyy";
+//            SimpleDateFormat formato = new SimpleDateFormat(patron);
+//            return formato.format(value);
+//        }
+//
+//        @Override
+//        public java.util.Date convertReverse(String value) {
+//            try {
+//                DateFormat df = new SimpleDateFormat("dd/MM/yyyy");
+//                return df.parse(value);
+//            } catch (ParseException e) {
+//                System.err.println("Error de dateConverter: " + e.getMessage());
+//                return Calendar.getInstance().getTime();
+//            }
+//        }
+//    };
+//
+//    Converter tipoGastoConverter = new Converter<TipoGasto, String>() {
+//        @Override
+//        public TipoGasto convertReverse(String value) {
+//            try {
+//                return UtilsStatics.findTipoGasto(Integer.valueOf(value));
+//            } catch (Exception e) {
+//                System.err.println(e);
+//                return null;
+//            }
+//        }
+//
+//        @Override
+//        public String convertForward(TipoGasto value) {
+//            return value.getIdtipoGasto().toString();
+//        }
+//    };
 
-        @Override
-        public java.util.Date convertReverse(String value) {
-            try {
-                DateFormat df = new SimpleDateFormat("dd/MM/yyyy");
-                return df.parse(value);
-            } catch (ParseException e) {
-                System.err.println("Error de dateConverter: " + e.getMessage());
-                return Calendar.getInstance().getTime();
-            }
-        }
-    };    
-   
-    Converter tipoGastoConverter = new Converter<TipoGasto, String>(){
-        @Override
-        public TipoGasto convertReverse(String value){
-               try {
-                return UtilsStatics.findTipoGasto(Integer.valueOf(value));
-            } catch (Exception e) {
-                System.err.println(e);
-                return null;
-            }
-        }
+    private void cleanFields() {
+        jComboBoxTipoGasto.setSelectedIndex(0);
+        setComboItem(jComboBoxTipoGasto.getSelectedItem().toString().trim());
+        jComboBoxElemento.setSelectedIndex(0);
+        fechaGastoField.setText("");
+        montoField.setText("");
+        descripcionField.setText("");
+    }
 
-        @Override
-        public String convertForward(TipoGasto value) {
-            return value.getIdtipoGasto().toString();
+    private void setFields() {
+        int filaMod = masterTable.getSelectedRow();
+        if (filaMod == -1) {
+            JOptionPane.showMessageDialog(null, "Seleccione alguna fila.");
+        } else {
+            fechaGastoField.setText(masterTable.getValueAt(filaMod, 1).toString());
+            montoField.setText(masterTable.getValueAt(filaMod, 2).toString());
+            descripcionField.setText(masterTable.getValueAt(filaMod, 3) != null ? masterTable.getValueAt(filaMod, 3).toString() : "");
+            setCombos(tipoGJpa.findTipoGasto(Integer.valueOf(masterTable.getValueAt(filaMod, 5).toString())));
         }
-    };
+    }
 
+    private void setModel(List<Gastos> gastos) {
+        model.setRowCount(0);
+        SimpleDateFormat formatofecha = new SimpleDateFormat("dd/MM/YYYY");
+        String[] registros = new String[6];
+        for (Gastos g : gastos) {
+            registros[0] = g.getTipoGastoIdtipoGasto().getElemento();
+            registros[1] = formatofecha.format(g.getFechaGasto());
+            registros[2] = g.getMonto().toString();
+            registros[3] = g.getDescripcion();
+            registros[4] = g.getIdgastos().toString();
+            registros[5] = g.getTipoGastoIdtipoGasto().getIdtipoGasto().toString();
+            model.addRow(registros);
+        }
+    }
+
+    private void createModel() {
+        String[] titulos = {"Item", "Fecha del Gasto", "Monto ($)", "Descripción", "IdGasto", "IdTipoG"};
+        model = new DefaultTableModel(null, titulos);
+    }
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JLabel IdTipoGLabel;
     private javax.swing.JButton deleteButton;
     private javax.swing.JTextField descripcionField;
     private javax.swing.JLabel descripcionLabel;
