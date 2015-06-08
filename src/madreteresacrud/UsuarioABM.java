@@ -12,6 +12,7 @@ import java.util.List;
 import javax.persistence.RollbackException;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import utilidades.UtilsStatics;
 
 /**
  *
@@ -289,7 +290,8 @@ public class UsuarioABM extends JPanel {
         entityManager.persist(u);
         list.add(u);
         int row = list.size() - 1;
-        masterTable.setRowSelectionInterval(row, row);
+//        masterTable.setRowSelectionInterval(row, row);
+        UtilsStatics.validarSeleccion(masterTable, row, 1);
         masterTable.scrollRectToVisible(masterTable.getCellRect(row, 0, true));
     }//GEN-LAST:event_newButtonActionPerformed
 

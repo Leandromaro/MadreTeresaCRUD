@@ -916,7 +916,8 @@ public class SociosABM extends JPanel {
         entityManager.persist(s);
         list.add(s);
         int row = list.size() - 1;
-        masterTable.setRowSelectionInterval(row, row);
+//        masterTable.setRowSelectionInterval(row, row);
+        UtilsStatics.validarSeleccion(masterTable, row, 1);
         masterTable.scrollRectToVisible(masterTable.getCellRect(row, 0, true));
         int max = 0;
         for (int i = 0; i < masterTable.getRowCount() - 1; i++) {

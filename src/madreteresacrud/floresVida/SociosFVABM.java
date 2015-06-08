@@ -597,7 +597,8 @@ public class SociosFVABM extends JPanel {
         entityManager.persist(s);
         list.add(s);
         int row = list.size() - 1;
-        masterTable.setRowSelectionInterval(row, row);
+//        masterTable.setRowSelectionInterval(row, row);
+        UtilsStatics.validarSeleccion(masterTable, row, 1);
         masterTable.scrollRectToVisible(masterTable.getCellRect(row, 0, true));
         setEnabledBotones(true);
         masterTable.setEnabled(false);

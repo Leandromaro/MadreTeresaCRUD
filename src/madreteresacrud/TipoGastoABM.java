@@ -308,7 +308,8 @@ public class TipoGastoABM extends JPanel {
         entityManager.persist(t);
         list.add(t);
         int row = list.size() - 1;
-        masterTable.setRowSelectionInterval(row, row);
+//        masterTable.setRowSelectionInterval(row, row);
+        UtilsStatics.validarSeleccion(masterTable, row, 0);
         masterTable.scrollRectToVisible(masterTable.getCellRect(row, 0, true));
     }//GEN-LAST:event_newButtonActionPerformed
 

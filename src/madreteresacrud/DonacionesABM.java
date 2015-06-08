@@ -437,7 +437,8 @@ public class DonacionesABM extends JPanel {
         entityManager.persist(d);
         list.add(d);
         int row = list.size() - 1;
-        masterTable.setRowSelectionInterval(row, row);
+//        masterTable.setRowSelectionInterval(row, row);
+        UtilsStatics.validarSeleccion(masterTable, row, 1);
         masterTable.scrollRectToVisible(masterTable.getCellRect(row, 0, true));
     }//GEN-LAST:event_newButtonActionPerformed
 

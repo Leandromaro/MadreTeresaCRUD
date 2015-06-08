@@ -19,10 +19,10 @@
     <class>utilidades.Localidades</class>
     <class>utilidades.Provincias</class>
     <properties>
-      <property name="javax.persistence.jdbc.url" value="jdbc:mysql://174.136.57.250:3306/circuloo_francisco?zeroDateTimeBehavior=convertToNull"/>
-      <property name="javax.persistence.jdbc.password" value="1234franci1234"/>
+      <property name="javax.persistence.jdbc.url" value="jdbc:mysql://localhost:3306/circuloo_francisco?zeroDateTimeBehavior=convertToNull"/>
+      <property name="javax.persistence.jdbc.password" value="l34ndr0"/>
       <property name="javax.persistence.jdbc.driver" value="com.mysql.jdbc.Driver"/>
-      <property name="javax.persistence.jdbc.user" value="circuloo_franci"/>
+      <property name="javax.persistence.jdbc.user" value="root"/>
     </properties>
   </persistence-unit>
 </persistence>
