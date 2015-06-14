@@ -27,6 +27,7 @@ import utilidades.Calendario;
  * @author leandro
  */
 public class DonacionesABM extends JPanel {
+
     private boolean flagBusqueda = false;
 
     public DonacionesABM() {
@@ -488,26 +489,31 @@ public class DonacionesABM extends JPanel {
                     doc = Integer.parseInt(documentoField.getText().trim());
                 }
 
-                if (doc != 0) {
-                    SociosABM s = new SociosABM();
-                    Socios soc = s.ApeYNom(doc);
-                    if (soc != null && !flagBusqueda && !documentoField.getText().isEmpty()) {
-                        int dialogResult = JOptionPane.showConfirmDialog(null, "Es usted " + soc.getNombre() + " " + soc.getApellido() + "?", "Selección de Registro", JOptionPane.YES_NO_OPTION);
-                        if (JOptionPane.YES_OPTION == dialogResult) {
-                            s.setDonanteByDNI(doc,soc.getNombre(),soc.getApellido());
-                            apellidoField.setText(soc.getApellido());
-                            nombreField.setText(soc.getNombre());
-                            apellidoField.setEnabled(true);
-                            nombreField.setEnabled(true);
-                            montoField.setEnabled(true);
-                            fechaDonacionField.setEnabled(true);
-                            dialogResult = 0;
-                        }
+                SociosABM s = new SociosABM();
+                Socios soc = s.ApeYNom(doc);
+                if (soc != null && !flagBusqueda && !documentoField.getText().isEmpty()) {
+                    int dialogResult = JOptionPane.showConfirmDialog(null, "Es usted " + soc.getNombre() + " " + soc.getApellido() + "?", "Selección de Registro", JOptionPane.YES_NO_OPTION);
+                    if (JOptionPane.YES_OPTION == dialogResult) {
+                        s.setDonanteByDNI(doc, soc.getNombre(), soc.getApellido());
+                        apellidoField.setText(soc.getApellido());
+                        nombreField.setText(soc.getNombre());
+                        apellidoField.setEnabled(true);
+                        nombreField.setEnabled(true);
+                        montoField.setEnabled(true);
+                        fechaDonacionField.setEnabled(true);
+                        dialogResult = 0;
                     }
-                flagBusqueda=false;
+                }
+                if(nombreField.getText().trim().isEmpty()){
+                    nombreField.setText("ANONIMO");
+                }
+                if(apellidoField.getText().trim().isEmpty()){
+                    apellidoField.setText("ANONIMO");
+                }
+                flagBusqueda = false;
                 entityManager.getTransaction().commit();
                 entityManager.getTransaction().begin();
-                }
+
             } catch (RollbackException rex) {
                 rex.printStackTrace();
                 entityManager.getTransaction().begin();
@@ -556,13 +562,13 @@ public class DonacionesABM extends JPanel {
                 SociosABM s = new SociosABM();
                 Socios soc = s.ApeYNom(doc);
                 if (soc != null) {
-                        apellidoField.setText(soc.getApellido());
-                        nombreField.setText(soc.getNombre());
-                        apellidoField.setEnabled(true);
-                        nombreField.setEnabled(true);
-                        montoField.setEnabled(true);
-                        fechaDonacionField.setEnabled(true);
-                        flagBusqueda=true;
+                    apellidoField.setText(soc.getApellido());
+                    nombreField.setText(soc.getNombre());
+                    apellidoField.setEnabled(true);
+                    nombreField.setEnabled(true);
+                    montoField.setEnabled(true);
+                    fechaDonacionField.setEnabled(true);
+                    flagBusqueda = true;
                 }
             } else {
                 JOptionPane.showMessageDialog(null, "No se encuentra Socio con ese DNI");
@@ -624,7 +630,7 @@ public class DonacionesABM extends JPanel {
                 DateFormat df = new SimpleDateFormat("dd/MM/yyyy");
                 return df.parse(value);
             } catch (ParseException e) {
-                System.err.println("Error de dateConverter: "+e.getMessage());
+                System.err.println("Error de dateConverter: " + e.getMessage());
                 return Calendar.getInstance().getTime();
             }
         }
