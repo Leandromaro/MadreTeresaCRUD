@@ -508,27 +508,6 @@ public class GastosABM extends JPanel {
         jComboBoxElemento.setSelectedItem(tipoG.getElemento());
 
     }
-
-//    Converter dateConverter = new Converter<java.util.Date, String>() {
-//        @Override
-//        public String convertForward(java.util.Date value) {
-//            String patron = "dd/MM/yyyy";
-//            SimpleDateFormat formato = new SimpleDateFormat(patron);
-//            return formato.format(value);
-//        }
-//
-//        @Override
-//        public java.util.Date convertReverse(String value) {
-//            try {
-//                DateFormat df = new SimpleDateFormat("dd/MM/yyyy");
-//                return df.parse(value);
-//            } catch (ParseException e) {
-//                System.err.println("Error de dateConverter: " + e.getMessage());
-//                return Calendar.getInstance().getTime();
-//            }
-//        }
-//    };
-//
 //    Converter tipoGastoConverter = new Converter<TipoGasto, String>() {
 //        @Override
 //        public TipoGasto convertReverse(String value) {
@@ -584,7 +563,13 @@ public class GastosABM extends JPanel {
 
     private void createModel() {
         String[] titulos = {"Item", "Fecha del Gasto", "Monto ($)", "Descripción", "IdGasto", "IdTipoG"};
-        model = new DefaultTableModel(null, titulos);
+        model = new DefaultTableModel(null, titulos) {
+            @Override
+            public boolean isCellEditable(int row, int column) {
+                //all cells false
+                return false;
+            }
+        };
     }
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton deleteButton;

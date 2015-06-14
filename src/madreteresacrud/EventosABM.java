@@ -597,22 +597,31 @@ public class EventosABM extends JPanel {
 //            }
 //        }
 //    };
-
     private void createModel() {
         String[] titulos = {"Fecha del Evento", "Publicidad ($)", "Rifas ($)", "Tarjetas ($)", "Recaudación Total ($)", "Motivo Del Evento", "idEvento"};
-        model = new DefaultTableModel(null, titulos);
+        model = new DefaultTableModel(null, titulos) {
+            @Override
+            public boolean isCellEditable(int row, int column) {
+                //all cells false
+                return false;
+            }
+        };
     }
 
     private void setModel(List<Eventos> eventos) {
         model.setRowCount(0);
         SimpleDateFormat formatofecha = new SimpleDateFormat("dd/MM/YYYY");
         String[] registros = new String[7];
+        BigDecimal publicidad, tarjetas, rifas;
         for (Eventos e : eventos) {
+            publicidad = e.getMontoPublic() != null ? e.getMontoPublic() : BigDecimal.ZERO;
+            tarjetas = e.getMontoTarjetas() != null ? e.getMontoTarjetas() : BigDecimal.ZERO;
+            rifas = e.getMontoRifas() != null ? e.getMontoRifas() : BigDecimal.ZERO;
             registros[0] = formatofecha.format(e.getFecha());
-            registros[1] = e.getMontoPublic().toString();
-            registros[2] = e.getMontoRifas().toString();
-            registros[3] = e.getMontoTarjetas().toString();
-            registros[4] = e.getMontoPublic().add(e.getMontoRifas()).add(e.getMontoTarjetas()).toString();
+            registros[1] = publicidad.toString();
+            registros[2] = rifas.toString();
+            registros[3] = tarjetas.toString();
+            registros[4] = publicidad.add(tarjetas).add(rifas).toString();
             registros[5] = e.getMotivo().toString();
             registros[6] = e.getIdEvento().toString();
             model.addRow(registros);
