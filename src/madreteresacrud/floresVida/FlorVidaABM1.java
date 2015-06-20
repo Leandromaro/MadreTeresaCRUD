@@ -27,6 +27,9 @@ public class FlorVidaABM1 extends JPanel {
         initComponents();
         this.idSoc = idSoc;
         this.fv = fv;
+        masterTable.getColumnModel().getColumn(2).setMaxWidth(0);
+        masterTable.getColumnModel().getColumn(2).setMinWidth(0);
+        masterTable.getColumnModel().getColumn(2).setPreferredWidth(0);
         masterTable.getColumnModel().getColumn(5).setMaxWidth(0);
         masterTable.getColumnModel().getColumn(5).setMinWidth(0);
         masterTable.getColumnModel().getColumn(5).setPreferredWidth(0);

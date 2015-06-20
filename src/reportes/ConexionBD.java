@@ -21,7 +21,12 @@ public class ConexionBD {
         try {
             //Cargamos el Driver MySQL
             Class.forName("com.mysql.jdbc.Driver");
-            conect = DriverManager.getConnection("jdbc:mysql://174.136.57.250/circuloo_francisco","circuloo_franci","1234franci1234");  //"jdbc:mysql://174.136.57.250/circuloo_francisco","circuloo_franci","1234franci1234"        "jdbc:mysql://localhost/circuloo_francisco","root","root"
+            //coneccion Online
+            conect = DriverManager.getConnection("jdbc:mysql://174.136.57.250/circuloo_francisco","circuloo_franci","1234franci1234");  
+            //Local Leandro
+            //"jdbc:mysql://localhost:3306/circuloo_francisco","root","l34ndr0",
+            //Local Violita            
+            //"jdbc:mysql://localhost/circuloo_francisco","root","root"
         } catch (ClassNotFoundException | SQLException e) {
             JOptionPane.showMessageDialog(null, "Error " + e.getMessage());
         }

@@ -13,6 +13,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 import javax.persistence.RollbackException;
+import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
@@ -21,6 +22,7 @@ import org.jdesktop.beansbinding.Converter;
 import org.jdesktop.swingx.autocomplete.AutoCompleteDecorator;
 import utilidades.UtilsStatics;
 import utilidades.Calendario;
+import utilidades.CalendarioDialog;
 import utilidades.Localidades;
 
 /**
@@ -52,6 +54,9 @@ public class FlorVidaABM extends JPanel {
     public FlorVidaABM(FlorVidaABM1 fv) {
         initComponents();
         setComboLocalidades();
+        masterTable.getColumnModel().getColumn(2).setMaxWidth(0);
+        masterTable.getColumnModel().getColumn(2).setMinWidth(0);
+        masterTable.getColumnModel().getColumn(2).setPreferredWidth(0);
         masterTable.getColumnModel().getColumn(6).setMaxWidth(0);
         masterTable.getColumnModel().getColumn(6).setMinWidth(0);
         masterTable.getColumnModel().getColumn(6).setPreferredWidth(0);
@@ -508,7 +513,7 @@ public class FlorVidaABM extends JPanel {
     }//GEN-LAST:event_newButtonActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        new Calendario((JFrame) SwingUtilities.getWindowAncestor(this), true, fechaDefuncionField).setVisible(true);
+        new CalendarioDialog((JDialog) SwingUtilities.getWindowAncestor(this), true, fechaDefuncionField).setVisible(true);
     }//GEN-LAST:event_jButton1ActionPerformed
       
     private void saveButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveButtonActionPerformed
@@ -528,7 +533,7 @@ public class FlorVidaABM extends JPanel {
             }
             if (fv != null) {
                 fv.setTabla();
-                JFrame topFrame = (JFrame) SwingUtilities.getWindowAncestor(this);
+                JDialog topFrame = (JDialog) SwingUtilities.getWindowAncestor(this);
                 topFrame.hide();
             }
             

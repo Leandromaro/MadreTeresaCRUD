@@ -26,9 +26,9 @@ public class FlorVidaSocio extends JPanel {
         initComponents();
 //        deleteButton.setVisible(false);
         //Ocultamos la localidad
-        masterTable.getColumnModel().getColumn(3).setMaxWidth(0);
-        masterTable.getColumnModel().getColumn(3).setMinWidth(0);
-        masterTable.getColumnModel().getColumn(3).setPreferredWidth(0);
+        masterTable.getColumnModel().getColumn(2).setMaxWidth(0);
+        masterTable.getColumnModel().getColumn(2).setMinWidth(0);
+        masterTable.getColumnModel().getColumn(2).setPreferredWidth(0);
         //Ocultamos el id de FV
         masterTable.getColumnModel().getColumn(5).setMaxWidth(0);
         masterTable.getColumnModel().getColumn(5).setMinWidth(0);
