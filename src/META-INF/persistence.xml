@@ -4,13 +4,13 @@
     <provider>org.eclipse.persistence.jpa.PersistenceProvider</provider>
     <class>madreteresacrud.CuotaSocial</class>
     <class>madreteresacrud.Donaciones</class>
+    <class>madreteresacrud.Eventos</class>
     <class>madreteresacrud.Gastos</class>
+    <class>madreteresacrud.LogUsuario</class>
     <class>madreteresacrud.Socios</class>
+    <class>madreteresacrud.TipoEvento</class>
     <class>madreteresacrud.TipoGasto</class>
     <class>madreteresacrud.TipoSocio</class>
-    <class>madreteresacrud.Eventos</class>
-    <class>madreteresacrud.LogUsuario</class>
-    <class>madreteresacrud.TipoEvento</class>
     <class>madreteresacrud.Usuario</class>
     <class>madreteresacrud.floresVida.CuotaFlorDeVida</class>
     <class>madreteresacrud.floresVida.FlorVida</class>
@@ -19,10 +19,10 @@
     <class>utilidades.Localidades</class>
     <class>utilidades.Provincias</class>
     <properties>
-      <property name="javax.persistence.jdbc.url" value="jdbc:mysql://174.136.57.250 :3306/circuloo_francisco?zeroDateTimeBehavior=convertToNull"/>
-      <property name="javax.persistence.jdbc.password" value="1234franci1234"/>
+      <property name="javax.persistence.jdbc.url" value="jdbc:mysql://localhost:3306/sistcalcuta?zeroDateTimeBehavior=convertToNull"/>
+      <property name="javax.persistence.jdbc.password" value="root"/>
       <property name="javax.persistence.jdbc.driver" value="com.mysql.jdbc.Driver"/>
-      <property name="javax.persistence.jdbc.user" value="circuloo_franci"/>
+      <property name="javax.persistence.jdbc.user" value="root"/>
     </properties>
   </persistence-unit>
 </persistence>

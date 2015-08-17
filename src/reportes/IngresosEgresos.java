@@ -5,7 +5,10 @@
 package reportes;
 
 import java.io.File;
-import java.math.BigDecimal;
+import java.io.InputStream;
+import java.io.UnsupportedEncodingException;
+import java.net.URL;
+import java.net.URLDecoder;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -438,8 +441,13 @@ public class IngresosEgresos extends javax.swing.JFrame {
 //            }
             //Creamos el informe
             try {
-                File fichero = new File("Ingresos.jasper");
-                JasperReport reporte = (JasperReport) JRLoader.loadObject(fichero);
+//                Class<? extends IngresosEgresos> sysLoader = getClass();
+//                URL url = sysLoader.getResource("Ingresos.jasper");                
+//                String path = URLDecoder.decode(url.getPath(), "UTF-8");
+//                File fichero = new File(path);
+
+                InputStream is = IngresosEgresos.class.getResourceAsStream("Ingresos.jasper");
+                JasperReport reporte = (JasperReport) JRLoader.loadObject(is);
 
                 Map parametro = new HashMap();
                 parametro.put("fechaDesde", jTFDesde.getText());
@@ -510,7 +518,7 @@ public class IngresosEgresos extends javax.swing.JFrame {
                 Logger.getLogger(IngresosEgresos.class.getName()).log(Level.SEVERE, null, ex);
             }
 
-        //Ordenamos la lista         
+            //Ordenamos la lista         
 //        Collections.sort(listaE, new Comparator<ListaEgresos>() {
 //            @Override
 //            public int compare(ListaEgresos l1, ListaEgresos l2) {
@@ -528,11 +536,14 @@ public class IngresosEgresos extends javax.swing.JFrame {
 //            list.setMes(retornaMes(Integer.parseInt(list.getMes())));
 //                    
 //         }
-      
             //Creamos el informe
             try {
-                File fichero = new File("Egresos.jasper");
-                JasperReport reporte = (JasperReport) JRLoader.loadObject(fichero);//(JasperReport) JRLoader.loadObject("Ingresos.jasper");
+//                Class<? extends IngresosEgresos> sysLoader = getClass();
+//                URL url = sysLoader.getResource("Egresos.jasper");                
+//                String path = URLDecoder.decode(url.getPath(), "UTF-8");
+//                File fichero = new File(path);
+                InputStream is = IngresosEgresos.class.getResourceAsStream("Egresos.jasper");
+                JasperReport reporte = (JasperReport) JRLoader.loadObject(is);//(JasperReport) JRLoader.loadObject("Ingresos.jasper");
                 String tipo = jComboBoxTipoGasto.getSelectedItem().toString().trim();
                 if ("Hogar".equals(tipo)) {
                     tipo = "del " + tipo;
@@ -547,7 +558,7 @@ public class IngresosEgresos extends javax.swing.JFrame {
                 parametro.put("fdSQL", fechaDesde);
                 parametro.put("fhSQL", fechaHasta);
                 parametro.put("tipoGasto", tipoGasto);
-            //parametro.put("REPORT_CONNECTION",cc.conexion());
+                //parametro.put("REPORT_CONNECTION",cc.conexion());
                 //JasperPrint jprint= JasperFillManager.fillReport(reporte, parametro,cc.conexion());           
                 JasperPrint jprint = JasperFillManager.fillReport(reporte, parametro, new JRBeanCollectionDataSource(listaE));
 
@@ -619,7 +630,7 @@ public class IngresosEgresos extends javax.swing.JFrame {
 
                     }
                 }
-                 //acá ingresa  cuando no existe en la lista
+                //acá ingresa  cuando no existe en la lista
                 //ningún valor con el mes y año del registro actual
                 if (band == false) {
                     ListaIngresos ingresos = null;

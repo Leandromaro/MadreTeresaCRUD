@@ -10,11 +10,6 @@
  */
 package madreteresacrud;
 
-import java.awt.Color;
-import java.sql.*;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import static javax.swing.GroupLayout.Alignment.CENTER;
 import javax.swing.JOptionPane;
 
 
